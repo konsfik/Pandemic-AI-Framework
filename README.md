@@ -7,3 +7,5 @@ It is being offered publicly so that other researchers may study the proposed AI
 
 ## Technical requirements
 The project is coded in c# and developed in visual studio. 
+
+## Getting started

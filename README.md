@@ -8,4 +8,5 @@ The players' pawns are placed on the world map, in a situation where four deadly
 ## About the framework:
 This framework was developed as part of my thesis for the MSc in digital games, of the Institute of Digital Games (IDG), University of Malta, under the supervision of dr. Antonios Liapis.
 
+## About the source - code:
 The source code is currently being prepared for public sharing.

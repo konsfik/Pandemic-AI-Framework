@@ -5,7 +5,5 @@ This framework was developed as part of my thesis for the MSc in digital games, 
 
 It is being offered publicly so that other researchers may study the proposed AI techniques or develop their own.
 
-## Technical requirements
-The project is coded in c# and developed in visual studio. 
 
-## Getting started
+The source code is currently being prepared for public sharing.

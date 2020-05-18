@@ -8,5 +8,10 @@ The players' pawns are placed on the world map, in a situation where four deadly
 ## About the framework:
 This framework was developed as part of my thesis for the MSc in digital games, of the Institute of Digital Games (IDG), University of Malta, under the supervision of dr. Antonios Liapis.
 
+- The framework offers a quite optimized game state representation which can be used to develop planning - based AI agents that require a forward model. 
+- Since the game state is both partially hidden and stochastic, the framework supports the implementation of Determinization techniques, via randomizing the hidden part of the state. 
+- It also offers a selection of action - space. An agent can operate on the action - based representation, or a macros - based one, using the Macro Actions Synthesis System.
+- A number of game state evaluation methods have been developed and are available for reuse.
+
 ## About the source - code:
 The source code is currently being prepared for public sharing.

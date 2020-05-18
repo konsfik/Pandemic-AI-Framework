@@ -1,5 +1,5 @@
 # Pandemic AI framework
-Α game playing AI framework for the board game Pandemic.
+Α game playing AI framework for Pandemic (board game).
 
 ## Brief Game Description:
 Pandemic is a cooperative board game, designed by Matt Leacock and first published by Z-Man Games in the United states in 2008.

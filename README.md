@@ -17,4 +17,4 @@ The source code is currently being prepared for public sharing.
 ## Credits
 The source code of this framework has been developed by [Konstantinos Sfikas](https://github.com/konsfik), in the context of his dissertation for the MSc in Digital Games, at the Institute of Digital Games (IDG) of the University of Malta, under the supervision of dr. [Antonios Liapis](https://github.com/sentientdesigns/).
 
-The methodological approaches of this framework, including the problem's representation and the design of AI agents have been developed in collaboration between [Konstantinos Sfikas](https://github.com/konsfik) and dr. [Antonios Liapis](https://github.com/sentientdesigns/), as part of an ongoing game playing AI research.
+The methodological approaches of this framework, including the problem's representation and the design of AI agents have been developed in collaboration between [Konstantinos Sfikas](https://github.com/konsfik) and dr. [Antonios Liapis](https://github.com/sentientdesigns/), as part of a broader, ongoing game playing AI research.

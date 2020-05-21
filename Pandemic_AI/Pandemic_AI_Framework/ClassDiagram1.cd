@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Pandemic_AI_Framework.PD_GameAction_Base" Collapsed="true">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAoAAAAAAAAAAAAIAAAAAAAAAAAiA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_GameAction_Base.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PlayerAction_Base" Collapsed="true">
+    <Position X="8" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_PlayerAction_Base.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_GA_SetupGame_Random" Collapsed="true">
+    <Position X="11.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\PD_GA_SetupGame_Random.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_GA_SetupGame_Specific" Collapsed="true">
+    <Position X="14.25" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\PD_GA_SetupGame_Specific.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_AutoAction_Base" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_AutoAction_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_MainAction_Base" Collapsed="true">
+    <Position X="11" Y="4.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_MainAction_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_MapAction_Base" Collapsed="true">
+    <Position X="8.25" Y="6.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_MapAction_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_MapMovementAction_Base" Collapsed="true">
+    <Position X="13" Y="6.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_MapMovementAction_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_NonMapAction_Base" Collapsed="true">
+    <Position X="17.5" Y="6.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_NonMapAction_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_BuildResearchStation" Collapsed="true">
+    <Position X="8.25" Y="7.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAKAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_BuildResearchStation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_BuildResearchStation_OperationsExpert" Collapsed="true">
+    <Position X="8.25" Y="8.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAKAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_BuildResearchStation_OperationsExpert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_DiscoverCure" Collapsed="true">
+    <Position X="8.25" Y="9.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAAAAQAIAAACAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_DiscoverCure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_DiscoverCure_Scientist" Collapsed="true">
+    <Position X="8.25" Y="10.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAAAAQAIAAACAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_DiscoverCure_Scientist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_MoveResearchStation" Collapsed="true">
+    <Position X="8.25" Y="11.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAKAAAAAAAAAAAAAAAYAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_MoveResearchStation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_ShareKnowledge_GiveCard" Collapsed="true">
+    <Position X="8.25" Y="12.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AgQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_ShareKnowledge_GiveCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_ShareKnowledge_GiveCard_ResearcherGives" Collapsed="true">
+    <Position X="8.25" Y="13.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AgQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_ShareKnowledge_GiveCard_ResearcherGives.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_ShareKnowledge_TakeCard" Collapsed="true">
+    <Position X="8.25" Y="14.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAAAAAQAIAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_ShareKnowledge_TakeCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_ShareKnowledge_TakeCard_FromResearcher" Collapsed="true">
+    <Position X="8.25" Y="15.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAAAAAQAIAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_ShareKnowledge_TakeCard_FromResearcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_Stay" Collapsed="true">
+    <Position X="8.25" Y="16.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAMAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_Stay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_TreatDisease" Collapsed="true">
+    <Position X="8.25" Y="17.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_TreatDisease.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_TreatDisease_Medic" Collapsed="true">
+    <Position X="8.25" Y="18.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_TreatDisease_Medic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_TreatDisease_Medic_Auto" Collapsed="true">
+    <Position X="8.25" Y="19.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PA_TreatDisease_Medic_Auto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PMA_CharterFlight" Collapsed="true">
+    <Position X="13" Y="7.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapMovementActions\PD_PMA_CharterFlight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PMA_DirectFlight" Collapsed="true">
+    <Position X="13" Y="8.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapMovementActions\PD_PMA_DirectFlight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PMA_DriveFerry" Collapsed="true">
+    <Position X="13" Y="9.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapMovementActions\PD_PMA_DriveFerry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PMA_OperationsExpert_Flight" Collapsed="true">
+    <Position X="13" Y="11.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapMovementActions\PD_PMA_OperationsExpert_Flight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PMA_ShuttleFlight" Collapsed="true">
+    <Position X="13" Y="10.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\MapMovementActions\PD_PMA_ShuttleFlight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_Discard_Base" Collapsed="true">
+    <Position X="17.5" Y="7.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\_baseClasses\PD_PA_Discard_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_Discard_AfterDrawing" Collapsed="true">
+    <Position X="17.5" Y="9.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\NonMapActions\PD_PA_Discard_AfterDrawing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_PA_Discard_DuringMainPlayerActions" Collapsed="true">
+    <Position X="17.5" Y="10.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\MainPlayerActions\NonMapActions\PD_PA_Discard_DuringMainPlayerActions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_ApplyEpidemicCard" Collapsed="true">
+    <Position X="2.75" Y="6" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\AutoPlayerActions\PD_ApplyEpidemicCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_ApplyInfectionCard" Collapsed="true">
+    <Position X="2.75" Y="7" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\AutoPlayerActions\PD_ApplyInfectionCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_DrawNewInfectionCards" Collapsed="true">
+    <Position X="2.75" Y="8" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\AutoPlayerActions\PD_DrawNewInfectionCards.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pandemic_AI_Framework.PD_DrawNewPlayerCards" Collapsed="true">
+    <Position X="2.75" Y="9" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PD_Core\PD_Game\GameFSM\_GameCommands\AutoPlayerActions\PD_DrawNewPlayerCards.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

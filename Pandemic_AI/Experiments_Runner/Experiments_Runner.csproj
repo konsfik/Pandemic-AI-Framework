@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pandemic_AI_Framework\Pandemic_AI_Framework.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(ProjectDir)$(OutDir)GameCreationData&quot; mkdir &quot;$(ProjectDir)$(OutDir)GameCreationData&quot;&#xD;&#xA;copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData" />
+  </Target>
+
+</Project>

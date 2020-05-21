@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Pandemic_AI_Framework;
+using Newtonsoft.Json;
+
+namespace Pandemic_AI_Framework
+{
+    [Serializable]
+    public abstract class PD_AI_Macro_Agent_Base : PD_AI_Agent_Base
+    {
+        public PD_AI_Macro_Agent_Base()
+        {
+
+        }
+
+        public PD_MacroAction GetNextMacroAction(
+            PD_Game game,
+            PD_AI_PathFinder pathFinder
+            )
+        {
+            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game))
+            {
+                return MainPlayerActions_Behaviour(game, pathFinder);
+            }
+            else if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(game))
+            {
+                return Discarding_DuringMainPlayerActions_Behaviour(game, pathFinder);
+            }
+            else if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(game))
+            {
+                return Discarding_AfterDrawing_Behaviour(game, pathFinder);
+            }
+            else
+            {
+                throw new System.Exception(
+                    "A macro action was requested in an invalid game state"
+                    );
+            }
+        }
+
+        protected abstract PD_MacroAction MainPlayerActions_Behaviour(
+            PD_Game game,
+            PD_AI_PathFinder pathFinder
+            );
+
+        protected abstract PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            PD_Game game,
+            PD_AI_PathFinder pathFinder
+            );
+
+        protected abstract PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            PD_Game game,
+            PD_AI_PathFinder pathFinder
+            );
+    }
+}

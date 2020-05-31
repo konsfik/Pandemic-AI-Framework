@@ -13,6 +13,13 @@ The players' pawns are placed on the world map, in a situation where four deadly
 
 ## About the source - code:
 The source code is currently being prepared for public sharing.
+- [x] Prepare and upload the framework's source code
+- [x] Provide examples of how to run computational experiments, using existing agents
+- [x] Provide templates for the development of new agents
+- [ ] Provide examples of how to query various types of information about the game state
+- [ ] Provide examples of how to perform filtering operations on the set of available macro actions
+- [ ] Prepare and upload the framework extension for running experiments with visuals
+
 
 ## Credits
 The source code of this framework has been developed by [Konstantinos Sfikas](https://github.com/konsfik), in the context of his dissertation for the MSc in Digital Games, at the Institute of Digital Games (IDG) of the University of Malta, under the supervision of dr. [Antonios Liapis](https://github.com/sentientdesigns/).

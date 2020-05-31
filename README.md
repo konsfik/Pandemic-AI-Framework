@@ -1,5 +1,5 @@
 # Pandemic AI framework
-Α game playing AI framework for Pandemic (board game).
+Α game playing AI framework for the board game Pandemic.
 
 ## Brief Game Description:
 Pandemic is a cooperative board game, designed by Matt Leacock and first published by Z-Man Games in the United states in 2008.
@@ -12,10 +12,12 @@ The players' pawns are placed on the world map, in a situation where four deadly
 - A number of game state evaluation methods have been developed and are available for reuse.
 
 ## About the source - code:
-The source code is currently being prepared for public sharing.
+The framework's source code fully functional and is not expected to receive heavy modifications in the near future.
+The following list of milestones refers to a broader set of goals, such as making the project more accessible and user friendly, or providing extra functionality.
 - [x] Prepare and upload the framework's source code
 - [x] Provide examples of how to run computational experiments, using existing agents
 - [x] Provide templates for the development of new agents
+- [ ] Provide a "getting started" tutorial
 - [ ] Provide examples of how to query various types of information about the game state
 - [ ] Provide examples of how to perform filtering operations on the set of available macro actions
 - [ ] Prepare and upload the framework extension for running experiments with visuals

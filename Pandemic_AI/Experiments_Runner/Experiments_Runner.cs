@@ -70,8 +70,8 @@ namespace Experiment_1
         }
 
         /// <summary>
-        /// Experiment 1:
-        /// - Random action agent
+        /// Experiment 2:
+        /// - Hierarchical Policy Agent (HPA)
         /// - 10 random games (four players, easy mode)
         /// - 10 repetitions per game.
         /// The experiment saves a complete report, describing the end - state of each one of the 100 games

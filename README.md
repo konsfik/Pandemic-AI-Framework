@@ -12,7 +12,7 @@ The players' pawns are placed on the world map, in a situation where four deadly
 - A number of game state evaluation methods have been developed and are available for reuse.
 
 ## About the source - code:
-The framework's source code fully functional and is not expected to receive heavy modifications in the near future.
+The framework's source code is fully functional and is not expected to receive heavy modifications in the near future.
 The following list of milestones refers to a broader set of goals, such as making the project more accessible and user friendly, or providing extra functionality.
 - [x] Prepare and upload the framework's source code
 - [x] Provide examples of how to run computational experiments, using existing agents

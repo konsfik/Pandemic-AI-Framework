@@ -56,6 +56,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="GameGenerationAndSerialization\Game_Tests.cs" />
     <Compile Include="Pandemic_AI_Framework\PD_AI\PD_AI_PathFinderTests.cs" />
     <Compile Include="Pandemic_AI_Framework\PD_AI\___Evaluations\PD_AI_CardEvaluation_Utilities_Tests.cs" />
     <Compile Include="PD_Core\PD_Game\GameClass\PD_Game_MacroSynthesis_Tests.cs" />

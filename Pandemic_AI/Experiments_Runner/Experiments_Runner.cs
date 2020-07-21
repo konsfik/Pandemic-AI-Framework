@@ -9,13 +9,49 @@ using Experiments_Runner;
 
 namespace Experiment_1
 {
+
+    public delegate void Del();
+
     public class Experiments_Runner
     {
         static void Main(string[] args)
         {
 
-            //Experiment_1();
-            Experiment_2();
+            // dictionary of available methods:
+            Dictionary<int, Del> experiments = new Dictionary<int, Del>();
+            Dictionary<int, string> experimentNames = new Dictionary<int, string>();
+
+            experiments.Add(0, Exp_1__RandomGames__RandomActionAgent);
+            experimentNames.Add(0, "Random games | Random action agent");
+
+            experiments.Add(1, Exp_2__RandomGames__HierarchicalPolicyAgent);
+            experimentNames.Add(1, "Random games | Hierarchical Policy Agent");
+
+
+            Console.WriteLine("PANDEMIC AI - Framework - DEMO\n");
+            Console.WriteLine("choose a program to run:");
+
+
+            int selection = -1;
+            bool parseSuccessful = false;
+            while (parseSuccessful == false || experiments.ContainsKey(selection) == false)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Select:");
+
+                foreach (var key in experimentNames.Keys)
+                {
+                    Console.WriteLine(key.ToString() + ": " + experimentNames[key]);
+                }
+
+                string userInput = Console.ReadLine();
+                parseSuccessful = int.TryParse(userInput, out selection);
+            }
+
+            experiments[selection].Invoke();
+
+            Console.ReadKey();
 
         }
 
@@ -27,22 +63,38 @@ namespace Experiment_1
         /// The experiment saves a complete report, describing the end - state of each one of the 100 games
         /// in the form of a .csv file, for further analysis.
         /// </summary>
-        public static void Experiment_1()
+        public static void Exp_1__RandomGames__RandomActionAgent()
         {
-            string gameCreationData = DataUtilities.Read_GameCreationData();
+            // settings...
+            int number_of_games_to_generate = 10;
+            int number_of_players = 4;
+            int game_difficulty = 0; // easy
+            int number_of_repetitions_per_game = 10;
 
-            // generate a set of random games,
-            // of four players, set to easy level
-            List<PD_Game> games = Generate_Random_Games(10, 4, 0);
+            bool save_initial_game_states = true;
+            bool keep_game_stats_report = true;
+            bool keep_trace = false;
+
+            // debugging settings
+            bool display_actions = false;
+            bool display_end_state = true;
+
+
+            List<PD_Game> games = Generate_Random_Games(
+                number_of_games_to_generate,
+                number_of_players,
+                game_difficulty
+                );
 
             // initialize the pathFinder
             PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
 
             // define the agent and the dictionary for the experiment runner
             PD_AI_ActionAgent_Random randomActionAgent = new PD_AI_ActionAgent_Random();
-            Dictionary<PD_AI_Agent_Base, string> agentsDictionary = new Dictionary<PD_AI_Agent_Base, string>() {
-                { randomActionAgent, "random_action_agent" }
-            };
+            Dictionary<PD_AI_Agent_Base, string> agentsDictionary =
+                new Dictionary<PD_AI_Agent_Base, string>() {
+                    { randomActionAgent, "random_action_agent" }
+                };
 
             // prepare the experiment results directory
             string experimentResults_Directory = Directory.GetCurrentDirectory() + "\\ExperimentResults";
@@ -53,19 +105,19 @@ namespace Experiment_1
 
             Pandemic_Experiment experiment = new Pandemic_Experiment(
                 games,
-                true,   // save the initial game states (serialized as json files) for later review, or repetition
+                save_initial_game_states,
                 agentsDictionary,
                 pathFinder,
-                100, // number of repetitions per game
+                number_of_repetitions_per_game,
                 experimentResults_Directory,
-                true,   // keep game stats report?
-                false   // keep trace?
+                keep_game_stats_report, 
+                keep_trace
                 );
 
             experiment.RunExperiment(
                 pathFinder,
-                true,
-                true
+                display_actions,
+                display_end_state
                 );
         }
 
@@ -77,7 +129,7 @@ namespace Experiment_1
         /// The experiment saves a complete report, describing the end - state of each one of the 100 games
         /// in the form of a .csv file, for further analysis.
         /// </summary>
-        public static void Experiment_2()
+        public static void Exp_2__RandomGames__HierarchicalPolicyAgent()
         {
             string gameCreationData = DataUtilities.Read_GameCreationData();
 

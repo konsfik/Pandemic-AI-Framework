@@ -270,7 +270,7 @@ namespace Pandemic_AI_Framework
         }
 
         private static List<PD_City> CreateCitiesFromCityNodesData(
-            string dataFile,
+            string data,
             char dataSeparator,
             char listSeparator
             )
@@ -278,7 +278,7 @@ namespace Pandemic_AI_Framework
             List<PD_City> cities = new List<PD_City>();
 
             //Debug.Log(dataFile.text);
-            string fullText = dataFile;
+            string fullText = data;
             string[] lines = fullText.Split('\n');
 
             // skip first line

@@ -66,7 +66,7 @@ namespace Pandemic_AI_Framework
                 {
                     string gameFileName = "game_" + game.UniqueID.ToString() + ".json";
                     string gameFilePath = Path.Combine(ThisExperiment_FolderPath, gameFileName);
-                    
+
                     PD_IO_Utilities.SerializeGameToJsonAndSave(
                         game,
                         false,
@@ -115,9 +115,9 @@ namespace Pandemic_AI_Framework
         {
             List<PD_AI_Agent_Base> allAgents = NamePerAgent.Keys.ToList();
 
-            for (int gameIndex = 0; gameIndex < AllGames.Count; gameIndex++)
+            for (int agentIndex = 0; agentIndex < allAgents.Count; agentIndex++)
             {
-                for (int agentIndex = 0; agentIndex < allAgents.Count; agentIndex++)
+                for (int gameIndex = 0; gameIndex < AllGames.Count; gameIndex++)
                 {
                     for (int repetitionIndex = 0; repetitionIndex < NumRepetitionsPerAgent; repetitionIndex++)
                     {

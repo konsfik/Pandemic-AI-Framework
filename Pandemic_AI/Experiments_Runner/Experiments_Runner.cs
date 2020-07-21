@@ -27,6 +27,9 @@ namespace Experiment_1
             experiments.Add(1, Exp_2__RandomGames__HierarchicalPolicyAgent);
             experimentNames.Add(1, "Random games | Hierarchical Policy Agent");
 
+            experiments.Add(2, Exp_3__RandomGames__p_RHE_Agent);
+            experimentNames.Add(2, "Random games | Policy Based - Rolling Horizon Evolution agent (p-RHE)");
+
 
             Console.WriteLine("PANDEMIC AI - Framework - DEMO\n");
             Console.WriteLine("choose a program to run:");
@@ -55,22 +58,22 @@ namespace Experiment_1
 
         }
 
-        /// <summary>
-        /// Experiment 1:
-        /// - Random action agent
-        /// - 10 random games (four players, easy mode)
-        /// - 10 repetitions per game.
-        /// The experiment saves a complete report, describing the end - state of each one of the 100 games
-        /// in the form of a .csv file, for further analysis.
-        /// </summary>
         public static void Exp_1__RandomGames__RandomActionAgent()
         {
-            // settings...
+            // testbed - settings...
             int number_of_games_to_generate = 10;
             int number_of_players = 4;
             int game_difficulty = 0; // easy
-            int number_of_repetitions_per_game = 10;
 
+            // generate the random games (test-bed)
+            List<PD_Game> games = Generate_Random_Games(
+                number_of_games_to_generate,
+                number_of_players,
+                game_difficulty
+                );
+
+            // experiment - settings
+            int number_of_repetitions_per_game = 10;
             bool save_initial_game_states = true;
             bool keep_game_stats_report = true;
             bool keep_trace = false;
@@ -78,16 +81,6 @@ namespace Experiment_1
             // debugging settings
             bool display_actions = false;
             bool display_end_state = true;
-
-
-            List<PD_Game> games = Generate_Random_Games(
-                number_of_games_to_generate,
-                number_of_players,
-                game_difficulty
-                );
-
-            // initialize the pathFinder
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
 
             // define the agent and the dictionary for the experiment runner
             PD_AI_ActionAgent_Random randomActionAgent = new PD_AI_ActionAgent_Random();
@@ -103,6 +96,8 @@ namespace Experiment_1
                 PD_IO_Utilities.CreateFolder(experimentResults_Directory, true);
             }
 
+            // initialize the experiment
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
             Pandemic_Experiment experiment = new Pandemic_Experiment(
                 games,
                 save_initial_game_states,
@@ -121,21 +116,29 @@ namespace Experiment_1
                 );
         }
 
-        /// <summary>
-        /// Experiment 2:
-        /// - Hierarchical Policy Agent (HPA)
-        /// - 10 random games (four players, easy mode)
-        /// - 10 repetitions per game.
-        /// The experiment saves a complete report, describing the end - state of each one of the 100 games
-        /// in the form of a .csv file, for further analysis.
-        /// </summary>
         public static void Exp_2__RandomGames__HierarchicalPolicyAgent()
         {
-            string gameCreationData = DataUtilities.Read_GameCreationData();
+            // testbed - settings...
+            int number_of_games_to_generate = 10;
+            int number_of_players = 4;
+            int game_difficulty = 0; // easy
 
-            // generate a set of random games,
-            // of four players, set to easy level
-            List<PD_Game> games = Generate_Random_Games(10, 4, 0);
+            // generate the random games (test-bed)
+            List<PD_Game> games = Generate_Random_Games(
+                number_of_games_to_generate,
+                number_of_players,
+                game_difficulty
+                );
+
+            // experiment - settings
+            int number_of_repetitions_per_game = 10;
+            bool save_initial_game_states = true;
+            bool keep_game_stats_report = true;
+            bool keep_trace = false;
+
+            // debugging settings
+            bool display_actions = false;
+            bool display_end_state = true;
 
             // initialize the pathFinder
             PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
@@ -155,19 +158,77 @@ namespace Experiment_1
 
             Pandemic_Experiment experiment = new Pandemic_Experiment(
                 games,
-                true,   // save the initial game states (serialized as json files) for later review, or repetition
+                save_initial_game_states,
                 agentsDictionary,
                 pathFinder,
-                100, // number of repetitions per game
+                number_of_repetitions_per_game,
                 experimentResults_Directory,
-                true,   // keep game stats report?
-                false   // keep trace?
+                keep_game_stats_report,
+                keep_trace
                 );
 
             experiment.RunExperiment(
                 pathFinder,
-                true,
-                true
+                display_actions,
+                display_end_state
+                );
+        }
+
+        public static void Exp_3__RandomGames__p_RHE_Agent()
+        {
+            // testbed - settings...
+            int number_of_games_to_generate = 10;
+            int number_of_players = 4;
+            int game_difficulty = 0; // easy
+
+            // generate the random games (test-bed)
+            List<PD_Game> games = Generate_Random_Games(
+                number_of_games_to_generate,
+                number_of_players,
+                game_difficulty
+                );
+
+            // experiment - settings
+            int number_of_repetitions_per_game = 10;
+            bool save_initial_game_states = true;
+            bool keep_game_stats_report = true;
+            bool keep_trace = false;
+
+            // debugging settings
+            bool display_actions = false;
+            bool display_end_state = true;
+
+            // initialize the pathFinder
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
+
+            // define the agent and the dictionary for the experiment runner
+            var p_RHE_agent = AgentsFactory.P_RHE_Agent(pathFinder);
+            Dictionary<PD_AI_Agent_Base, string> agentsDictionary = new Dictionary<PD_AI_Agent_Base, string>() {
+                { p_RHE_agent, "p_RHE" }
+            };
+
+            // prepare the experiment results directory
+            string experimentResults_Directory = Directory.GetCurrentDirectory() + "\\ExperimentResults";
+            if (PD_IO_Utilities.FolderExists(experimentResults_Directory) == false)
+            {
+                PD_IO_Utilities.CreateFolder(experimentResults_Directory, true);
+            }
+
+            Pandemic_Experiment experiment = new Pandemic_Experiment(
+                games,
+                save_initial_game_states,
+                agentsDictionary,
+                pathFinder,
+                number_of_repetitions_per_game,
+                experimentResults_Directory,
+                keep_game_stats_report,
+                keep_trace
+                );
+
+            experiment.RunExperiment(
+                pathFinder,
+                display_actions,
+                display_end_state
                 );
         }
 

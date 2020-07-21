@@ -102,7 +102,6 @@ namespace Experiments_Runner
                                 new GSES_Multiplied_RemainingDiseaseCubes_Score()
                             }
                             )
-                        //new PD_GameStateEvaluator_Combined_AS4_C(),
                     },
 
                     // since only one evaluator is used,

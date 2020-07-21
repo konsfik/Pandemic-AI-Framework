@@ -12,6 +12,26 @@ namespace Pandemic_AI_Framework.Tests
     public class PD_Game_Tests
     {
         [TestMethod()]
+        public void Deserialize_ExistingGame_Test()
+        {
+            var sol_dir = PD_IO_Utilities.SolutionDirectory().FullName;
+            var saved_games_path = System.IO.Path.Combine(sol_dir, "ParameterTuning_TestBed");
+            var file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
+
+            foreach (var file_path in file_paths)
+            {
+                PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
+                    file_paths[0]
+                    );
+
+                Assert.IsTrue(deserialized_game != null);
+                Assert.IsTrue(deserialized_game.GameStateCounter.NumberOfPlayers == 4);
+                Assert.IsTrue(deserialized_game.GameSettings.GameDifficultyLevel == 0);
+            }
+        }
+
+
+        [TestMethod()]
         public void GetCustomDeepCopy_Test()
         {
 

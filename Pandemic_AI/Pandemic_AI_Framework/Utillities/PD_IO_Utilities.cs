@@ -12,6 +12,19 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_IO_Utilities
     {
+        public static DirectoryInfo SolutionDirectory()
+        {
+            var currentPath = System.IO.Directory.GetCurrentDirectory();
+
+            var directory = new DirectoryInfo(
+            currentPath ?? Directory.GetCurrentDirectory());
+            while (directory != null && !directory.GetFiles("*.sln").Any())
+            {
+                directory = directory.Parent;
+            }
+            return directory;
+        }
+
         public static void SerializeToJsonAndSave(
             object objectToSerialize,
             string saveFilePath,

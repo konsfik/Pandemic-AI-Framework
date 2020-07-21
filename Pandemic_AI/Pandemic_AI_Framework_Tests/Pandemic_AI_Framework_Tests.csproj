@@ -59,32 +59,17 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Game\Game_Tests.cs" />
     <Compile Include="Pandemic_AI_Framework\PD_AI\PD_AI_PathFinderTests.cs" />
     <Compile Include="Pandemic_AI_Framework\PD_AI\___Evaluations\PD_AI_CardEvaluation_Utilities_Tests.cs" />
-    <Compile Include="PD_Core\PD_Game\GameClass\PD_Game_MacroSynthesis_Tests.cs" />
-    <Compile Include="PD_Core\PD_Game\GameClass\PD_Game_Tests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\PD_CityEdgeTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\PD_CityTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Cards\PD_Card_BaseTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Cards\PD_CityCardTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Cards\PD_EpidemicCardTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Cards\PD_InfectionCardTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Game\GameFSM\_GameCommands\AutoPlayerActions\PD_PC_PlayerAppliesEpidemicCardTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Game\GameFSM\_GameCommands\AutoPlayerActions\PD_PC_PlayerAppliesInfectionCardTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PC_MA_A0_StayTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Game\GameFSM\_GameCommands\MainPlayerActions\MapActions\PD_PC_MA_A5a_BuildResearchStationTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\PD_PlayerTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\PD_Core\Various\PD_PointTests.cs" />
-    <Compile Include="Pandemic_AI_Framework\Utillities\PD_ListExtensionsTests.cs" />
+    <Compile Include="PD_Game_MacroSynthesis_Tests.cs" />
+    <Compile Include="PD_Game_Tests.cs" />
+    <Compile Include="PD_ListExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PD_Core\Utillities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Pandemic_AI_Framework\Pandemic_AI_Framework.csproj">
       <Project>{68a51164-128f-47dd-8283-5ad22170c070}</Project>

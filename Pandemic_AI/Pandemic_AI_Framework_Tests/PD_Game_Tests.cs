@@ -16,18 +16,47 @@ namespace Pandemic_AI_Framework.Tests
         {
             var sol_dir = PD_IO_Utilities.SolutionDirectory().FullName;
             var saved_games_path = System.IO.Path.Combine(sol_dir, "ParameterTuning_TestBed");
-            var file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
+            var game_file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
 
-            foreach (var file_path in file_paths)
+            foreach (var game_file_path in game_file_paths)
             {
                 PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
-                    file_paths[0]
+                    game_file_path
                     );
 
-                Assert.IsTrue(deserialized_game != null);
-                Assert.IsTrue(deserialized_game.GameStateCounter.NumberOfPlayers == 4);
-                Assert.IsTrue(deserialized_game.GameSettings.GameDifficultyLevel == 0);
+
+                // play the game until the end...
+                while (PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game))
+                {
+                    var available_actions = deserialized_game.CurrentAvailablePlayerActions;
+                    deserialized_game.ApplySpecificPlayerAction(available_actions.GetOneRandom());
+                }
+
+                Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
             }
+        }
+
+        [TestMethod()]
+        public void Generate_Game()
+        {
+            string data = DataUtilities.Read_GameCreationData();
+
+            for (int num_players = 2; num_players <= 4; num_players++)
+            {
+                for (int game_difficulty = 0; game_difficulty <= 2; game_difficulty++)
+                {
+                    PD_Game game = PD_GameCreator.CreateNewGame(num_players, game_difficulty, data, true);
+
+                    while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                    {
+                        var available_actions = game.CurrentAvailablePlayerActions;
+                        game.ApplySpecificPlayerAction(available_actions.GetOneRandom());
+                    }
+
+                    Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(game) == false);
+                }
+            }
+
         }
 
 

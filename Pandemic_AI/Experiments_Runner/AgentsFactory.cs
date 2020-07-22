@@ -94,12 +94,12 @@ namespace Experiments_Runner
                         // only one aggregated game state evaluator is used
                         new GSE_Aggregated_WinOrDefeat_Adjusted(
                             // list of scores to be aggregated
-                            new List<GameStateEvaluationScore_Base>()
+                            new List<GameStateEvaluationScore>()
                             { 
                                 // gradient cured diseases score
                                 new GSES_GradientCuredDiseases(),
                                 // multiplied remaining disease cubes score
-                                new GSES_Multiplied_RemainingDiseaseCubes_Score()
+                                new GSES_MultipliedRemainingDiseaseCubes()
                             }
                             )
                     },

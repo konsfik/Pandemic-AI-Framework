@@ -18,6 +18,7 @@ namespace Pandemic_AI_Framework.Tests
             var saved_games_path = System.IO.Path.Combine(sol_dir, "ParameterTuning_TestBed");
             var game_file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
 
+            // play the games until the end, using single actions
             foreach (var game_file_path in game_file_paths)
             {
                 PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
@@ -34,6 +35,25 @@ namespace Pandemic_AI_Framework.Tests
 
                 Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
             }
+
+            // play the games until the end, using macro actions
+            foreach (var game_file_path in game_file_paths)
+            {
+                PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
+                    game_file_path
+                    );
+
+                PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(deserialized_game);
+
+                // play the game until the end...
+                while (PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game))
+                {
+                    var available_macro_actions = deserialized_game.GetAvailableMacros(pathFinder);
+                    deserialized_game.ApplySpecificMacro(available_macro_actions.GetOneRandom());
+                }
+
+                Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
+            }
         }
 
         [TestMethod()]
@@ -45,15 +65,19 @@ namespace Pandemic_AI_Framework.Tests
             {
                 for (int game_difficulty = 0; game_difficulty <= 2; game_difficulty++)
                 {
-                    PD_Game game = PD_GameCreator.CreateNewGame(num_players, game_difficulty, data, true);
-
-                    while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                    // repeat the process 100 times!
+                    for (int i = 0; i < 100; i++)
                     {
-                        var available_actions = game.CurrentAvailablePlayerActions;
-                        game.ApplySpecificPlayerAction(available_actions.GetOneRandom());
-                    }
+                        PD_Game game = PD_GameCreator.CreateNewGame(num_players, game_difficulty, data, true);
 
-                    Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(game) == false);
+                        while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                        {
+                            var available_actions = game.CurrentAvailablePlayerActions;
+                            game.ApplySpecificPlayerAction(available_actions.GetOneRandom());
+                        }
+
+                        Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(game) == false);
+                    }
                 }
             }
 

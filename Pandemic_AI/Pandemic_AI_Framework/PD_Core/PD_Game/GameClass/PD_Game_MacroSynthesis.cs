@@ -139,23 +139,6 @@ namespace Pandemic_AI_Framework
                         operationsExpertFlightWalk_Sequences_MaxExecutableLength
                         );
 
-                // STAY MACROS
-                //List<PD_MacroAction> stay_Macros = 
-                //    FindAll_StayMacros_ExecutableNow(
-                //        game,
-                //        pathFinder,
-
-                //        currentPlayer,
-                //        currentPlayerLocation,
-                //        currentPlayerRole,
-                //        numAvailableActions,
-
-                //        simpleWalk_Sequences_LessThan_MaxExecutableLength,
-                //        directFlightWalk_Sequences_LessThan_MaxExecutableLength,
-                //        charterFlightWalk_Sequences_LessThan_MaxExecutableLength,
-                //        operationsExpertFlightWalk_Sequences_LessThan_MaxExecutableLength
-                //        );
-
                 // TREAT DISEASE MACROS (simple & medic)
                 List<PD_MacroAction> treatDisease_Macros =
                     FindAll_TreatDiseaseMacros(

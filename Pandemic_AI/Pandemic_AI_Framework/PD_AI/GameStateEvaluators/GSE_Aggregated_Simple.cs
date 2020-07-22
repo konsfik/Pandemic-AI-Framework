@@ -6,10 +6,10 @@ namespace Pandemic_AI_Framework
 {
     public class GSE_Aggregated_Simple : PD_GameStateEvaluator_Base
     {
-        public List<GameStateEvaluationScore_Base> Scores { get; private set; }
+        public List<GameStateEvaluationScore> Scores { get; private set; }
 
         public GSE_Aggregated_Simple(
-            List<GameStateEvaluationScore_Base> scores
+            List<GameStateEvaluationScore> scores
             )
         {
             Scores = scores;

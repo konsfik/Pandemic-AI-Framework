@@ -10,11 +10,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public abstract class PD_GameStateEvaluator_Base
     {
-        public PD_GameStateEvaluator_Base()
-        {
-
-        }
-
         public abstract double EvaluateGameState(PD_Game game);
     }
 }

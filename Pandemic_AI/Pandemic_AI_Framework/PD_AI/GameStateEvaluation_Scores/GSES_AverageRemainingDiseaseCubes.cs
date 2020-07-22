@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pandemic_AI_Framework
 {
-    public class GSES_Average_RemainingDiseaseCubes_Score : GameStateEvaluationScore_Base
+    public class GSES_AverageRemainingDiseaseCubes : GameStateEvaluationScore
     {
         public override double CalculateScore(PD_Game gameState)
         {

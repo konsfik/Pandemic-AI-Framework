@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Pandemic_AI_Framework
 {
-    public class GSES_GradientCuredDiseases : GameStateEvaluationScore_Base
+    public class GSES_GradientCuredDiseases : GameStateEvaluationScore
     {
         public override double CalculateScore(PD_Game gameState)
         {

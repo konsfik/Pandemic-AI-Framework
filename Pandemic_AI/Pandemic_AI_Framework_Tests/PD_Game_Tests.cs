@@ -14,8 +14,10 @@ namespace Pandemic_AI_Framework.Tests
         [TestMethod()]
         public void Deserialize_ExistingGame_Test()
         {
-            var sol_dir = PD_IO_Utilities.SolutionDirectory().FullName;
-            var saved_games_path = System.IO.Path.Combine(sol_dir, "ParameterTuning_TestBed");
+            string saved_games_path = System.IO.Path.Combine(
+                System.IO.Directory.GetCurrentDirectory(),
+                "ParameterTuning_TestBed"
+                );
             var game_file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
 
             // play the games until the end, using single actions

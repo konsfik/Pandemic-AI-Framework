@@ -90,7 +90,7 @@ namespace Experiments_Runner
                     (PD_AI_Macro_Agent_Base)RandomPolicyAgent(),
 
                     // list of game state evaluators
-                    new List<PD_GameStateEvaluator_Base>() {
+                    new List<PD_GameStateEvaluator>() {
                         // only one aggregated game state evaluator is used
                         new GSE_Aggregated_WinOrDefeat_Adjusted(
                             // list of scores to be aggregated

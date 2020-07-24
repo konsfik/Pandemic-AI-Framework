@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if not exist &quot;$(ProjectDir)$(OutDir)GameCreationData&quot; mkdir &quot;$(ProjectDir)$(OutDir)GameCreationData&quot;&#xD;&#xA;copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData" />
+    <Exec Command="if not exist &quot;$(ProjectDir)$(OutDir)GameCreationData&quot; mkdir &quot;$(ProjectDir)$(OutDir)GameCreationData&quot;&#xD;&#xA;copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData&#xD;&#xA;if not exist &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot; mkdir &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot;&#xD;&#xA;copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed" />
   </Target>
 
 </Project>

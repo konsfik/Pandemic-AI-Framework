@@ -106,7 +106,9 @@
   <Import Project="..\packages\MSTest.TestAdapter.1.3.2\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.3.2\build\net45\MSTest.TestAdapter.targets')" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)GameCreationData" mkdir "$(ProjectDir)$(OutDir)GameCreationData"
-copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData</PostBuildEvent>
+copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData
+if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed"
+copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

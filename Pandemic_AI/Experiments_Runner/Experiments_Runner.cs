@@ -97,7 +97,7 @@ namespace Experiment_1
             }
 
             // initialize the experiment
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
             Pandemic_Experiment experiment = new Pandemic_Experiment(
                 games,
                 save_initial_game_states,
@@ -141,7 +141,7 @@ namespace Experiment_1
             bool display_end_state = true;
 
             // initialize the pathFinder
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
             // define the agent and the dictionary for the experiment runner
             var hierarchicalPolicyAgent = AgentsFactory.HierarchicalPolicyAgent();
@@ -199,7 +199,7 @@ namespace Experiment_1
             bool display_end_state = true;
 
             // initialize the pathFinder
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(games[0]);
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
             // define the agent and the dictionary for the experiment runner
             var p_RHE_agent = AgentsFactory.P_RHE_Agent(pathFinder);

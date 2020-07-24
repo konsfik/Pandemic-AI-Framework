@@ -16,7 +16,7 @@ namespace Pandemic_AI_Framework.Tests
         {
             string data = DataUtilities.Read_GameCreationData();
             PD_Game game = PD_GameCreator.CreateNewGame(4, 0, data, true);
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(game);
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
             // get reference to all available cities
             var Atlanta = game.Map.Cities.Find(x => x.Name == "Atlanta");

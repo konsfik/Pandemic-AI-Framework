@@ -18,7 +18,7 @@ namespace Pandemic_AI_Framework.Tests
 
             //string data = DataUtilities.ReadGameData("gameCreationData.csv");
             PD_Game game = PD_GameCreator.CreateNewGame(4, 0, data, true);
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(game);
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
             int[,] numCardsTable = PD_AI_CardEvaluation_Utilities.NumCardsTable(game);
             int numTypes = numCardsTable.Height();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,25 @@ namespace Pandemic_AI_Framework
 
         public Dictionary<PD_CityEdge_Directed, List<PD_City>> ShortestPaths { get { return _shortestPaths; } }
 
-        public PD_AI_PathFinder(
-            PD_Game game
-            )
+        public PD_AI_PathFinder()
         {
-            ComputeShortestPaths(game.Map);
+            string game_creation_data_file_path = System.IO.Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "GameCreationData",
+                    "gameCreationData.csv"
+                );
+
+            string game_creation_data = PD_IO_Utilities.ReadFile(game_creation_data_file_path);
+            // generate a random game
+            PD_Game dummy_game = PD_GameCreator.CreateNewGame(
+                4,
+                0,
+                game_creation_data,
+                false
+                );
+
+
+            ComputeShortestPaths(dummy_game.Map);
         }
 
         /// <summary>

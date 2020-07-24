@@ -38,6 +38,7 @@ namespace Pandemic_AI_Framework.Tests
                 Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
             }
 
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
             // play the games until the end, using macro actions
             foreach (var game_file_path in game_file_paths)
             {
@@ -45,7 +46,6 @@ namespace Pandemic_AI_Framework.Tests
                     game_file_path
                     );
 
-                PD_AI_PathFinder pathFinder = new PD_AI_PathFinder(deserialized_game);
 
                 // play the game until the end...
                 while (PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game))

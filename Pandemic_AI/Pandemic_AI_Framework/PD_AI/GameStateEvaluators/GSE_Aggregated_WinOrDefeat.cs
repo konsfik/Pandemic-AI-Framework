@@ -5,7 +5,7 @@ using System.Text;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class GSE_Aggregated_WinOrDefeat : PD_GameStateEvaluator_Base
+    public class GSE_Aggregated_WinOrDefeat : PD_GameStateEvaluator
     {
         public List<GameStateEvaluationScore> Scores { get; private set; }
 

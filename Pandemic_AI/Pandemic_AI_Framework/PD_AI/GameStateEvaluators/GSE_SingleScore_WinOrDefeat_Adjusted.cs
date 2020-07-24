@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pandemic_AI_Framework.PD_AI.GameStateEvaluators
+namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class GSE_WinOrDefeat : PD_GameStateEvaluator_Base
+    public class GSE_SingleScore_WinOrDefeat_Adjusted : PD_GameStateEvaluator
     {
         private GameStateEvaluationScore _score_calculator;
 
-        public GSE_WinOrDefeat(GameStateEvaluationScore score_calculator)
+        public GSE_SingleScore_WinOrDefeat_Adjusted(GameStateEvaluationScore score_calculator)
         {
             _score_calculator = score_calculator;
         }
@@ -28,7 +28,7 @@ namespace Pandemic_AI_Framework.PD_AI.GameStateEvaluators
             }
             else
             {
-                return 0;
+                return 0.1 * score;
             }
         }
     }

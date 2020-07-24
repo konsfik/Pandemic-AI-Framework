@@ -5,11 +5,11 @@ using System.Text;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class GSE_Simple : PD_GameStateEvaluator_Base
+    public class GSE_SingleScore_Simple : PD_GameStateEvaluator
     {
         private GameStateEvaluationScore _score_calculator;
 
-        public GSE_Simple(GameStateEvaluationScore score_calculator)
+        public GSE_SingleScore_Simple(GameStateEvaluationScore score_calculator)
         {
             _score_calculator = score_calculator;
         }

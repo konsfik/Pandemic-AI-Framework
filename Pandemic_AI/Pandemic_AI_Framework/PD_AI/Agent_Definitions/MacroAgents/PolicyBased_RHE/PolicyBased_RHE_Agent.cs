@@ -15,7 +15,7 @@ namespace Pandemic_AI_Framework
         public PD_AI_Macro_Agent_Base Mutator_Agent { get; private set; }
         public PD_AI_Macro_Agent_Base Corrector_Agent { get; private set; }
 
-        public List<PD_GameStateEvaluator_Base> GameStateEvaluators { get; private set; }
+        public List<PD_GameStateEvaluator> GameStateEvaluators { get; private set; }
         public RollingHorizonAgent_IndividualReplacementRule ReplacementRule { get; private set; }
 
         public int MaxGenomeLength { get; private set; }
@@ -33,7 +33,7 @@ namespace Pandemic_AI_Framework
             PD_AI_Macro_Agent_Base defaultPolicy_Agent,
             PD_AI_Macro_Agent_Base mutator_Agent,
 
-            List<PD_GameStateEvaluator_Base> gameStateEvaluators,
+            List<PD_GameStateEvaluator> gameStateEvaluators,
             RollingHorizonAgent_IndividualReplacementRule replacementRule,
 
             int maxGenomeLength,
@@ -66,7 +66,7 @@ namespace Pandemic_AI_Framework
             PD_AI_Macro_Agent_Base defaultPolicy_Agent,
             PD_AI_Macro_Agent_Base mutator_Agent,
 
-            List<PD_GameStateEvaluator_Base> gameStateEvaluators,
+            List<PD_GameStateEvaluator> gameStateEvaluators,
             RollingHorizonAgent_IndividualReplacementRule replacementRule,
 
             int maxGenomeLength,

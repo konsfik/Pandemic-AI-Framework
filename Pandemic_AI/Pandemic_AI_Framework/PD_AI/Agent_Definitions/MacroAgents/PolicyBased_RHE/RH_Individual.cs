@@ -156,7 +156,7 @@ namespace Pandemic_AI_Framework
             PD_Game initial_GameState,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent,
-            List<PD_GameStateEvaluator_Base> gameStateEvaluators
+            List<PD_GameStateEvaluator> gameStateEvaluators
             )
         {
             EvaluationScores = new List<double>();

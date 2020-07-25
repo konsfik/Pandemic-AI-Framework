@@ -106,7 +106,7 @@ namespace Experiments_Runner
 
                     // since only one evaluator is used,
                     // the replacement takes place when the child's evaluation is better than the parent's
-                    RollingHorizonAgent_IndividualReplacementRule.All_Better,
+                    P_RHE_Replacement_Rule.All_Better,
 
                     5,      // max genome length
                     100,     // num mutations

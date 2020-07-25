@@ -283,7 +283,7 @@ namespace Pandemic_AI_Framework
 
         public bool IsBetterThan(
             RH_Individual other,
-            RollingHorizonAgent_IndividualReplacementRule replacementRule
+            P_RHE_Replacement_Rule replacementRule
             )
         {
             if (this.EvaluationScores.Count != other.EvaluationScores.Count)
@@ -293,7 +293,7 @@ namespace Pandemic_AI_Framework
 
             switch (replacementRule)
             {
-                case RollingHorizonAgent_IndividualReplacementRule.Average_Better:
+                case P_RHE_Replacement_Rule.Average_Better:
 
                     double thisIndividual_average = 0;
                     foreach (var score in EvaluationScores)
@@ -315,7 +315,7 @@ namespace Pandemic_AI_Framework
                     }
                     return false;
 
-                case RollingHorizonAgent_IndividualReplacementRule.All_Better:
+                case P_RHE_Replacement_Rule.All_Better:
                     // all scores of this individual need to be better 
                     // than all scores of the other individual.
 
@@ -333,7 +333,7 @@ namespace Pandemic_AI_Framework
                     // otherwise, return true
                     return true;
 
-                case RollingHorizonAgent_IndividualReplacementRule.All_Equal_Or_Better:
+                case P_RHE_Replacement_Rule.All_Equal_Or_Better:
                     // all scores of this individual need to be equal to or better 
                     // than all scores of the other individual.
 
@@ -351,7 +351,7 @@ namespace Pandemic_AI_Framework
                     // otherwise, return true
                     return true;
 
-                case RollingHorizonAgent_IndividualReplacementRule.One_Better__Rest_Equal_Or_Better:
+                case P_RHE_Replacement_Rule.One_Better__Rest_Equal_Or_Better:
                     // one score of this individual needs to be better than a score of the other individual.
                     // The rest need to be equal to or better than the other's 
 
@@ -392,7 +392,7 @@ namespace Pandemic_AI_Framework
 
                     return true;
 
-                case RollingHorizonAgent_IndividualReplacementRule.One_Better__Rest_Whatever:
+                case P_RHE_Replacement_Rule.One_Better__Rest_Whatever:
                     // one score of this individual needs to be better than a score of the other individual.
                     // The rest can be whatever.
 

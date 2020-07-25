@@ -11,80 +11,80 @@ namespace Pandemic_AI_Framework
     {
         private Random _randomnessProvider;
 
-        public PD_AI_Macro_Agent_Base Creator_Agent { get; private set; }
+        public PD_AI_Macro_Agent_Base Generator_Agent { get; private set; }
         public PD_AI_Macro_Agent_Base Mutator_Agent { get; private set; }
         public PD_AI_Macro_Agent_Base Corrector_Agent { get; private set; }
 
-        public List<PD_GameStateEvaluator> GameStateEvaluators { get; private set; }
-        public RollingHorizonAgent_IndividualReplacementRule ReplacementRule { get; private set; }
+        public List<PD_GameStateEvaluator> Game_State_Evaluators { get; private set; }
+        public P_RHE_Replacement_Rule Replacement_Rule { get; private set; }
 
-        public int MaxGenomeLength { get; private set; }
-        public int NumMutations { get; private set; }
+        public int Genome_Length { get; private set; }
+        public int Num_Generations { get; private set; }
         public double Initial_MutationRate { get; private set; }
         public double Final_MutationRate { get; private set; }
-        public double MutationRate { get; private set; }
-        public int NumSimulationsPerEvaluation { get; private set; }
+        public double Mutation_Rate { get; private set; }
+        public int Num_Evaluation_Repetitions { get; private set; }
 
         // rolling horizon agent - report - related
         public int Num_Successful_Mutations_ThisTime { get; private set; }
         public int Num_Successful_Mutations_Different_FirstAction_ThisTime { get; private set; }
 
         public PolicyBased_RHE_Agent(
-            PD_AI_Macro_Agent_Base defaultPolicy_Agent,
-            PD_AI_Macro_Agent_Base mutator_Agent,
+            PD_AI_Macro_Agent_Base generator_agent,
+            PD_AI_Macro_Agent_Base mutator_agent,
 
-            List<PD_GameStateEvaluator> gameStateEvaluators,
-            RollingHorizonAgent_IndividualReplacementRule replacementRule,
+            List<PD_GameStateEvaluator> game_state_evaluators,
+            P_RHE_Replacement_Rule replacement_rule,
 
-            int maxGenomeLength,
-            int numMutations,
+            int genome_length,
+            int num_generations,
             double initial_MutationRate,
             double final_MutationRate,
-            int numSimulationsPerEvaluation
+            int num_evaluation_repetitions
             )
         {
             _randomnessProvider = new Random();
 
-            Creator_Agent = defaultPolicy_Agent;
-            Mutator_Agent = mutator_Agent;
+            Generator_Agent = generator_agent;
+            Mutator_Agent = mutator_agent;
 
-            GameStateEvaluators = gameStateEvaluators;
-            ReplacementRule = replacementRule;
+            Game_State_Evaluators = game_state_evaluators;
+            Replacement_Rule = replacement_rule;
 
-            MaxGenomeLength = maxGenomeLength;
-            NumMutations = numMutations;
+            Genome_Length = genome_length;
+            Num_Generations = num_generations;
             Initial_MutationRate = initial_MutationRate;
             Final_MutationRate = final_MutationRate;
-            MutationRate = initial_MutationRate;
-            NumSimulationsPerEvaluation = numSimulationsPerEvaluation;
+            Mutation_Rate = initial_MutationRate;
+            Num_Evaluation_Repetitions = num_evaluation_repetitions;
 
             Num_Successful_Mutations_ThisTime = 0;
             Num_Successful_Mutations_Different_FirstAction_ThisTime = 0;
         }
 
         public PolicyBased_RHE_Agent(
-            PD_AI_Macro_Agent_Base defaultPolicy_Agent,
-            PD_AI_Macro_Agent_Base mutator_Agent,
+            PD_AI_Macro_Agent_Base generator_agent,
+            PD_AI_Macro_Agent_Base mutator_agent,
 
             List<PD_GameStateEvaluator> gameStateEvaluators,
-            RollingHorizonAgent_IndividualReplacementRule replacementRule,
+            P_RHE_Replacement_Rule replacement_rule,
 
-            int maxGenomeLength,
-            int numMutations,
-            double initial_final_mutationRate,
-            int numSimulationsPerEvaluation
+            int genome_length,
+            int num_generations,
+            double mutation_rate,
+            int num_evaluation_repetitions
             ):this(
-                defaultPolicy_Agent,
-                mutator_Agent,
+                generator_agent,
+                mutator_agent,
 
                 gameStateEvaluators,
-                replacementRule,
+                replacement_rule,
 
-                maxGenomeLength,
-                numMutations,
-                initial_final_mutationRate,
-                initial_final_mutationRate,
-                numSimulationsPerEvaluation
+                genome_length,
+                num_generations,
+                mutation_rate,
+                mutation_rate,
+                num_evaluation_repetitions
                 )
         {
             
@@ -126,23 +126,23 @@ namespace Pandemic_AI_Framework
 
             // generate parent individual
             RH_Individual parentIndividual = new RH_Individual(
-                MaxGenomeLength,
-                NumSimulationsPerEvaluation
+                Genome_Length,
+                Num_Evaluation_Repetitions
                 );
 
             // expand the parent individual (create the genes)
             parentIndividual.Expand(
                 rh_gameState,
                 pathFinder,
-                Creator_Agent
+                Generator_Agent
                 );
 
             // evaluate parent individual
             parentIndividual.EvaluateSelf(
                 rh_gameState,
                 pathFinder,
-                Creator_Agent,
-                GameStateEvaluators
+                Generator_Agent,
+                Game_State_Evaluators
                 );
 
             string description = "  first individual evaluated: ";
@@ -153,11 +153,11 @@ namespace Pandemic_AI_Framework
             Console.WriteLine(description);
 
             // mutate individual, until computational resources run out!
-            for (int i = 0; i < NumMutations; i++)
+            for (int i = 0; i < Num_Generations; i++)
             {
-                double percentMutations = (double)(i+1) / (double)NumMutations;
+                double percentMutations = (double)(i+1) / (double)Num_Generations;
 
-                MutationRate = MyUtilities.MapValueDouble(
+                Mutation_Rate = MyUtilities.MapValueDouble(
                     percentMutations,
                     0.0,
                     1.0,
@@ -172,9 +172,9 @@ namespace Pandemic_AI_Framework
                 childIndividual.MutateSelf(
                     rh_gameState,
                     pathFinder,
-                    Creator_Agent,
+                    Generator_Agent,
                     Mutator_Agent,
-                    MutationRate,
+                    Mutation_Rate,
                     _randomnessProvider
                     );
 
@@ -182,13 +182,13 @@ namespace Pandemic_AI_Framework
                 childIndividual.EvaluateSelf(
                         rh_gameState,
                         pathFinder,
-                        Creator_Agent,
-                        GameStateEvaluators
+                        Generator_Agent,
+                        Game_State_Evaluators
                         );
                 
 
                 // compare / replace
-                if (childIndividual.IsBetterThan(parentIndividual, ReplacementRule))
+                if (childIndividual.IsBetterThan(parentIndividual, Replacement_Rule))
                 {
                     Num_Successful_Mutations_ThisTime++;
                     bool firstActionSame =
@@ -224,7 +224,7 @@ namespace Pandemic_AI_Framework
         }
     }
 
-    public enum RollingHorizonAgent_IndividualReplacementRule {
+    public enum P_RHE_Replacement_Rule {
         Average_Better, // the average of all scores needs to be better
         All_Better, // all evaluations need to be better
         One_Better__Rest_Equal_Or_Better, // one evaluation needs to be better, the rest need to be equal or better

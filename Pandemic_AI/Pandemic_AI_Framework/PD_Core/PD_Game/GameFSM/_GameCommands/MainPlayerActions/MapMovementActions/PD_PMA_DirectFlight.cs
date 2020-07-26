@@ -28,7 +28,10 @@ namespace Pandemic_AI_Framework
             CityCardToDiscard = cityCardToDiscard;
         }
 
-        public override void Execute(PD_Game game)
+        public override void Execute(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             game.Com_PMA_DirectFlight(Player, InitialLocation, TargetLocation, CityCardToDiscard);
         }

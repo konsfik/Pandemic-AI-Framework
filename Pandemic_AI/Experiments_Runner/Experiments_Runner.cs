@@ -60,6 +60,8 @@ namespace Experiment_1
 
         public static void Exp_1__RandomGames__RandomActionAgent()
         {
+            Random randomness_provider = new Random();
+
             // testbed - settings...
             int number_of_games_to_generate = 10;
             int number_of_players = 4;
@@ -67,6 +69,7 @@ namespace Experiment_1
 
             // generate the random games (test-bed)
             List<PD_Game> games = Generate_Random_Games(
+                randomness_provider,
                 number_of_games_to_generate,
                 number_of_players,
                 game_difficulty
@@ -110,6 +113,7 @@ namespace Experiment_1
                 );
 
             experiment.RunExperiment(
+                randomness_provider,
                 pathFinder,
                 display_actions,
                 display_end_state
@@ -118,6 +122,8 @@ namespace Experiment_1
 
         public static void Exp_2__RandomGames__HierarchicalPolicyAgent()
         {
+            Random randomness_provider = new Random();
+
             // testbed - settings...
             int number_of_games_to_generate = 10;
             int number_of_players = 4;
@@ -125,6 +131,7 @@ namespace Experiment_1
 
             // generate the random games (test-bed)
             List<PD_Game> games = Generate_Random_Games(
+                randomness_provider,
                 number_of_games_to_generate,
                 number_of_players,
                 game_difficulty
@@ -168,6 +175,7 @@ namespace Experiment_1
                 );
 
             experiment.RunExperiment(
+                randomness_provider,
                 pathFinder,
                 display_actions,
                 display_end_state
@@ -176,6 +184,8 @@ namespace Experiment_1
 
         public static void Exp_3__RandomGames__p_RHE_Agent()
         {
+            Random randomness_provider = new Random();
+
             // testbed - settings...
             int number_of_games_to_generate = 10;
             int number_of_players = 4;
@@ -183,6 +193,7 @@ namespace Experiment_1
 
             // generate the random games (test-bed)
             List<PD_Game> games = Generate_Random_Games(
+                randomness_provider,
                 number_of_games_to_generate,
                 number_of_players,
                 game_difficulty
@@ -226,6 +237,7 @@ namespace Experiment_1
                 );
 
             experiment.RunExperiment(
+                randomness_provider,
                 pathFinder,
                 display_actions,
                 display_end_state
@@ -234,15 +246,23 @@ namespace Experiment_1
 
 
         public static PD_Game Generate_Random_Game(
+            Random randomness_provider,
             int numberOfPlayers,
             int gameDifficulty
             )
         {
             string data = DataUtilities.Read_GameCreationData();
-            return PD_GameCreator.CreateNewGame(numberOfPlayers, gameDifficulty, data, true);
+            return PD_GameCreator.CreateNewGame(
+                randomness_provider,
+                numberOfPlayers, 
+                gameDifficulty, 
+                data, 
+                true
+                );
         }
 
         public static List<PD_Game> Generate_Random_Games(
+            Random randomness_provider,
             int numberOfGames,
             int numberOfPlayers,
             int gameDifficulty
@@ -252,7 +272,15 @@ namespace Experiment_1
             List<PD_Game> games = new List<PD_Game>();
             for (int i = 0; i < numberOfGames; i++)
             {
-                games.Add(PD_GameCreator.CreateNewGame(numberOfPlayers, gameDifficulty, data, true));
+                games.Add(
+                    PD_GameCreator.CreateNewGame(
+                        randomness_provider,
+                        numberOfPlayers, 
+                        gameDifficulty, 
+                        data, 
+                        true
+                        )
+                    );
             }
             return games;
         }

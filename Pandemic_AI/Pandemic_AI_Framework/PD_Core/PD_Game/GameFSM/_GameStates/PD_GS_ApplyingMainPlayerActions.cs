@@ -19,12 +19,16 @@ namespace Pandemic_AI_Framework
         }
 
         public override PD_GameStateBase OnCommand(
+            Random randommness_provider,
             PD_Game game,
             PD_GameAction_Base command)
         {
             if (command.GetType().IsSubclassOf(typeof(PD_MainAction_Base)))
             {
-                command.Execute(game);
+                command.Execute(
+                    randommness_provider,
+                    game
+                    );
 
                 game.GameStateCounter.IncreasePlayerActionIndex();
 

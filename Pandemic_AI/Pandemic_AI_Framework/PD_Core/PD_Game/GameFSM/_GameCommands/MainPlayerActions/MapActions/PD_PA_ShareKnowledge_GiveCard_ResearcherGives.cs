@@ -46,7 +46,10 @@ namespace Pandemic_AI_Framework
 
         #endregion
 
-        public override void Execute(PD_Game game)
+        public override void Execute(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             game.Com_PA_ShareKnowledge_GiveCard_ResearcherGives(
                 Player,

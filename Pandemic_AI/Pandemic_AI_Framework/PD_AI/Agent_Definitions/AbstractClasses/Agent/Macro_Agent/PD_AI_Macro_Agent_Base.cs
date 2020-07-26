@@ -17,21 +17,22 @@ namespace Pandemic_AI_Framework
         }
 
         public PD_MacroAction GetNextMacroAction(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
         {
             if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game))
             {
-                return MainPlayerActions_Behaviour(game, pathFinder);
+                return MainPlayerActions_Behaviour(randomness_provider, game, pathFinder);
             }
             else if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(game))
             {
-                return Discarding_DuringMainPlayerActions_Behaviour(game, pathFinder);
+                return Discarding_DuringMainPlayerActions_Behaviour(randomness_provider, game, pathFinder);
             }
             else if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(game))
             {
-                return Discarding_AfterDrawing_Behaviour(game, pathFinder);
+                return Discarding_AfterDrawing_Behaviour(randomness_provider, game, pathFinder);
             }
             else
             {
@@ -42,16 +43,19 @@ namespace Pandemic_AI_Framework
         }
 
         protected abstract PD_MacroAction MainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             );
 
         protected abstract PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             );
 
         protected abstract PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             );

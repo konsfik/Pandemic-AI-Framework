@@ -21,22 +21,34 @@ namespace Experiments_Runner
             return this.GetType().Name;
         }
 
-        protected override PD_MacroAction Discarding_AfterDrawing_Behaviour(PD_Game game, PD_AI_PathFinder pathFinder)
+        protected override PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            Random randomness_provider,
+            PD_Game game, 
+            PD_AI_PathFinder pathFinder
+            )
         {
             var allMacros = game.CurrentAvailableMacros;
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
-        protected override PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(PD_Game game, PD_AI_PathFinder pathFinder)
+        protected override PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            Random randommness_provider,
+            PD_Game game, 
+            PD_AI_PathFinder pathFinder
+            )
         {
             var allMacros = game.CurrentAvailableMacros;
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randommness_provider);
         }
 
-        protected override PD_MacroAction MainPlayerActions_Behaviour(PD_Game game, PD_AI_PathFinder pathFinder)
+        protected override PD_MacroAction MainPlayerActions_Behaviour(
+            Random randommness_provider,
+            PD_Game game, 
+            PD_AI_PathFinder pathFinder
+            )
         {
             var allMacros = game.CurrentAvailableMacros;
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randommness_provider);
         }
     }
 }

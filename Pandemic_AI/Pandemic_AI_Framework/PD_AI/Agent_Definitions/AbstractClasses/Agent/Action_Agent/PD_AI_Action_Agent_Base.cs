@@ -13,6 +13,9 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public abstract PD_GameAction_Base GetNextAction(PD_Game game);
+        public abstract PD_GameAction_Base GetNextAction(
+            Random randomness_provider,
+            PD_Game game
+            );
     }
 }

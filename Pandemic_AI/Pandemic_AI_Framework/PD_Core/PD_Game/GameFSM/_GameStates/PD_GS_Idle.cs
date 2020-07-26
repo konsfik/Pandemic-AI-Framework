@@ -13,13 +13,17 @@ namespace Pandemic_AI_Framework
         }
 
         public override PD_GameStateBase OnCommand(
+            Random randomness_provider,
             PD_Game game,
             PD_GameAction_Base command
             )
         {
             if (command.GetType() == typeof(PD_GA_SetupGame_Random))
             {
-                command.Execute(game);
+                command.Execute(
+                    randomness_provider,
+                    game
+                    );
                 return new PD_GS_ApplyingMainPlayerActions();
             }
             return null;

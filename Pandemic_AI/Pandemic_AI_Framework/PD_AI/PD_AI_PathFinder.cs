@@ -25,6 +25,8 @@ namespace Pandemic_AI_Framework
 
         public PD_AI_PathFinder()
         {
+            Random randomness_provider = new Random();
+
             string game_creation_data_file_path = System.IO.Path.Combine(
                     Directory.GetCurrentDirectory(),
                     "GameCreationData",
@@ -34,6 +36,7 @@ namespace Pandemic_AI_Framework
             string game_creation_data = PD_IO_Utilities.ReadFile(game_creation_data_file_path);
             // generate a random game
             PD_Game dummy_game = PD_GameCreator.CreateNewGame(
+                randomness_provider,
                 4,
                 0,
                 game_creation_data,

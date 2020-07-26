@@ -25,6 +25,7 @@ namespace Pandemic_AI_Framework
         }
 
         protected override PD_MacroAction MainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -42,7 +43,7 @@ namespace Pandemic_AI_Framework
 
             if (soup_macros.Count > 0)
             {
-                return soup_macros.GetOneRandom();
+                return soup_macros.GetOneRandom(randomness_provider);
             }
 
             var fallBack_Macros = MainPolicy_FallBack.FilterMacros(
@@ -53,14 +54,15 @@ namespace Pandemic_AI_Framework
 
             if (fallBack_Macros.Count > 0)
             {
-                return fallBack_Macros.GetOneRandom();
+                return fallBack_Macros.GetOneRandom(randomness_provider);
             }
 
             // if none applicable, then:
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         protected override PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -78,13 +80,14 @@ namespace Pandemic_AI_Framework
 
             if (soup_discard_macros.Count > 0)
             {
-                return soup_discard_macros.GetOneRandom();
+                return soup_discard_macros.GetOneRandom(randomness_provider);
             }
 
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         protected override PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -102,10 +105,10 @@ namespace Pandemic_AI_Framework
 
             if (soup_discard_macros.Count > 0)
             {
-                return soup_discard_macros.GetOneRandom();
+                return soup_discard_macros.GetOneRandom(randomness_provider);
             }
 
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         public override string GetDescription()

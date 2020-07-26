@@ -17,7 +17,10 @@ namespace Pandemic_AI_Framework
         }
 
         public abstract PD_GameAction_Base GetCustomDeepCopy();
-        public abstract void Execute(PD_Game game);
+        public abstract void Execute(
+            Random randomness_provider, 
+            PD_Game game
+            );
         public abstract string GetDescription();
 
         #region equalityOverride

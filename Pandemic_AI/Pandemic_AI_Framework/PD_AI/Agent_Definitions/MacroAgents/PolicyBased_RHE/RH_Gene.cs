@@ -36,17 +36,17 @@ namespace Pandemic_AI_Framework
         #endregion
 
         public void MutateSelf(
+            Random randomness_provider,
             PD_Game initial_gameState,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent,
-            PD_AI_Macro_Agent_Base mutatorAgent,
-            Random randomnessProvider
+            PD_AI_Macro_Agent_Base mutatorAgent
             )
         {
-            PD_Game mutation_GameState = initial_gameState.Request_Fair_ForwardModel();
+            PD_Game mutation_GameState = initial_gameState.Request_Fair_ForwardModel(randomness_provider);
 
             int numberOfMacros = MacroActions.Count;
-            int mutationIndex = randomnessProvider.Next(numberOfMacros);
+            int mutationIndex = randomness_provider.Next(numberOfMacros);
 
             List<PD_MacroAction> mutated_MacroActions = new List<PD_MacroAction>();
 
@@ -78,6 +78,7 @@ namespace Pandemic_AI_Framework
                                 );
 
                             ApplyMacroOnGameState(
+                                randomness_provider,
                                 mutation_GameState,
                                 MacroActions[counter]
                                 );
@@ -88,6 +89,7 @@ namespace Pandemic_AI_Framework
                         case RH_Macro_Apply_Type.Insert:
 
                             PD_MacroAction actionToInsert = defaultPolicyAgent.GetNextMacroAction(
+                                randomness_provider,
                                 mutation_GameState,
                                 pathFinder
                                 );
@@ -103,6 +105,7 @@ namespace Pandemic_AI_Framework
                                 );
 
                             ApplyMacroOnGameState(
+                                randomness_provider,
                                 mutation_GameState,
                                 actionToInsert
                                 );
@@ -132,6 +135,7 @@ namespace Pandemic_AI_Framework
                     // counter == mutation index => ask the mutator to provide a new action
 
                     var replacement_MacroAction = mutatorAgent.GetNextMacroAction(
+                        randomness_provider,
                         mutation_GameState,
                         pathFinder
                         );
@@ -139,9 +143,10 @@ namespace Pandemic_AI_Framework
                     mutated_MacroActions.Add(replacement_MacroAction);
 
                     ApplyMacroOnGameState(
-                            mutation_GameState,
-                            replacement_MacroAction
-                            );
+                        randomness_provider,
+                        mutation_GameState,
+                        replacement_MacroAction
+                        );
 
                     counter++;
                 }
@@ -150,6 +155,7 @@ namespace Pandemic_AI_Framework
                     // counter > mutation index => ask the default policy agent to provide a new action
 
                     var nextMacro = defaultPolicyAgent.GetNextMacroAction(
+                        randomness_provider,
                         mutation_GameState,
                         pathFinder
                         );
@@ -158,6 +164,7 @@ namespace Pandemic_AI_Framework
                         throw new System.Exception("problem here");
                     }
                     ApplyMacroOnGameState(
+                        randomness_provider,
                         mutation_GameState,
                         nextMacro
                         );
@@ -171,6 +178,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void ApplySelfOnGameState(
+            Random randomness_provider,
             PD_Game gameStateToApplySelfOn,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent
@@ -204,6 +212,7 @@ namespace Pandemic_AI_Framework
                 {
                     case RH_Macro_Apply_Type.Normal:
                         ApplyMacroOnGameState(
+                            randomness_provider,
                             gameStateToApplySelfOn,
                             currentMacro
                             );
@@ -214,6 +223,7 @@ namespace Pandemic_AI_Framework
                         break;
                     case RH_Macro_Apply_Type.Insert:
                         var missingMacro = defaultPolicyAgent.GetNextMacroAction(
+                            randomness_provider,
                             gameStateToApplySelfOn,
                             pathFinder
                             );
@@ -223,6 +233,7 @@ namespace Pandemic_AI_Framework
                             missingMacro
                             );
                         ApplyMacroOnGameState(
+                            randomness_provider,
                             gameStateToApplySelfOn,
                             missingMacro
                             );
@@ -237,6 +248,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void ApplyMacroOnGameState(
+            Random randomness_provider,
             PD_Game gameState,
             PD_MacroAction macro
             )
@@ -268,7 +280,10 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(action);
+                        gameState.ApplySpecificPlayerAction(
+                            randomness_provider,
+                            action
+                            );
                     }
                     else
                     {
@@ -278,7 +293,10 @@ namespace Pandemic_AI_Framework
                             );
                         if (stayAction != null)
                         {
-                            gameState.ApplySpecificPlayerAction(stayAction);
+                            gameState.ApplySpecificPlayerAction(
+                                randomness_provider,
+                                stayAction
+                                );
                         }
                         else
                         {
@@ -294,13 +312,17 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(action);
+                        gameState.ApplySpecificPlayerAction(
+                            randomness_provider,
+                            action
+                            );
                     }
                     else
                     {
                         // pick one at random!
                         gameState.ApplySpecificPlayerAction(
-                            availableCommands.GetOneRandom()
+                            randomness_provider,
+                            availableCommands.GetOneRandom(randomness_provider)
                             );
                     }
                 }
@@ -312,13 +334,17 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(action);
+                        gameState.ApplySpecificPlayerAction(
+                            randomness_provider,
+                            action
+                            );
                     }
                     else
                     {
                         // pick one at random!
                         gameState.ApplySpecificPlayerAction(
-                            availableCommands.GetOneRandom()
+                            randomness_provider,
+                            availableCommands.GetOneRandom(randomness_provider)
                             );
                     }
                 }

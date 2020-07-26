@@ -91,30 +91,34 @@ namespace Pandemic_AI_Framework
         }
 
         protected override PD_MacroAction MainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
         {
-            return GeneralAgentBehaviour(game, pathFinder);
+            return GeneralAgentBehaviour(randomness_provider, game, pathFinder);
         }
 
         protected override PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
         {
-            return GeneralAgentBehaviour(game, pathFinder);
+            return GeneralAgentBehaviour(randomness_provider, game, pathFinder);
         }
 
         protected override PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
         {
-            return GeneralAgentBehaviour(game, pathFinder);
+            return GeneralAgentBehaviour(randomness_provider, game, pathFinder);
         }
 
         private PD_MacroAction GeneralAgentBehaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -122,7 +126,7 @@ namespace Pandemic_AI_Framework
             Num_Successful_Mutations_ThisTime = 0;
             Num_Successful_Mutations_Different_FirstAction_ThisTime = 0;
 
-            PD_Game rh_gameState = game.Request_Fair_ForwardModel();
+            PD_Game rh_gameState = game.Request_Fair_ForwardModel(randomness_provider);
 
             // generate parent individual
             RH_Individual parentIndividual = new RH_Individual(
@@ -132,6 +136,7 @@ namespace Pandemic_AI_Framework
 
             // expand the parent individual (create the genes)
             parentIndividual.Expand(
+                randomness_provider,
                 rh_gameState,
                 pathFinder,
                 Generator_Agent
@@ -139,6 +144,7 @@ namespace Pandemic_AI_Framework
 
             // evaluate parent individual
             parentIndividual.EvaluateSelf(
+                randomness_provider,
                 rh_gameState,
                 pathFinder,
                 Generator_Agent,
@@ -170,6 +176,7 @@ namespace Pandemic_AI_Framework
 
                 // mutate the child
                 childIndividual.MutateSelf(
+                    randomness_provider,
                     rh_gameState,
                     pathFinder,
                     Generator_Agent,
@@ -180,11 +187,12 @@ namespace Pandemic_AI_Framework
 
                 // evaluate the child
                 childIndividual.EvaluateSelf(
-                        rh_gameState,
-                        pathFinder,
-                        Generator_Agent,
-                        Game_State_Evaluators
-                        );
+                    randomness_provider,
+                    rh_gameState,
+                    pathFinder,
+                    Generator_Agent,
+                    Game_State_Evaluators
+                    );
                 
 
                 // compare / replace

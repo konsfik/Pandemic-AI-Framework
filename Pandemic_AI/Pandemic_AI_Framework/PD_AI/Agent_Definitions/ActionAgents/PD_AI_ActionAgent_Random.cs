@@ -13,7 +13,10 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public override PD_GameAction_Base GetNextAction(PD_Game game)
+        public override PD_GameAction_Base GetNextAction(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             var availableCommands = game.CurrentAvailablePlayerActions;
 
@@ -22,7 +25,7 @@ namespace Pandemic_AI_Framework
                 return null;
             }
             
-            return availableCommands.GetOneRandom();
+            return availableCommands.GetOneRandom(randomness_provider);
         }
 
         public override string GetDescription()

@@ -9,6 +9,7 @@ namespace Pandemic_AI_Framework
 {
     public class PD_Experiment_Tournament
     {
+        public PD_AI_PathFinder PathFinder { get; private set; }
         public List<PD_Game> AllGames { get; private set; }
         public Dictionary<PD_AI_Agent_Base, string> NamePerAgent { get; private set; }
         public int NumRepetitionsPerAgent { get; private set; }
@@ -38,6 +39,8 @@ namespace Pandemic_AI_Framework
             bool keep_Trace
             )
         {
+            PathFinder = new PD_AI_PathFinder();
+
             AllGames = allGames;
             NamePerAgent = namePerAgent;
             NumRepetitionsPerAgent = numRepetitionsPerAgent;
@@ -105,7 +108,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void RunExperiment(
-            PD_AI_PathFinder pathFinder
+            Random randomness_provider
             )
         {
             List<PD_AI_Agent_Base> allAgents = NamePerAgent.Keys.ToList();
@@ -143,18 +146,26 @@ namespace Pandemic_AI_Framework
                                         filePath_ToAppend,
                                         Get_Record_Row(
                                             gameCopy,
-                                            pathFinder,
+                                            PathFinder,
                                             thisAgent,
                                             repetitionIndex
                                             )
                                         );
                                 }
 
-                                var nextMacro = ((PD_AI_Macro_Agent_Base)thisAgent).GetNextMacroAction(gameCopy, pathFinder);
+                                var nextMacro = ((PD_AI_Macro_Agent_Base)thisAgent).GetNextMacroAction(
+                                    randomness_provider,
+                                    gameCopy,
+                                    PathFinder
+                                    );
 
                                 if (agentIsRollingHorizon)
                                 {
-                                    RollingHorizonAgent_Report.Update(gameCopy, pathFinder, (PolicyBased_RHE_Agent)thisAgent);
+                                    RollingHorizonAgent_Report.Update(
+                                        gameCopy,
+                                        PathFinder,
+                                        (PolicyBased_RHE_Agent)thisAgent
+                                        );
                                 }
 
                                 foreach (var playerAction in nextMacro.Actions_Executable_Now)
@@ -162,7 +173,10 @@ namespace Pandemic_AI_Framework
                                     if (gameCopy.CurrentAvailablePlayerActions.Contains(playerAction))
                                     {
 
-                                        gameCopy.ApplySpecificPlayerAction(playerAction);
+                                        gameCopy.ApplySpecificPlayerAction(
+                                            randomness_provider,
+                                            playerAction
+                                            );
                                     }
                                 }
                             }
@@ -175,7 +189,7 @@ namespace Pandemic_AI_Framework
                                 filePath,
                                 Get_Record_Row(
                                     gameCopy,
-                                    pathFinder,
+                                    PathFinder,
                                     thisAgent,
                                     repetitionIndex
                                     )
@@ -188,8 +202,14 @@ namespace Pandemic_AI_Framework
                             {
 
                                 var nextAction =
-                                    ((PD_AI_Action_Agent_Base)thisAgent).GetNextAction(gameCopy);
-                                gameCopy.ApplySpecificPlayerAction(nextAction);
+                                    ((PD_AI_Action_Agent_Base)thisAgent).GetNextAction(
+                                        randomness_provider,
+                                        gameCopy
+                                        );
+                                gameCopy.ApplySpecificPlayerAction(
+                                    randomness_provider,
+                                    nextAction
+                                    );
                             }
 
                             Console.WriteLine(PD_Game_Queries.GQ_Is_GameWon(gameCopy) ? "won" : "lost");
@@ -198,7 +218,7 @@ namespace Pandemic_AI_Framework
                             PD_IO_Utilities.AppendToFile(filePath,
                                 Get_Record_Row(
                                     gameCopy,
-                                    pathFinder,
+                                    PathFinder,
                                     thisAgent,
                                     repetitionIndex
                                     )

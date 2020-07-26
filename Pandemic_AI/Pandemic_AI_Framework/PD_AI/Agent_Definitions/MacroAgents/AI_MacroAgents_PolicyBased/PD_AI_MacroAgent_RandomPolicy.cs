@@ -25,6 +25,7 @@ namespace Pandemic_AI_Framework
         }
 
         protected override PD_MacroAction MainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -33,13 +34,13 @@ namespace Pandemic_AI_Framework
 
             if (allMacros == null || allMacros.Count == 0) return null;
 
-            Available_MainPolicies.Shuffle();
+            Available_MainPolicies.Shuffle(randomness_provider);
 
             foreach (var policy in Available_MainPolicies) {
                 var macros = policy.FilterMacros(game, pathFinder, allMacros);
                 if (macros.Count > 0)
                 {
-                    return macros.GetOneRandom();
+                    return macros.GetOneRandom(randomness_provider);
                 }
             }
 
@@ -51,14 +52,15 @@ namespace Pandemic_AI_Framework
 
             if (fallBack_Macros.Count > 0)
             {
-                return fallBack_Macros.GetOneRandom();
+                return fallBack_Macros.GetOneRandom(randomness_provider);
             }
 
             // if none applicable, then:
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         protected override PD_MacroAction Discarding_DuringMainPlayerActions_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -68,21 +70,22 @@ namespace Pandemic_AI_Framework
             if (allMacros == null || allMacros.Count == 0) return null;
 
             // DISCARD POLICY
-            Available_DiscardPolicies.Shuffle();
+            Available_DiscardPolicies.Shuffle(randomness_provider);
 
             foreach (var policy in Available_DiscardPolicies)
             {
                 var macros = policy.FilterMacros(game, pathFinder, allMacros);
                 if (macros.Count > 0)
                 {
-                    return macros.GetOneRandom();
+                    return macros.GetOneRandom(randomness_provider);
                 }
             }
 
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         protected override PD_MacroAction Discarding_AfterDrawing_Behaviour(
+            Random randomness_provider,
             PD_Game game,
             PD_AI_PathFinder pathFinder
             )
@@ -92,18 +95,18 @@ namespace Pandemic_AI_Framework
             if (allMacros == null || allMacros.Count == 0) return null;
 
             // DISCARD POLICY
-            Available_DiscardPolicies.Shuffle();
+            Available_DiscardPolicies.Shuffle(randomness_provider);
 
             foreach (var policy in Available_DiscardPolicies)
             {
                 var macros = policy.FilterMacros(game, pathFinder, allMacros);
                 if (macros.Count > 0)
                 {
-                    return macros.GetOneRandom();
+                    return macros.GetOneRandom(randomness_provider);
                 }
             }
 
-            return allMacros.GetOneRandom();
+            return allMacros.GetOneRandom(randomness_provider);
         }
 
         public override string GetDescription()

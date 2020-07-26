@@ -58,6 +58,7 @@ namespace Pandemic_AI_Framework
         #endregion
 
         public void MutateSelf(
+            Random randomness_provider,
             PD_Game gameState,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent,
@@ -66,7 +67,7 @@ namespace Pandemic_AI_Framework
             Random randomnessProvider
             )
         {
-            PD_Game mutationGameState = gameState.Request_Fair_ForwardModel();
+            PD_Game mutationGameState = gameState.Request_Fair_ForwardModel(randomness_provider);
 
             bool atLeastOneMutation = false;
 
@@ -80,13 +81,14 @@ namespace Pandemic_AI_Framework
                         atLeastOneMutation = true;
 
                         Genome[i].MutateSelf(
+                            randomness_provider,
                             mutationGameState,
                             pathFinder,
                             defaultPolicyAgent,
-                            mutatorAgent,
-                            randomnessProvider
+                            mutatorAgent
                             );
                         Genome[i].ApplySelfOnGameState(
+                            randomness_provider,
                             mutationGameState,
                             pathFinder,
                             defaultPolicyAgent
@@ -95,6 +97,7 @@ namespace Pandemic_AI_Framework
                     else
                     {
                         Genome[i].ApplySelfOnGameState(
+                            randomness_provider,
                             mutationGameState,
                             pathFinder,
                             defaultPolicyAgent
@@ -105,7 +108,7 @@ namespace Pandemic_AI_Framework
 
             if (atLeastOneMutation == false)
             {
-                PD_Game newMutationGameState = gameState.Request_Fair_ForwardModel();
+                PD_Game newMutationGameState = gameState.Request_Fair_ForwardModel(randomness_provider);
 
                 int randomMutationIndex = randomnessProvider.Next(Genome.Count);
                 for (int i = 0; i < Genome.Count; i++)
@@ -115,6 +118,7 @@ namespace Pandemic_AI_Framework
                         if (i != randomMutationIndex)
                         {
                             Genome[i].ApplySelfOnGameState(
+                                randomness_provider,
                                 newMutationGameState,
                                 pathFinder,
                                 defaultPolicyAgent
@@ -123,13 +127,14 @@ namespace Pandemic_AI_Framework
                         else if (i == randomMutationIndex)
                         {
                             Genome[i].MutateSelf(
+                                randomness_provider,
                                 newMutationGameState,
                                 pathFinder,
                                 defaultPolicyAgent,
-                                mutatorAgent,
-                                randomnessProvider
+                                mutatorAgent
                                 );
                             Genome[i].ApplySelfOnGameState(
+                                randomness_provider,
                                 newMutationGameState,
                                 pathFinder,
                                 defaultPolicyAgent
@@ -145,6 +150,7 @@ namespace Pandemic_AI_Framework
                 )
             {
                 Expand(
+                    randomness_provider,
                     mutationGameState,
                     pathFinder,
                     defaultPolicyAgent
@@ -153,6 +159,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void EvaluateSelf(
+            Random randomness_provider,
             PD_Game initial_GameState,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent,
@@ -170,7 +177,7 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < NumSimulationsForEvaluation; i++)
             {
-                PD_Game evaluation_GameState = initial_GameState.Request_Fair_ForwardModel();
+                PD_Game evaluation_GameState = initial_GameState.Request_Fair_ForwardModel(randomness_provider);
                 foreach (var gene in Genome)
                 {
                     if (
@@ -178,6 +185,7 @@ namespace Pandemic_AI_Framework
                         )
                     {
                         gene.ApplySelfOnGameState(
+                            randomness_provider,
                             evaluation_GameState,
                             pathFinder,
                             defaultPolicyAgent
@@ -191,6 +199,7 @@ namespace Pandemic_AI_Framework
                     )
                 {
                     Expand(
+                        randomness_provider,
                         evaluation_GameState,
                         pathFinder,
                         defaultPolicyAgent
@@ -210,12 +219,13 @@ namespace Pandemic_AI_Framework
         }
 
         public void Expand(
+            Random randomness_provider,
             PD_Game gameState,
             PD_AI_PathFinder pathFinder,
             PD_AI_Macro_Agent_Base defaultPolicyAgent
             )
         {
-            PD_Game generator_GameState = gameState.Request_Fair_ForwardModel();
+            PD_Game generator_GameState = gameState.Request_Fair_ForwardModel(randomness_provider);
 
             int initialTurn = generator_GameState.GameStateCounter.CurrentTurnIndex;
             int finalTurn = initialTurn + MaxGenomeLength - Genome.Count;
@@ -239,13 +249,17 @@ namespace Pandemic_AI_Framework
                 )
             {
                 var nextMacro = defaultPolicyAgent.GetNextMacroAction(
+                    randomness_provider,
                     generator_GameState,
                     pathFinder
                     );
 
                 macroActionsPerTurn[currentTurn].Add(nextMacro);
 
-                generator_GameState.ApplySpecificMacro(nextMacro);
+                generator_GameState.ApplySpecificMacro(
+                    randomness_provider,
+                    nextMacro
+                    );
 
                 currentTurn = generator_GameState.GameStateCounter.CurrentTurnIndex;
             }

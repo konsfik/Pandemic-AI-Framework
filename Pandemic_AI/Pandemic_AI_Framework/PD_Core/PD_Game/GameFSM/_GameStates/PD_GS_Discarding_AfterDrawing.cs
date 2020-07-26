@@ -20,12 +20,16 @@ namespace Pandemic_AI_Framework
         }
 
         public override PD_GameStateBase OnCommand(
+            Random randomness_provider,
             PD_Game game,
             PD_GameAction_Base command)
         {
             if (command.GetType() == typeof(PD_PA_Discard_AfterDrawing))
             {
-                command.Execute(game);
+                command.Execute(
+                    randomness_provider,
+                    game
+                    );
 
                 // condition checks:
                 bool playerHandBiggerThanPermitted =

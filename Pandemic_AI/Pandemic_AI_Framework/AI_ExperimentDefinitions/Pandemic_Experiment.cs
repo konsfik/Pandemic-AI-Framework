@@ -108,6 +108,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void RunExperiment(
+            Random randomness_provider,
             PD_AI_PathFinder pathFinder,
             bool displayActions,
             bool displayEndState
@@ -151,7 +152,8 @@ namespace Pandemic_AI_Framework
                                 }
 
                                 var nextMacro = ((PD_AI_Macro_Agent_Base)thisAgent).GetNextMacroAction(
-                                    gameCopy.Request_Fair_ForwardModel(),
+                                    randomness_provider,
+                                    gameCopy.Request_Fair_ForwardModel(randomness_provider),
                                     pathFinder
                                     );
 
@@ -165,7 +167,10 @@ namespace Pandemic_AI_Framework
                                     if (gameCopy.CurrentAvailablePlayerActions.Contains(playerAction))
                                     {
 
-                                        gameCopy.ApplySpecificPlayerAction(playerAction);
+                                        gameCopy.ApplySpecificPlayerAction(
+                                            randomness_provider,
+                                            playerAction
+                                            );
                                     }
                                 }
                             }
@@ -195,7 +200,8 @@ namespace Pandemic_AI_Framework
 
                                 var nextAction =
                                     ((PD_AI_Action_Agent_Base)thisAgent).GetNextAction(
-                                        gameCopy.Request_Fair_ForwardModel()
+                                        randomness_provider,
+                                        gameCopy.Request_Fair_ForwardModel(randomness_provider)
                                         );
 
                                 if (displayActions)
@@ -203,7 +209,10 @@ namespace Pandemic_AI_Framework
                                     Console.WriteLine(nextAction.GetDescription());
                                 }
 
-                                gameCopy.ApplySpecificPlayerAction(nextAction);
+                                gameCopy.ApplySpecificPlayerAction(
+                                    randomness_provider,
+                                    nextAction
+                                    );
                             }
 
                             if (displayEndState)

@@ -58,11 +58,16 @@ namespace Pandemic_AI_Framework
         #endregion
 
         public void OnCommand(
+            Random randomness_provider,
             PD_Game game,
             PD_GameAction_Base command
             )
         {
-            PD_GameStateBase nextState = CurrentState.OnCommand(game, command);
+            PD_GameStateBase nextState = CurrentState.OnCommand(
+                randomness_provider,
+                game, 
+                command
+                );
             if (nextState == null)
             {
                 // just stay on the same state

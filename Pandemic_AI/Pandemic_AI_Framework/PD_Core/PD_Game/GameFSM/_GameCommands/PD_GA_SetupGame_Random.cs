@@ -12,9 +12,12 @@ namespace Pandemic_AI_Framework
             
         }
 
-        public override void Execute(PD_Game game)
+        public override void Execute(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            game.Com_SetupGame_Random();
+            game.Com_SetupGame_Random(randomness_provider);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

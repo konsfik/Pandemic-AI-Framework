@@ -283,14 +283,17 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        private static Random rnd;
-        static PD_ListExtensions()
-        {
-            rnd = new Random();
-        }
+        //private static Random rnd;
+        //static PD_ListExtensions()
+        //{
+        //    rnd = new Random();
+        //}
 
 
-        public static void SetFirstItemByIndex<T>(this List<T> items, int index)
+        public static void SetFirstItemByIndex<T>(
+            this List<T> items, 
+            int index
+            )
         {
             List<T> reorderedItems = new List<T>();
             for (int i = index; i < items.Count; i++)
@@ -312,7 +315,6 @@ namespace Pandemic_AI_Framework
             //items = new List<T>(reorderedItems);
         }
 
-
         #region Getters
         /// <summary>
         /// Returns the last element of a list
@@ -320,7 +322,9 @@ namespace Pandemic_AI_Framework
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static T GetLast<T>(this List<T> items)
+        public static T GetLast<T>(
+            this List<T> items
+            )
         {
             if (items.Count > 0)
             {
@@ -339,7 +343,9 @@ namespace Pandemic_AI_Framework
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static T GetFirst<T>(this List<T> items)
+        public static T GetFirst<T>(
+            this List<T> items
+            )
         {
             if (items.Count > 0)
             {
@@ -361,7 +367,10 @@ namespace Pandemic_AI_Framework
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static T GetOneRandom<T>(this List<T> items)
+        public static T GetOneRandom<T>(
+            this List<T> items,
+            Random randomness_provider
+            )
         {
             if (items.Count < 1)
             {
@@ -372,7 +381,7 @@ namespace Pandemic_AI_Framework
                 return items[0];
             }
             //rnd = new Random();
-            int randomIndex = rnd.Next(0, items.Count);
+            int randomIndex = randomness_provider.Next(0, items.Count);
             //int randomIndex = UnityEngine.Random.Range(0, items.Count);
             T randomItem = items[randomIndex];
             return randomItem;
@@ -387,7 +396,10 @@ namespace Pandemic_AI_Framework
         /// <param name="items"></param>
         /// <param name="numRandomUniqueItemsToGet"></param>
         /// <returns></returns>
-        public static List<T> GetManyRandomUnique<T>(this List<T> items, int numRandomUniqueItemsToGet)
+        public static List<T> GetManyRandomUnique<T>(
+            this List<T> items, 
+            Random randomness_provider,
+            int numRandomUniqueItemsToGet)
         {
             // check whether the amount of requested items exists
             if (numRandomUniqueItemsToGet > items.Count)
@@ -406,7 +418,7 @@ namespace Pandemic_AI_Framework
             {
                 // remove one random item from the temp items list
                 // and add it to the items to get list.
-                itemsToGet.Add(tempItems.DrawOneRandom());
+                itemsToGet.Add(tempItems.DrawOneRandom(randomness_provider));
             }
 
             return itemsToGet;
@@ -497,14 +509,14 @@ namespace Pandemic_AI_Framework
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static T DrawOneRandom<T>(this List<T> items)
+        public static T DrawOneRandom<T>(
+            this List<T> items,
+            Random randomness_provider
+            )
         {
-            //Random rnd = new Random();
-
-            int randomIndex = rnd.Next(items.Count);
+            int randomIndex = randomness_provider.Next(items.Count);
             T drawnItem = items[randomIndex];
             items.RemoveAt(randomIndex);
-            //items.Remove(drawnItem);
 
             return drawnItem;
         }
@@ -517,7 +529,10 @@ namespace Pandemic_AI_Framework
         /// <param name="items"></param>
         /// <param name="numberOfItems"></param>
         /// <returns></returns>
-        public static List<T> DrawManyRandomUnique<T>(this List<T> items, int numberOfUniqueItemsToDraw)
+        public static List<T> DrawManyRandomUnique<T>(
+            this List<T> items, 
+            Random randomness_provider,
+            int numberOfUniqueItemsToDraw)
         {
             // check whether the amount of requested items exists
             if (numberOfUniqueItemsToDraw > items.Count)
@@ -532,7 +547,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < numberOfUniqueItemsToDraw; i++)
             {
                 // draw one random from the items list and add it to the drawn items list
-                drawnItems.Add(items.DrawOneRandom());
+                drawnItems.Add(items.DrawOneRandom(randomness_provider));
             }
 
             return drawnItems;
@@ -540,13 +555,16 @@ namespace Pandemic_AI_Framework
 
         #endregion
 
-        public static void Shuffle<T>(this List<T> items)
+        public static void Shuffle<T>(
+            this List<T> items,
+            Random randomness_provider
+            )
         {
             List<T> shuffledItems = new List<T>();
 
             for (int i = items.Count - 1; i >= 0; i--)
             {
-                shuffledItems.Add(items.DrawOneRandom());
+                shuffledItems.Add(items.DrawOneRandom(randomness_provider));
             }
 
             items.Clear();
@@ -557,14 +575,18 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public static T GetLastElementOfLastSubList<T>(this List<List<T>> listOfLists)
+        public static T GetLastElementOfLastSubList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             var lastSubList = listOfLists.GetLast();
             var lastElement = lastSubList.GetLast();
             return lastElement;
         }
 
-        public static T DrawLastElementOfLastSubList<T>(this List<List<T>> listOfLists)
+        public static T DrawLastElementOfLastSubList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             var lastSubList = listOfLists.GetLast();
             if (lastSubList.Count > 0)
@@ -586,14 +608,18 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static T GetFirstElementOfFirstSubList<T>(this List<List<T>> listOfLists)
+        public static T GetFirstElementOfFirstSubList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             var firstSubList = listOfLists.GetFirst();
             var firstElement = firstSubList.GetFirst();
             return firstElement;
         }
 
-        public static T DrawFirstElementOfFirstSubList<T>(this List<List<T>> listOfLists)
+        public static T DrawFirstElementOfFirstSubList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             var firstSubList = listOfLists.GetFirst();
             if (firstSubList.Count > 0)
@@ -616,7 +642,9 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static List<T> DrawAllElementsOfAllSubListsAsOneList<T>(this List<List<T>> listOfLists)
+        public static List<T> DrawAllElementsOfAllSubListsAsOneList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             List<T> newList = new List<T>();
             while (listOfLists.Count > 0)
@@ -626,7 +654,9 @@ namespace Pandemic_AI_Framework
             return newList;
         }
 
-        public static List<T> GetAllElementsOfAllSublistsAsOneList<T>(this List<List<T>> listOfLists)
+        public static List<T> GetAllElementsOfAllSublistsAsOneList<T>(
+            this List<List<T>> listOfLists
+            )
         {
             List<T> newList = new List<T>();
             foreach (var sublist in listOfLists)
@@ -639,18 +669,20 @@ namespace Pandemic_AI_Framework
             return newList;
         }
 
-        public static void ShuffleAllSubListsElements<T>(this List<List<T>> listOfLists)
+        public static void ShuffleAllSubListsElements<T>(
+            this List<List<T>> listOfLists,
+            Random randomness_provider
+            )
         {
-            //var newListOfLists = new List<List<T>>();
             foreach (var subList in listOfLists)
             {
-                subList.Shuffle();
-                //newListOfLists.Add(new List<T>(subList));
+                subList.Shuffle(randomness_provider);
             }
-            //listOfLists = newListOfLists;
         }
 
-        public static int GetNumberOfElementsOfAllSubLists<T>(this List<List<T>> listOfLists)
+        public static int GetNumberOfElementsOfAllSubLists<T>(
+            this List<List<T>> listOfLists
+            )
         {
             int numberOfElements = 0;
             foreach (var subList in listOfLists)
@@ -660,7 +692,10 @@ namespace Pandemic_AI_Framework
             return numberOfElements;
         }
 
-        public static List<List<T>> GetAllSubSetsOfSpecificSize<T>(this List<T> originalGroup, int subGroupsSize)
+        public static List<List<T>> GetAllSubSetsOfSpecificSize<T>(
+            this List<T> originalGroup, 
+            int subGroupsSize
+            )
         {
             if (subGroupsSize > originalGroup.Count)
             {
@@ -679,7 +714,6 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < originalGroupSize; i++)
             {
                 numPossibilities += (int)Math.Pow(2, i);
-                //numPossibilities += (int)Mathf.Pow(2, i);
             }
 
             List<string> allPossibilities = new List<string>();

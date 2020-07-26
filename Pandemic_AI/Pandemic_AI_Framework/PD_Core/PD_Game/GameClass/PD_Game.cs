@@ -224,7 +224,7 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region command methods
-        public void Com_SetupGame_Random()
+        public void Com_SetupGame_Random(Random randomness_provider)
         {
             // 1. Set out board and pieces
             // 1.1. put research stations in research stations container
@@ -263,7 +263,7 @@ namespace Pandemic_AI_Framework
             Cards.DividedDeckOfInfectionCards.Add(new List<PD_InfectionCard>(GameElementReferences.InfectionCards));
 
             // 3.2.2 shuffle the infection cards deck...
-            Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements();
+            Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
 
             // 3.2.3 actually infect the cities.. 
             var firstPlayer = Players[0];
@@ -303,7 +303,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var player in Players)
             {
-                var pawn = MapElements.InactivePlayerPawns.DrawOneRandom();
+                var pawn = MapElements.InactivePlayerPawns.DrawOneRandom(randomness_provider);
                 var roleCard = GameElementReferences.RoleCards.Find(
                     x =>
                     x.Role == pawn.Role
@@ -317,7 +317,7 @@ namespace Pandemic_AI_Framework
             var playerCardsTempList = new List<PD_PlayerCardBase>();
             playerCardsTempList.AddRange(GameElementReferences.CityCards.Cast<PD_PlayerCardBase>().ToList());
             Cards.DividedDeckOfPlayerCards.Add(playerCardsTempList);
-            Cards.DividedDeckOfPlayerCards.ShuffleAllSubListsElements();
+            Cards.DividedDeckOfPlayerCards.ShuffleAllSubListsElements(randomness_provider);
 
             int numPlayers = Players.Count;
             int numCardsToDealPerPlayer = GameSettings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
@@ -336,7 +336,7 @@ namespace Pandemic_AI_Framework
             var epidemicCardsTempList = new List<PD_EpidemicCard>(GameElementReferences.EpidemicCards);
             while (epidemicCardsTempList.Count > numEpidemicCards)
             {
-                epidemicCardsTempList.DrawOneRandom();
+                epidemicCardsTempList.DrawOneRandom(randomness_provider);
             }
 
             // divide the player cards deck in as many sub decks as necessary
@@ -355,7 +355,7 @@ namespace Pandemic_AI_Framework
                 var subDeck = new List<PD_PlayerCardBase>();
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
-                    subDeck.Add(allPlayerCardsList.DrawOneRandom());
+                    subDeck.Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
                 }
                 temporaryDividedList.Add(subDeck);
             }
@@ -363,16 +363,16 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < remainingCardsNumber; i++)
             {
                 int deckIndex = (temporaryDividedList.Count - 1) - i;
-                temporaryDividedList[deckIndex].Add(allPlayerCardsList.DrawOneRandom());
+                temporaryDividedList[deckIndex].Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
             }
             // insert the epidemic cards
             foreach (var subList in temporaryDividedList)
             {
-                subList.Add(epidemicCardsTempList.DrawOneRandom());
+                subList.Add(epidemicCardsTempList.DrawOneRandom(randomness_provider));
             }
 
             // shuffle all the sublists!
-            temporaryDividedList.ShuffleAllSubListsElements();
+            temporaryDividedList.ShuffleAllSubListsElements(randomness_provider);
 
             // set the player cards deck as necessary
             Cards.DividedDeckOfPlayerCards.Clear();
@@ -934,6 +934,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void Com_ApplyEpidemicCard(
+            Random randomness_provider,
             PD_Player player
             )
         {
@@ -993,7 +994,7 @@ namespace Pandemic_AI_Framework
 
             // 3. intensify: Reshuffle just the cards in the Infection Discard Pile 
             // and place them on top of the Infection Deck.
-            Cards.DeckOfDiscardedInfectionCards.Shuffle();
+            Cards.DeckOfDiscardedInfectionCards.Shuffle(randomness_provider);
             Cards.DividedDeckOfInfectionCards.Add(
                 Cards.DeckOfDiscardedInfectionCards.DrawAll()
                 );
@@ -1074,7 +1075,10 @@ namespace Pandemic_AI_Framework
             CurrentAvailablePlayerActions = PD_Game_Action_Queries.GAQ_Find_AvailablePlayerActions(this);
         }
 
-        public void ApplySpecificPlayerAction(PD_GameAction_Base playerAction)
+        public void ApplySpecificPlayerAction(
+            Random randomness_provider,
+            PD_GameAction_Base playerAction
+            )
         {
             CurrentAvailableMacros = new List<PD_MacroAction>();
 
@@ -1085,7 +1089,7 @@ namespace Pandemic_AI_Framework
 
             PlayerActionsHistory.Add(playerAction);
 
-            GameFSM.OnCommand(this, playerAction);
+            GameFSM.OnCommand(randomness_provider,this, playerAction);
 
             UpdateAvailablePlayerActions();
 
@@ -1102,7 +1106,10 @@ namespace Pandemic_AI_Framework
                     .IsSubclassOf(typeof(PD_AutoAction_Base))
                     )
                 {
-                    ApplySpecificPlayerAction(CurrentAvailablePlayerActions[0]);
+                    ApplySpecificPlayerAction(
+                        randomness_provider,
+                        CurrentAvailablePlayerActions[0]
+                        );
                 }
             }
         }
@@ -1127,7 +1134,10 @@ namespace Pandemic_AI_Framework
             return new List<PD_MacroAction>(CurrentAvailableMacros);
         }
 
-        public void ApplySpecificMacro(PD_MacroAction macro)
+        public void ApplySpecificMacro(
+            Random randomness_provider,
+            PD_MacroAction macro
+            )
         {
             if (GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions))
             {
@@ -1169,7 +1179,10 @@ namespace Pandemic_AI_Framework
                     {
                         if (CurrentAvailablePlayerActions.Contains(command))
                         {
-                            ApplySpecificPlayerAction(command);
+                            ApplySpecificPlayerAction(
+                                randomness_provider,
+                                command
+                                );
                         }
                         else
                         {
@@ -1193,7 +1206,10 @@ namespace Pandemic_AI_Framework
                     if (CurrentAvailablePlayerActions.Contains(action))
                     {
                         //Console.WriteLine("applying command: " + action.GetDescription());
-                        ApplySpecificPlayerAction(action);
+                        ApplySpecificPlayerAction(
+                            randomness_provider,
+                            action
+                            );
                     }
                     else
                     {
@@ -1214,7 +1230,10 @@ namespace Pandemic_AI_Framework
                     if (CurrentAvailablePlayerActions.Contains(action))
                     {
                         //Console.WriteLine("applying command: " + action.GetDescription());
-                        ApplySpecificPlayerAction(action);
+                        ApplySpecificPlayerAction(
+                            randomness_provider,
+                            action
+                            );
                     }
                     else
                     {
@@ -1241,10 +1260,13 @@ namespace Pandemic_AI_Framework
             EndTime = DateTime.UtcNow;
         }
 
-        public PD_Game Request_Fair_ForwardModel()
+        public PD_Game Request_Fair_ForwardModel(Random randomness_provider)
         {
             PD_Game gameCopy = this.GetCustomDeepCopy();
-            PD_Game_Operators.GO_RandomizeGame(gameCopy);
+            PD_Game_Operators.GO_RandomizeGame(
+                randomness_provider,
+                gameCopy
+                );
             return gameCopy;
         }
 
@@ -1260,5 +1282,11 @@ namespace Pandemic_AI_Framework
         {
             return new PD_Game(this);
         }
+
+
+
+        #region equality_override
+
+        #endregion
     }
 }

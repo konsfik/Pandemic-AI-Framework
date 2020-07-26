@@ -9,23 +9,36 @@ namespace Pandemic_AI_Framework
     public static class PD_Game_Operators
     {
         public static void GO_RandomizeGame(
+            Random randomness_provider,
             PD_Game game
             )
         {
-            GO_Randomize_PlayerCards_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_Randomize_PlayerCards_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
         }
 
-        public static void GO_Randomize_InfectionCards_Deck(PD_Game game)
+        public static void GO_Randomize_InfectionCards_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            game.Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements();
+            game.Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
         }
 
         /// <summary>
         /// Randomizes the current divided deck of player cards of a game.
         /// </summary>
         /// <param name="game"></param>
-        public static void GO_Randomize_PlayerCards_Deck(PD_Game game)
+        public static void GO_Randomize_PlayerCards_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             // gather primary info:
             int num_SubLists = game.Cards.DividedDeckOfPlayerCards.Count;
@@ -62,7 +75,7 @@ namespace Pandemic_AI_Framework
                 );
 
             // compose the new randomized list of lists
-            playerCityCards.Shuffle();
+            playerCityCards.Shuffle(randomness_provider);
             for (int subList_Index = 0; subList_Index < num_SubLists; subList_Index++)
             {
                 int sublist_Size = subLists_Sizes[subList_Index];
@@ -70,13 +83,13 @@ namespace Pandemic_AI_Framework
                 List<PD_PlayerCardBase> newSubList = new List<PD_PlayerCardBase>();
                 for (int item_Index = 0; item_Index < sublist_Size; item_Index++)
                 {
-                    newSubList.Add(playerCityCards.DrawOneRandom());
+                    newSubList.Add(playerCityCards.DrawOneRandom(randomness_provider));
                 }
                 if (subList_IncludesEpidemic)
                 {
-                    newSubList.Add(epidemicCards.DrawOneRandom());
+                    newSubList.Add(epidemicCards.DrawOneRandom(randomness_provider));
                 }
-                newSubList.Shuffle();
+                newSubList.Shuffle(randomness_provider);
                 game.Cards.DividedDeckOfPlayerCards.Add(newSubList);
             }
         }
@@ -94,11 +107,15 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static void GO_Randomize_PlayerRoles(PD_Game game) {
+        public static void GO_Randomize_PlayerRoles(
+            Random randomness_provider,
+            PD_Game game
+            ) 
+        {
             List<PD_Role_Card> all_Role_Cards = PD_GameCreator.CreateRoleCards();
             foreach (var player in game.Players)
             {
-                PD_Role_Card selected_Role_Card = all_Role_Cards.DrawOneRandom();
+                PD_Role_Card selected_Role_Card = all_Role_Cards.DrawOneRandom(randomness_provider);
                 // set the player role card and pawn
                 game.RoleCardsPerPlayerID[player.ID] = selected_Role_Card;
                 game.PlayerPawnsPerPlayerID[player.ID] = game.GameElementReferences.PlayerPawns.Find(
@@ -117,14 +134,26 @@ namespace Pandemic_AI_Framework
 
         #region ROBUSTNESS operators
 
-        public static void GO_ROBUSTNESS_R1_4P_Easy_RandRoles(PD_Game game)
+        public static void GO_ROBUSTNESS_R1_4P_Easy_RandRoles(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
         }
 
-        public static void GO_ROBUSTNESS_R2_4P_Easy_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R2_4P_Easy_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_Randomize_PlayerCards_Deck(game);
+            GO_Randomize_PlayerCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -134,10 +163,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R3_4P_Easy_RandDecks(PD_Game game)
+        public static void GO_ROBUSTNESS_R3_4P_Easy_RandDecks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_Randomize_InfectionCards_Deck(game);
-            GO_Randomize_PlayerCards_Deck(game);
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_PlayerCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -148,10 +186,19 @@ namespace Pandemic_AI_Framework
         }
 
 
-        public static void GO_ROBUSTNESS_R4_4P_Easy_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R4_4P_Easy_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_Randomize_PlayerRoles(game);
-            GO_Randomize_PlayerCards_Deck(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_PlayerCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -161,11 +208,14 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R5_4P_Easy_RandRoles_RandDecks(PD_Game game)
+        public static void GO_ROBUSTNESS_R5_4P_Easy_RandRoles_RandDecks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_Randomize_PlayerRoles(game);
-            GO_Randomize_PlayerCards_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_Randomize_PlayerRoles(randomness_provider,game);
+            GO_Randomize_PlayerCards_Deck(randomness_provider,game);
+            GO_Randomize_InfectionCards_Deck(randomness_provider,game);
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -175,10 +225,13 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(randomness_provider,game);
 
             // then, convert the game to a three player game!
             // and in the end, randomize the decks.
@@ -206,7 +259,7 @@ namespace Pandemic_AI_Framework
             var cityCards = allPlayerCards.FindAll(x => x.GetType() == typeof(PD_CityCard));
             var epidemicCards = allPlayerCards.FindAll(x => x.GetType() == typeof(PD_EpidemicCard));
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last player
 
@@ -242,7 +295,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 3; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -260,7 +313,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -268,14 +321,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -294,9 +347,18 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R7_3P_Easy_RandRoles_Rand_Decks(PD_Game game) {
-            GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+        public static void GO_ROBUSTNESS_R7_3P_Easy_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            ) {
+            GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -306,10 +368,16 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R8_2P_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R8_2P_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             // randomize the player order, to begin with...
-            GO_ROBUSTNESS_R1_4P_Easy_RandRoles(game);
+            GO_ROBUSTNESS_R1_4P_Easy_RandRoles(
+                randomness_provider,
+                game
+                );
 
             // player ids
             int player_1_id = game.Players[0].ID;
@@ -334,7 +402,7 @@ namespace Pandemic_AI_Framework
             var cityCards = allPlayerCards.FindAll(x => x.GetType() == typeof(PD_CityCard));
             var epidemicCards = allPlayerCards.FindAll(x => x.GetType() == typeof(PD_EpidemicCard));
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last players
 
@@ -379,7 +447,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 4; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -397,7 +465,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -405,14 +473,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -431,10 +499,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R9_2P_Easy_RandRoles_Rand_Decks(PD_Game game)
+        public static void GO_ROBUSTNESS_R9_2P_Easy_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_ROBUSTNESS_R6_3P_Easy_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -445,12 +522,18 @@ namespace Pandemic_AI_Framework
         }
 
 
-        public static void GO_ROBUSTNESS_R10_4P_Medium_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R10_4P_Medium_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             int numEpidemics = 5; // (medium game)
 
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // player ids
             int player_1_id = game.Players[0].ID;
@@ -478,10 +561,10 @@ namespace Pandemic_AI_Framework
             var temp_epidemicCards = game.GameElementReferences.EpidemicCards.CustomDeepCopy();
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < numEpidemics; i++) {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
             
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // deal the cards, once more!
 
@@ -491,7 +574,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 2; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -509,7 +592,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -517,14 +600,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -543,9 +626,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R11_4P_Medium_RandRoles_Rand_Decks(PD_Game game) {
-            GO_ROBUSTNESS_R10_4P_Medium_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+        public static void GO_ROBUSTNESS_R11_4P_Medium_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            ) 
+        {
+            GO_ROBUSTNESS_R10_4P_Medium_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -555,10 +648,16 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R12_3P_Medium_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R12_3P_Medium_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // then, convert the game to a three player game!
             // and in the end, randomize the decks.
@@ -590,10 +689,10 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < 5; i++)
             {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last player
 
@@ -629,7 +728,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 3; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -647,7 +746,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -655,14 +754,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -681,9 +780,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R13_3P_Medium_RandRoles_Rand_Decks(PD_Game game) {
-            GO_ROBUSTNESS_R12_3P_Medium_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+        public static void GO_ROBUSTNESS_R13_3P_Medium_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            ) 
+        {
+            GO_ROBUSTNESS_R12_3P_Medium_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -693,10 +802,16 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R14_2P_Medium_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R14_2P_Medium_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // then, convert the game to a three player game!
             // and in the end, randomize the decks.
@@ -728,10 +843,10 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < 5; i++)
             {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last player
 
@@ -776,7 +891,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 4; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -794,7 +909,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -802,14 +917,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -828,10 +943,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R15_2P_Medium_RandRoles_Rand_Decks(PD_Game game)
+        public static void GO_ROBUSTNESS_R15_2P_Medium_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_ROBUSTNESS_R14_2P_Medium_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_ROBUSTNESS_R14_2P_Medium_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -842,12 +966,18 @@ namespace Pandemic_AI_Framework
         }
 
 
-        public static void GO_ROBUSTNESS_R16_4P_Hard_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R16_4P_Hard_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             int numEpidemics = 6; // (hard game)
 
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // player ids
             int player_1_id = game.Players[0].ID;
@@ -876,10 +1006,10 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < numEpidemics; i++)
             {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // deal the cards, once more!
 
@@ -889,7 +1019,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < 2; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -907,7 +1037,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -915,14 +1045,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -941,10 +1071,19 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R17_4P_Hard_RandRoles_Rand_Decks(PD_Game game)
+        public static void GO_ROBUSTNESS_R17_4P_Hard_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_ROBUSTNESS_R16_4P_Hard_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_ROBUSTNESS_R16_4P_Hard_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -954,14 +1093,20 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R18_3P_Hard_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R18_3P_Hard_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             int numEpidemics = 6; // (hard game)
             int numPlayers = 3;
             int numCardsToDeal = 3;
 
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // then, convert the game to a three player game!
             // and in the end, randomize the decks.
@@ -993,10 +1138,10 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < numEpidemics; i++)
             {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last player
 
@@ -1032,7 +1177,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < numCardsToDeal; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -1050,7 +1195,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -1058,14 +1203,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -1084,10 +1229,18 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R19_3P_Hard_RandRoles_Rand_Decks(PD_Game game)
+        public static void GO_ROBUSTNESS_R19_3P_Hard_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game)
         {
-            GO_ROBUSTNESS_R18_3P_Hard_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_ROBUSTNESS_R18_3P_Hard_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game
+                );
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -1097,14 +1250,20 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R20_2P_Hard_RandRoles_Rand_P_Deck(PD_Game game)
+        public static void GO_ROBUSTNESS_R20_2P_Hard_RandRoles_Rand_P_Deck(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             int numEpidemics = 6; // (hard game)
             int numPlayers = 2;
             int numCardsToDeal = 4;
 
             // randomize the player order, to begin with...
-            GO_Randomize_PlayerRoles(game);
+            GO_Randomize_PlayerRoles(
+                randomness_provider,
+                game
+                );
 
             // then, convert the game to a three player game!
             // and in the end, randomize the decks.
@@ -1136,10 +1295,10 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards = new List<PD_EpidemicCard>();
             for (int i = 0; i < numEpidemics; i++)
             {
-                epidemicCards.Add(temp_epidemicCards.DrawOneRandom());
+                epidemicCards.Add(temp_epidemicCards.DrawOneRandom(randomness_provider));
             }
 
-            cityCards.Shuffle();
+            cityCards.Shuffle(randomness_provider);
 
             // remove the last player
 
@@ -1184,7 +1343,7 @@ namespace Pandemic_AI_Framework
                 for (int i = 0; i < numCardsToDeal; i++)
                 {
                     game.Cards.PlayerCardsPerPlayerID[player.ID].Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
             }
@@ -1202,7 +1361,7 @@ namespace Pandemic_AI_Framework
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     tempList.Add(
-                        cityCards.DrawOneRandom()
+                        cityCards.DrawOneRandom(randomness_provider)
                         );
                 }
                 temporaryDeck.Add(tempList);
@@ -1210,14 +1369,14 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < remainingCardsNumber; i++)
             {
-                temporaryDeck[i].Add(cityCards.DrawOneRandom());
+                temporaryDeck[i].Add(cityCards.DrawOneRandom(randomness_provider));
             }
 
             // add the epidemic cards in the sub decks
             foreach (var subDeck in temporaryDeck)
             {
-                subDeck.Add(epidemicCards.DrawOneRandom());
-                subDeck.Shuffle();
+                subDeck.Add(epidemicCards.DrawOneRandom(randomness_provider));
+                subDeck.Shuffle(randomness_provider);
             }
 
             // apply the deck to the game!
@@ -1236,10 +1395,18 @@ namespace Pandemic_AI_Framework
             game.UpdateAvailablePlayerActions();
         }
 
-        public static void GO_ROBUSTNESS_R21_2P_Hard_RandRoles_Rand_Decks(PD_Game game)
+        public static void GO_ROBUSTNESS_R21_2P_Hard_RandRoles_Rand_Decks(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
-            GO_ROBUSTNESS_R20_2P_Hard_RandRoles_Rand_P_Deck(game);
-            GO_Randomize_InfectionCards_Deck(game);
+            GO_ROBUSTNESS_R20_2P_Hard_RandRoles_Rand_P_Deck(
+                randomness_provider,
+                game);
+            GO_Randomize_InfectionCards_Deck(
+                randomness_provider,
+                game
+                );
 
             // clear macros and actions lists, after the transformation is over...
             if (game.CurrentAvailableMacros != null)
@@ -1461,8 +1628,7 @@ namespace Pandemic_AI_Framework
                 .FindAll(
                     x =>
                     x.Type == treatType
-                    )
-                .GetOneRandom();
+                    ).GetFirst();
 
             // remove the cube from the city
             game.MapElements.InfectionCubesPerCityID[city.ID].Remove(cubeToRemove);

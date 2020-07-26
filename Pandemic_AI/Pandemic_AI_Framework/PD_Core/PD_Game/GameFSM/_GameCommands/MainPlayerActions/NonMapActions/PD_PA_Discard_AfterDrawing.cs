@@ -54,7 +54,10 @@ namespace Pandemic_AI_Framework
             return null;
         }
 
-        public override void Execute(PD_Game game)
+        public override void Execute(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             game.Com_Discard_AfterDrwing(Player, PlayerCardToDiscard);
         }

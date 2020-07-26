@@ -10,6 +10,7 @@ namespace Pandemic_AI_Framework
     public static class PD_GameCreator
     {
         public static PD_Game CreateNewGame(
+            Random randomness_provider,
             int numberOfPlayers,        // should be 2 to 4
             int gameDifficultyLevel,    // should be 0 to 2
             string gameCreationData,
@@ -94,7 +95,10 @@ namespace Pandemic_AI_Framework
                     var selectedCommand = availableCommands[0];
                     if (selectedCommand.GetType() == typeof(PD_GA_SetupGame_Random))
                     {
-                        newGame.ApplySpecificPlayerAction(selectedCommand);
+                        newGame.ApplySpecificPlayerAction(
+                            randomness_provider,
+                            selectedCommand
+                            );
                     }
                 }
             }
@@ -103,6 +107,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static PD_Game CreateNewGame_SpecificRoles(
+            Random randomness_provider,
             string gameCreationData
             )
         {
@@ -178,7 +183,10 @@ namespace Pandemic_AI_Framework
                 var selectedCommand = availableCommands[0];
                 if (selectedCommand.GetType() == typeof(PD_GA_SetupGame_Random))
                 {
-                    newGame.ApplySpecificPlayerAction(selectedCommand);
+                    newGame.ApplySpecificPlayerAction(
+                        randomness_provider,
+                        selectedCommand
+                        );
                 }
             }
 

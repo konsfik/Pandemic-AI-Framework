@@ -26,11 +26,14 @@ namespace Experiments_Runner
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public override PD_GameAction_Base GetNextAction(PD_Game game)
+        public override PD_GameAction_Base GetNextAction(
+            Random randomness_provider,
+            PD_Game game
+            )
         {
             var availableActions = game.CurrentAvailablePlayerActions;
 
-            return availableActions.GetOneRandom();
+            return availableActions.GetOneRandom(randomness_provider);
         }
     }
 }

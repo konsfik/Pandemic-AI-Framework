@@ -1123,7 +1123,7 @@ namespace Pandemic_AI_Framework
                 )
             {
                 var researchStationCities = PD_Game_Queries.GQ_Find_ResearchStationCities(this);
-                CurrentAvailableMacros = PD_Game_MacroSynthesis.FindAll_Macros(
+                CurrentAvailableMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                     this,
                     pathFinder,
                     researchStationCities

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pandemic_AI_Framework
 {
-    public static class PD_Game_MacroSynthesis
+    public static class PD_MacroActionsSynthesisSystem
     {
         public static List<PD_MacroAction> FindAll_Macros(
             PD_Game game,

@@ -53,7 +53,7 @@ namespace Pandemic_AI_Framework.Tests
 
 
             var rsCities = PD_Game_Queries.GQ_Find_ResearchStationCities(game);
-            List<PD_MacroAction> allMacros = PD_Game_MacroSynthesis.FindAll_Macros(
+            List<PD_MacroAction> allMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                 game,
                 pathFinder,
                 rsCities
@@ -66,7 +66,7 @@ namespace Pandemic_AI_Framework.Tests
 
             Assert.IsTrue(buildRSMacros.Count == 47);
 
-            var simpleWalks = PD_Game_MacroSynthesis.FindAll_SimpleWalk_Sequences(
+            var simpleWalks = PD_MacroActionsSynthesisSystem.FindAll_SimpleWalk_Sequences(
                 game,
                 pathFinder,
                 rsCities,
@@ -117,7 +117,7 @@ namespace Pandemic_AI_Framework.Tests
                     )
                 );
 
-            allMacros = PD_Game_MacroSynthesis.FindAll_Macros(
+            allMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                 game,
                 pathFinder,
                 rsCities

@@ -11,11 +11,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public abstract class PD_AI_Macro_Agent_Base : PD_AI_Agent_Base
     {
-        public PD_AI_Macro_Agent_Base()
-        {
-
-        }
-
         public PD_MacroAction GetNextMacroAction(
             Random randomness_provider,
             PD_Game game,

@@ -9,8 +9,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PolicyBased_RHE_Agent : PD_AI_Macro_Agent_Base
     {
-        private Random _randomnessProvider;
-
         public PD_AI_Macro_Agent_Base Generator_Agent { get; private set; }
         public PD_AI_Macro_Agent_Base Mutator_Agent { get; private set; }
         public PD_AI_Macro_Agent_Base Corrector_Agent { get; private set; }
@@ -43,8 +41,6 @@ namespace Pandemic_AI_Framework
             int num_evaluation_repetitions
             )
         {
-            _randomnessProvider = new Random();
-
             Generator_Agent = generator_agent;
             Mutator_Agent = mutator_agent;
 
@@ -182,7 +178,7 @@ namespace Pandemic_AI_Framework
                     Generator_Agent,
                     Mutator_Agent,
                     Mutation_Rate,
-                    _randomnessProvider
+                    randomness_provider
                     );
 
                 // evaluate the child

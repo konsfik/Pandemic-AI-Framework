@@ -244,7 +244,6 @@ namespace Experiment_1
                 );
         }
 
-
         public static PD_Game Generate_Random_Game(
             Random randomness_provider,
             int numberOfPlayers,

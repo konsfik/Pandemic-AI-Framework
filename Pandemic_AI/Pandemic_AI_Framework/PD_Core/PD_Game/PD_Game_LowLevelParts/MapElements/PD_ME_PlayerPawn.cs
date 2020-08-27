@@ -42,5 +42,40 @@ namespace Pandemic_AI_Framework
             return new PD_ME_PlayerPawn(this);
         }
 
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_ME_PlayerPawn)otherObject;
+
+            if (this.ID != other.ID)
+            {
+                return false;
+            }
+            else if (this.Role != other.Role)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + ID.GetHashCode();
+            hash = hash * 31 + Role.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

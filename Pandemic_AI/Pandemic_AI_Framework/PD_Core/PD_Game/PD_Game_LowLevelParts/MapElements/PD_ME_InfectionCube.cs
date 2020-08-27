@@ -28,5 +28,41 @@ namespace Pandemic_AI_Framework
                 this.Type
                 );
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_ME_InfectionCube)otherObject;
+
+            if (this.ID != other.ID)
+            {
+                return false;
+            }
+            else if (this.Type != other.Type)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + ID.GetHashCode();
+            hash = hash * 31 + Type.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

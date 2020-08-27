@@ -73,5 +73,51 @@ namespace Pandemic_AI_Framework
                 Move_RS_To.Name
                 );
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PA_MoveResearchStation)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            if (this.Used_CityCard != other.Used_CityCard)
+            {
+                return false;
+            }
+            if (this.Move_RS_From != other.Move_RS_From)
+            {
+                return false;
+            }
+            if (this.Move_RS_To != other.Move_RS_To)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Used_CityCard.GetHashCode();
+            hash = hash * 31 + Move_RS_From.GetHashCode();
+            hash = hash * 31 + Move_RS_To.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

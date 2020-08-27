@@ -30,5 +30,23 @@ namespace Pandemic_AI_Framework
             string description = "Game Setup Begins";
             return description;
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+
+        #endregion
     }
 }

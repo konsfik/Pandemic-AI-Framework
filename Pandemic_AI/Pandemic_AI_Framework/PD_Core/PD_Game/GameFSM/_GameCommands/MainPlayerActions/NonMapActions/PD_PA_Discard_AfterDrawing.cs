@@ -61,6 +61,42 @@ namespace Pandemic_AI_Framework
         {
             game.Com_Discard_AfterDrwing(Player, PlayerCardToDiscard);
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PA_Discard_AfterDrawing)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            if (this.PlayerCardToDiscard != other.PlayerCardToDiscard)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + PlayerCardToDiscard.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 
 }

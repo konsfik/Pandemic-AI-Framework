@@ -83,5 +83,51 @@ namespace Pandemic_AI_Framework
         {
             return new PD_PMA_OperationsExpert_Flight(this);
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PMA_OperationsExpert_Flight)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            else if (this.InitialLocation != other.InitialLocation)
+            {
+                return false;
+            }
+            else if (this.TargetLocation != other.TargetLocation)
+            {
+                return false;
+            }
+            else if (this.CityCardToDiscard != other.CityCardToDiscard)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + InitialLocation.GetHashCode();
+            hash = hash * 31 + TargetLocation.GetHashCode();
+            hash = hash * 31 + CityCardToDiscard.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

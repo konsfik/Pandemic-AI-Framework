@@ -44,5 +44,40 @@ namespace Pandemic_AI_Framework
         {
             return Player.Name + ": INFECTION " + InfectionCardToApply.City.Name;
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_ApplyInfectionCard)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            else if (this.InfectionCardToApply != other.InfectionCardToApply) {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + InfectionCardToApply.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

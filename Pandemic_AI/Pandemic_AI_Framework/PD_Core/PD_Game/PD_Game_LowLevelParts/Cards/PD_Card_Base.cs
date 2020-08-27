@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Reflection;
 using System.Linq;
 
 namespace Pandemic_AI_Framework
@@ -23,51 +22,6 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public abstract override bool Equals(object otherObject);
         public abstract override int GetHashCode();
-        //public override bool Equals(object otherObject)
-        //{
-        //    if (otherObject.GetType() != this.GetType())
-        //    {
-        //        return false;
-        //    }
-
-        //    var other = (PD_Card_Base)otherObject;
-
-        //    Type type = this.GetType();
-
-        //    foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        //    {
-        //        object selfValue = type.GetProperty(pi.Name).GetValue(this, null);
-        //        object otherValue = type.GetProperty(pi.Name).GetValue(other, null);
-
-        //        if (
-        //            selfValue != otherValue 
-        //            && (selfValue == null || selfValue.Equals(otherValue) == false)
-        //            )
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    int hash = 7;
-
-        //    Type type = this.GetType();
-
-        //    foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        //    {
-        //        object selfValue = type.GetProperty(pi.Name).GetValue(this, null);
-
-        //        hash += (hash * 13) + selfValue.GetHashCode();
-        //    }
-
-        //    return hash;
-        //}
-
-
 
         public static bool operator ==(PD_Card_Base c1, PD_Card_Base c2)
         {

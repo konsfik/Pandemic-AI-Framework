@@ -70,5 +70,46 @@ namespace Pandemic_AI_Framework
                 CityToTreatDiseaseAt.Name
                 );
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PA_TreatDisease_Medic)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            else if (this.CityToTreatDiseaseAt != other.CityToTreatDiseaseAt)
+            {
+                return false;
+            }
+            else if (this.TypeOfDiseaseToTreat != other.TypeOfDiseaseToTreat)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + CityToTreatDiseaseAt.GetHashCode();
+            hash = hash * 31 + TypeOfDiseaseToTreat;
+
+            return hash;
+        }
+
+        #endregion
     }
 }

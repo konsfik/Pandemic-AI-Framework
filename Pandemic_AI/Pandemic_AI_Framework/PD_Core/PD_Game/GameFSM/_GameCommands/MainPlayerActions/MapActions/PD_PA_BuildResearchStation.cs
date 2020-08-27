@@ -75,5 +75,46 @@ namespace Pandemic_AI_Framework
                 Build_RS_On.Name
                 );
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PA_BuildResearchStation)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            if (this.Used_CityCard != other.Used_CityCard)
+            {
+                return false;
+            }
+            if (this.Build_RS_On != other.Build_RS_On)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Used_CityCard.GetHashCode();
+            hash = hash * 31 + Build_RS_On.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

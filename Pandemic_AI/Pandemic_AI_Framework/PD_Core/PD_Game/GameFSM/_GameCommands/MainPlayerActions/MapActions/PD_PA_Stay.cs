@@ -64,5 +64,41 @@ namespace Pandemic_AI_Framework
                 CityToStayOn.Name
                 );
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_PA_Stay)otherObject;
+
+            if (this.Player != other.Player)
+            {
+                return false;
+            }
+            if (this.CityToStayOn != other.CityToStayOn)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + CityToStayOn.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

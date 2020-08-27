@@ -32,5 +32,41 @@ namespace Pandemic_AI_Framework
         {
             return "." + City.Name;
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_CityCard)otherObject;
+
+            if (this.ID != other.ID)
+            {
+                return false;
+            }
+            else if (this._city != other._city)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 7;
+
+            hash = (hash * 13) + ID;
+            hash = (hash * 13) + City.GetHashCode();
+
+            return hash;
+        }
+
+        #endregion
     }
 }

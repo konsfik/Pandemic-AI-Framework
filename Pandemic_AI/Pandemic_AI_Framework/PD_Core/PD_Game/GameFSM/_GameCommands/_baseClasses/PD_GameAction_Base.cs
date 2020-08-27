@@ -11,10 +11,6 @@ namespace Pandemic_AI_Framework
     public abstract class PD_GameAction_Base : IGameAction, ICustomDeepCopyable<PD_GameAction_Base>
     {
 
-        public PD_GameAction_Base()
-        {
-
-        }
 
         public abstract PD_GameAction_Base GetCustomDeepCopy();
         public abstract void Execute(
@@ -98,14 +94,14 @@ namespace Pandemic_AI_Framework
                     if (selfValue.GetType() != typeof(List<PD_CityCard>))
                     {
 
-                        hash += (hash * 13) + selfValue.GetHashCode();
+                        hash = (hash * 13) + selfValue.GetHashCode();
                     }
                     else
                     {
                         var sv = (List<PD_CityCard>)selfValue;
                         foreach (var card in sv)
                         {
-                            hash += (hash * 13) + card.GetHashCode();
+                            hash = (hash * 13) + card.GetHashCode();
                         }
                     }
                 }

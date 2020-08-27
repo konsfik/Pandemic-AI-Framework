@@ -38,6 +38,41 @@ namespace Pandemic_AI_Framework
         {
             return new PD_Role_Card(this);
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_Role_Card)otherObject;
+
+            if (this.ID != other.ID)
+            {
+                return false;
+            }
+            else if (this.Role != other.Role)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 7;
+
+            hash = (hash * 13) + ID;
+            hash = (hash * 13) + Role.GetHashCode();
+
+            return hash;
+        }
+        #endregion
     }
 
     // certain player roles are omitted...

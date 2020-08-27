@@ -83,7 +83,7 @@ namespace Performance_Tests
             watch.Restart();
             foreach (var game in games)
             {
-                while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                while (PD_Game_Queries.GQ_Is_Ongoing(game))
                 {
                     game.ApplySpecificPlayerAction(
                         randomness_provider,
@@ -158,7 +158,7 @@ namespace Performance_Tests
             watch.Restart();
             foreach (var game in games)
             {
-                while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                while (PD_Game_Queries.GQ_Is_Ongoing(game))
                 {
                     var available_macros = game.GetAvailableMacros(pf);
                     game.ApplySpecificMacro(

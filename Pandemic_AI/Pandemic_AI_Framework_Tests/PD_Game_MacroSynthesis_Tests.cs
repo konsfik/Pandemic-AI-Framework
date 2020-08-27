@@ -70,7 +70,7 @@ namespace Pandemic_AI_Framework.Tests
                 game,
                 pathFinder,
                 rsCities,
-                PD_Game_Queries.GQ_Find_CurrentPlayer(game),
+                PD_Game_Queries.GQ_CurrentPlayer(game),
                 PD_Game_Queries.GQ_Find_CurrentPlayer_Location(game)
                 );
 

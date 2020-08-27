@@ -256,7 +256,7 @@ namespace Pandemic_AI_Framework
             RH_State_Type stateType = Calculate_State_Type(gameState);
             RH_Macro_Type macroType = Calculate_Macro_Type(macro);
 
-            bool gameStateOngoing = PD_Game_Queries.GQ_Is_GameOngoing(
+            bool gameStateOngoing = PD_Game_Queries.GQ_Is_Ongoing(
                 gameState
                 );
 
@@ -443,8 +443,8 @@ namespace Pandemic_AI_Framework
         {
             if (
                 game.GameStateCounter.CurrentTurnIndex > Gene_TurnIndex
-                || PD_Game_Queries.GQ_Is_GameLost(game)
-                || PD_Game_Queries.GQ_Is_GameWon(game)
+                || PD_Game_Queries.GQ_Is_Lost(game)
+                || PD_Game_Queries.GQ_Is_Won(game)
                 )
             {
                 return RH_State_Type.NextTurn;
@@ -530,7 +530,7 @@ namespace Pandemic_AI_Framework
             )
         {
             bool correctTurn = gameState.GameStateCounter.CurrentTurnIndex == Gene_TurnIndex;
-            bool ongoing = PD_Game_Queries.GQ_Is_GameOngoing(gameState);
+            bool ongoing = PD_Game_Queries.GQ_Is_Ongoing(gameState);
             return correctTurn && ongoing;
         }
 

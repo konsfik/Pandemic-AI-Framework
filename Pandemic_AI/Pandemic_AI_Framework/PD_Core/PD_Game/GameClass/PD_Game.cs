@@ -43,15 +43,6 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region constructors
-        /// <summary>
-        /// GAME FROM GAME SETUP
-        /// </summary>
-        //public PD_Game(
-        //    PD_Specific_GameSetup_Definition gameSetup
-        //    )
-        //{
-
-        //}
 
         public static PD_Game Create(
             int number_of_players,
@@ -587,16 +578,15 @@ namespace Pandemic_AI_Framework
             )
         {
             // if player is a medic:
-            if (PD_Game_Queries.GQ_Find_CurrentPlayer_Role(this) == PD_Player_Roles.Medic)
+            if (this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic)
             {
-                List<int> typesOfInfectionCubesOnTargetLocation = PD_Game_Queries.GQ_Find_InfectionCubeTypes_OnCity(
-                    this,
+                List<int> typesOfInfectionCubesOnTargetLocation = this.GQ_Find_InfectionCubeTypes_OnCity(
                     city
                     );
                 foreach (var type in typesOfInfectionCubesOnTargetLocation)
                 {
                     // if this type has been cured:
-                    if (PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(this, type))
+                    if (this.GQ_Is_DiseaseCured_OR_Eradicated(type))
                     {
                         PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
                             this,
@@ -605,7 +595,7 @@ namespace Pandemic_AI_Framework
                             );
                         // create the supposed (auto) action
                         PD_PA_TreatDisease_Medic_Auto actionToStore = new PD_PA_TreatDisease_Medic_Auto(
-                            PD_Game_Queries.GQ_Find_CurrentPlayer(this),
+                            this.GQ_CurrentPlayer(),
                             city,
                             type
                             );
@@ -634,7 +624,7 @@ namespace Pandemic_AI_Framework
             }
 
             // discard the corresponding card from players hand
-            var cityCardsInPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(this, player);
+            var cityCardsInPlayerHand = this.GQ_Find_CityCardsInPlayerHand(player);
 
             if (cityCardToDiscard != null)
             {
@@ -711,8 +701,7 @@ namespace Pandemic_AI_Framework
             )
         {
             if (
-                PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    this,
+                this.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                     city,
                     treat_Type
                     ) == 0
@@ -721,13 +710,13 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("City does not have any infection cubes of the requested type");
             }
 
-            if (PD_Game_Queries.GQ_Find_CurrentPlayer_Role(this) == PD_Player_Roles.Medic)
+            if (this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic)
             {
                 throw new System.Exception(
                     "Medic cannot perform this type of action. Use special treat disease action, instead");
             }
 
-            bool diseaseCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(this, treat_Type);
+            bool diseaseCured = this.GQ_Is_DiseaseCured_OR_Eradicated(treat_Type);
 
             if (diseaseCured)
             {
@@ -773,26 +762,18 @@ namespace Pandemic_AI_Framework
             int treat_Type
             )
         {
-            if (
-                PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    this,
-                    city,
-                    treat_Type
-                    ) == 0
-                )
+            if (this.GQ_Count_Num_InfectionCubes_OfType_OnCity(city, treat_Type) == 0)
             {
                 throw new System.Exception("City does not have any infection cubes of the requested type");
             }
 
-            if (PD_Game_Queries.GQ_Find_CurrentPlayer_Role(this) != PD_Player_Roles.Medic)
+            if (this.GQ_CurrentPlayer_Role() != PD_Player_Roles.Medic)
             {
                 throw new System.Exception(
                     "Only Medic can perform this type of action.");
             }
 
-            bool diseaseCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(this, treat_Type);
-
-            if (diseaseCured)
+            if (this.GQ_Is_DiseaseCured_OR_Eradicated(treat_Type))
             {
                 // remove all cubes of this type
                 PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
@@ -836,8 +817,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToGive
             )
         {
-            var playerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, player_Gives_Card);
-            var otherPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, otherPlayer_TakesCard);
+            var playerLocation = this.GQ_Find_PlayerLocation(player_Gives_Card);
+            var otherPlayerLocation = this.GQ_Find_PlayerLocation(otherPlayer_TakesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 throw new System.Exception("Players do not share location!");
@@ -853,8 +834,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToTake
             )
         {
-            var playerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, player_TakesCard);
-            var otherPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, otherPlayer_GivesCard);
+            var playerLocation = this.GQ_Find_PlayerLocation(player_TakesCard);
+            var otherPlayerLocation = this.GQ_Find_PlayerLocation(otherPlayer_GivesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 Console.WriteLine("player location: " + playerLocation.GetDescription());
@@ -910,7 +891,7 @@ namespace Pandemic_AI_Framework
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = PD_Game_Queries.GQ_Find_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = PD_Game_Queries.GQ_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
 
             if (player_Is_Scientist)
             {
@@ -952,7 +933,7 @@ namespace Pandemic_AI_Framework
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = PD_Game_Queries.GQ_Find_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = PD_Game_Queries.GQ_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
 
             if (player_Is_Scientist == false)
             {

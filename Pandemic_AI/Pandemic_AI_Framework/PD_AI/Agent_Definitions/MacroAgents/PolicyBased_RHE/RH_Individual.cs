@@ -73,7 +73,7 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < Genome.Count; i++)
             {
-                if (PD_Game_Queries.GQ_Is_GameOngoing(mutationGameState))
+                if (PD_Game_Queries.GQ_Is_Ongoing(mutationGameState))
                 {
                     double mutationChance = randomnessProvider.NextDouble();
                     if (mutationChance < mutationRate)
@@ -113,7 +113,7 @@ namespace Pandemic_AI_Framework
                 int randomMutationIndex = randomnessProvider.Next(Genome.Count);
                 for (int i = 0; i < Genome.Count; i++)
                 {
-                    if (PD_Game_Queries.GQ_Is_GameOngoing(newMutationGameState))
+                    if (PD_Game_Queries.GQ_Is_Ongoing(newMutationGameState))
                     {
                         if (i != randomMutationIndex)
                         {
@@ -145,7 +145,7 @@ namespace Pandemic_AI_Framework
             }
 
             if (
-                PD_Game_Queries.GQ_Is_GameOngoing(mutationGameState)
+                PD_Game_Queries.GQ_Is_Ongoing(mutationGameState)
                 && IsComplete() == false
                 )
             {
@@ -181,7 +181,7 @@ namespace Pandemic_AI_Framework
                 foreach (var gene in Genome)
                 {
                     if (
-                        PD_Game_Queries.GQ_Is_GameOngoing(evaluation_GameState)
+                        PD_Game_Queries.GQ_Is_Ongoing(evaluation_GameState)
                         )
                     {
                         gene.ApplySelfOnGameState(
@@ -194,7 +194,7 @@ namespace Pandemic_AI_Framework
                 }
 
                 if (
-                    PD_Game_Queries.GQ_Is_GameOngoing(evaluation_GameState)
+                    PD_Game_Queries.GQ_Is_Ongoing(evaluation_GameState)
                     && IsComplete() == false
                     )
                 {
@@ -243,7 +243,7 @@ namespace Pandemic_AI_Framework
 
             // create the new macros and put them in the dictionary
             while (
-                PD_Game_Queries.GQ_Is_GameOngoing(generator_GameState)
+                PD_Game_Queries.GQ_Is_Ongoing(generator_GameState)
                 &&
                 currentTurn < finalTurn
                 )

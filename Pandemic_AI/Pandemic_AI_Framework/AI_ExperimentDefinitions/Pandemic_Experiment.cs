@@ -134,7 +134,7 @@ namespace Pandemic_AI_Framework
                         if (thisAgent.GetType().IsSubclassOf(typeof(PD_AI_Macro_Agent_Base)))
                         {
                             gameCopy.OverrideStartTime();
-                            while (PD_Game_Queries.GQ_Is_GameOngoing(gameCopy))
+                            while (PD_Game_Queries.GQ_Is_Ongoing(gameCopy))
                             {
                                 if (Keep_Trace)
                                 {
@@ -177,7 +177,7 @@ namespace Pandemic_AI_Framework
 
                             if (displayEndState)
                             {
-                                Console.WriteLine(PD_Game_Queries.GQ_Is_GameWon(gameCopy) ? "won" : "lost");
+                                Console.WriteLine(gameCopy.GQ_Is_Won() ? "won" : "lost");
                             }
 
                             string filePath = Report_FilePath_PerAgent[thisAgent];
@@ -195,7 +195,7 @@ namespace Pandemic_AI_Framework
                         else if (thisAgent.GetType().IsSubclassOf(typeof(PD_AI_Action_Agent_Base)))
                         {
                             gameCopy.OverrideStartTime();
-                            while (PD_Game_Queries.GQ_Is_GameOngoing(gameCopy))
+                            while (PD_Game_Queries.GQ_Is_Ongoing(gameCopy))
                             {
 
                                 var nextAction =
@@ -217,7 +217,7 @@ namespace Pandemic_AI_Framework
 
                             if (displayEndState)
                             {
-                                Console.WriteLine(PD_Game_Queries.GQ_Is_GameWon(gameCopy) ? "won" : "lost");
+                                Console.WriteLine(PD_Game_Queries.GQ_Is_Won(gameCopy) ? "won" : "lost");
                             }
 
                             string filePath = Report_FilePath_PerAgent[thisAgent];

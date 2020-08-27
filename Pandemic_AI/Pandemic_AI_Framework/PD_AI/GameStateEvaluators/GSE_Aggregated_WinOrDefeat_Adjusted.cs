@@ -26,11 +26,11 @@ namespace Pandemic_AI_Framework
 
             double scoreAverage = scoreSum / Scores.Count;
 
-            if (PD_Game_Queries.GQ_Is_GameWon(game))
+            if (PD_Game_Queries.GQ_Is_Won(game))
             {
                 return 1;
             }
-            else if (PD_Game_Queries.GQ_Is_GameOngoing(game))
+            else if (PD_Game_Queries.GQ_Is_Ongoing(game))
             {
                 return scoreAverage;
             }

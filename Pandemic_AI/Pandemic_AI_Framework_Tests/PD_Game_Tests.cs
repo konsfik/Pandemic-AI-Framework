@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework.Tests
 
 
                 // play the game until the end...
-                while (PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game))
+                while (PD_Game_Queries.GQ_Is_Ongoing(deserialized_game))
                 {
                     var available_actions = deserialized_game.CurrentAvailablePlayerActions;
                     var random_action = available_actions.GetOneRandom(randomness_provider);
@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework.Tests
                         );
                 }
 
-                Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
+                Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(deserialized_game) == false);
             }
 
             // play the games until the end, using macro actions
@@ -53,7 +53,7 @@ namespace Pandemic_AI_Framework.Tests
                     );
 
                 // play the game until the end...
-                while (PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game))
+                while (PD_Game_Queries.GQ_Is_Ongoing(deserialized_game))
                 {
                     var available_macro_actions = deserialized_game.GetAvailableMacros(pathFinder);
                     var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
@@ -63,7 +63,7 @@ namespace Pandemic_AI_Framework.Tests
                         );
                 }
 
-                Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(deserialized_game) == false);
+                Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(deserialized_game) == false);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Pandemic_AI_Framework.Tests
                             true
                             );
 
-                        while (PD_Game_Queries.GQ_Is_GameOngoing(game))
+                        while (PD_Game_Queries.GQ_Is_Ongoing(game))
                         {
                             var available_actions = game.CurrentAvailablePlayerActions;
                             var random_action = available_actions.GetOneRandom(randomness_provider);
@@ -99,7 +99,7 @@ namespace Pandemic_AI_Framework.Tests
                                 );
                         }
 
-                        Assert.IsTrue(PD_Game_Queries.GQ_Is_GameOngoing(game) == false);
+                        Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(game) == false);
                     }
                 }
             }

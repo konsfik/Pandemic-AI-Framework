@@ -53,6 +53,95 @@ namespace Pandemic_AI_Framework
 
         //}
 
+        public static PD_Game Create(
+            int number_of_players,
+            int game_difficulty
+            )
+        {
+
+
+
+            return null;
+        }
+
+        private void Default_Settings_Initialize()
+        {
+
+            // generate the default cities...
+            List<PD_City> cities = new List<PD_City>()
+            {
+                new PD_City(0,  0, "Atlanta"          , new PD_Point( 379,  837  )),
+                new PD_City(1,  0, "Chicago"          , new PD_Point( 330,  934  )),
+                new PD_City(2,  0, "Essen"            , new PD_Point( 942,  1026 )),
+                new PD_City(3,  0, "London"           , new PD_Point( 809,  1002 )),
+                new PD_City(4,  0, "Madrid"           , new PD_Point( 790,  872  )),
+                new PD_City(5,  0, "Milan"            , new PD_Point( 997,  963  )),
+                new PD_City(6,  0, "Montreal"         , new PD_Point( 462,  939  )),
+                new PD_City(7,  0, "New York"         , new PD_Point( 564,  924  )),
+                new PD_City(8,  0, "Paris"            , new PD_Point( 910,  938  )),
+                new PD_City(9,  0, "San Francisco"    , new PD_Point( 161,  885  )),
+                new PD_City(10, 0, "St. Petersburg"   , new PD_Point( 1089, 1054 )),
+                new PD_City(11, 0, "Washington"       , new PD_Point( 519,  844  )),
+
+                new PD_City(12, 1, "Bogota"           , new PD_Point( 452,  595  )),
+                new PD_City(13, 1, "Buenos Aires"     , new PD_Point( 561,  331  )),
+                new PD_City(14, 1, "Johannesburg"     , new PD_Point( 1055, 392  )),
+                new PD_City(15, 1, "Khartoum"         , new PD_Point( 1065, 643  )),
+                new PD_City(16, 1, "Kinshasha"        , new PD_Point( 980,  526  )),
+                new PD_City(17, 1, "Lagos"            , new PD_Point( 896,  619  )),
+                new PD_City(18, 1, "Lima"             , new PD_Point( 405,  452  )),
+                new PD_City(19, 1, "Los Angeles"      , new PD_Point( 188,  753  )),
+                new PD_City(20, 1, "Mexico City"      , new PD_Point( 311,  709  )),
+                new PD_City(21, 1, "Miami"            , new PD_Point( 463,  729  )),
+                new PD_City(22, 1, "Santiago"         , new PD_Point( 423,  305  )),
+                new PD_City(23, 1, "Sao Paolo"        , new PD_Point( 638,  432  )),
+
+                new PD_City(24, 2, "Algiers"          , new PD_Point( 938,  800  )),
+                new PD_City(25, 2, "Baghdad"          , new PD_Point( 1150, 818  )),
+                new PD_City(26, 2, "Cairo"            , new PD_Point( 1037, 773  )),
+                new PD_City(27, 2, "Chennai"          , new PD_Point( 1392, 605  )),
+                new PD_City(28, 2, "Delhi"            , new PD_Point( 1373, 812  )),
+                new PD_City(29, 2, "Istanbul"         , new PD_Point( 1056, 887  )),
+                new PD_City(30, 2, "Karachi"          , new PD_Point( 1276, 775  )),
+                new PD_City(31, 2, "Kolkata"          , new PD_Point( 1466, 780  )),
+                new PD_City(32, 2, "Moscow"           , new PD_Point( 1160, 964  )),
+                new PD_City(33, 2, "Mumbai"           , new PD_Point( 1289, 677  )),
+                new PD_City(34, 2, "Riyadh"           , new PD_Point( 1165, 699  )),
+                new PD_City(35, 2, "Tehran"           , new PD_Point( 1250, 901  )),
+
+                new PD_City(36, 3, "Bangkok"          , new PD_Point( 938,  800  )),
+                new PD_City(37, 3, "Beijing"          , new PD_Point( 1150, 818  )),
+                new PD_City(38, 3, "Ho Chi Minh City" , new PD_Point( 1037, 773  )),
+                new PD_City(39, 3, "Hong Kong"        , new PD_Point( 1392, 605  )),
+                new PD_City(40, 3, "Jakarta"          , new PD_Point( 1373, 812  )),
+                new PD_City(41, 3, "Manila"           , new PD_Point( 1056, 887  )),
+                new PD_City(42, 3, "Osaka"            , new PD_Point( 1276, 775  )),
+                new PD_City(43, 3, "Seoul"            , new PD_Point( 1466, 780  )),
+                new PD_City(44, 3, "Shanghai"         , new PD_Point( 1160, 964  )),
+                new PD_City(45, 3, "Sydney"           , new PD_Point( 1289, 677  )),
+                new PD_City(46, 3, "Taipei"           , new PD_Point( 1165, 699  )),
+                new PD_City(47, 3, "Tokyo"            , new PD_Point( 1250, 901  )),
+            };
+
+            List<PD_CityCard> allCityCards = new List<PD_CityCard>();
+            for (int i = 0; i < 48; i++)
+            {
+                allCityCards.Add(new PD_CityCard(i, cities[i]));
+            }
+
+            List<PD_InfectionCard> all_infection_cards = new List<PD_InfectionCard>();
+            for (int i = 0; i < 48; i++)
+            {
+                all_infection_cards.Add(new PD_InfectionCard(i, cities[i]));
+            }
+
+            List<PD_EpidemicCard> all_epidemic_cards = new List<PD_EpidemicCard>();
+            for (int i = 0; i < 6; i++)
+            {
+                all_epidemic_cards.Add(new PD_EpidemicCard(i));
+            }
+        }
+
         /// <summary>
         /// NORMAL CONSTRUCTOR!
         /// </summary>
@@ -1089,7 +1178,7 @@ namespace Pandemic_AI_Framework
 
             PlayerActionsHistory.Add(playerAction);
 
-            GameFSM.OnCommand(randomness_provider,this, playerAction);
+            GameFSM.OnCommand(randomness_provider, this, playerAction);
 
             UpdateAvailablePlayerActions();
 

@@ -17,11 +17,7 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_AI_PathFinder
     {
-
-        private Dictionary<PD_CityEdge_Directed, List<PD_City>> _shortestPaths;
-
-
-        public Dictionary<PD_CityEdge_Directed, List<PD_City>> ShortestPaths { get { return _shortestPaths; } }
+        public Dictionary<int, Dictionary<int, List<PD_City>>> shortest_path__per__destination__per__origin;
 
         public PD_AI_PathFinder()
         {
@@ -53,22 +49,28 @@ namespace Pandemic_AI_Framework
         /// </summary>
         private void ComputeShortestPaths(PD_Map map)
         {
-            _shortestPaths = new Dictionary<PD_CityEdge_Directed, List<PD_City>>();
+            shortest_path__per__destination__per__origin = new Dictionary<int, Dictionary<int, List<PD_City>>>();
             foreach (var root in map.Cities)
             {
+                shortest_path__per__destination__per__origin
+                    .Add(root.ID, new Dictionary<int, List<PD_City>>());
                 foreach (var destination in map.Cities)
                 {
                     if (root != destination)
                     {
-                        List<PD_City> path = ComputeShortestPath(
+                        var path = ComputeShortestPath(
                             root,
                             destination,
                             map
                             );
-                        _shortestPaths.Add(new PD_CityEdge_Directed(root, destination), path);
+                        shortest_path__per__destination__per__origin[root.ID].Add(
+                            destination.ID,
+                            path
+                            );
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_City>() { root };
             }
 
-            var simpleWalkPath = _shortestPaths[new PD_CityEdge_Directed(root, destination)];
+            var simpleWalkPath = shortest_path__per__destination__per__origin[root.ID][destination.ID]; 
 
             if (simpleWalkPath == null)
             {
@@ -236,11 +238,9 @@ namespace Pandemic_AI_Framework
                         rsPath.Add(root);
                         //rsPath.Add(_researchStationClosestToDestination);
                         rsPath.AddRange(
-                            _shortestPaths[
-                                new PD_CityEdge_Directed(
-                                    researchStationClosestToDestination,
-                                    destination
-                                    )]
+                            shortest_path__per__destination__per__origin
+                            [researchStationClosestToDestination.ID]
+                            [destination.ID]
                             );
                         if (rsPath.Count < simpleWalkPath.Count)
                         {
@@ -268,10 +268,9 @@ namespace Pandemic_AI_Framework
                     {
                         List<PD_City> rsPath = new List<PD_City>();
                         rsPath.AddRange(
-                            _shortestPaths[new PD_CityEdge_Directed(
-                                root,
-                                _researchStationClosestToRoot
-                                )]
+                            shortest_path__per__destination__per__origin
+                            [root.ID]
+                            [_researchStationClosestToRoot.ID]
                             );
                         rsPath.Add(destination);
                         if (rsPath.Count < simpleWalkPath.Count)
@@ -306,15 +305,15 @@ namespace Pandemic_AI_Framework
                     }
                     else
                     {
-                        List<PD_City> part1 = _shortestPaths[new PD_CityEdge_Directed(
-                            root,
-                            _researchStationClosestToRoot
-                            )];
+                        List<PD_City> part1 =
+                            shortest_path__per__destination__per__origin
+                            [root.ID]
+                            [_researchStationClosestToRoot.ID];
 
-                        List<PD_City> part2 = _shortestPaths[new PD_CityEdge_Directed(
-                            _researchStationClosestToDestination,
-                            destination
-                            )];
+                        List<PD_City> part2 =
+                            shortest_path__per__destination__per__origin
+                            [_researchStationClosestToDestination.ID]
+                            [destination.ID];
 
                         List<PD_City> rsRoute = new List<PD_City>();
                         rsRoute.AddRange(part1);
@@ -456,7 +455,10 @@ namespace Pandemic_AI_Framework
                 var minRoute = new List<PD_City>();
                 foreach (var rsCity in researchStationCities)
                 {
-                    var route = _shortestPaths[new PD_CityEdge_Directed(city, rsCity)];
+                    var route =
+                        shortest_path__per__destination__per__origin
+                        [city.ID]
+                        [rsCity.ID];
 
                     if (route.Count < minDist)
                     {

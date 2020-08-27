@@ -589,10 +589,10 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash += (hash * 13) + Gene_TurnIndex.GetHashCode();
+            hash = (hash * 13) + Gene_TurnIndex.GetHashCode();
             foreach (var macro in MacroActions)
             {
-                hash += (hash * 13) + macro.GetHashCode();
+                hash = (hash * 13) + macro.GetHashCode();
             }
 
             return hash;

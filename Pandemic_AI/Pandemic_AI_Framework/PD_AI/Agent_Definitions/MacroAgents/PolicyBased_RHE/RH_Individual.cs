@@ -492,11 +492,11 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash += (hash * 13) + NumSimulationsForEvaluation.GetHashCode();
-            hash += (hash * 13) + EvaluationScores.GetHashCode();
+            hash = (hash * 13) + NumSimulationsForEvaluation.GetHashCode();
+            hash = (hash * 13) + EvaluationScores.GetHashCode();
             foreach (var gene in Genome)
             {
-                hash += (hash * 13) + gene.GetHashCode();
+                hash = (hash * 13) + gene.GetHashCode();
             }
 
             return hash;

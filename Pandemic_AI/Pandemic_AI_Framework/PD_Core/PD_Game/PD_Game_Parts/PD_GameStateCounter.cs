@@ -234,16 +234,16 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash += (hash * 13) + NumberOfPlayers.GetHashCode();
-            hash += (hash * 13) + CurrentPlayerActionIndex.GetHashCode();
-            hash += (hash * 13) + CurrentPlayerIndex.GetHashCode();
-            hash += (hash * 13) + CurrentTurnIndex.GetHashCode();
-            hash += (hash * 13) + CureMarkersStates.GetHashCode();
-            hash += (hash * 13) + OutbreaksCounter.GetHashCode();
-            hash += (hash * 13) + EpidemicsCounter.GetHashCode();
+            hash = (hash * 13) + NumberOfPlayers.GetHashCode();
+            hash = (hash * 13) + CurrentPlayerActionIndex.GetHashCode();
+            hash = (hash * 13) + CurrentPlayerIndex.GetHashCode();
+            hash = (hash * 13) + CurrentTurnIndex.GetHashCode();
+            hash = (hash * 13) + CureMarkersStates.GetHashCode();
+            hash = (hash * 13) + OutbreaksCounter.GetHashCode();
+            hash = (hash * 13) + EpidemicsCounter.GetHashCode();
 
-            hash += (hash * 13) + NotEnoughDiseaseCubesToCompleteAnInfection.GetHashCode();
-            hash += (hash * 13) + NotEnoughPlayerCardsToDraw.GetHashCode();
+            hash = (hash * 13) + NotEnoughDiseaseCubesToCompleteAnInfection.GetHashCode();
+            hash = (hash * 13) + NotEnoughPlayerCardsToDraw.GetHashCode();
 
             return hash;
         }

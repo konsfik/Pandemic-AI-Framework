@@ -132,12 +132,12 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash += (hash * 13) + GameDifficultyLevel.GetHashCode();
-            hash += (hash * 13) + NumberOfInitialCardsPerNumberOfPlayers.GetHashCode();
-            hash += (hash * 13) + InfectionRatesPerEpidemicsCounter.GetHashCode();
-            hash += (hash * 13) + NumberOfEpidemicCardsPerDifficultyLevel.GetHashCode();
-            hash += (hash * 13) + MaximumViableOutbreaks.GetHashCode();
-            hash += (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer.GetHashCode();
+            hash = (hash * 13) + GameDifficultyLevel.GetHashCode();
+            hash = (hash * 13) + NumberOfInitialCardsPerNumberOfPlayers.GetHashCode();
+            hash = (hash * 13) + InfectionRatesPerEpidemicsCounter.GetHashCode();
+            hash = (hash * 13) + NumberOfEpidemicCardsPerDifficultyLevel.GetHashCode();
+            hash = (hash * 13) + MaximumViableOutbreaks.GetHashCode();
+            hash = (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer.GetHashCode();
 
             return hash;
         }

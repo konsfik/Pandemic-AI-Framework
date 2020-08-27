@@ -114,7 +114,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash += (hash * 13) + this.CurrentState.GetHashCode();
+            hash = (hash * 13) + this.CurrentState.GetHashCode();
 
             return hash;
         }

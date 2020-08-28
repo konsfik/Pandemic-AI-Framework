@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -133,15 +134,18 @@ namespace Pandemic_AI_Framework
 
             // general - data
             minified_game.players = new List<int>();
-            for (int p = 0; p < minified_game.number_of_players; p++) {
+            for (int p = 0; p < minified_game.number_of_players; p++)
+            {
                 minified_game.players.Add(p);
             }
 
             // player - roles
             minified_game.unassigned_player_roles = new List<PD_Mini__Player_Roles>();
-            foreach (var role_card in game.Cards.InactiveRoleCards) {
+            foreach (var role_card in game.Cards.InactiveRoleCards)
+            {
                 PD_Player_Roles role = role_card.Role;
-                switch (role) {
+                switch (role)
+                {
                     case PD_Player_Roles.None:
                         minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.UNDEFINED);
                         break;
@@ -160,7 +164,8 @@ namespace Pandemic_AI_Framework
                 }
             }
             minified_game.role__per__player = new PD_Mini__Player_Roles[minified_game.number_of_players];
-            foreach (int p in minified_game.players) {
+            foreach (int p in minified_game.players)
+            {
                 var game_player = game.Players[p];
                 PD_Player_Roles game_player_role = game.GQ_Find_Player_Role(game_player);
                 switch (game_player_role)
@@ -225,9 +230,42 @@ namespace Pandemic_AI_Framework
                 minified_game.infection_type__per__city[c] = game.Map.Cities[c].Type;
             }
 
-            
-
             minified_game.location__per__player = new int[minified_game.number_of_players];
+            foreach (int p in minified_game.players)
+            {
+                var game_player = game.Players[p];
+                var game_player_location = game.GQ_PlayerLocation(game_player);
+                minified_game.location__per__player[p] = game_player_location.ID;
+            }
+
+            // game elements
+            minified_game.available_research_stations = game.MapElements.InactiveResearchStations.Count;
+
+            minified_game.available_infection_cubes__per__type = new int[4];
+            for (int t = 0; t < 4; t++)
+            {
+                minified_game.available_infection_cubes__per__type[t] =
+                    game.Count_Num_InactiveInfectionCubes_OfType(t);
+            }
+
+            minified_game.infection_cubes__per__type__per__city = new int[minified_game.number_of_cities][];
+            foreach (int c in minified_game.cities)
+            {
+                minified_game.infection_cubes__per__type__per__city[c] = new int[4];
+            }
+            foreach (var city in game.Map.Cities)
+            {
+                for (int t = 0; t < 4; t++)
+                {
+                    minified_game.infection_cubes__per__type__per__city[city.ID][t] = 
+                        game.GQ_Find_InfectionCubes_OfType_OnCity(
+                            city,
+                            t
+                            ).Count;
+                }
+            }
+
+
 
             return minified_game;
         }

@@ -114,10 +114,53 @@ namespace Pandemic_AI_Framework
             throw new NotImplementedException();
         }
 
-        //public static Pandemic_Mini_State From_Normal_State(PD_Game normal_state) {
-        //    Pandemic_Mini_State mini_state = new Pandemic_Mini_State();
-        //    mini_state.number_of_players = 
-        //}
+        public static Pandemic_Mini_State From_Normal_State(PD_Game normal_state)
+        {
+            Pandemic_Mini_State mini_state = new Pandemic_Mini_State();
+
+            mini_state.number_of_cities = normal_state.Map.Cities.Count;
+            mini_state.cities = new int[mini_state.number_of_cities];
+            for (int i = 0; i < mini_state.number_of_cities; i++)
+            {
+                mini_state.cities[i] = i;
+            }
+            mini_state.neighbors__per__city = new int[mini_state.number_of_cities][];
+            foreach (int city in mini_state.cities)
+            {
+                var neighbors = normal_state.Map.CityNeighbors_PerCityID[city];
+                mini_state.neighbors__per__city[city] = new int[neighbors.Count];
+                for (int n = 0; n < neighbors.Count; n++)
+                {
+                    var neighbor = neighbors[n];
+                    mini_state.neighbors__per__city[city][n] = neighbor.ID;
+                }
+            }
+            mini_state.research_station__per__city = new bool[mini_state.number_of_cities];
+            foreach (int c in mini_state.cities)
+            {
+                var city = normal_state.Map.Cities[c];
+                if (normal_state.GQ_Is_City_ResearchStation(city))
+                {
+                    mini_state.research_station__per__city[c] = true;
+                }
+                else
+                {
+                    mini_state.research_station__per__city[c] = false;
+                }
+            }
+
+
+            mini_state.infection_type__per__city = new int[mini_state.number_of_cities];
+            for (int c = 0; c < mini_state.number_of_cities; c++)
+            {
+                mini_state.infection_type__per__city[c] = normal_state.Map.Cities[c].Type;
+            }
+
+            mini_state.number_of_players = normal_state.GameStateCounter.NumberOfPlayers;
+
+
+            return mini_state;
+        }
 
     }
 }

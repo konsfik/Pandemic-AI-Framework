@@ -1142,7 +1142,7 @@ namespace Pandemic_AI_Framework
 
         public void UpdateAvailablePlayerActions()
         {
-            CurrentAvailablePlayerActions = PD_Game_Action_Queries.GAQ_Find_AvailablePlayerActions(this);
+            CurrentAvailablePlayerActions = this.FindAvailable_PlayerActions();
         }
 
         public void ApplySpecificPlayerAction(
@@ -1333,10 +1333,7 @@ namespace Pandemic_AI_Framework
         public PD_Game Request_Fair_ForwardModel(Random randomness_provider)
         {
             PD_Game gameCopy = this.GetCustomDeepCopy();
-            PD_Game_Operators.GO_RandomizeGame(
-                randomness_provider,
-                gameCopy
-                );
+            gameCopy.GO_RandomizeGame(randomness_provider);
             return gameCopy;
         }
 

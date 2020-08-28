@@ -256,9 +256,7 @@ namespace Pandemic_AI_Framework
             RH_State_Type stateType = Calculate_State_Type(gameState);
             RH_Macro_Type macroType = Calculate_Macro_Type(macro);
 
-            bool gameStateOngoing = PD_Game_Queries.GQ_Is_Ongoing(
-                gameState
-                );
+            bool gameStateOngoing = gameState.GQ_Is_Ongoing();
 
             if (gameStateOngoing == false)
             {
@@ -267,7 +265,7 @@ namespace Pandemic_AI_Framework
 
             if (macroType == RH_Macro_Type.MainPlayerActions)
             {
-                int numAvailableActions = PD_Game_Queries.GQ_Count_RemainingPlayerActions_ThisRound(gameState);
+                int numAvailableActions = gameState.GQ_RemainingPlayerActions_ThisRound();
                 List<PD_GameAction_Base> executablePart = new List<PD_GameAction_Base>();
                 for (int i = 0; i < numAvailableActions; i++)
                 {
@@ -443,8 +441,8 @@ namespace Pandemic_AI_Framework
         {
             if (
                 game.GameStateCounter.CurrentTurnIndex > Gene_TurnIndex
-                || PD_Game_Queries.GQ_Is_Lost(game)
-                || PD_Game_Queries.GQ_Is_Won(game)
+                || game.GQ_Is_Lost()
+                || game.GQ_Is_Won()
                 )
             {
                 return RH_State_Type.NextTurn;
@@ -530,7 +528,7 @@ namespace Pandemic_AI_Framework
             )
         {
             bool correctTurn = gameState.GameStateCounter.CurrentTurnIndex == Gene_TurnIndex;
-            bool ongoing = PD_Game_Queries.GQ_Is_Ongoing(gameState);
+            bool ongoing = gameState.GQ_Is_Ongoing();
             return correctTurn && ongoing;
         }
 

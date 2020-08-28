@@ -15,7 +15,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
-            if (PD_Game_Queries.GQ_IsInState_Discard_Any(game) == false)
+            if (game.GQ_IsInState_Discard_Any() == false)
             {
                 throw new System.Exception("game is not in discard state");
             }

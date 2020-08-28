@@ -73,7 +73,7 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < Genome.Count; i++)
             {
-                if (PD_Game_Queries.GQ_Is_Ongoing(mutationGameState))
+                if (mutationGameState.GQ_Is_Ongoing())
                 {
                     double mutationChance = randomnessProvider.NextDouble();
                     if (mutationChance < mutationRate)
@@ -113,7 +113,7 @@ namespace Pandemic_AI_Framework
                 int randomMutationIndex = randomnessProvider.Next(Genome.Count);
                 for (int i = 0; i < Genome.Count; i++)
                 {
-                    if (PD_Game_Queries.GQ_Is_Ongoing(newMutationGameState))
+                    if (newMutationGameState.GQ_Is_Ongoing())
                     {
                         if (i != randomMutationIndex)
                         {
@@ -145,7 +145,7 @@ namespace Pandemic_AI_Framework
             }
 
             if (
-                PD_Game_Queries.GQ_Is_Ongoing(mutationGameState)
+                mutationGameState.GQ_Is_Ongoing()
                 && IsComplete() == false
                 )
             {
@@ -180,9 +180,7 @@ namespace Pandemic_AI_Framework
                 PD_Game evaluation_GameState = initial_GameState.Request_Fair_ForwardModel(randomness_provider);
                 foreach (var gene in Genome)
                 {
-                    if (
-                        PD_Game_Queries.GQ_Is_Ongoing(evaluation_GameState)
-                        )
+                    if (evaluation_GameState.GQ_Is_Ongoing())
                     {
                         gene.ApplySelfOnGameState(
                             randomness_provider,
@@ -193,10 +191,7 @@ namespace Pandemic_AI_Framework
                     }
                 }
 
-                if (
-                    PD_Game_Queries.GQ_Is_Ongoing(evaluation_GameState)
-                    && IsComplete() == false
-                    )
+                if (evaluation_GameState.GQ_Is_Ongoing()&& IsComplete() == false)
                 {
                     Expand(
                         randomness_provider,
@@ -243,7 +238,7 @@ namespace Pandemic_AI_Framework
 
             // create the new macros and put them in the dictionary
             while (
-                PD_Game_Queries.GQ_Is_Ongoing(generator_GameState)
+                generator_GameState.GQ_Is_Ongoing()
                 &&
                 currentTurn < finalTurn
                 )

@@ -20,47 +20,47 @@ namespace Pandemic_AI_Framework
                 PD_GA_SetupGame_Random sg = new PD_GA_SetupGame_Random();
                 currentAvailablePlayerActions.Add(sg);
             }
-            else if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game))
+            else if (game.GQ_IsInState_ApplyingMainPlayerActions())
             {
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_0_Stay(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_Stay_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PMA_DriveFerry(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PMA_DirectFlight(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PMA_CharterFlight(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PMA_ShuttleFlight(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PMA_OperationsExpert_Flight(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_DriveFerry_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_DirectFlight_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_CharterFlight_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShuttleFlight_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_OperationsExpertFlight_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_BuildResearchStation(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_BuildResearchStation_OperationsExpert(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_MoveResearchStation(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_BuildResearchStation_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_BuildResearchStation_OperationsExpert_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_MoveResearchStation_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_TreatDisease(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_TreatDisease_Medic(game));
+                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_TreatDisease(game));
+                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_TreatDisease_Medic(game));
 
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_TakeCard(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard_ResearcherGives(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_PlayerTakesCard_FromResearcher(game));
+                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_TakeCard_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_GiveCard_ResearcherGives_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_TakeCard_FromResearcher_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_DiscoverCure(game));
-                currentAvailablePlayerActions.AddRange(GAQ_Find_AvailablePlayerActions_PA_DiscoverCure_Scientist(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Scientist_Actions(game));
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(game))
+            else if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
                 currentAvailablePlayerActions.AddRange(
-                    GAQ_Find_Available_DiscardDuringMainPlayerActions_Actions(game)
+                    GAQ_FindAvailable_DiscardDuringMainPlayerActions_Actions(game)
                     );
             }
-            else if (PD_Game_Queries.GQ_IsInState_DrawingNewPlayerCards(game))
+            else if (game.GQ_IsInState_DrawingNewPlayerCards())
             {
                 currentAvailablePlayerActions.Add(
                     new PD_DrawNewPlayerCards(currentPlayer)
                     );
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(game))
+            else if (game.GQ_IsInState_DiscardAfterDrawing())
             {
                 currentAvailablePlayerActions.AddRange(
-                    GAQ_Find_Available_DiscardAfterDrawing_Actions(game)
+                    GAQ_FindAvailable_DiscardAfterDrawing_Actions(game)
                     );
             }
             else if (game.GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingEpidemicCard))
@@ -85,29 +85,27 @@ namespace Pandemic_AI_Framework
             return currentAvailablePlayerActions;
         }
 
-        public static List<PD_PA_Stay>
-            GAQ_Find_AvailablePlayerActions_0_Stay(
+        private static List<PD_PA_Stay> FindAvailable_Stay_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             List<PD_PA_Stay> availableStayCommands = new List<PD_PA_Stay>();
             PD_PA_Stay stayCommand = new PD_PA_Stay(
                 currentPlayer,
-                PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer)
+                game.GQ_PlayerLocation(currentPlayer)
                 );
             availableStayCommands.Add(stayCommand);
             return availableStayCommands;
         }
 
-        public static List<PD_PMA_DriveFerry>
-            GAQ_Find_AvailablePlayerActions_PMA_DriveFerry(
+        private static List<PD_PMA_DriveFerry> FindAvailable_DriveFerry_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPlayerPawnLocation = PD_Game_Queries.GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
+            var currentPlayerPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
 
             var currentPawnAdjacentLocations = game.Map.CityNeighbors_PerCityID[currentPlayerPawnLocation.ID];
 
@@ -124,16 +122,15 @@ namespace Pandemic_AI_Framework
             return availablePlayerActions_Ferry;
         }
 
-        public static List<PD_PMA_DirectFlight>
-            GAQ_Find_AvailablePlayerActions_PMA_DirectFlight(
+        private static List<PD_PMA_DirectFlight> FindAvailable_DirectFlight_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = PD_Game_Queries.GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
+            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
 
-            var cityCardsInCurrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
             var directFlightActions = new List<PD_PMA_DirectFlight>();
 
@@ -153,16 +150,15 @@ namespace Pandemic_AI_Framework
             return directFlightActions;
         }
 
-        public static List<PD_PMA_CharterFlight>
-            GAQ_Find_AvailablePlayerActions_PMA_CharterFlight(
+        private static List<PD_PMA_CharterFlight> FindAvailable_CharterFlight_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = PD_Game_Queries.GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
+            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
 
-            var cityCardsInCurrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
             var charterFlightActions = new List<PD_PMA_CharterFlight>();
 
@@ -199,16 +195,15 @@ namespace Pandemic_AI_Framework
             return charterFlightActions;
         }
 
-        public static List<PD_PMA_ShuttleFlight>
-            GAQ_Find_AvailablePlayerActions_PMA_ShuttleFlight(
+        private static List<PD_PMA_ShuttleFlight> FindAvailable_ShuttleFlight_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = PD_Game_Queries.GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
+            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
 
-            var cityCardsInCurrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
             var shuttleFlightActions = new List<PD_PMA_ShuttleFlight>();
 
@@ -242,21 +237,20 @@ namespace Pandemic_AI_Framework
             return shuttleFlightActions;
         }
 
-        public static List<PD_PMA_OperationsExpert_Flight>
-            GAQ_Find_AvailablePlayerActions_PMA_OperationsExpert_Flight(
+        private static List<PD_PMA_OperationsExpert_Flight> FindAvailable_OperationsExpertFlight_Actions(
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerIsOperationsExpert = currentPlayerRole == PD_Player_Roles.Operations_Expert;
             if (currentPlayerIsOperationsExpert == false)
             {
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            PD_City currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            PD_City currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
-            List<PD_City> allResearchStationCities = PD_Game_Queries.GQ_Find_ResearchStationCities(game);
+            List<PD_City> allResearchStationCities = game.GQ_ResearchStationCities();
             bool currentPlayerLocationIsResearchStation = allResearchStationCities.Contains(currentPlayerLocation);
             if (currentPlayerLocationIsResearchStation == false)
             {
@@ -270,7 +264,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
 
-            List<PD_CityCard> cityCardsInCurerrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+            List<PD_CityCard> cityCardsInCurerrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
             if (cityCardsInCurerrentPlayerHand.Count == 0)
             {
                 return new List<PD_PMA_OperationsExpert_Flight>();
@@ -301,13 +295,12 @@ namespace Pandemic_AI_Framework
             return availableActions;
         }
 
-        public static List<PD_PA_BuildResearchStation>
-            GAQ_Find_AvailablePlayerActions_PA_BuildResearchStation(
+        private static List<PD_PA_BuildResearchStation> FindAvailable_BuildResearchStation_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
             bool currentLocation_Is_RS =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
@@ -325,7 +318,7 @@ namespace Pandemic_AI_Framework
             }
 
             bool currentPlayer_Is_Operations_Expert =
-                PD_Game_Queries.GQ_CurrentPlayer_Role(game) == PD_Player_Roles.Operations_Expert;
+                game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Operations_Expert;
 
             if (currentPlayer_Is_Operations_Expert)
             {
@@ -335,7 +328,7 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_PA_BuildResearchStation> buildResearchStation_Actions = new List<PD_PA_BuildResearchStation>();
 
-                var cityCardsInPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+                var cityCardsInPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
                 bool player_Has_CurrentLocation_CityCard =
                     cityCardsInPlayerHand.Any(
@@ -357,13 +350,12 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static List<PD_PA_BuildResearchStation_OperationsExpert>
-            GAQ_Find_AvailablePlayerActions_PA_BuildResearchStation_OperationsExpert(
+        private static List<PD_PA_BuildResearchStation_OperationsExpert> FindAvailable_BuildResearchStation_OperationsExpert_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
             bool currentLocation_Is_RS =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
@@ -381,7 +373,7 @@ namespace Pandemic_AI_Framework
             }
 
             bool currentPlayer_Is_Operations_Expert =
-                PD_Game_Queries.GQ_CurrentPlayer_Role(game) == PD_Player_Roles.Operations_Expert;
+                game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Operations_Expert;
 
             if (currentPlayer_Is_Operations_Expert)
             {
@@ -400,14 +392,13 @@ namespace Pandemic_AI_Framework
             return new List<PD_PA_BuildResearchStation_OperationsExpert>();
         }
 
-        public static List<PD_PA_MoveResearchStation>
-            GAQ_Find_AvailablePlayerActions_PA_MoveResearchStation(
+        private static List<PD_PA_MoveResearchStation> FindAvailable_MoveResearchStation_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
-            var cityCardsInPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
+            var cityCardsInPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
             var citiesOfCityCardsInPlayerHand = new List<PD_City>();
             foreach (var card in cityCardsInPlayerHand)
@@ -451,25 +442,21 @@ namespace Pandemic_AI_Framework
             return moveResearchStationActions;
         }
 
-        public static List<PD_PA_TreatDisease>
-            GAQ_Find_AvailablePlayerActions_PA_TreatDisease(
+        private static List<PD_PA_TreatDisease> Find_AvailablePlayerActions_PA_TreatDisease(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
-            bool currentPlayerIsMedic = PD_Game_Queries.GQ_CurrentPlayer_Role(game) == PD_Player_Roles.Medic;
+            bool currentPlayerIsMedic = game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic;
             if (currentPlayerIsMedic)
             {
                 return new List<PD_PA_TreatDisease>();
             }
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
-                PD_Game_Queries.GQ_Find_InfectionCubeTypes_OnCity(
-                    game,
-                    currentPlayerLocation
-                    );
+                game.GQ_Find_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
             List<PD_PA_TreatDisease> availableTreatDiseaseActions = new List<PD_PA_TreatDisease>();
 
@@ -482,25 +469,21 @@ namespace Pandemic_AI_Framework
             return availableTreatDiseaseActions;
         }
 
-        public static List<PD_PA_TreatDisease_Medic>
-            GAQ_Find_AvailablePlayerActions_PA_TreatDisease_Medic(
+        private static List<PD_PA_TreatDisease_Medic> Find_AvailablePlayerActions_PA_TreatDisease_Medic(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
-            bool currentPlayerIsMedic = PD_Game_Queries.GQ_CurrentPlayer_Role(game) == PD_Player_Roles.Medic;
+            bool currentPlayerIsMedic = game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic;
             if (currentPlayerIsMedic == false)
             {
                 return new List<PD_PA_TreatDisease_Medic>();
             }
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
-                PD_Game_Queries.GQ_Find_InfectionCubeTypes_OnCity(
-                    game,
-                    currentPlayerLocation
-                    );
+                game.GQ_Find_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
             List<PD_PA_TreatDisease_Medic> availableTreatDiseaseMedicActions = new List<PD_PA_TreatDisease_Medic>();
 
@@ -513,21 +496,20 @@ namespace Pandemic_AI_Framework
             return availableTreatDiseaseMedicActions;
         }
 
-        public static List<PD_PA_ShareKnowledge_GiveCard>
-            GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(
+        private static List<PD_PA_ShareKnowledge_GiveCard> Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole == PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_GiveCard>();
             }
 
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
-            var cityCardsInCurrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, currentPlayer);
+            var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInPlayerHand(currentPlayer);
 
             var cityCardToGive = game.GameElementReferences.CityCards.Find(
                 x =>
@@ -542,7 +524,7 @@ namespace Pandemic_AI_Framework
                 var otherPlayersInSameLocation = game.Players.FindAll(
                     x =>
                     x != currentPlayer
-                    && PD_Game_Queries.GQ_Find_PlayerLocation(game, x) == currentPlayerLocation
+                    && game.GQ_PlayerLocation(x) == currentPlayerLocation
                     );
 
                 foreach (var otherPlayerInSameLocation in otherPlayersInSameLocation)
@@ -561,32 +543,31 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_GiveCard_Actions;
         }
 
-        public static List<PD_PA_ShareKnowledge_TakeCard>
-            GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_TakeCard(
+        private static List<PD_PA_ShareKnowledge_TakeCard>FindAvailable_ShareKnowledge_TakeCard_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             List<PD_PA_ShareKnowledge_TakeCard> availableShareKnowledge_TakeCard_Actions =
                 new List<PD_PA_ShareKnowledge_TakeCard>();
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             var cityCardToTake = game.GameElementReferences.CityCards.Find(x => x.City == currentPlayerLocation);
 
             var otherPlayersInSameLocation = game.Players.FindAll(
                 x =>
                 x != currentPlayer
-                && currentPlayerLocation == PD_Game_Queries.GQ_Find_PlayerLocation(game, x)
+                && currentPlayerLocation == game.GQ_PlayerLocation(x)
                 );
 
             foreach (var otherPlayerInSameLocation in otherPlayersInSameLocation)
             {
-                PD_Player_Roles otherPlayerRole = PD_Game_Queries.GQ_Find_Player_Role(game, otherPlayerInSameLocation);
+                PD_Player_Roles otherPlayerRole = game.GQ_Find_Player_Role(otherPlayerInSameLocation);
                 if (otherPlayerRole == PD_Player_Roles.Researcher)
                 {
                     continue;
                 }
-                var otherPlayerCityCards = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, otherPlayerInSameLocation);
+                var otherPlayerCityCards = game.GQ_CityCardsInPlayerHand(otherPlayerInSameLocation);
                 if (otherPlayerCityCards.Contains(cityCardToTake))
                 {
                     var action = new PD_PA_ShareKnowledge_TakeCard(
@@ -603,36 +584,36 @@ namespace Pandemic_AI_Framework
             return availableShareKnowledge_TakeCard_Actions;
         }
 
-        public static List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>
-            GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard_ResearcherGives(
+        private static List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>
+            FindAvailable_ShareKnowledge_GiveCard_ResearcherGives_Actions(
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole != PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>();
             }
 
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             var otherPlayers = game.Players.FindAll(
                 x =>
                 x != currentPlayer
                 );
             var otherPlayersInSameLocation = otherPlayers.FindAll(
                 x =>
-                PD_Game_Queries.GQ_Find_PlayerLocation(game, x) == currentPlayerLocation
+                game.GQ_PlayerLocation(x) == currentPlayerLocation
                 );
 
             List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives> available_ShareKnowledge_GiveCard_ResearcherGives_Actions =
                 new List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>();
 
-            var cityCardsInCurrentPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, currentPlayer);
+            var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInPlayerHand(currentPlayer);
 
             foreach (var otherPlayer in otherPlayersInSameLocation)
             {
-                PD_City otherPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, otherPlayer);
+                PD_City otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                 if (otherPlayerLocation == currentPlayerLocation)
                 {
                     foreach (var cityCardInCurrentPlayerHand in cityCardsInCurrentPlayerHand)
@@ -650,14 +631,14 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_GiveCard_ResearcherGives_Actions;
         }
 
-        public static List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>
-            GAQ_Find_AvailablePlayerActions_PA_ShareKnowledge_PlayerTakesCard_FromResearcher(
+        private static List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>
+            FindAvailable_ShareKnowledge_TakeCard_FromResearcher_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole == PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
@@ -665,7 +646,7 @@ namespace Pandemic_AI_Framework
 
             var researcher = game.Players.Find(
                 x =>
-                PD_Game_Queries.GQ_Find_Player_Role(game, x) == PD_Player_Roles.Researcher
+                game.GQ_Find_Player_Role(x) == PD_Player_Roles.Researcher
                 );
 
             if (researcher == null)
@@ -673,8 +654,8 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, currentPlayer);
-            PD_City researcherLocation = PD_Game_Queries.GQ_Find_PlayerLocation(game, researcher);
+            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
+            PD_City researcherLocation = game.GQ_PlayerLocation(researcher);
 
             if (researcherLocation != currentPlayerLocation)
             {
@@ -685,7 +666,7 @@ namespace Pandemic_AI_Framework
                 available_ShareKnowledge_TakeCard_FromResearcher_Actions =
                 new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
 
-            List<PD_CityCard> cityCardsInResearchersHand = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, researcher);
+            List<PD_CityCard> cityCardsInResearchersHand = game.GQ_CityCardsInPlayerHand(researcher);
             foreach (var cityCardToTake in cityCardsInResearchersHand)
             {
                 PD_PA_ShareKnowledge_TakeCard_FromResearcher takeAction = new PD_PA_ShareKnowledge_TakeCard_FromResearcher(
@@ -699,19 +680,19 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_TakeCard_FromResearcher_Actions;
         }
 
-        public static List<PD_PA_DiscoverCure>
-            GAQ_Find_AvailablePlayerActions_PA_DiscoverCure(
+        private static List<PD_PA_DiscoverCure>
+            FindAvailable_DiscoverCure_Actions(
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerRoleIsScientist = currentPlayerRole == PD_Player_Roles.Scientist;
             if (currentPlayerRoleIsScientist)
             {
                 return new List<PD_PA_DiscoverCure>();
             }
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_CurrentPlayer_Location(game);
+            var currentPlayerLocation = game.GQ_Find_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)
@@ -719,9 +700,9 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_DiscoverCure>();
             }
 
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var usableDiscoverCureCardGroups =
-                PD_Game_Queries.GQ_Find_UsableDiscoverCureCardGroups(game, currentPlayer);
+                game.GQ_Find_UsableDiscoverCureCardGroups(currentPlayer);
             if (usableDiscoverCureCardGroups.Count == 0)
             {
                 return new List<PD_PA_DiscoverCure>();
@@ -742,19 +723,19 @@ namespace Pandemic_AI_Framework
             return availableDiscoverCureActions;
         }
 
-        public static List<PD_PA_DiscoverCure_Scientist>
-            GAQ_Find_AvailablePlayerActions_PA_DiscoverCure_Scientist(
+        private static List<PD_PA_DiscoverCure_Scientist>
+            FindAvailable_DiscoverCure_Scientist_Actions(
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
+            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerRoleIsScientist = currentPlayerRole == PD_Player_Roles.Scientist;
             if (currentPlayerRoleIsScientist == false)
             {
                 return new List<PD_PA_DiscoverCure_Scientist>();
             }
 
-            var currentPlayerLocation = PD_Game_Queries.GQ_Find_CurrentPlayer_Location(game);
+            var currentPlayerLocation = game.GQ_Find_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)
@@ -762,9 +743,9 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_DiscoverCure_Scientist>();
             }
 
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var usableDiscoverCureCardGroups =
-                PD_Game_Queries.GQ_Find_UsableDiscoverCureCardGroups(game, currentPlayer);
+                game.GQ_Find_UsableDiscoverCureCardGroups(currentPlayer);
             if (usableDiscoverCureCardGroups.Count == 0)
             {
                 return new List<PD_PA_DiscoverCure_Scientist>();
@@ -785,19 +766,19 @@ namespace Pandemic_AI_Framework
             return availableDiscoverCureActions;
         }
 
-        public static List<PD_PA_Discard_DuringMainPlayerActions>
-            GAQ_Find_Available_DiscardDuringMainPlayerActions_Actions(
+        private static List<PD_PA_Discard_DuringMainPlayerActions>
+            GAQ_FindAvailable_DiscardDuringMainPlayerActions_Actions(
             PD_Game game
             )
         {
             List<PD_PA_Discard_DuringMainPlayerActions> discardDuringMainPlayerActions_Actions =
                 new List<PD_PA_Discard_DuringMainPlayerActions>();
 
-            if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(game))
+            if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
                 foreach (var player in game.Players)
                 {
-                    var cityCardsInPlayerHand = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, player);
+                    var cityCardsInPlayerHand = game.GQ_CityCardsInPlayerHand(player);
                     if (cityCardsInPlayerHand.Count > 7)
                     {
                         foreach (var cardToDiscard in cityCardsInPlayerHand)
@@ -814,19 +795,19 @@ namespace Pandemic_AI_Framework
             return discardDuringMainPlayerActions_Actions;
         }
 
-        public static List<PD_PA_Discard_AfterDrawing>
-            GAQ_Find_Available_DiscardAfterDrawing_Actions(
+        private static List<PD_PA_Discard_AfterDrawing>
+            GAQ_FindAvailable_DiscardAfterDrawing_Actions(
             PD_Game game
             )
         {
             List<PD_PA_Discard_AfterDrawing> discardAfterDrawing_Actions = new List<PD_PA_Discard_AfterDrawing>();
 
-            if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(game))
+            if (game.GQ_IsInState_DiscardAfterDrawing())
             {
-                PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+                PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
                 List<PD_CityCard> cityCardsInCurrentPlayerHand =
-                    PD_Game_Queries.GQ_Find_CityCardsInCurrentPlayerHand(game);
+                    game.GQ_Find_CityCardsInCurrentPlayerHand();
                 if (cityCardsInCurrentPlayerHand.Count > 7)
                 {
                     foreach (var cardToDiscard in cityCardsInCurrentPlayerHand)

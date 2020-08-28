@@ -38,7 +38,7 @@ namespace Pandemic_AI_Framework.Tests
                     int numCards = numCardsTable[type, playerIndex];
 
                     PD_Player player = game.Players[playerIndex];
-                    List<PD_CityCard> playerCards = PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(game, player);
+                    List<PD_CityCard> playerCards = PD_Game_Queries.GQ_CityCardsInPlayerHand(game, player);
                     List<PD_CityCard> playerCardsOfThisType = playerCards.FindAll(
                         x => 
                         x.Type == type

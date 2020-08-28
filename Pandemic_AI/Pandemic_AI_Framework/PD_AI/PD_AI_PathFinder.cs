@@ -211,8 +211,8 @@ namespace Pandemic_AI_Framework
             }
             else
             {
-                bool rootIsResearchStation = PD_Game_Queries.GQ_Is_City_ResearchStation(game, root);
-                bool destinationIsResearchStation = PD_Game_Queries.GQ_Is_City_ResearchStation(game, destination);
+                bool rootIsResearchStation = game.GQ_Is_City_ResearchStation(root);
+                bool destinationIsResearchStation = game.GQ_Is_City_ResearchStation(destination);
                 if (rootIsResearchStation && destinationIsResearchStation)
                 {
                     return new List<PD_City>() {
@@ -408,7 +408,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("minimum allowed distance should be at least 1");
             }
-            var researchStationCities = PD_Game_Queries.GQ_Find_ResearchStationCities(game);
+            var researchStationCities = game.GQ_ResearchStationCities();
             var allCities = game.Map.Cities;
             var nonResearhcStationCities = allCities.FindAll(
                 x =>

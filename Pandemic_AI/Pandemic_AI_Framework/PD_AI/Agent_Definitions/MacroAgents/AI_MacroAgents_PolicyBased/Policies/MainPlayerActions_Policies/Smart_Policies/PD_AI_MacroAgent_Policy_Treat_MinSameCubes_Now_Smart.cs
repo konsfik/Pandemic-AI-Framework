@@ -20,7 +20,7 @@ namespace Pandemic_AI_Framework
 
         public override List<PD_MacroAction> FilterMacros(PD_Game game, PD_AI_PathFinder pathFinder, List<PD_MacroAction> allMacros)
         {
-            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game) == false)
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
@@ -69,8 +69,7 @@ namespace Pandemic_AI_Framework
                     PD_City destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
-                        PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                            game,
+                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );
@@ -87,8 +86,7 @@ namespace Pandemic_AI_Framework
                     PD_City destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
-                        PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                            game,
+                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );
@@ -104,8 +102,7 @@ namespace Pandemic_AI_Framework
                     PD_City destination = macro.Find_Destination();
                     int treatType = destination.Type;
                     int numCubesThisTypeOnThatCity =
-                        PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                            game,
+                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );

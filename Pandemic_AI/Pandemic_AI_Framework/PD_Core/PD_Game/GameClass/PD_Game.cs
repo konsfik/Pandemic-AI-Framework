@@ -323,7 +323,7 @@ namespace Pandemic_AI_Framework
             }
 
             // 1.3. place research station on atlanta
-            PD_City atlanta = PD_Game_Queries.GQ_Find_CityByName(this, "Atlanta");
+            PD_City atlanta = this.GQ_Find_CityByName("Atlanta");
             PD_Game_Operators.GO_PlaceResearchStationOnCity(
                 this, atlanta);
 
@@ -624,7 +624,7 @@ namespace Pandemic_AI_Framework
             }
 
             // discard the corresponding card from players hand
-            var cityCardsInPlayerHand = this.GQ_Find_CityCardsInPlayerHand(player);
+            var cityCardsInPlayerHand = this.GQ_CityCardsInPlayerHand(player);
 
             if (cityCardToDiscard != null)
             {
@@ -817,8 +817,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToGive
             )
         {
-            var playerLocation = this.GQ_Find_PlayerLocation(player_Gives_Card);
-            var otherPlayerLocation = this.GQ_Find_PlayerLocation(otherPlayer_TakesCard);
+            var playerLocation = this.GQ_PlayerLocation(player_Gives_Card);
+            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_TakesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 throw new System.Exception("Players do not share location!");
@@ -834,8 +834,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToTake
             )
         {
-            var playerLocation = this.GQ_Find_PlayerLocation(player_TakesCard);
-            var otherPlayerLocation = this.GQ_Find_PlayerLocation(otherPlayer_GivesCard);
+            var playerLocation = this.GQ_PlayerLocation(player_TakesCard);
+            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_GivesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 Console.WriteLine("player location: " + playerLocation.GetDescription());
@@ -853,8 +853,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToGive
             )
         {
-            var playerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, player_Researcher_GivesCard);
-            var otherPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, otherPlayer_TakesCard);
+            var playerLocation = this.GQ_PlayerLocation(player_Researcher_GivesCard);
+            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_TakesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 Console.WriteLine("player location: " + playerLocation.GetDescription());
@@ -872,8 +872,8 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToTake
             )
         {
-            var playerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, player_TakesCard);
-            var otherPlayerLocation = PD_Game_Queries.GQ_Find_PlayerLocation(this, otherPlayer_Researcher_GivesCard);
+            var playerLocation = this.GQ_PlayerLocation(player_TakesCard);
+            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_Researcher_GivesCard);
             if (playerLocation != otherPlayerLocation)
             {
                 Console.WriteLine("player location: " + playerLocation.GetDescription());
@@ -891,7 +891,7 @@ namespace Pandemic_AI_Framework
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = PD_Game_Queries.GQ_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Scientist;
 
             if (player_Is_Scientist)
             {
@@ -933,7 +933,7 @@ namespace Pandemic_AI_Framework
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = PD_Game_Queries.GQ_CurrentPlayer_Role(this) == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Scientist;
 
             if (player_Is_Scientist == false)
             {
@@ -970,11 +970,11 @@ namespace Pandemic_AI_Framework
 
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
         {
-            PD_City medicLocation = PD_Game_Queries.GQ_Find_Medic_Location(this);
+            PD_City medicLocation = this.GQ_Find_Medic_Location();
             if (medicLocation != null)
             {
                 List<int> infectionCubeTypes_OnMedicLocation =
-                    PD_Game_Queries.GQ_Find_InfectionCubeTypes_OnCity(this, medicLocation);
+                    this.GQ_Find_InfectionCubeTypes_OnCity(medicLocation);
 
                 if (infectionCubeTypes_OnMedicLocation.Contains(curedDiseaaseType))
                 {
@@ -1028,7 +1028,7 @@ namespace Pandemic_AI_Framework
             var cardFromBottom = Cards.DividedDeckOfInfectionCards.DrawFirstElementOfFirstSubList();
 
             int epidemicInfectionType = cardFromBottom.Type;
-            bool diseaseTypeEradicated = PD_Game_Queries.GQ_Is_Disease_Eradicated(this, epidemicInfectionType);
+            bool diseaseTypeEradicated = this.GQ_Is_Disease_Eradicated(epidemicInfectionType);
 
             if (diseaseTypeEradicated == false)
             {
@@ -1105,7 +1105,7 @@ namespace Pandemic_AI_Framework
         public void Com_ApplyInfectionCard(PD_Player player, PD_InfectionCard infectionCard)
         {
             int infectionType = infectionCard.Type;
-            bool diseaseEradicated = PD_Game_Queries.GQ_Is_Disease_Eradicated(this, infectionType);
+            bool diseaseEradicated = this.GQ_Is_Disease_Eradicated(infectionType);
 
             if (diseaseEradicated == false)
             {
@@ -1192,7 +1192,7 @@ namespace Pandemic_AI_Framework
                 CurrentAvailableMacros.Count == 0
                 )
             {
-                var researchStationCities = PD_Game_Queries.GQ_Find_ResearchStationCities(this);
+                var researchStationCities = this.GQ_ResearchStationCities();
                 CurrentAvailableMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                     this,
                     pathFinder,
@@ -1267,7 +1267,7 @@ namespace Pandemic_AI_Framework
                     throw new System.Exception("wrong macro type");
                 }
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(this))
+            else if (this.GQ_IsInState_DiscardAfterDrawing())
             {
                 PD_MacroAction_Type mat = macro.MacroAction_Type;
                 if (mat == PD_MacroAction_Type.Discard_AfterDrawing_Macro)
@@ -1291,7 +1291,7 @@ namespace Pandemic_AI_Framework
                     throw new System.Exception("wrong macro type");
                 }
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(this))
+            else if (this.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
                 PD_MacroAction_Type mat = macro.MacroAction_Type;
                 if (mat == PD_MacroAction_Type.Discard_DuringMainPlayerActions_Macro)

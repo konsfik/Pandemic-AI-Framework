@@ -34,8 +34,7 @@ namespace Pandemic_AI_Framework
             {
                 var player = game.Players[playerIndex];
                 var cityCardsInPlayerHand =
-                    PD_Game_Queries.GQ_Find_CityCardsInPlayerHand(
-                        game,
+                    game.GQ_CityCardsInPlayerHand(
                         player
                         );
                 for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
@@ -71,7 +70,7 @@ namespace Pandemic_AI_Framework
                 for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
                 {
                     PD_Player player = game.Players[playerIndex];
-                    bool isPlayerScientist = PD_Game_Queries.GQ_Find_Player_Role(game, player) == PD_Player_Roles.Scientist;
+                    bool isPlayerScientist = game.GQ_Find_Player_Role(player) == PD_Player_Roles.Scientist;
 
                     int numCards = numCardsTable[typeIndex, playerIndex];
                     int numCards_SetComplete = isPlayerScientist ? 4 : 5;
@@ -105,7 +104,7 @@ namespace Pandemic_AI_Framework
 
             for (int type = 0; type < numTypes; type++)
             {
-                bool isDiseaseCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(game, type);
+                bool isDiseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(type);
                 if (isDiseaseCured)
                 {
                     for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++)
@@ -148,7 +147,7 @@ namespace Pandemic_AI_Framework
 
             for (int type = 0; type < numTypes; type++)
             {
-                bool isDiseaseCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(game, type);
+                bool isDiseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(type);
                 if (isDiseaseCured)
                 {
                     for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++)

@@ -42,7 +42,7 @@ namespace Pandemic_AI_Framework
             PD_City medic_location = null;
             if (medic != null)
             {
-                medic_location = game.GQ_Find_PlayerLocation(medic);
+                medic_location = game.GQ_PlayerLocation(medic);
             }
             return medic_location;
         }
@@ -89,7 +89,7 @@ namespace Pandemic_AI_Framework
             return uselessCards;
         }
 
-        public static int GQ_Count_RemainingPlayerActions_ThisRound(
+        public static int GQ_RemainingPlayerActions_ThisRound(
             this PD_Game game
             )
         {
@@ -104,7 +104,7 @@ namespace Pandemic_AI_Framework
             foreach (var player in game.Players)
             {
                 allCityCardsInAllPlayersHands.AddRange(
-                    GQ_Find_CityCardsInPlayerHand(game, player)
+                    GQ_CityCardsInPlayerHand(game, player)
                     );
             }
             return allCityCardsInAllPlayersHands;
@@ -385,7 +385,7 @@ namespace Pandemic_AI_Framework
             )
         {
             bool player_Is_Scientist = game.RoleCardsPerPlayerID[player.ID].Role == PD_Player_Roles.Scientist;
-            var cityCardsInPlayerHand = GQ_Find_CityCardsInPlayerHand(game, player);
+            var cityCardsInPlayerHand = GQ_CityCardsInPlayerHand(game, player);
 
             if (player_Is_Scientist == false && cityCardsInPlayerHand.Count < 5)
             {
@@ -460,7 +460,7 @@ namespace Pandemic_AI_Framework
             return GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
         }
 
-        public static PD_City GQ_Find_PlayerLocation(
+        public static PD_City GQ_PlayerLocation(
             this PD_Game game,
             PD_Player player
             )
@@ -509,7 +509,7 @@ namespace Pandemic_AI_Framework
             return game.PlayerPawnsPerPlayerID[player.ID];
         }
 
-        public static List<PD_City> GQ_Find_ResearchStationCities(
+        public static List<PD_City> GQ_ResearchStationCities(
             this PD_Game game
             )
         {
@@ -572,13 +572,13 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            return GQ_Find_CityCardsInPlayerHand(
+            return GQ_CityCardsInPlayerHand(
                 game,
                 currentPlayer
                 );
         }
 
-        public static List<PD_CityCard> GQ_Find_CityCardsInPlayerHand(
+        public static List<PD_CityCard> GQ_CityCardsInPlayerHand(
             this PD_Game game,
             PD_Player player
             )
@@ -679,7 +679,7 @@ namespace Pandemic_AI_Framework
             return curedOrEradicatedDiseaseTypes;
         }
 
-        public static int GQ_Count_Num_DiseasesCured(
+        public static int GQ_Num_DiseasesCured(
             this PD_Game game
             )
         {
@@ -727,7 +727,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static bool GQ_IsInState_DiscardAfterDrawing(
-            PD_Game game
+            this PD_Game game
             )
         {
             if (

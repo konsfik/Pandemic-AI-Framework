@@ -17,15 +17,15 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder
             )
         {
-            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game))
+            if (game.GQ_IsInState_ApplyingMainPlayerActions())
             {
                 return MainPlayerActions_Behaviour(randomness_provider, game, pathFinder);
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardDuringMainPlayerActions(game))
+            else if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
                 return Discarding_DuringMainPlayerActions_Behaviour(randomness_provider, game, pathFinder);
             }
-            else if (PD_Game_Queries.GQ_IsInState_DiscardAfterDrawing(game))
+            else if (game.GQ_IsInState_DiscardAfterDrawing())
             {
                 return Discarding_AfterDrawing_Behaviour(randomness_provider, game, pathFinder);
             }

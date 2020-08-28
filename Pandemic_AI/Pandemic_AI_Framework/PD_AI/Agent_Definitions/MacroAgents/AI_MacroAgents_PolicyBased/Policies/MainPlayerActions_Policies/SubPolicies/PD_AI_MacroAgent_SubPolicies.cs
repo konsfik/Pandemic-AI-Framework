@@ -14,7 +14,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
-            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game) == false)
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
@@ -72,12 +72,12 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
-            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game) == false)
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
 
-            int numberOfStepsUntilEndOfNextRound = 4 + PD_Game_Queries.GQ_Count_RemainingPlayerActions_ThisRound(game);
+            int numberOfStepsUntilEndOfNextRound = 4 + game.GQ_RemainingPlayerActions_ThisRound();
             var shareKnowledgeMacros_ExecutableNextRound = allMacros.FindAll(
                 x =>
                 x.Is_TypeOf_ShareKnowledge_Any()
@@ -191,10 +191,10 @@ namespace Pandemic_AI_Framework
                             PD_City destination = action.CityCardToGive.City;
                             PD_Player otherPlayer = action.OtherPlayer;
                             PD_City otherPlayerLocation =
-                                PD_Game_Queries.GQ_Find_PlayerLocation(game, otherPlayer);
+                                game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
-                                PD_Game_Queries.GQ_Find_ResearchStationCities(game),
+                                game.GQ_ResearchStationCities(),
                                 destination,
                                 otherPlayerLocation
                                 );
@@ -214,10 +214,10 @@ namespace Pandemic_AI_Framework
                             PD_City destination = action.CityCardToTake.City;
                             PD_Player otherPlayer = action.OtherPlayer;
                             PD_City otherPlayerLocation =
-                                PD_Game_Queries.GQ_Find_PlayerLocation(game, otherPlayer);
+                                game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
-                                PD_Game_Queries.GQ_Find_ResearchStationCities(game),
+                                game.GQ_ResearchStationCities(),
                                 destination,
                                 otherPlayerLocation
                                 );
@@ -298,7 +298,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
-            int numberOfStepsUntilEndOfNextRound = 4 + PD_Game_Queries.GQ_Count_RemainingPlayerActions_ThisRound(game);
+            int numberOfStepsUntilEndOfNextRound = 4 + game.GQ_RemainingPlayerActions_ThisRound();
             var takePosition_NextRound = allMacros.FindAll(
                 x =>
                 x.Is_TypeOf_TakePositionFor_ShareKnowledge_Any()
@@ -359,10 +359,10 @@ namespace Pandemic_AI_Framework
                             PD_City destination = action.CityCardToGive.City;
                             PD_Player otherPlayer = action.OtherPlayer;
                             PD_City otherPlayerLocation =
-                                PD_Game_Queries.GQ_Find_PlayerLocation(game, otherPlayer);
+                                game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
-                                PD_Game_Queries.GQ_Find_ResearchStationCities(game),
+                                game.GQ_ResearchStationCities(),
                                 destination,
                                 otherPlayerLocation
                                 );
@@ -382,10 +382,10 @@ namespace Pandemic_AI_Framework
                             PD_City destination = action.CityCardToTake.City;
                             PD_Player otherPlayer = action.OtherPlayer;
                             PD_City otherPlayerLocation =
-                                PD_Game_Queries.GQ_Find_PlayerLocation(game, otherPlayer);
+                                game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
-                                PD_Game_Queries.GQ_Find_ResearchStationCities(game),
+                                game.GQ_ResearchStationCities(),
                                 destination,
                                 otherPlayerLocation
                                 );
@@ -412,7 +412,7 @@ namespace Pandemic_AI_Framework
             )
         {
 
-            int numberOfStepsUntilEndOfNextRound = 4 + PD_Game_Queries.GQ_Count_RemainingPlayerActions_ThisRound(game);
+            int numberOfStepsUntilEndOfNextRound = 4 + game.GQ_RemainingPlayerActions_ThisRound();
             var takePosition_NextRound = allMacros.FindAll(
                 x =>
                 x.Is_TypeOf_TakePositionFor_ShareKnowledge_Any()

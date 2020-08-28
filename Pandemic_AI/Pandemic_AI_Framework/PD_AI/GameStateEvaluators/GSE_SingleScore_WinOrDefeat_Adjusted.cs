@@ -18,11 +18,11 @@ namespace Pandemic_AI_Framework
         {
             double score = _score_calculator.CalculateScore(game);
 
-            if (PD_Game_Queries.GQ_Is_Won(game))
+            if (game.GQ_Is_Won())
             {
                 return 1;
             }
-            else if (PD_Game_Queries.GQ_Is_Ongoing(game))
+            else if (game.GQ_Is_Ongoing())
             {
                 return score;
             }

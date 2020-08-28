@@ -52,7 +52,7 @@ namespace Pandemic_AI_Framework.Tests
             game.Cards.PlayerCardsPerPlayerID[3].Clear();
 
 
-            var rsCities = PD_Game_Queries.GQ_Find_ResearchStationCities(game);
+            var rsCities = PD_Game_Queries.GQ_ResearchStationCities(game);
             List<PD_MacroAction> allMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                 game,
                 pathFinder,

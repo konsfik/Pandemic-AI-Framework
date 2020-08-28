@@ -33,7 +33,7 @@ namespace Pandemic_AI_Framework
 
             for (int type = 0; type < numTypes; type++)
             {
-                bool isDiseaseCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(gameState, type);
+                bool isDiseaseCured = gameState.GQ_Is_DiseaseCured_OR_Eradicated(type);
                 if (isDiseaseCured)
                 {
                     for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++)

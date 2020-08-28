@@ -27,7 +27,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
-            if (PD_Game_Queries.GQ_IsInState_ApplyingMainPlayerActions(game) == false)
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
@@ -43,7 +43,7 @@ namespace Pandemic_AI_Framework
             }
 
             // check if maximum number of RS is already reached
-            var rs_cities = PD_Game_Queries.GQ_Find_ResearchStationCities(game);
+            var rs_cities = game.GQ_ResearchStationCities();
             if (rs_cities.Count >= Max_TotalNum_RS)
             {
                 return new List<PD_MacroAction>();

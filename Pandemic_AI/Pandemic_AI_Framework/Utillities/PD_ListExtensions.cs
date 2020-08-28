@@ -68,6 +68,20 @@ namespace Pandemic_AI_Framework
             return copyListOfLists;
         }
 
+        public static Dictionary<int, int> CustomDeepCopy(
+            this Dictionary<int, int> originalDictionary
+            )
+        {
+            Dictionary<int, int> dictionaryCopy = new Dictionary<int, int>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value);
+            }
+
+            return dictionaryCopy;
+        }
+
         public static Dictionary<PD_CityEdge_Directed, List<PD_City>> CustomDeepCopy(
             this Dictionary<PD_CityEdge_Directed, List<PD_City>> originalDictionary
             )

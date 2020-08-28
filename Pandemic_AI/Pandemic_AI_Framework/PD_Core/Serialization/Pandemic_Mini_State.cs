@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Pandemic_AI_Framework
@@ -114,52 +115,121 @@ namespace Pandemic_AI_Framework
             throw new NotImplementedException();
         }
 
-        public static Pandemic_Mini_State From_Normal_State(PD_Game normal_state)
+        public static Pandemic_Mini_State From_Normal_State(PD_Game game)
         {
-            Pandemic_Mini_State mini_state = new Pandemic_Mini_State();
+            Pandemic_Mini_State minified_game = new Pandemic_Mini_State();
 
-            mini_state.number_of_cities = normal_state.Map.Cities.Count;
-            mini_state.cities = new int[mini_state.number_of_cities];
-            for (int i = 0; i < mini_state.number_of_cities; i++)
-            {
-                mini_state.cities[i] = i;
+            // game - settings:
+            minified_game.number_of_players = game.GameStateCounter.NumberOfPlayers;
+            minified_game.game_difficulty = game.GameSettings.GameDifficultyLevel;
+            minified_game.maximum_viable_outbreaks = game.GameSettings.MaximumViableOutbreaks;
+            minified_game.maximum_player_hand_size = game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer;
+            minified_game.initial_hand_size__per__number_of_players =
+                game.GameSettings.NumberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
+            minified_game.epidemic_cards__per__game_difficulty =
+                game.GameSettings.NumberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
+            minified_game.infection_rate__per__epidemics =
+                game.GameSettings.InfectionRatesPerEpidemicsCounter.CustomDeepCopy();
+
+            // general - data
+            minified_game.players = new List<int>();
+            for (int p = 0; p < minified_game.number_of_players; p++) {
+                minified_game.players.Add(p);
             }
-            mini_state.neighbors__per__city = new int[mini_state.number_of_cities][];
-            foreach (int city in mini_state.cities)
+
+            // player - roles
+            minified_game.unassigned_player_roles = new List<PD_Mini__Player_Roles>();
+            foreach (var role_card in game.Cards.InactiveRoleCards) {
+                PD_Player_Roles role = role_card.Role;
+                switch (role) {
+                    case PD_Player_Roles.None:
+                        minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.UNDEFINED);
+                        break;
+                    case PD_Player_Roles.Medic:
+                        minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.Medic);
+                        break;
+                    case PD_Player_Roles.Operations_Expert:
+                        minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.Operations_Expert);
+                        break;
+                    case PD_Player_Roles.Researcher:
+                        minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.Researcher);
+                        break;
+                    case PD_Player_Roles.Scientist:
+                        minified_game.unassigned_player_roles.Add(PD_Mini__Player_Roles.Scientist);
+                        break;
+                }
+            }
+            minified_game.role__per__player = new PD_Mini__Player_Roles[minified_game.number_of_players];
+            foreach (int p in minified_game.players) {
+                var game_player = game.Players[p];
+                PD_Player_Roles game_player_role = game.GQ_Find_Player_Role(game_player);
+                switch (game_player_role)
+                {
+                    case PD_Player_Roles.None:
+                        minified_game.role__per__player[p] = PD_Mini__Player_Roles.UNDEFINED;
+                        break;
+                    case PD_Player_Roles.Medic:
+                        minified_game.role__per__player[p] = PD_Mini__Player_Roles.Medic;
+                        break;
+                    case PD_Player_Roles.Operations_Expert:
+                        minified_game.role__per__player[p] = PD_Mini__Player_Roles.Operations_Expert;
+                        break;
+                    case PD_Player_Roles.Researcher:
+                        minified_game.role__per__player[p] = PD_Mini__Player_Roles.Researcher;
+                        break;
+                    case PD_Player_Roles.Scientist:
+                        minified_game.role__per__player[p] = PD_Mini__Player_Roles.Scientist;
+                        break;
+                }
+            }
+
+            // map - data
+            minified_game.number_of_cities = game.Map.Cities.Count;
+
+            minified_game.cities = new int[minified_game.number_of_cities];
+            for (int i = 0; i < minified_game.number_of_cities; i++)
             {
-                var neighbors = normal_state.Map.CityNeighbors_PerCityID[city];
-                mini_state.neighbors__per__city[city] = new int[neighbors.Count];
+                minified_game.cities[i] = i;
+            }
+
+            minified_game.neighbors__per__city = new int[minified_game.number_of_cities][];
+            foreach (int city in minified_game.cities)
+            {
+                var neighbors = game.Map.CityNeighbors_PerCityID[city];
+                minified_game.neighbors__per__city[city] = new int[neighbors.Count];
                 for (int n = 0; n < neighbors.Count; n++)
                 {
                     var neighbor = neighbors[n];
-                    mini_state.neighbors__per__city[city][n] = neighbor.ID;
+                    minified_game.neighbors__per__city[city][n] = neighbor.ID;
                 }
             }
-            mini_state.research_station__per__city = new bool[mini_state.number_of_cities];
-            foreach (int c in mini_state.cities)
+
+            minified_game.research_station__per__city = new bool[minified_game.number_of_cities];
+            foreach (int c in minified_game.cities)
             {
-                var city = normal_state.Map.Cities[c];
-                if (normal_state.GQ_Is_City_ResearchStation(city))
+                var city = game.Map.Cities[c];
+                if (game.GQ_Is_City_ResearchStation(city))
                 {
-                    mini_state.research_station__per__city[c] = true;
+                    minified_game.research_station__per__city[c] = true;
                 }
                 else
                 {
-                    mini_state.research_station__per__city[c] = false;
+                    minified_game.research_station__per__city[c] = false;
                 }
             }
 
 
-            mini_state.infection_type__per__city = new int[mini_state.number_of_cities];
-            for (int c = 0; c < mini_state.number_of_cities; c++)
+            minified_game.infection_type__per__city = new int[minified_game.number_of_cities];
+            for (int c = 0; c < minified_game.number_of_cities; c++)
             {
-                mini_state.infection_type__per__city[c] = normal_state.Map.Cities[c].Type;
+                minified_game.infection_type__per__city[c] = game.Map.Cities[c].Type;
             }
 
-            mini_state.number_of_players = normal_state.GameStateCounter.NumberOfPlayers;
+            
 
+            minified_game.location__per__player = new int[minified_game.number_of_players];
 
-            return mini_state;
+            return minified_game;
         }
 
     }

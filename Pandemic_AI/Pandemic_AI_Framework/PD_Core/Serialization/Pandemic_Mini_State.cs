@@ -68,11 +68,13 @@ namespace Pandemic_AI_Framework
 
         // map - data
         public int number_of_cities;
-        public int[] cities;
-        public int[][] neighbors__per__city;
-        public bool[] research_station__per__city;
-
+        public List<int> cities;
+        public Dictionary<int, string> name__per__city;
+        public Dictionary<int, PD_Point> position__per__city;
         public int[] infection_type__per__city;
+        public int[][] neighbors__per__city;
+
+        public bool[] research_station__per__city;
         public int[] location__per__player;
 
         // game elements
@@ -191,10 +193,18 @@ namespace Pandemic_AI_Framework
             // map - data
             minified_game.number_of_cities = game.Map.Cities.Count;
 
-            minified_game.cities = new int[minified_game.number_of_cities];
-            for (int i = 0; i < minified_game.number_of_cities; i++)
+            minified_game.cities = new List<int>();
+            minified_game.name__per__city = new Dictionary<int, string>();
+            minified_game.position__per__city = new Dictionary<int, PD_Point>();
+            minified_game.infection_type__per__city = new int[minified_game.number_of_cities];
+            int city_cnt = 0;
+            foreach (var city in game.Map.Cities)
             {
-                minified_game.cities[i] = i;
+                minified_game.cities.Add(city.ID);
+                minified_game.name__per__city.Add(city.ID, city.Name);
+                minified_game.position__per__city.Add(city.ID, city.Position.GetCustomDeepCopy());
+                minified_game.infection_type__per__city[city_cnt] = game.Map.Cities[city_cnt].Type;
+                city_cnt++;
             }
 
             minified_game.neighbors__per__city = new int[minified_game.number_of_cities][];
@@ -221,13 +231,6 @@ namespace Pandemic_AI_Framework
                 {
                     minified_game.research_station__per__city[c] = false;
                 }
-            }
-
-
-            minified_game.infection_type__per__city = new int[minified_game.number_of_cities];
-            for (int c = 0; c < minified_game.number_of_cities; c++)
-            {
-                minified_game.infection_type__per__city[c] = game.Map.Cities[c].Type;
             }
 
             minified_game.location__per__player = new int[minified_game.number_of_players];
@@ -257,7 +260,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int t = 0; t < 4; t++)
                 {
-                    minified_game.infection_cubes__per__type__per__city[city.ID][t] = 
+                    minified_game.infection_cubes__per__type__per__city[city.ID][t] =
                         game.GQ_Find_InfectionCubes_OfType_OnCity(
                             city,
                             t

@@ -9,9 +9,15 @@ namespace Pandemic_AI_Framework
     /// Player Discards the City card that matches the city you are in to move to any city.
     /// </summary>
     [Serializable]
-    public class PD_PMA_CharterFlight : PD_MapMovementAction_Base
+    public class PD_PMA_CharterFlight : PD_MainAction_Base, I_Movement_Action
     {
+        public PD_City InitialLocation { get; protected set; }
+
+        public PD_City TargetLocation { get; protected set; }
+
         public PD_CityCard CityCardToDiscard { get; private set; }
+
+
 
         #region constructors
         /// <summary>
@@ -27,8 +33,10 @@ namespace Pandemic_AI_Framework
             PD_City initialLocation,
             PD_City targetLocation,
             PD_CityCard cityCardToDiscard
-            ) : base(player, initialLocation, targetLocation)
+            ):base(player)
         {
+            InitialLocation = initialLocation;
+            TargetLocation = targetLocation;
             CityCardToDiscard = cityCardToDiscard;
         }
 
@@ -38,12 +46,10 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PMA_CharterFlight(
             PD_PMA_CharterFlight actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy(),
-                actionToCopy.InitialLocation.GetCustomDeepCopy(),
-                actionToCopy.TargetLocation.GetCustomDeepCopy()
-                )
+            ) : base(actionToCopy.Player.GetCustomDeepCopy())
         {
+            InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
             CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
         }
         #endregion

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_TakeCard : PD_MapAction_Base
+    public class PD_PA_ShareKnowledge_TakeCard : PD_MainAction_Base
     {
         public PD_Player OtherPlayer { get; private set; }
         public PD_CityCard CityCardToTake { get; private set; }

@@ -211,7 +211,7 @@ namespace Pandemic_AI_Framework
 
             if (MacroAction_Type == PD_MacroAction_Type.Walk_Macro)
             {
-                return ((PD_MapMovementAction_Base)lastCommand).TargetLocation;
+                return ((I_Movement_Action)lastCommand).TargetLocation;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.Stay_Macro)
             {
@@ -228,7 +228,7 @@ namespace Pandemic_AI_Framework
             }
             else if (MacroAction_Type == PD_MacroAction_Type.AutoTreatDisease_Medic_Macro)
             {
-                return ((PD_MapMovementAction_Base)lastCommand).TargetLocation;
+                return ((I_Movement_Action)lastCommand).TargetLocation;
             }
 
             else if (MacroAction_Type == PD_MacroAction_Type.BuildResearchStation_Macro)
@@ -338,7 +338,7 @@ namespace Pandemic_AI_Framework
         {
             return Actions_All.FindAll(
                 x =>
-                x.GetType().IsSubclassOf(typeof(PD_MapMovementAction_Base))
+                x is I_Movement_Action
                 &&
                 x.GetType() != typeof(PD_PA_Stay)
                 ).Count;
@@ -367,7 +367,7 @@ namespace Pandemic_AI_Framework
         {
             string description = String.Format(
                 "{0}: {1} - TML:{2} | {3} - WL:{4} | {5}",
-                ((PD_PlayerAction_Base)Actions_All[0]).Player.Name,
+                ((I_Player_Action)Actions_All[0]).Player.Name,
                 MacroAction_Type.ToString(),
                 Count_Total_Length(),
                 MacroAction_WalkType.ToString(),

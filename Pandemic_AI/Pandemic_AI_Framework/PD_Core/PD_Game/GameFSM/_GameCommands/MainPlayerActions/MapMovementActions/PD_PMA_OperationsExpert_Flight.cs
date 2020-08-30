@@ -8,9 +8,14 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PMA_OperationsExpert_Flight : PD_MapMovementAction_Base
+    public class PD_PMA_OperationsExpert_Flight : PD_MainAction_Base, I_Movement_Action
     {
+        public PD_City InitialLocation { get; protected set; }
+
+        public PD_City TargetLocation { get; protected set; }
+
         public PD_CityCard CityCardToDiscard { get; private set; }
+
 
         #region constructors
         /// <summary>
@@ -28,12 +33,12 @@ namespace Pandemic_AI_Framework
             PD_CityCard cityCardToDiscard
 
             ) : base(
-                player,
-                initialLocation,
-                targetLocation
+                player
                 )
         {
-            CityCardToDiscard = cityCardToDiscard;
+            this.InitialLocation = initialLocation;
+            this.TargetLocation = targetLocation;
+            this.CityCardToDiscard = cityCardToDiscard;
         }
 
         /// <summary>
@@ -43,12 +48,12 @@ namespace Pandemic_AI_Framework
         private PD_PMA_OperationsExpert_Flight(
             PD_PMA_OperationsExpert_Flight actionToCopy
             ) : base(
-                actionToCopy.Player.GetCustomDeepCopy(),
-                actionToCopy.InitialLocation.GetCustomDeepCopy(),
-                actionToCopy.TargetLocation.GetCustomDeepCopy()
+                actionToCopy.Player.GetCustomDeepCopy()
                 )
         {
-            CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+            this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
         }
         #endregion
 

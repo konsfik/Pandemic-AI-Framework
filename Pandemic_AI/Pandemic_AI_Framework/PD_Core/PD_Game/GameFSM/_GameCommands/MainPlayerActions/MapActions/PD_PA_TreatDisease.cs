@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease : PD_MapAction_Base
+    public class PD_PA_TreatDisease : PD_MainAction_Base
     {
         public PD_City CityToTreatDiseaseAt { get; private set; }
         public int TypeOfDiseaseToTreat { get; private set; }

@@ -6,8 +6,12 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PMA_ShuttleFlight : PD_MapMovementAction_Base
+    public class PD_PMA_ShuttleFlight : PD_MainAction_Base, I_Movement_Action
     {
+        public PD_City InitialLocation { get; protected set; }
+
+        public PD_City TargetLocation { get; protected set; }
+
         #region constructors
         /// <summary>
         /// normal && json constructor
@@ -20,9 +24,10 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_City initialLocation,
             PD_City targetLocation
-            ) : base(player, initialLocation, targetLocation)
+            ) : base(player)
         {
-
+            this.InitialLocation = initialLocation;
+            this.TargetLocation = targetLocation;
         }
 
         /// <summary>
@@ -32,12 +37,11 @@ namespace Pandemic_AI_Framework
         private PD_PMA_ShuttleFlight(
             PD_PMA_ShuttleFlight actionToCopy
             ) : base(
-                actionToCopy.Player.GetCustomDeepCopy(),
-                actionToCopy.InitialLocation.GetCustomDeepCopy(),
-                actionToCopy.TargetLocation.GetCustomDeepCopy()
+                actionToCopy.Player.GetCustomDeepCopy()
                 )
         {
-
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
         }
         #endregion
 

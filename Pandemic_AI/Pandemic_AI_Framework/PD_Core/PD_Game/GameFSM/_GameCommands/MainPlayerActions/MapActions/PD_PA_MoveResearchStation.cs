@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_MoveResearchStation : PD_MapAction_Base
+    public class PD_PA_MoveResearchStation : PD_MainAction_Base
     {
         public PD_CityCard Used_CityCard { get; private set; }
         public PD_City Move_RS_From { get; private set; }

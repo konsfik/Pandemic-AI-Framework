@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Stay : PD_MapAction_Base
+    public class PD_PA_Stay : PD_MainAction_Base
     {
         public PD_City CityToStayOn { get; private set; }
 

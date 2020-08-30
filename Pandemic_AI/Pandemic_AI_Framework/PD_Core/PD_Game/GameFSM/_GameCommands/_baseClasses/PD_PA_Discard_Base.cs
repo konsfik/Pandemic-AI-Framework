@@ -6,7 +6,7 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public abstract class PD_Discard_Base : PD_NonMapAction_Base
+    public abstract class PD_Discard_Base : PD_MainAction_Base
     {
         public PD_PlayerCardBase PlayerCardToDiscard { get; private set; }
 

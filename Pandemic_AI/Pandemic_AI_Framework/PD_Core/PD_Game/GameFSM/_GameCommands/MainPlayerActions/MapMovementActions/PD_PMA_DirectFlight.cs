@@ -9,9 +9,14 @@ namespace Pandemic_AI_Framework
     /// Player discards a city card to move to the city named of the card
     /// </summary>
     [Serializable]
-    public class PD_PMA_DirectFlight : PD_MapMovementAction_Base
+    public class PD_PMA_DirectFlight : PD_MainAction_Base, I_Movement_Action
     {
+        public PD_City InitialLocation { get; protected set; }
+
+        public PD_City TargetLocation { get; protected set; }
+
         public PD_CityCard CityCardToDiscard { get; private set; }
+
 
         [JsonConstructor]
         public PD_PMA_DirectFlight(
@@ -20,12 +25,12 @@ namespace Pandemic_AI_Framework
             PD_City targetLocation,
             PD_CityCard cityCardToDiscard
             ) : base(
-                player, 
-                initialLocation, 
-                targetLocation
+                player
                 )
         {
-            CityCardToDiscard = cityCardToDiscard;
+            this.InitialLocation = initialLocation;
+            this.TargetLocation = targetLocation;
+            this.CityCardToDiscard = cityCardToDiscard;
         }
 
         public override void Execute(
@@ -40,11 +45,11 @@ namespace Pandemic_AI_Framework
         private PD_PMA_DirectFlight(
             PD_PMA_DirectFlight actionToCopy
             ) : base(
-                actionToCopy.Player.GetCustomDeepCopy(),
-                actionToCopy.InitialLocation.GetCustomDeepCopy(),
-                actionToCopy.TargetLocation.GetCustomDeepCopy()
+                actionToCopy.Player.GetCustomDeepCopy()
                 )
         {
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
             CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
         }
 

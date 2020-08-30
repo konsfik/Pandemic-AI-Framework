@@ -612,8 +612,8 @@ namespace Pandemic_AI_Framework
             {
                 int numRemainingActions = numAvailableActions - seq.Count;
 
-                PD_Player player = ((PD_MapMovementAction_Base)seq.GetLast()).Player;
-                PD_City destination = ((PD_MapMovementAction_Base)seq.GetLast()).TargetLocation;
+                PD_Player player = ((PD_MainAction_Base)seq.GetLast()).Player;
+                PD_City destination = ((I_Movement_Action)(seq.GetLast())).TargetLocation;
 
                 List<PD_GameAction_Base> completeSequence = new List<PD_GameAction_Base>();
                 completeSequence.AddRange(seq);
@@ -823,7 +823,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences)
             {
-                var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 for (int infectionType = 0; infectionType < 4; infectionType++)
                 {
@@ -999,7 +999,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences)
             {
-                PD_City destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                PD_City destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
                 foreach (var curedDiseaseType in curedDiseaseTypes)
                 {
                     int num_InfectionCubes_Of_CuredDiseaseType_On_Destination =
@@ -1220,7 +1220,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences_NonMaximumLength)
             {
-                var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination.ID].Count > 0;
 
@@ -1456,7 +1456,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences_NonMaximumLength)
             {
-                var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination.ID].Count > 0;
 
@@ -1767,7 +1767,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences)
             {
-                var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 var cityCardsUsedForWalking = PD_Macro_Utilities.Find_CityCardsUsedForWalking_In_ActionList(walkSequence);
 
@@ -2133,7 +2133,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences_NonMaximumLength)
             {
-                var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 List<PD_Player> otherPlayersAtDestination = otherPlayers.FindAll(
                     x =>
@@ -2451,7 +2451,7 @@ namespace Pandemic_AI_Framework
             {
                 foreach (var walkSequence in walkSequences_NonMaximumLength)
                 {
-                    var destination = ((PD_MapMovementAction_Base)walkSequence.GetLast()).TargetLocation;
+                    var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                     var cityCardsUsedForWalking = PD_Macro_Utilities.Find_CityCardsUsedForWalking_In_ActionList(walkSequence);
 
@@ -2655,10 +2655,10 @@ namespace Pandemic_AI_Framework
             foreach (var seq in directFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((PD_MapMovementAction_Base)seq.GetLast()).TargetLocation;
+                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
-                    ((PD_MapMovementAction_Base)x.GetLast()).TargetLocation == targetLocation
+                    ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
                     );
                 if (simpleWalkEquivalent != null)
                 {
@@ -2732,10 +2732,10 @@ namespace Pandemic_AI_Framework
             foreach (var seq in charterFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((PD_MapMovementAction_Base)seq.GetLast()).TargetLocation;
+                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
-                    ((PD_MapMovementAction_Base)x.GetLast()).TargetLocation == targetLocation
+                    ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
                     );
                 if (simpleWalkEquivalent != null)
                 {
@@ -2851,10 +2851,10 @@ namespace Pandemic_AI_Framework
             foreach (var seq in operationsExpertFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((PD_MapMovementAction_Base)seq.GetLast()).TargetLocation;
+                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
-                    ((PD_MapMovementAction_Base)x.GetLast()).TargetLocation == targetLocation
+                    ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
                     );
                 if (simpleWalkEquivalent != null)
                 {

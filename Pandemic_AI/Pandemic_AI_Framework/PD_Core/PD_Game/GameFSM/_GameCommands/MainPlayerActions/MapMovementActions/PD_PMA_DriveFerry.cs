@@ -8,28 +8,31 @@ namespace Pandemic_AI_Framework
     /// A player moves to an adjacent location
     /// </summary>
     [Serializable]
-    public class PD_PMA_DriveFerry : PD_MapMovementAction_Base
+    public class PD_PMA_DriveFerry : PD_MainAction_Base, I_Movement_Action
     {
+        public PD_City InitialLocation { get; protected set; }
+
+        public PD_City TargetLocation { get; protected set; }
 
         public PD_PMA_DriveFerry(
             PD_Player player,
             PD_City initialLocation,
             PD_City targetLocation
-            ) : base(player, initialLocation, targetLocation)
+            ) : base(player)
         {
-
+            this.InitialLocation = initialLocation;
+            this.TargetLocation = targetLocation;
         }
 
         // private constructor, for custom deep copy purposes only
         private PD_PMA_DriveFerry(
             PD_PMA_DriveFerry actionToCopy
             ) : base(
-                actionToCopy.Player.GetCustomDeepCopy(),
-                actionToCopy.InitialLocation.GetCustomDeepCopy(),
-                actionToCopy.TargetLocation.GetCustomDeepCopy()
+                actionToCopy.Player.GetCustomDeepCopy()
                 )
         {
-
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
         }
 
         public override void Execute(

@@ -11,13 +11,17 @@ namespace Pandemic_AI_Framework
     /// For example, draw new player cards...
     /// </summary>
     [Serializable]
-    public abstract class PD_AutoAction_Base : PD_PlayerAction_Base
+    public abstract class PD_AutoAction_Base : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; protected set; }
+
         public PD_AutoAction_Base(
             PD_Player player
-            ) : base(player)
+            )
         {
-
+            Player = player;
         }
+
+
     }
 }

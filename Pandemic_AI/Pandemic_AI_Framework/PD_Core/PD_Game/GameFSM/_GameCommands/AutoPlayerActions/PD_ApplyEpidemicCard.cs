@@ -6,15 +6,15 @@ using System.Linq;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyEpidemicCard : PD_AutoAction_Base
+    public class PD_ApplyEpidemicCard : PD_GameAction_Base, I_Auto_Action, I_Player_Action
     {
+        public PD_Player Player { get; protected set; }
+
         public PD_ApplyEpidemicCard(
             PD_Player player
-            ) : base(
-                player
-                )
+            )
         {
-
+            this.Player = player;
         }
 
         public override void Execute(
@@ -31,11 +31,9 @@ namespace Pandemic_AI_Framework
         // private constructor, for custom deep copy purposes only
         private PD_ApplyEpidemicCard(
             PD_ApplyEpidemicCard actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
-
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

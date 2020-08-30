@@ -1,20 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyInfectionCard : PD_AutoAction_Base
+    public class PD_ApplyInfectionCard : PD_GameAction_Base, I_Auto_Action, I_Player_Action
     {
+        public PD_Player Player { get; protected set; }
+
         public PD_InfectionCard InfectionCardToApply { get; private set; }
 
+        [JsonConstructor]
         public PD_ApplyInfectionCard(
             PD_Player player,
             PD_InfectionCard infectionCardToApply
-            ) : base(player)
+            )
         {
-            InfectionCardToApply = infectionCardToApply;
+            this.Player = player;
+            this.InfectionCardToApply = infectionCardToApply;
+        }
+
+        // private constructor, for custom deep copy purposes only
+        private PD_ApplyInfectionCard(
+            PD_ApplyInfectionCard actionToCopy
+            )
+        {
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.InfectionCardToApply = actionToCopy.InfectionCardToApply.GetCustomDeepCopy();
         }
 
         public override void Execute(
@@ -25,15 +39,7 @@ namespace Pandemic_AI_Framework
             game.Com_ApplyInfectionCard(Player, InfectionCardToApply);
         }
 
-        // private constructor, for custom deep copy purposes only
-        private PD_ApplyInfectionCard(
-            PD_ApplyInfectionCard actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
-        {
-            InfectionCardToApply = actionToCopy.InfectionCardToApply.GetCustomDeepCopy();
-        }
+        
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {

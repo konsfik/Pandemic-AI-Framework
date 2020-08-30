@@ -8,24 +8,24 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Discard_AfterDrawing : PD_Discard_Base
+    public class PD_PA_Discard_AfterDrawing : PD_MainAction_Base, I_Discard_Action
     {
+        public PD_PlayerCardBase PlayerCardToDiscard { get; protected set; }
 
         /// <summary>
         /// normal && json constructor
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="cardToDiscard"></param>
+        /// <param name="playerCardToDiscard"></param>
         [JsonConstructor]
         public PD_PA_Discard_AfterDrawing(
             PD_Player player,
-            PD_PlayerCardBase cardToDiscard
+            PD_PlayerCardBase playerCardToDiscard
             ) : base(
-                player,
-                cardToDiscard
+                player
                 )
         {
-
+            this.PlayerCardToDiscard = playerCardToDiscard;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -94,6 +94,15 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + PlayerCardToDiscard.GetHashCode();
 
             return hash;
+        }
+
+        public override string GetDescription()
+        {
+            return String.Format(
+                "{0} discards the card: {1}",
+                this.Player.Name,
+                this.PlayerCardToDiscard.GetDescription()
+                );
         }
 
         #endregion

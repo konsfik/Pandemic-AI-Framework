@@ -1247,11 +1247,7 @@ namespace Pandemic_AI_Framework
                 && CurrentAvailablePlayerActions.Count > 0
                 )
             {
-                if (
-                    CurrentAvailablePlayerActions[0]
-                    .GetType()
-                    .IsSubclassOf(typeof(PD_AutoAction_Base))
-                    )
+                if (CurrentAvailablePlayerActions[0] is I_Auto_Action)
                 {
                     ApplySpecificPlayerAction(
                         randomness_provider,

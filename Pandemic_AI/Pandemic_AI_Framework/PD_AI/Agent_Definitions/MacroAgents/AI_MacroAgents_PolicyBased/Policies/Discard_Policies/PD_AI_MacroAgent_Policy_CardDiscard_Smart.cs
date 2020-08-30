@@ -29,7 +29,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("non discard actions are included here...");
             }
 
-            PD_Player playerWhoDiscards = ((PD_Discard_Base)allMacros[0].Actions_All[0]).Player;
+            PD_Player playerWhoDiscards = ((I_Player_Action)allMacros[0].Actions_All[0]).Player;
 
             Dictionary<PD_MacroAction, double> effectPerMacroAction = new Dictionary<PD_MacroAction, double>();
             foreach (var macro in allMacros)

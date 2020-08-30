@@ -56,18 +56,15 @@ namespace Pandemic_AI_Framework
                     .Add(root.ID, new Dictionary<int, List<PD_City>>());
                 foreach (var destination in map.Cities)
                 {
-                    if (root != destination)
-                    {
-                        var path = ComputeShortestPath(
-                            root,
-                            destination,
-                            map
-                            );
-                        shortest_path__per__destination__per__origin[root.ID].Add(
-                            destination.ID,
-                            path
-                            );
-                    }
+                    var path = ComputeShortestPath(
+                        root,
+                        destination,
+                        map
+                        );
+                    shortest_path__per__destination__per__origin[root.ID].Add(
+                        destination.ID,
+                        path
+                        );
                 }
             }
 
@@ -87,15 +84,7 @@ namespace Pandemic_AI_Framework
         {
             if (root == destination)
             {
-                throw new System.Exception("root equals destination");
-            }
-            if (map.Cities.Any(x => x == root) == false)
-            {
-                throw new System.Exception("map does not contain root city");
-            }
-            if (map.Cities.Any(x => x == destination) == false)
-            {
-                throw new System.Exception("map does not contain destination city");
+                return new List<PD_City>() { root };
             }
 
             Dictionary<PD_City, PD_City> predecessors = new Dictionary<PD_City, PD_City>();
@@ -170,12 +159,14 @@ namespace Pandemic_AI_Framework
             PD_City destination
             )
         {
-            return GetPrecalculatedShortestPath(
+            int shortest_path_size = GetPrecalculatedShortestPath(
                 game,
                 researchStationCities,
                 root,
                 destination
-                ).Count - 1;
+                ).Count;
+
+            return shortest_path_size - 1;
         }
 
         public List<PD_City> GetPrecalculatedShortestPath(
@@ -185,26 +176,8 @@ namespace Pandemic_AI_Framework
             PD_City destination
             )
         {
-            if (game.Map.Cities.Contains(root) == false)
-            {
-                throw new System.Exception("root not included in map cities");
-            }
-            if (game.Map.Cities.Contains(destination) == false)
-            {
-                throw new System.Exception("destination not included in map cities");
-            }
-
-            if (root == destination)
-            {
-                return new List<PD_City>() { root };
-            }
-
             var simpleWalkPath = shortest_path__per__destination__per__origin[root.ID][destination.ID]; 
 
-            if (simpleWalkPath == null)
-            {
-                throw new System.Exception("null path");
-            }
             if (researchStationCities.Count <= 1)
             {
                 return simpleWalkPath;

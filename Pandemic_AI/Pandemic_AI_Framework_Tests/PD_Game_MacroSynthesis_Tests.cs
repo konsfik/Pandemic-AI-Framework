@@ -71,7 +71,7 @@ namespace Pandemic_AI_Framework.Tests
                 pathFinder,
                 rsCities,
                 PD_Game_Queries.GQ_CurrentPlayer(game),
-                PD_Game_Queries.GQ_Find_CurrentPlayer_Location(game)
+                PD_Game_Queries.GQ_CurrentPlayer_Location(game)
                 );
 
             Assert.IsTrue(simpleWalks.Count == 47);

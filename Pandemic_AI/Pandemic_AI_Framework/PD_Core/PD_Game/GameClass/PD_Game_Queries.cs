@@ -451,7 +451,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static PD_City GQ_Find_CurrentPlayer_Location(
+        public static PD_City GQ_CurrentPlayer_Location(
             this PD_Game game
             )
         {

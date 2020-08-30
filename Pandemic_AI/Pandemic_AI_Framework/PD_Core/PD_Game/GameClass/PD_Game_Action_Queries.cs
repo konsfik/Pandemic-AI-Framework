@@ -35,13 +35,13 @@ namespace Pandemic_AI_Framework
                 currentAvailablePlayerActions.AddRange(FindAvailable_BuildResearchStation_OperationsExpert_Actions(game));
                 currentAvailablePlayerActions.AddRange(FindAvailable_MoveResearchStation_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_TreatDisease(game));
-                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_TreatDisease_Medic(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_TreatDisease_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_TreatDisease_Medic_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_TakeCard_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_GiveCard_ResearcherGives_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_TakeCard_FromResearcher_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Give_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Take_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Give_ResearcherGives_Actions(game));
+                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Take_FromResearcher_Actions(game));
 
                 currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Actions(game));
                 currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Scientist_Actions(game));
@@ -90,58 +90,54 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            List<PD_PA_Stay> availableStayCommands = new List<PD_PA_Stay>();
-            PD_PA_Stay stayCommand = new PD_PA_Stay(
-                currentPlayer,
-                game.GQ_PlayerLocation(currentPlayer)
-                );
-            availableStayCommands.Add(stayCommand);
-            return availableStayCommands;
+            return new List<PD_PA_Stay>() {
+                new PD_PA_Stay(
+                    game.GQ_CurrentPlayer(),
+                    game.GQ_CurrentPlayer_Location()
+                    )
+            };
         }
 
         private static List<PD_PMA_DriveFerry> FindAvailable_DriveFerry_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPlayerPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
+            PD_Player current_player = game.GQ_CurrentPlayer();
+            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
+            List<PD_City> neighbor_locations = game.Map.CityNeighbors_PerCityID[current_player_location.ID];
 
-            var currentPawnAdjacentLocations = game.Map.CityNeighbors_PerCityID[currentPlayerPawnLocation.ID];
-
-            List<PD_PMA_DriveFerry> availablePlayerActions_Ferry = new List<PD_PMA_DriveFerry>();
-            foreach (var adjacentLocation in currentPawnAdjacentLocations)
+            List<PD_PMA_DriveFerry> drive_ferry_actions = new List<PD_PMA_DriveFerry>();
+            foreach (PD_City neighbor_location in neighbor_locations)
             {
-                PD_PMA_DriveFerry pa1 = new PD_PMA_DriveFerry(
-                    currentPlayer,
-                    currentPlayerPawnLocation,
-                    adjacentLocation
+                drive_ferry_actions.Add(
+                    new PD_PMA_DriveFerry(
+                        current_player,
+                        current_player_location,
+                        neighbor_location
+                        )
                     );
-                availablePlayerActions_Ferry.Add(pa1);
             }
-            return availablePlayerActions_Ferry;
+            return drive_ferry_actions;
         }
 
         private static List<PD_PMA_DirectFlight> FindAvailable_DirectFlight_Actions(
             PD_Game game
             )
         {
-            PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
+            PD_Player current_player = game.GQ_CurrentPlayer();
+            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
 
-            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            List<PD_CityCard> cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
             var directFlightActions = new List<PD_PMA_DirectFlight>();
 
-            foreach (var cityCard in cityCardsInCurrentPlayerHand)
+            foreach (PD_CityCard cityCard in cityCardsInCurrentPlayerHand)
             {
-                if (cityCard.City != currentPawnLocation)
+                if (cityCard.City != current_player_location)
                 {
                     var action = new PD_PMA_DirectFlight(
-                        currentPlayer,
-                        currentPawnLocation,
+                        current_player,
+                        current_player_location,
                         cityCard.City,
                         cityCard);
                     directFlightActions.Add(action);
@@ -156,8 +152,7 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
+            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
 
             var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
 
@@ -170,23 +165,23 @@ namespace Pandemic_AI_Framework
                 citiesOfCityCardsInPlayerHand.Add(card.City);
             }
 
-            if (citiesOfCityCardsInPlayerHand.Any(x => x == currentPawnLocation))
+            if (citiesOfCityCardsInPlayerHand.Any(x => x == current_player_location))
             {
                 var allOtherCities = game.Map.Cities.FindAll(
                     x =>
-                    x != currentPawnLocation
+                    x != current_player_location
                     );
 
                 var cityCardtoDiscard = cityCardsInCurrentPlayerHand.Find(
                     x =>
-                    x.City == currentPawnLocation
+                    x.City == current_player_location
                     );
 
                 foreach (var otherCity in allOtherCities)
                 {
                     var action = new PD_PMA_CharterFlight(
                         currentPlayer,
-                        currentPawnLocation,
+                        current_player_location,
                         otherCity,
                         cityCardtoDiscard);
                     charterFlightActions.Add(action);
@@ -397,53 +392,46 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
-            var cityCardsInPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
-
-            var citiesOfCityCardsInPlayerHand = new List<PD_City>();
-            foreach (var card in cityCardsInPlayerHand)
+            // if there are available research stations, this action does not apply...
+            if (game.GQ_NumInactiveResearchStations() > 0)
             {
-                citiesOfCityCardsInPlayerHand.Add(card.City);
+                return new List<PD_PA_MoveResearchStation>();
             }
 
-            var allOtherCities = game.Map.Cities.FindAll(
-                x =>
-                x != currentPlayerLocation
-                );
-
-            var allOtherCitiesThatContainResearchStations = new List<PD_City>();
-            foreach (var city in allOtherCities)
+            // if the current player's location is a research station, this action does not apply...
+            if (game.GQ_Is_City_ResearchStation(game.GQ_CurrentPlayer_Location()))
             {
-                if (game.MapElements.ResearchStationsPerCityID[city.ID].Count > 0)
-                {
-                    allOtherCitiesThatContainResearchStations.Add(city);
-                }
+                return new List<PD_PA_MoveResearchStation>();
             }
 
-            bool currentLocationDoesNotHaveAResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count == 0;
-            bool playerOwnsCardOfCurrentCity = citiesOfCityCardsInPlayerHand.Any(x => x == currentPlayerLocation);
-            bool thereAreNotInactiveResearchStations = game.MapElements.InactiveResearchStations.Count == 0;
+            PD_Player current_player = game.GQ_CurrentPlayer();
+            var current_player_location = game.GQ_PlayerLocation(current_player);
+            var city_cards_in_current_player_hand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+
+            // if the player does not have the city card of their current location, the action cannot be executed
+            if (city_cards_in_current_player_hand.Any(x => x.City == current_player_location) == false)
+            {
+                return new List<PD_PA_MoveResearchStation>();
+            }
+
+            var research_station_cities = game.GQ_ResearchStationCities();
 
             List<PD_PA_MoveResearchStation> moveResearchStationActions = new List<PD_PA_MoveResearchStation>();
-            if (currentLocationDoesNotHaveAResearchStation && playerOwnsCardOfCurrentCity && thereAreNotInactiveResearchStations)
+            foreach (var rs_city in research_station_cities)
             {
-                foreach (var rs_city in allOtherCitiesThatContainResearchStations)
-                {
-                    PD_PA_MoveResearchStation action = new PD_PA_MoveResearchStation(
-                        currentPlayer,
-                        cityCardsInPlayerHand.Find(x => x.City == currentPlayerLocation),
-                        rs_city,
-                        currentPlayerLocation
-                        );
-                    moveResearchStationActions.Add(action);
-                }
+                PD_PA_MoveResearchStation action = new PD_PA_MoveResearchStation(
+                    current_player,
+                    city_cards_in_current_player_hand.Find(x => x.City == current_player_location),
+                    rs_city,
+                    current_player_location
+                    );
+                moveResearchStationActions.Add(action);
             }
 
             return moveResearchStationActions;
         }
 
-        private static List<PD_PA_TreatDisease> Find_AvailablePlayerActions_PA_TreatDisease(
+        private static List<PD_PA_TreatDisease> FindAvailable_TreatDisease_Actions(
             PD_Game game
             )
         {
@@ -470,7 +458,7 @@ namespace Pandemic_AI_Framework
             return availableTreatDiseaseActions;
         }
 
-        private static List<PD_PA_TreatDisease_Medic> Find_AvailablePlayerActions_PA_TreatDisease_Medic(
+        private static List<PD_PA_TreatDisease_Medic> FindAvailable_TreatDisease_Medic_Actions(
             PD_Game game
             )
         {
@@ -497,7 +485,7 @@ namespace Pandemic_AI_Framework
             return availableTreatDiseaseMedicActions;
         }
 
-        private static List<PD_PA_ShareKnowledge_GiveCard> Find_AvailablePlayerActions_PA_ShareKnowledge_GiveCard(
+        private static List<PD_PA_ShareKnowledge_GiveCard> FindAvailable_ShareKnowledge_Give_Actions(
             PD_Game game
             )
         {
@@ -544,7 +532,7 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_GiveCard_Actions;
         }
 
-        private static List<PD_PA_ShareKnowledge_TakeCard>FindAvailable_ShareKnowledge_TakeCard_Actions(
+        private static List<PD_PA_ShareKnowledge_TakeCard> FindAvailable_ShareKnowledge_Take_Actions(
             PD_Game game
             )
         {
@@ -586,7 +574,7 @@ namespace Pandemic_AI_Framework
         }
 
         private static List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>
-            FindAvailable_ShareKnowledge_GiveCard_ResearcherGives_Actions(
+            FindAvailable_ShareKnowledge_Give_ResearcherGives_Actions(
             PD_Game game
             )
         {
@@ -633,7 +621,7 @@ namespace Pandemic_AI_Framework
         }
 
         private static List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>
-            FindAvailable_ShareKnowledge_TakeCard_FromResearcher_Actions(
+            FindAvailable_ShareKnowledge_Take_FromResearcher_Actions(
             PD_Game game
             )
         {
@@ -693,7 +681,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_DiscoverCure>();
             }
 
-            var currentPlayerLocation = game.GQ_Find_CurrentPlayer_Location();
+            var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)
@@ -736,7 +724,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_DiscoverCure_Scientist>();
             }
 
-            var currentPlayerLocation = game.GQ_Find_CurrentPlayer_Location();
+            var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
                 game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)

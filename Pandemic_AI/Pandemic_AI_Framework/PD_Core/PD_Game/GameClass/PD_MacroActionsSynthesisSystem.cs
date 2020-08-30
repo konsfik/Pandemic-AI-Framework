@@ -24,7 +24,7 @@ namespace Pandemic_AI_Framework
                 /// OTHER REUSABLE DATA
                 ////////////////////////////////////////////////////////////////
                 PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
-                PD_City currentPlayerLocation = PD_Game_Queries.GQ_Find_CurrentPlayer_Location(game);
+                PD_City currentPlayerLocation = PD_Game_Queries.GQ_CurrentPlayer_Location(game);
                 PD_Player_Roles currentPlayerRole = PD_Game_Queries.GQ_CurrentPlayer_Role(game);
                 List<PD_City> allCitiesExceprCurrentLocation = game.Map.Cities.FindAll(
                     x =>

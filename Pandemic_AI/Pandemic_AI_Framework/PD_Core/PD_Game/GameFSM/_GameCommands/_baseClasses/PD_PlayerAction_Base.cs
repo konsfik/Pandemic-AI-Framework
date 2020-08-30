@@ -12,7 +12,7 @@ namespace Pandemic_AI_Framework
 
         public PD_PlayerAction_Base(PD_Player player)
         {
-            Player = player;
+            Player = player.GetCustomDeepCopy();
         }
     }
 }

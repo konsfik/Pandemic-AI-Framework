@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
-    public class PD_Mini_CityCard : PD_Mini_Card, ICustomDeepCopyable<PD_Mini_CityCard>
+    [Serializable]
+    public class PD_MiniState_InfectionCard: PD_MiniState_Card, ICustomDeepCopyable<PD_MiniState_InfectionCard>
     {
-        int city_id;
-        public PD_Mini_CityCard(int city_id)
+        public int city_id;
+
+        public override string ToString()
+        {
+            return city_id.ToString();
+        }
+
+        public PD_MiniState_InfectionCard(int city_id)
         {
             this.city_id = city_id;
         }
@@ -20,7 +28,7 @@ namespace Pandemic_AI_Framework
                 return false;
             }
 
-            var other = (PD_Mini_CityCard)otherObject;
+            var other = (PD_MiniState_InfectionCard)otherObject;
 
             if (this.city_id != other.city_id)
             {
@@ -38,10 +46,9 @@ namespace Pandemic_AI_Framework
         }
         #endregion
 
-        public PD_Mini_CityCard GetCustomDeepCopy()
+        public PD_MiniState_InfectionCard GetCustomDeepCopy()
         {
-            return new PD_Mini_CityCard(this.city_id);
+            return new PD_MiniState_InfectionCard(this.city_id);
         }
-
     }
 }

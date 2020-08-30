@@ -35,7 +35,7 @@ namespace Pandemic_Mini_State_Tester
                     Formatting.Indented,
                     new JsonSerializerSettings
                     {
-                        TypeNameHandling = TypeNameHandling.None,
+                        TypeNameHandling = TypeNameHandling.All,
                         PreserveReferencesHandling = PreserveReferencesHandling.None
                     }
                 );

@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
-    public abstract class PD_Mini_Card
+    [Serializable]
+    public abstract class PD_MiniState_Card
     {
+
+
         #region equality overrides
         public abstract override bool Equals(object otherObject);
+        
         public abstract override int GetHashCode();
 
-        public static bool operator ==(PD_Mini_Card c1, PD_Mini_Card c2)
+        public static bool operator ==(PD_MiniState_Card c1, PD_MiniState_Card c2)
         {
             if (Object.ReferenceEquals(c1, null))
             {
@@ -33,7 +38,7 @@ namespace Pandemic_AI_Framework
             return c1.Equals(c2);
         }
 
-        public static bool operator !=(PD_Mini_Card c1, PD_Mini_Card c2)
+        public static bool operator !=(PD_MiniState_Card c1, PD_MiniState_Card c2)
         {
             return !(c1 == c2);
         }

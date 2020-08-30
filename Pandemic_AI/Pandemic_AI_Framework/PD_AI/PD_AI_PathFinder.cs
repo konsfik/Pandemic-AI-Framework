@@ -176,7 +176,7 @@ namespace Pandemic_AI_Framework
             PD_City destination
             )
         {
-            var simpleWalkPath = shortest_path__per__destination__per__origin[root.ID][destination.ID]; 
+            var simpleWalkPath = shortest_path__per__destination__per__origin[root.ID][destination.ID];
 
             if (researchStationCities.Count <= 1)
             {
@@ -188,10 +188,19 @@ namespace Pandemic_AI_Framework
                 bool destinationIsResearchStation = game.GQ_Is_City_ResearchStation(destination);
                 if (rootIsResearchStation && destinationIsResearchStation)
                 {
-                    return new List<PD_City>() {
-                        root,
-                        destination
-                    };
+                    if (root == destination)
+                    {
+                        return new List<PD_City>() { 
+                            root 
+                        };
+                    }
+                    else
+                    {
+                        return new List<PD_City>() {
+                            root,
+                            destination
+                        };
+                    }
                 }
                 else if (rootIsResearchStation && !destinationIsResearchStation)
                 {

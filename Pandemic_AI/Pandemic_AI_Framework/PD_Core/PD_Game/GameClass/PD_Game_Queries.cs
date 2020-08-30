@@ -8,7 +8,7 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_Game_Queries
     {
-        public static bool Find_If_OperationsExpertFlight_HasBeenUsedInThisTurn(
+        public static bool GQ_OperationsExpertFlight_HasBeenUsedInThisTurn(
             this PD_Game game
             )
         {
@@ -567,7 +567,7 @@ namespace Pandemic_AI_Framework
             return allInfectedCities;
         }
 
-        public static List<PD_CityCard> GQ_Find_CityCardsInCurrentPlayerHand(
+        public static List<PD_CityCard> GQ_CityCardsInCurrentPlayerHand(
             this PD_Game game
             )
         {

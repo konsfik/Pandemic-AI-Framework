@@ -127,7 +127,7 @@ namespace Pandemic_AI_Framework
             PD_Player current_player = game.GQ_CurrentPlayer();
             PD_City current_player_location = game.GQ_CurrentPlayer_Location();
 
-            List<PD_CityCard> cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            List<PD_CityCard> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
             var directFlightActions = new List<PD_PMA_DirectFlight>();
 
@@ -154,7 +154,7 @@ namespace Pandemic_AI_Framework
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
             PD_City current_player_location = game.GQ_CurrentPlayer_Location();
 
-            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
             var charterFlightActions = new List<PD_PMA_CharterFlight>();
 
@@ -199,7 +199,7 @@ namespace Pandemic_AI_Framework
             var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
             var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
 
-            var cityCardsInCurrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
             var shuttleFlightActions = new List<PD_PMA_ShuttleFlight>();
 
@@ -253,14 +253,14 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
 
-            bool operationsExpertFlightHasBeenUsedInThisTurn = game.Find_If_OperationsExpertFlight_HasBeenUsedInThisTurn();
+            bool operationsExpertFlightHasBeenUsedInThisTurn = game.GQ_OperationsExpertFlight_HasBeenUsedInThisTurn();
 
             if (operationsExpertFlightHasBeenUsedInThisTurn)
             {
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
 
-            List<PD_CityCard> cityCardsInCurerrentPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            List<PD_CityCard> cityCardsInCurerrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
             if (cityCardsInCurerrentPlayerHand.Count == 0)
             {
                 return new List<PD_PMA_OperationsExpert_Flight>();
@@ -324,7 +324,7 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_PA_BuildResearchStation> buildResearchStation_Actions = new List<PD_PA_BuildResearchStation>();
 
-                var cityCardsInPlayerHand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+                var cityCardsInPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
                 bool player_Has_CurrentLocation_CityCard =
                     cityCardsInPlayerHand.Any(
@@ -406,7 +406,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player current_player = game.GQ_CurrentPlayer();
             var current_player_location = game.GQ_PlayerLocation(current_player);
-            var city_cards_in_current_player_hand = game.GQ_Find_CityCardsInCurrentPlayerHand();
+            var city_cards_in_current_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
 
             // if the player does not have the city card of their current location, the action cannot be executed
             if (city_cards_in_current_player_hand.Any(x => x.City == current_player_location) == false)
@@ -796,7 +796,7 @@ namespace Pandemic_AI_Framework
                 PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
                 List<PD_CityCard> cityCardsInCurrentPlayerHand =
-                    game.GQ_Find_CityCardsInCurrentPlayerHand();
+                    game.GQ_CityCardsInCurrentPlayerHand();
                 if (cityCardsInCurrentPlayerHand.Count > 7)
                 {
                     foreach (var cardToDiscard in cityCardsInCurrentPlayerHand)

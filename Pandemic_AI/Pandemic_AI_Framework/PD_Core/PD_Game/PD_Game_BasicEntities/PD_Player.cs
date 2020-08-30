@@ -82,5 +82,10 @@ namespace Pandemic_AI_Framework
             return !(p1 == p2);
         }
         #endregion
+
+        public override string ToString()
+        {
+            return ID.ToString() + "." + Name;
+        }
     }
 }

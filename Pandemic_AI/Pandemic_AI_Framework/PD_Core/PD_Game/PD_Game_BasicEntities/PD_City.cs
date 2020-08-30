@@ -111,5 +111,9 @@ namespace Pandemic_AI_Framework
         }
         #endregion
 
+        public override string ToString()
+        {
+            return ID.ToString() + "." + Name;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
@@ -80,16 +81,16 @@ namespace Pandemic_AI_Framework
 
         // game elements
         public int available_research_stations;
-        public int[] available_infection_cubes__per__type;
+        public Dictionary<int, int> available_infection_cubes__per__type;
 
         // state - counters:
-        public int current_turn;
-        public int current_player;
-        public int current_player_action_index;
+        public int _state_counter___current_turn;
+        public int _state_counter___current_player;
+        public int _state_counter___current_player_action_index;
 
-        public int number_of_outbreaks;
-        public int number_of_epidemics;
-        public PD_Mini__Disease_State[] disease_states;
+        public int _state_counter___number_of_outbreaks;
+        public int _state_counter___number_of_epidemics;
+        public Dictionary<int, PD_Mini__Disease_State> _state_counter___disease_states;
 
         // flags
         public bool NotEnoughDiseaseCubesToCompleteAnInfection;
@@ -97,16 +98,12 @@ namespace Pandemic_AI_Framework
         public bool operations_expert_flight_used_this_turn;
 
         // initial card - containers:
-        public List<PD_InfectionCard> initial_container__infection_cards;
-        public List<PD_EpidemicCard> initial_container__epidemic_cards;
-        public List<PD_CityCard> initial_container__city_cards;
-
-        public List<List<PD_InfectionCard>> divided_deck_of_infection_cards;
-        public List<PD_InfectionCard> active_infection_cards;
-        public List<PD_InfectionCard> deck_of_discarded_infection_cards;
-        public List<List<PD_Card_Base>> divided_deck_of_player_cards;
-        public List<PD_Card_Base> deck_of_discarded_player_cards;
-        public Dictionary<int, List<PD_Card_Base>> player_cards__per__player;
+        public List<List<PD_Mini_InfectionCard>> _cards___divided_deck_of_infection_cards;
+        public List<PD_Mini_InfectionCard> _cards___active_infection_cards;
+        public List<PD_Mini_InfectionCard> _cards___deck_of_discarded_infection_cards;
+        public List<List<PD_Mini_Card>> _cards___divided_deck_of_player_cards;
+        public List<PD_Mini_Card> deck_of_discarded_player_cards;
+        public Dictionary<int, List<PD_Mini_Card>> player_cards__per__player;
 
         PD_Mini__Game_States game_state;
 
@@ -263,11 +260,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int t = 0; t < 4; t++)
                 {
-                    int num_cubes__this_type__that_city =
-                        game.GQ_Find_InfectionCubes_OfType_OnCity(
-                            city,
-                            t
-                            ).Count;
+                    int num_cubes__this_type__that_city = game.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count;
                     minified_game._map___infection_cubes__per__type__per__city[city.ID].Add(
                         t,
                         num_cubes__this_type__that_city
@@ -275,19 +268,60 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-
+            /////////////////////////////////////////////////
             // game elements
-            minified_game.available_research_stations = game.MapElements.InactiveResearchStations.Count;
+            /////////////////////////////////////////////////
 
-            minified_game.available_infection_cubes__per__type = new int[4];
+            // availablee research stations
+            minified_game.available_research_stations = game.MapElements.InactiveResearchStations.Count;
+            // available infection cubes per type
+            minified_game.available_infection_cubes__per__type = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
             {
-                minified_game.available_infection_cubes__per__type[t] =
-                    game.Count_Num_InactiveInfectionCubes_OfType(t);
+                minified_game.available_infection_cubes__per__type.Add(
+                    t, game.Num_InactiveInfectionCubes_OfType(t)
+                    );
             }
 
-            
 
+            /////////////////////////////////////////////////
+            // state counters
+            /////////////////////////////////////////////////
+
+            minified_game._state_counter___current_turn = game.GameStateCounter.CurrentTurnIndex;
+            minified_game._state_counter___current_player = game.GameStateCounter.CurrentPlayerIndex;
+            minified_game._state_counter___current_player_action_index = game.GameStateCounter.CurrentPlayerActionIndex;
+            minified_game._state_counter___number_of_outbreaks = game.GameStateCounter.OutbreaksCounter;
+            minified_game._state_counter___number_of_epidemics = game.GameStateCounter.EpidemicsCounter;
+            minified_game._state_counter___disease_states = new Dictionary<int, PD_Mini__Disease_State>();
+            for (int t = 0; t < 4; t++)
+            {
+                if (game.GameStateCounter.CureMarkersStates[t] == 0)
+                {
+                    minified_game._state_counter___disease_states.Add(t, PD_Mini__Disease_State.ACTIVE);
+                }
+                else if (game.GameStateCounter.CureMarkersStates[t] == 1)
+                {
+                    minified_game._state_counter___disease_states.Add(t, PD_Mini__Disease_State.CURED);
+                }
+                else if (game.GameStateCounter.CureMarkersStates[t] == 2)
+                {
+                    minified_game._state_counter___disease_states.Add(t, PD_Mini__Disease_State.ERADICATED);
+                }
+            }
+
+
+            minified_game._cards___divided_deck_of_infection_cards = new List<List<PD_Mini_InfectionCard>>();
+            foreach (var group in game.Cards.DividedDeckOfInfectionCards)
+            {
+                List<PD_Mini_InfectionCard> mini_group = new List<PD_Mini_InfectionCard>();
+                foreach (var card in group)
+                {
+                    PD_Mini_InfectionCard mini_card = new PD_Mini_InfectionCard(card.City.ID);
+                    mini_group.Add(mini_card);
+                }
+                minified_game._cards___divided_deck_of_infection_cards.Add(mini_group);
+            }
 
 
             return minified_game;

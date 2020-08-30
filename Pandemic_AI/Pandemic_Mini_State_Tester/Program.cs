@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Pandemic_AI_Framework;
+using Newtonsoft.Json;
 
 namespace Pandemic_Mini_State_Tester
 {
@@ -26,11 +27,40 @@ namespace Pandemic_Mini_State_Tester
                 randomly_generated_game
                 );
 
-            Console.WriteLine(mini_state.current_player);
+            Console.WriteLine(mini_state._state_counter___current_player);
+
+            string objectSerializedToString =
+                JsonConvert.SerializeObject(
+                    mini_state,
+                    Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.None,
+                        PreserveReferencesHandling = PreserveReferencesHandling.None
+                    }
+                );
+
+            PD_IO_Utilities.CreateFile(
+                "D:\\saved_state.json",
+                true,
+                false
+                );
+
+            PD_IO_Utilities.AppendToFile(
+                "D:\\saved_state.json",
+                objectSerializedToString
+                );
+
+            //PD_IO_Utilities.SerializeToJsonAndSave(
+            //    mini_state,
+            //    "D:\\saved_state.json",
+            //    true,
+            //    false
+            //    );
 
             var a = 0;
 
-            Console.WriteLine(mini_state.current_player);
+            Console.WriteLine(mini_state._state_counter___current_player);
 
             ///
 

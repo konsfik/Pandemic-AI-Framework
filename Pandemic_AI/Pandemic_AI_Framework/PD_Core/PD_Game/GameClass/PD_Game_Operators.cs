@@ -1440,7 +1440,7 @@ namespace Pandemic_AI_Framework
                 3 - num_CubesOfType_AlreadyOnCity;
 
             int num_InactiveInfectionCubes_OfType =
-                PD_Game_Queries.Count_Num_InactiveInfectionCubes_OfType(
+                PD_Game_Queries.Num_InactiveInfectionCubes_OfType(
                     game,
                     currentInfectionType
                     );

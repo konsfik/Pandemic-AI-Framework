@@ -47,7 +47,7 @@ namespace Pandemic_AI_Framework
             return medic_location;
         }
 
-        public static int Count_Num_InactiveInfectionCubes_OfType(
+        public static int Num_InactiveInfectionCubes_OfType(
             this PD_Game game,
             int type
             )

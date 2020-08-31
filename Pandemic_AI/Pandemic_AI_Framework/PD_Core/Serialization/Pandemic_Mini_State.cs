@@ -7,16 +7,19 @@ using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
+    ////////////////////////////////////////////////////////////////////////////////////
+    /// CARDS' REPRESENTATION
+    /// - Infection cards are represented as integers that range from 0 to 47
+    ///     (same as the cities that they relate to)
+    /// - City cards are represented as integers that range from 0 to 47
+    ///     (same as the cities that they relate to)
+    /// - Epidemic cards are represented as integers that range from 128 to 134
+    /// - Special event cards are represented as integers that range from 160 to ...
+
     /// <summary>
     /// a minimal representation of the state of pandemic,
     /// which is temporarily used for serialization and deserialization of the game.
     /// </summary>
-    public enum PD_Mini__Disease_State
-    {
-        ACTIVE,
-        CURED,
-        ERADICATED
-    }
 
     public enum PD_Mini__Player_Roles
     {
@@ -28,22 +31,6 @@ namespace Pandemic_AI_Framework
         Researcher,
         Medic,
         Scientist
-    }
-
-    public enum PD_Mini__Game_States
-    {
-        IDLE,
-        MAIN_PLAYER_ACTIONS,
-        DISCARDING_DURING_MAIN_PLAYER_ACTIONS,
-        DRAWING_NEW_PLAYER_CARDS,
-        DISCARDING_AFTER_DRAWING,
-        APPLYING_EPIDEMIC_CARDS,
-        DRAWING_NEW_INFECTION_CARDS,
-        APPLYING_INFECTION_CARDS,
-        GAME_LOST_CARDS,
-        GAME_LOST_DISEASE_CUBES,
-        GAME_LOST_OUTBREAKS,
-        GAME_WON
     }
 
     [Serializable]
@@ -90,7 +77,7 @@ namespace Pandemic_AI_Framework
 
         public int _state_counter___number_of_outbreaks;
         public int _state_counter___number_of_epidemics;
-        public Dictionary<int, PD_Mini__Disease_State> _state_counter___disease_states;
+        public Dictionary<int, int> _state_counter___disease_states;
 
         // flags
         public bool NotEnoughDiseaseCubesToCompleteAnInfection;
@@ -98,14 +85,14 @@ namespace Pandemic_AI_Framework
         public bool operations_expert_flight_used_this_turn;
 
         // initial card - containers:
-        public List<List<PD_MiniState_InfectionCard>> _cards___divided_deck_of_infection_cards;
-        public List<PD_MiniState_InfectionCard> _cards___active_infection_cards;
-        public List<PD_MiniState_InfectionCard> _cards___deck_of_discarded_infection_cards;
-        public List<List<PD_MiniState_Card>> _cards___divided_deck_of_player_cards;
-        public List<PD_MiniState_Card> _cards___deck_of_discarded_player_cards;
-        public Dictionary<int, List<PD_MiniState_Card>> _cards___player_cards__per__player;
+        public List<List<int>> _cards___divided_deck_of_infection_cards;
+        public List<int> _cards___active_infection_cards;
+        public List<int> _cards___deck_of_discarded_infection_cards;
+        public List<List<int>> _cards___divided_deck_of_player_cards;
+        public List<int> _cards___deck_of_discarded_player_cards;
+        public Dictionary<int, List<int>> _cards___player_cards__per__player;
 
-        PD_Mini__Game_States game_state;
+        int game_state;
 
         #endregion
 
@@ -293,7 +280,7 @@ namespace Pandemic_AI_Framework
             minified_game._state_counter___current_player_action_index = game.GameStateCounter.CurrentPlayerActionIndex;
             minified_game._state_counter___number_of_outbreaks = game.GameStateCounter.OutbreaksCounter;
             minified_game._state_counter___number_of_epidemics = game.GameStateCounter.EpidemicsCounter;
-            minified_game._state_counter___disease_states = new Dictionary<int, PD_Mini__Disease_State>();
+            minified_game._state_counter___disease_states = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
             {
                 if (game.GameStateCounter.CureMarkersStates[t] == 0)
@@ -316,53 +303,49 @@ namespace Pandemic_AI_Framework
             /////////////////////////////////////////////////
 
             // divided_deck_of_infection_cards
-            minified_game._cards___divided_deck_of_infection_cards = new List<List<PD_MiniState_InfectionCard>>();
+            minified_game._cards___divided_deck_of_infection_cards = new List<List<int>>();
             foreach (var group in game.Cards.DividedDeckOfInfectionCards)
             {
-                List<PD_MiniState_InfectionCard> mini_group = new List<PD_MiniState_InfectionCard>();
+                List<int> mini_group = new List<int>();
                 foreach (var card in group)
                 {
-                    PD_MiniState_InfectionCard mini_card = new PD_MiniState_InfectionCard(card.City.ID);
-                    mini_group.Add(mini_card);
+                    int mini_infection_card = card.City.ID;
+                    mini_group.Add(mini_infection_card);
                 }
                 minified_game._cards___divided_deck_of_infection_cards.Add(mini_group);
             }
 
             // active_infection_cards
-            minified_game._cards___active_infection_cards = new List<PD_MiniState_InfectionCard>();
+            minified_game._cards___active_infection_cards = new List<int>();
             foreach (var card in game.Cards.ActiveInfectionCards)
             {
-                PD_MiniState_InfectionCard mini_card = new PD_MiniState_InfectionCard(card.City.ID);
+                int mini_card = card.City.ID;
                 minified_game._cards___active_infection_cards.Add(mini_card);
             }
 
             // deck_of_discarded_infection_cards
-            minified_game._cards___deck_of_discarded_infection_cards = new List<PD_MiniState_InfectionCard>();
+            minified_game._cards___deck_of_discarded_infection_cards = new List<int>();
             foreach (var card in game.Cards.DeckOfDiscardedInfectionCards)
             {
-                PD_MiniState_InfectionCard mini_card = new PD_MiniState_InfectionCard(card.City.ID);
+                int mini_card = card.City.ID;
                 minified_game._cards___deck_of_discarded_infection_cards.Add(mini_card);
             }
 
             // divided_deck_of_player_cards
-            minified_game._cards___divided_deck_of_player_cards = new List<List<PD_MiniState_Card>>();
+            minified_game._cards___divided_deck_of_player_cards = new List<List<int>>();
             foreach (var group in game.Cards.DividedDeckOfPlayerCards)
             {
-                List<PD_MiniState_Card> mini_group = new List<PD_MiniState_Card>();
+                List<int> mini_group = new List<int>();
                 foreach (var card in group)
                 {
-                    if (card.GetType() == typeof(PD_CityCard))
+                    if (card is PD_CityCard cc)
                     {
-                        PD_MiniState_CityCard mini_card = new PD_MiniState_CityCard(
-                            ((PD_CityCard)card).City.ID
-                            );
+                        int mini_card = cc.City.ID;
                         mini_group.Add(mini_card);
                     }
-                    else if (card.GetType() == typeof(PD_EpidemicCard))
+                    else if (card is PD_EpidemicCard ec)
                     {
-                        PD_MiniState_EpidemicCard mini_card = new PD_MiniState_EpidemicCard(
-                            ((PD_EpidemicCard)card).ID
-                            );
+                        int mini_card = ec.ID + 128;
                         mini_group.Add(mini_card);
                     }
                 }
@@ -370,28 +353,61 @@ namespace Pandemic_AI_Framework
             }
 
             // deck_of_discarded_player_cards
-            minified_game._cards___deck_of_discarded_player_cards = new List<PD_MiniState_Card>();
-            foreach (var player_card in game.Cards.DeckOfDiscardedPlayerCards) {
-                if (player_card.GetType() == typeof(PD_CityCard))
+            minified_game._cards___deck_of_discarded_player_cards = new List<int>();
+            foreach (var player_card in game.Cards.DeckOfDiscardedPlayerCards)
+            {
+                if (player_card is PD_CityCard cc)
                 {
-                    PD_MiniState_CityCard mini_card = new PD_MiniState_CityCard(
-                        ((PD_CityCard)player_card).City.ID
-                        );
-                    minified_game._cards___deck_of_discarded_player_cards.Add(mini_card);
+                    int mini_city_card = cc.City.ID;
+                    minified_game._cards___deck_of_discarded_player_cards.Add(mini_city_card);
                 }
-                else if (player_card.GetType() == typeof(PD_EpidemicCard))
+                else if (player_card is PD_EpidemicCard ec)
                 {
-                    PD_MiniState_EpidemicCard mini_card = new PD_MiniState_EpidemicCard(
-                        ((PD_EpidemicCard)player_card).ID
-                        );
-                    minified_game._cards___deck_of_discarded_player_cards.Add(mini_card);
+                    int mini_epidemic_card = ec.ID + 128;
+                    minified_game._cards___deck_of_discarded_player_cards.Add(mini_epidemic_card);
                 }
             }
 
-            minified_game._cards___player_cards__per__player = new Dictionary<int, List<PD_MiniState_Card>>();
-            foreach (var player in game.Players) {
-                List<PD_PlayerCardBase> player_hand = game.GQ_CurrentPlayerHand();
-                List<PD_MiniState_Card> mini_player_hand = new List<PD_MiniState_Card>();
+            minified_game._cards___player_cards__per__player = new Dictionary<int, List<int>>();
+            foreach (var player in game.Players)
+            {
+                List<PD_PlayerCardBase> player_hand = game.GQ_PlayerHand(player);
+                List<int> mini_player_hand = new List<int>();
+                foreach (var card in player_hand)
+                {
+                    if (card is PD_CityCard cc)
+                    {
+                        int mini_city_card = cc.City.ID;
+                        mini_player_hand.Add(mini_city_card);
+                    }
+                    else if (card is PD_EpidemicCard ec)
+                    {
+                        int mini_epidemic_card = ec.ID + 128;
+                        mini_player_hand.Add(mini_epidemic_card);
+                    }
+                }
+                minified_game._cards___player_cards__per__player.Add(player.ID, mini_player_hand);
+            }
+
+            if (game.GameFSM.CurrentState is PD_GS_Idle)
+            {
+                minified_game.game_state = PD_Mini__GameState.IDLE;
+            }
+            else if (game.GameFSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
+            {
+                minified_game.game_state = PD_Mini__GameState.MAIN_PLAYER_ACTIONS;
+            }
+            else if (game.GameFSM.CurrentState is PD_GS_Discarding_DuringMainPlayerActions)
+            {
+                minified_game.game_state = PD_Mini__GameState.DISCARDING_DURING_MAIN_PLAYER_ACTIONS;
+            }
+            else if (game.GameFSM.CurrentState is PD_GS_DrawingNewPlayerCards)
+            {
+                minified_game.game_state = PD_Mini__GameState.DRAWING_NEW_PLAYER_CARDS;
+            }
+            else if (game.GameFSM.CurrentState is PD_GS_Discarding_AfterDrawing)
+            {
+                minified_game.game_state = PD_Mini__GameState.DISCARDING_AFTER_DRAWING;
             }
 
             return minified_game;

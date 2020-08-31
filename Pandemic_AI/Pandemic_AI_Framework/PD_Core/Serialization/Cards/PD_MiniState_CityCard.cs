@@ -8,7 +8,7 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_MiniState_CityCard : PD_MiniState_Card, ICustomDeepCopyable<PD_MiniState_CityCard>
     {
-        int city_id;
+        public readonly int city_id;
         public PD_MiniState_CityCard(int city_id)
         {
             this.city_id = city_id;

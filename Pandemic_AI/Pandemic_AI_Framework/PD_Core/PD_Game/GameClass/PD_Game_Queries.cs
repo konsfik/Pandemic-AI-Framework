@@ -238,6 +238,14 @@ namespace Pandemic_AI_Framework
             return game.Cards.PlayerCardsPerPlayerID[currentPlayer.ID];
         }
 
+        public static List<PD_PlayerCardBase> GQ_PlayerHand(
+            this PD_Game game,
+            PD_Player player
+            )
+        {
+            return game.Cards.PlayerCardsPerPlayerID[player.ID];
+        }
+
         public static bool GQ_Is_DiseaseCured_OR_Eradicated(
             this PD_Game game,
             int diseaseType

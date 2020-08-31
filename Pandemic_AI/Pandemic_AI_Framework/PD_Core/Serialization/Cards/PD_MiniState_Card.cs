@@ -8,8 +8,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public abstract class PD_MiniState_Card
     {
-
-
         #region equality overrides
         public abstract override bool Equals(object otherObject);
         

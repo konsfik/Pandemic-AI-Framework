@@ -44,12 +44,7 @@ namespace Pandemic_AI_Framework
 
         #region constructors
 
-        public PD_Game(PD_MiniGame mini_state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static PD_Game Create_Default(
+        public static PD_Game Create(
             Random randomness_provider,
             int number_of_players,
             int game_difficulty,
@@ -111,18 +106,18 @@ namespace Pandemic_AI_Framework
                 new PD_City(34, 2, "Riyadh"           , new PD_Point( 1165, 699  )),
                 new PD_City(35, 2, "Tehran"           , new PD_Point( 1250, 901  )),
 
-                new PD_City(36, 3, "Bangkok"          , new PD_Point( 938,  800  )),
-                new PD_City(37, 3, "Beijing"          , new PD_Point( 1150, 818  )),
-                new PD_City(38, 3, "Ho Chi Minh City" , new PD_Point( 1037, 773  )),
-                new PD_City(39, 3, "Hong Kong"        , new PD_Point( 1392, 605  )),
-                new PD_City(40, 3, "Jakarta"          , new PD_Point( 1373, 812  )),
-                new PD_City(41, 3, "Manila"           , new PD_Point( 1056, 887  )),
-                new PD_City(42, 3, "Osaka"            , new PD_Point( 1276, 775  )),
-                new PD_City(43, 3, "Seoul"            , new PD_Point( 1466, 780  )),
-                new PD_City(44, 3, "Shanghai"         , new PD_Point( 1160, 964  )),
-                new PD_City(45, 3, "Sydney"           , new PD_Point( 1289, 677  )),
-                new PD_City(46, 3, "Taipei"           , new PD_Point( 1165, 699  )),
-                new PD_City(47, 3, "Tokyo"            , new PD_Point( 1250, 901  )),
+                new PD_City(36, 3, "Bangkok"          , new PD_Point( 1486, 668  )),
+                new PD_City(37, 3, "Beijing"          , new PD_Point( 1543, 931  )),
+                new PD_City(38, 3, "Ho Chi Minh City" , new PD_Point( 1567, 574  )),
+                new PD_City(39, 3, "Hong Kong"        , new PD_Point( 1563, 727  )),
+                new PD_City(40, 3, "Jakarta"          , new PD_Point( 1486, 490  )),
+                new PD_City(41, 3, "Manila"           , new PD_Point( 1697, 582  )),
+                new PD_City(42, 3, "Osaka"            , new PD_Point( 1764, 786  )),
+                new PD_City(43, 3, "Seoul"            , new PD_Point( 1660, 938  )),
+                new PD_City(44, 3, "Shanghai"         , new PD_Point( 1551, 839  )),
+                new PD_City(45, 3, "Sydney"           , new PD_Point( 1773, 310  )),
+                new PD_City(46, 3, "Taipei"           , new PD_Point( 1668, 746  )),
+                new PD_City(47, 3, "Tokyo"            , new PD_Point( 1753, 885  )),
             };
 
             Dictionary<int, List<int>> neighbors__per__city = new Dictionary<int, List<int>>() {

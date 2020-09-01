@@ -32,7 +32,7 @@ namespace Pandemic_Mini_State_Tester
             string objectSerializedToString =
                 JsonConvert.SerializeObject(
                     mini_state,
-                    Formatting.Indented,
+                    Formatting.None,
                     new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.None,

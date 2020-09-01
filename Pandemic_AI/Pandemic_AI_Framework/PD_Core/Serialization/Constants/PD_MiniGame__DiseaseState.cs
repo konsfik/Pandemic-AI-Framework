@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pandemic_AI_Framework
 {
-    public static class PD_Mini__Disease_State
+    public static class PD_MiniGame__DiseaseState
     {
         public const int ACTIVE = 0;
         public const int CURED = 1;

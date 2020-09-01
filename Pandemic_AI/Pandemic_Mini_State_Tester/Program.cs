@@ -27,7 +27,7 @@ namespace Pandemic_Mini_State_Tester
                 randomly_generated_game
                 );
 
-            Console.WriteLine(mini_state._state_counter___current_player);
+            Console.WriteLine(mini_state.state_counter___current_player);
 
             string objectSerializedToString =
                 JsonConvert.SerializeObject(
@@ -60,7 +60,7 @@ namespace Pandemic_Mini_State_Tester
 
             var a = 0;
 
-            Console.WriteLine(mini_state._state_counter___current_player);
+            Console.WriteLine(mini_state.state_counter___current_player);
 
             ///
 

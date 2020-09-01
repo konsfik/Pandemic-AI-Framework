@@ -33,7 +33,7 @@ namespace Pandemic_AI_Framework
 
                 // condition checks:
                 bool playerHandBiggerThanPermitted =
-                    PD_Game_Queries.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted(game);
+                    game.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted();
 
                 if (playerHandBiggerThanPermitted == false)
                 {

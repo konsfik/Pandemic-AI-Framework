@@ -29,10 +29,10 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder
             )
         {
-            GameOngoing = PD_Game_Queries.GQ_Is_Ongoing(game) ? 1 : 0;
-            GameWon = PD_Game_Queries.GQ_Is_Won(game) ? 1 : 0;
-            GameLost = PD_Game_Queries.GQ_Is_Lost(game) ? 1 : 0;
-            Lost_Outbreaks = PD_Game_Queries.GQ_SS_DeadlyOutbreaks(game) ? 1 : 0;
+            GameOngoing = game.GQ_Is_Ongoing() ? 1 : 0;
+            GameWon = game.GQ_Is_Won() ? 1 : 0;
+            GameLost = game.GQ_Is_Lost() ? 1 : 0;
+            Lost_Outbreaks = game.GQ_SS_DeadlyOutbreaks() ? 1 : 0;
             Lost_DiseaseCubes =
                 game.GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection ? 1 : 0;
             Lost_PlayerCards =

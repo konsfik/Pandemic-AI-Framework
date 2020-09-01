@@ -34,9 +34,11 @@ namespace Pandemic_AI_Framework
     }
 
     [Serializable]
-    public class Pandemic_Mini_State : ICustomDeepCopyable<Pandemic_Mini_State>
+    public class PD_MiniGame : ICustomDeepCopyable<PD_MiniGame>
     {
         #region properties
+
+        public long unique_id;
 
         // game - settings:
         public int _settings___number_of_players;
@@ -97,14 +99,17 @@ namespace Pandemic_AI_Framework
         #endregion
 
 
-        public Pandemic_Mini_State GetCustomDeepCopy()
+        public PD_MiniGame GetCustomDeepCopy()
         {
             throw new NotImplementedException();
         }
 
-        public static Pandemic_Mini_State From_Normal_State(PD_Game game)
+        public static PD_MiniGame From_Normal_State(PD_Game game)
         {
-            Pandemic_Mini_State minified_game = new Pandemic_Mini_State();
+            PD_MiniGame minified_game = new PD_MiniGame();
+
+            // game - id
+            minified_game.unique_id = game.UniqueID;
 
             // game - settings:
             minified_game._settings___number_of_players = game.GameStateCounter.NumberOfPlayers;

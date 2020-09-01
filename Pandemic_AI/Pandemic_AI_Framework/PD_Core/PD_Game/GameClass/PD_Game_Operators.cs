@@ -92,11 +92,11 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            PD_City atlanta = PD_Game_Queries.GQ_Find_CityByName(game, "Atlanta");
+            PD_City atlanta = game.GQ_Find_CityByName("Atlanta");
             foreach (var player in game.Players)
             {
                 game.MapElements.PlayerPawnsPerCityID[atlanta.ID].Add(
-                    PD_Game_Queries.GQ_Find_PlayerPawn(game, player)
+                    game.GQ_Find_PlayerPawn(player)
                     );
             }
         }
@@ -147,9 +147,9 @@ namespace Pandemic_AI_Framework
             if (infectionDuringGameSetup == false)
             {
 
-                PD_City medic_location = PD_Game_Queries.GQ_Find_Medic_Location(game);
+                PD_City medic_location = game.GQ_Find_Medic_Location();
 
-                bool currentDiseaseIsCured = PD_Game_Queries.GQ_Is_DiseaseCured_OR_Eradicated(game, currentInfectionType);
+                bool currentDiseaseIsCured = game.GQ_Is_DiseaseCured_OR_Eradicated(currentInfectionType);
 
                 bool medicIsAtInfectionLocation = medic_location == cityToInfect;
 
@@ -167,8 +167,7 @@ namespace Pandemic_AI_Framework
             existingReport.AddInfectedCity(cityToInfect);
 
             int num_CubesOfType_AlreadyOnCity =
-                PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    game,
+                game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                     cityToInfect,
                     currentInfectionType
                     );
@@ -177,8 +176,7 @@ namespace Pandemic_AI_Framework
                 3 - num_CubesOfType_AlreadyOnCity;
 
             int num_InactiveInfectionCubes_OfType =
-                PD_Game_Queries.Num_InactiveInfectionCubes_OfType(
-                    game,
+                game.Num_InactiveInfectionCubes_OfType(
                     currentInfectionType
                     );
 
@@ -243,7 +241,7 @@ namespace Pandemic_AI_Framework
             existingReport.AddUsedCubes(num_CubesOfType_ThatCanBePlacedOnCity);
 
             game.GameStateCounter.IncreaseOutbreaksCounter();
-            if (PD_Game_Queries.GQ_SS_DeadlyOutbreaks(game) == true)
+            if (game.GQ_SS_DeadlyOutbreaks() == true)
             {
                 existingReport.SetFailureReason(InfectionFailureReasons.maximumOutbreaksSurpassed);
                 return existingReport;

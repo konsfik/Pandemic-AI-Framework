@@ -23,7 +23,7 @@ namespace Pandemic_Mini_State_Tester
                     true
                 );
 
-            Pandemic_Mini_State mini_state = Pandemic_Mini_State.From_Normal_State(
+            PD_MiniGame mini_state = PD_MiniGame.From_Normal_State(
                 randomly_generated_game
                 );
 

@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
 
         #region constructors
 
-        public PD_Game(Pandemic_Mini_State mini_state)
+        public PD_Game(PD_MiniGame mini_state)
         {
             throw new NotImplementedException();
         }

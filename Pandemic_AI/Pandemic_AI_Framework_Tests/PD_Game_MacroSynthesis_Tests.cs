@@ -52,7 +52,7 @@ namespace Pandemic_AI_Framework.Tests
             game.Cards.PlayerCardsPerPlayerID[3].Clear();
 
 
-            var rsCities = PD_Game_Queries.GQ_ResearchStationCities(game);
+            var rsCities = game.GQ_ResearchStationCities();
             List<PD_MacroAction> allMacros = PD_MacroActionsSynthesisSystem.FindAll_Macros(
                 game,
                 pathFinder,
@@ -70,8 +70,8 @@ namespace Pandemic_AI_Framework.Tests
                 game,
                 pathFinder,
                 rsCities,
-                PD_Game_Queries.GQ_CurrentPlayer(game),
-                PD_Game_Queries.GQ_CurrentPlayer_Location(game)
+                game.GQ_CurrentPlayer(),
+                game.GQ_CurrentPlayer_Location()
                 );
 
             Assert.IsTrue(simpleWalks.Count == 47);
@@ -87,19 +87,19 @@ namespace Pandemic_AI_Framework.Tests
 
             PD_Game_Operators.GO_MovePawnFromCityToCity(
                 game,
-                PD_Game_Queries.GQ_Find_PlayerPawn(game, game.Players[1]),
+                game.GQ_Find_PlayerPawn(game.Players[1]),
                 Atlanta,
                 Milan
                 );
             PD_Game_Operators.GO_MovePawnFromCityToCity(
                 game,
-                PD_Game_Queries.GQ_Find_PlayerPawn(game, game.Players[2]),
+                game.GQ_Find_PlayerPawn(game.Players[2]),
                 Atlanta,
                 Milan
                 );
             PD_Game_Operators.GO_MovePawnFromCityToCity(
                 game,
-                PD_Game_Queries.GQ_Find_PlayerPawn(game, game.Players[3]),
+                game.GQ_Find_PlayerPawn(game.Players[3]),
                 Atlanta,
                 Milan
                 );

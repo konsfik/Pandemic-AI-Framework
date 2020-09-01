@@ -31,14 +31,14 @@ namespace Pandemic_AI_Framework
                     game
                     );
 
-                bool thereAreMoreActiveInfectionCards = PD_Game_Queries.GQ_SS_ThereAreActiveInfectionCards(game);
+                bool thereAreMoreActiveInfectionCards = game.GQ_SS_ThereAreActiveInfectionCards();
 
                 // check if game is lost, etc..
-                if (PD_Game_Queries.GQ_SS_NotEnoughDiseaseCubestoCompleteAnInfection(game))
+                if (game.GQ_SS_NotEnoughDiseaseCubestoCompleteAnInfection())
                     return new PD_GS_GameLost();
-                if (PD_Game_Queries.GQ_SS_DeadlyOutbreaks(game))
+                if (game.GQ_SS_DeadlyOutbreaks())
                     return new PD_GS_GameLost();
-                if (PD_Game_Queries.GQ_SS_ThereAreActiveInfectionCards(game))
+                if (game.GQ_SS_ThereAreActiveInfectionCards())
                     return null;
 
                 game.GameStateCounter.IncreaseCurrentPlayerIndex();

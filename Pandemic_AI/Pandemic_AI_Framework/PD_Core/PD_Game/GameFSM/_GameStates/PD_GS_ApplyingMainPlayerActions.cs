@@ -26,10 +26,10 @@ namespace Pandemic_AI_Framework
             game.GameStateCounter.IncreasePlayerActionIndex();
 
             // after executing a main player action:
-            bool playerActionsFinished = PD_Game_Queries.SS_PlayerActionsFinished(game);
-            bool allDiseasesCured = PD_Game_Queries.GQ_SS_AllDiseasesCured(game);
-            bool anyPlayerNeedsToDiscard = PD_Game_Queries.GQ_SS_AnyPlayerHandIsBiggerThanPermitted(game);
-            bool enoughPlayerCardsToDraw = PD_Game_Queries.GQ_SS_EnoughPlayerCardsToDraw(game);
+            bool playerActionsFinished = game.SS_PlayerActionsFinished();
+            bool allDiseasesCured = game.GQ_SS_AllDiseasesCured();
+            bool anyPlayerNeedsToDiscard = game.GQ_SS_AnyPlayerHandIsBiggerThanPermitted();
+            bool enoughPlayerCardsToDraw = game.GQ_SS_EnoughPlayerCardsToDraw();
 
 
             bool stayAt_Applying_MainPlayerActions =

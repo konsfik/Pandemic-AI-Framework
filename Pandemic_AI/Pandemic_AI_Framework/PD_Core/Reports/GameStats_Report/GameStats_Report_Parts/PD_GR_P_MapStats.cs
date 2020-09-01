@@ -57,27 +57,10 @@ namespace Pandemic_AI_Framework
             NumDiseaseCubesOnMap_Type3 = 0;
             foreach (var city in game.Map.Cities)
             {
-                var diseaseCubesOfType_0_onCity = PD_Game_Queries.GQ_Find_InfectionCubes_OfType_OnCity(
-                    game,
-                    city,
-                    0
-                    );
-                var diseaseCubesOfType_1_onCity = PD_Game_Queries.GQ_Find_InfectionCubes_OfType_OnCity(
-                    game,
-                    city,
-                    1
-                    );
-                var diseaseCubesOfType_2_onCity = PD_Game_Queries.GQ_Find_InfectionCubes_OfType_OnCity(
-                    game,
-                    city,
-                    2
-                    );
-                var diseaseCubesOfType_3_onCity = PD_Game_Queries.GQ_Find_InfectionCubes_OfType_OnCity(
-                    game,
-                    city,
-                    3
-                    );
-
+                var diseaseCubesOfType_0_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,0);
+                var diseaseCubesOfType_1_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,1);
+                var diseaseCubesOfType_2_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,2);
+                var diseaseCubesOfType_3_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,3);
 
                 NumDiseaseCubesOnMap_Type0 += diseaseCubesOfType_0_onCity.Count;
                 NumDiseaseCubesOnMap_Type1 += diseaseCubesOfType_1_onCity.Count;
@@ -117,8 +100,7 @@ namespace Pandemic_AI_Framework
             foreach (var city in game.Map.Cities)
             {
                 // type 0 cubes on that city?
-                int numCubes_Type0 = PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    game,
+                int numCubes_Type0 = game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                     city,
                     0
                     );
@@ -139,11 +121,7 @@ namespace Pandemic_AI_Framework
                 }
 
                 // type 1 cubes on that city?
-                int numCubes_Type1 = PD_Game_Queries.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    game,
-                    city,
-                    1
-                    );
+                int numCubes_Type1 = game.GQ_Count_Num_InfectionCubes_OfType_OnCity(city,1);
                 if (numCubes_Type1 == 1)
                 {
                     NumCitiesWithOneSameTypeCube++;

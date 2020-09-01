@@ -14,7 +14,7 @@ namespace Pandemic_AI_Framework
         {
             List<PD_GameAction_Base> currentAvailablePlayerActions = new List<PD_GameAction_Base>();
 
-            PD_Player currentPlayer = PD_Game_Queries.GQ_CurrentPlayer(game);
+            PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
             if (game.GameFSM.CurrentState.GetType() != null && game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Idle))
             {

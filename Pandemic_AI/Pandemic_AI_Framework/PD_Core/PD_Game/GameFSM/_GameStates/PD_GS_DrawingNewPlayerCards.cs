@@ -28,8 +28,8 @@ namespace Pandemic_AI_Framework
                 command.Execute(randomness_provider,game);
 
                 // conditional checking...
-                bool playerHandIncludesEpidemicCard = PD_Game_Queries.GQ_SS_CurrentPlayerHandIncludesEpidemicCard(game);
-                bool playerHandIsBiggerThanPermitted = PD_Game_Queries.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted(game);
+                bool playerHandIncludesEpidemicCard = game.GQ_SS_CurrentPlayerHandIncludesEpidemicCard();
+                bool playerHandIsBiggerThanPermitted = game.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted();
 
                 if (playerHandIncludesEpidemicCard == true)
                 {

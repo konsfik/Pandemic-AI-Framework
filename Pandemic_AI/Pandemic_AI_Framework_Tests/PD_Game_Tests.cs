@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework.Tests
 
 
                 // play the game until the end...
-                while (PD_Game_Queries.GQ_Is_Ongoing(deserialized_game))
+                while (deserialized_game.GQ_Is_Ongoing())
                 {
                     var available_actions = deserialized_game.CurrentAvailablePlayerActions;
                     var random_action = available_actions.GetOneRandom(randomness_provider);
@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework.Tests
                         );
                 }
 
-                Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(deserialized_game) == false);
+                Assert.IsTrue(deserialized_game.GQ_Is_Ongoing() == false);
             }
 
             // play the games until the end, using macro actions
@@ -53,7 +53,7 @@ namespace Pandemic_AI_Framework.Tests
                     );
 
                 // play the game until the end...
-                while (PD_Game_Queries.GQ_Is_Ongoing(deserialized_game))
+                while (deserialized_game.GQ_Is_Ongoing())
                 {
                     var available_macro_actions = deserialized_game.GetAvailableMacros(pathFinder);
                     var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
@@ -63,7 +63,7 @@ namespace Pandemic_AI_Framework.Tests
                         );
                 }
 
-                Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(deserialized_game) == false);
+                Assert.IsTrue(deserialized_game.GQ_Is_Ongoing() == false);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Pandemic_AI_Framework.Tests
                             true
                             );
 
-                        while (PD_Game_Queries.GQ_Is_Ongoing(game))
+                        while (game.GQ_Is_Ongoing())
                         {
                             var available_actions = game.CurrentAvailablePlayerActions;
                             var random_action = available_actions.GetOneRandom(randomness_provider);
@@ -99,7 +99,7 @@ namespace Pandemic_AI_Framework.Tests
                                 );
                         }
 
-                        Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(game) == false);
+                        Assert.IsTrue(game.GQ_Is_Ongoing() == false);
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace Pandemic_AI_Framework.Tests
                             game_difficulty
                             );
 
-                        while (PD_Game_Queries.GQ_Is_Ongoing(game))
+                        while (game.GQ_Is_Ongoing())
                         {
                             var random_action = game
                                 .CurrentAvailablePlayerActions
@@ -135,10 +135,31 @@ namespace Pandemic_AI_Framework.Tests
                                 );
                         }
 
-                        Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(game) == false);
+                        Assert.IsTrue(game.GQ_Is_Ongoing() == false);
                     }
                 }
             }
+
+        }
+
+        /// <summary>
+        /// Converts the game from its default implementation
+        /// to the minified game state, 
+        /// then to a serialized state (json_
+        /// then back to the minified state
+        /// and finally back to the default implementation...
+        /// Then, the final game state must be playable until the end, without any errors...
+        /// 
+        /// The whole process is repeated a number of times, with randomly set up games...
+        /// </summary>
+        [TestMethod()]
+        public void Game_Conversions() {
+            PD_Game original_game = PD_Game.Create_Default(
+                4,
+                0
+                );
+
+            //Pandemic_Mini_State mini_game = Pandemic_Mini_State.From_Normal_State(original_game);
 
         }
 

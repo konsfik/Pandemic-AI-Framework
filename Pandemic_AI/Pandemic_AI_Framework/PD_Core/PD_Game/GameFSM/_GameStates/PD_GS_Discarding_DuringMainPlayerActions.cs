@@ -30,10 +30,10 @@ namespace Pandemic_AI_Framework
                     randomness_provider,
                     game);
 
-                bool playerActionsFinished = PD_Game_Queries.SS_PlayerActionsFinished(game);
-                bool allDiseasesCured = PD_Game_Queries.GQ_SS_AllDiseasesCured(game);
-                bool anyPlayerNeedsToDiscard = PD_Game_Queries.GQ_SS_AnyPlayerHandIsBiggerThanPermitted(game);
-                bool enoughPlayerCardsToDraw = PD_Game_Queries.GQ_SS_EnoughPlayerCardsToDraw(game);
+                bool playerActionsFinished = game.SS_PlayerActionsFinished();
+                bool allDiseasesCured = game.GQ_SS_AllDiseasesCured();
+                bool anyPlayerNeedsToDiscard = game.GQ_SS_AnyPlayerHandIsBiggerThanPermitted();
+                bool enoughPlayerCardsToDraw = game.GQ_SS_EnoughPlayerCardsToDraw();
 
                 // stay in same state
                 bool stayAt_Discarding_During_MainPlayerActions =

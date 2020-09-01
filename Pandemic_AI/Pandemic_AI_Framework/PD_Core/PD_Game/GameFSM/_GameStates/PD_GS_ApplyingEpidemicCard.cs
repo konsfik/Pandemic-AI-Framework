@@ -30,30 +30,30 @@ namespace Pandemic_AI_Framework
                     );
 
                 // condition checks:
-                bool playerHandIncludesEpidemicCard = PD_Game_Queries.GQ_SS_CurrentPlayerHandIncludesEpidemicCard(game);
-                bool playerHandBiggerThanPermitted = PD_Game_Queries.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted(game);
+                bool playerHandIncludesEpidemicCard = game.GQ_SS_CurrentPlayerHandIncludesEpidemicCard();
+                bool playerHandBiggerThanPermitted = game.GQ_SS_CurrentPlayerHandIsBiggerThanPermitted();
 
-                if (PD_Game_Queries.GQ_SS_DeadlyOutbreaks(game) == true)
+                if (game.GQ_SS_DeadlyOutbreaks() == true)
                 {
                     return new PD_GS_GameLost();
                 }
-
-                if (PD_Game_Queries.GQ_SS_NotEnoughDiseaseCubestoCompleteAnInfection(game) == true)
+                else if (game.GQ_SS_NotEnoughDiseaseCubestoCompleteAnInfection() == true)
                 {
                     return new PD_GS_GameLost();
                 }
-
-                if (playerHandIncludesEpidemicCard == true)
+                else if (playerHandIncludesEpidemicCard == true)
                 {
                     return new PD_GS_ApplyingEpidemicCard();
                 }
-
-                if (playerHandBiggerThanPermitted == true)
+                else if (playerHandBiggerThanPermitted == true)
                 {
                     return new PD_GS_Discarding_AfterDrawing();
                 }
+                else
+                {
+                    return new PD_GS_DrawingNewInfectionCards();
+                }
 
-                return new PD_GS_DrawingNewInfectionCards();
             }
             return null;
         }

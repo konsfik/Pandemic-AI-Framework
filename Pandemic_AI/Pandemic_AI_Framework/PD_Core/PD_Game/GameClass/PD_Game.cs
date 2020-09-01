@@ -50,8 +50,10 @@ namespace Pandemic_AI_Framework
         }
 
         public static PD_Game Create_Default(
+            Random randomness_provider,
             int number_of_players,
-            int game_difficulty
+            int game_difficulty,
+            bool auto_game_setup
             )
         {
             Dictionary<int, string> playerIDsNames = new Dictionary<int, string>() {
@@ -265,7 +267,7 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-            return new PD_Game(
+            PD_Game new_game = new PD_Game(
                 game_difficulty,
                 players,
                 cities,
@@ -278,6 +280,15 @@ namespace Pandemic_AI_Framework
                 research_stations,
                 infection_cubes
                 );
+
+            if (auto_game_setup) {
+                new_game.ApplySpecificPlayerAction(
+                    randomness_provider,
+                    new_game.CurrentAvailablePlayerActions[0]
+                    );
+            }
+
+            return new_game;
         }
 
         /// <summary>

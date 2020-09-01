@@ -13,17 +13,15 @@ namespace Pandemic_Mini_State_Tester
         static void Main(string[] args)
         {
             Random randomness_provider = new Random();
-            string game_creation_data = DataUtilities.Read_GameCreationData();
 
-            PD_Game randomly_generated_game = PD_GameCreator.CreateNewGame(
+            PD_Game randomly_generated_game = PD_Game.Create_Default(
                     randomness_provider,
                     4,
                     0,
-                    game_creation_data,
                     true
                 );
 
-            PD_MiniGame mini_state = PD_MiniGame.From_Normal_State(
+            PD_MiniGame mini_state = PD_State_Converter.MiniGame__From__Game(
                 randomly_generated_game
                 );
 
@@ -58,7 +56,6 @@ namespace Pandemic_Mini_State_Tester
             //    false
             //    );
 
-            var a = 0;
 
             Console.WriteLine(mini_state.state_counter___current_player);
 

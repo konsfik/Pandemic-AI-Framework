@@ -250,12 +250,10 @@ namespace Experiment_1
             int gameDifficulty
             )
         {
-            string data = DataUtilities.Read_GameCreationData();
-            return PD_GameCreator.CreateNewGame(
+            return PD_Game.Create_Default(
                 randomness_provider,
-                numberOfPlayers, 
-                gameDifficulty, 
-                data, 
+                numberOfPlayers,
+                gameDifficulty,
                 true
                 );
         }
@@ -267,16 +265,14 @@ namespace Experiment_1
             int gameDifficulty
             )
         {
-            string data = DataUtilities.Read_GameCreationData();
             List<PD_Game> games = new List<PD_Game>();
             for (int i = 0; i < numberOfGames; i++)
             {
                 games.Add(
-                    PD_GameCreator.CreateNewGame(
+                    PD_Game.Create_Default(
                         randomness_provider,
                         numberOfPlayers, 
                         gameDifficulty, 
-                        data, 
                         true
                         )
                     );

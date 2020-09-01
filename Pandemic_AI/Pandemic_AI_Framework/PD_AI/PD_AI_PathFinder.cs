@@ -31,11 +31,10 @@ namespace Pandemic_AI_Framework
 
             string game_creation_data = PD_IO_Utilities.ReadFile(game_creation_data_file_path);
             // generate a random game
-            PD_Game dummy_game = PD_GameCreator.CreateNewGame(
+            PD_Game dummy_game = PD_Game.Create_Default(
                 randomness_provider,
                 4,
                 0,
-                game_creation_data,
                 false
                 );
 

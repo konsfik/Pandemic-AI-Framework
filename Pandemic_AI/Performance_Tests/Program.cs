@@ -15,7 +15,6 @@ namespace Performance_Tests
             DateTime dateTimeOfExperiment = DateTime.UtcNow;
             int number_of_games = 1000;
             Random randomness_provider = new Random(1000);
-            string game_creation_data = DataUtilities.Read_GameCreationData();
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string report_file_name = "report_" + dateTimeOfExperiment.Ticks.ToString() + ".txt";
@@ -37,11 +36,10 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_GameCreator.CreateNewGame(
+                    PD_Game.Create_Default(
                         randomness_provider,
                         4,
                         0,
-                        game_creation_data,
                         false
                         )
                     );
@@ -132,11 +130,10 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_GameCreator.CreateNewGame(
+                    PD_Game.Create_Default(
                         randomness_provider,
                         4,
                         0,
-                        game_creation_data,
                         true
                         )
                     );

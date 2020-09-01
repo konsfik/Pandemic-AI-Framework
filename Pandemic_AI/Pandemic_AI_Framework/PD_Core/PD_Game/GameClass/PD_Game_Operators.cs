@@ -101,31 +101,6 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static void GO_Randomize_PlayerRoles(
-            this PD_Game game,
-            Random randomness_provider
-            )
-        {
-            List<PD_Role_Card> all_Role_Cards = PD_GameCreator.CreateRoleCards();
-            foreach (var player in game.Players)
-            {
-                PD_Role_Card selected_Role_Card = all_Role_Cards.DrawOneRandom(randomness_provider);
-                // set the player role card and pawn
-                game.RoleCardsPerPlayerID[player.ID] = selected_Role_Card;
-                game.PlayerPawnsPerPlayerID[player.ID] = game.GameElementReferences.PlayerPawns.Find(
-                    x =>
-                    x.Role == selected_Role_Card.Role
-                    );
-            }
-
-            // clear macros and actions lists, after the transformation is over...
-            if (game.CurrentAvailableMacros != null)
-            {
-                game.CurrentAvailableMacros.Clear();
-            }
-            game.UpdateAvailablePlayerActions();
-        }
-
         /// <summary>
         /// The act of infecting a city.
         /// </summary>

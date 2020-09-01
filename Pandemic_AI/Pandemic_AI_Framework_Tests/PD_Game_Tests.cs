@@ -68,45 +68,6 @@ namespace Pandemic_AI_Framework.Tests
         }
 
         [TestMethod()]
-        public void Generate_Game_From_Data()
-        {
-            Random randomness_provider = new Random();
-
-            string data = DataUtilities.Read_GameCreationData();
-
-            for (int num_players = 2; num_players <= 4; num_players++)
-            {
-                for (int game_difficulty = 0; game_difficulty <= 2; game_difficulty++)
-                {
-                    // repeat the process 100 times!
-                    for (int i = 0; i < 100; i++)
-                    {
-                        PD_Game game = PD_GameCreator.CreateNewGame(
-                            randomness_provider,
-                            num_players, 
-                            game_difficulty, 
-                            data, 
-                            true
-                            );
-
-                        while (game.GQ_Is_Ongoing())
-                        {
-                            var available_actions = game.CurrentAvailablePlayerActions;
-                            var random_action = available_actions.GetOneRandom(randomness_provider);
-                            game.ApplySpecificPlayerAction(
-                                randomness_provider,
-                                random_action
-                                );
-                        }
-
-                        Assert.IsTrue(game.GQ_Is_Ongoing() == false);
-                    }
-                }
-            }
-
-        }
-
-        [TestMethod()]
         public void Generate_Game_Without_Data() {
             Random randomness_provider = new Random();
 
@@ -119,8 +80,10 @@ namespace Pandemic_AI_Framework.Tests
                     for (int i = 0; i < 100; i++)
                     {
                         PD_Game game = PD_Game.Create_Default(
+                            randomness_provider,
                             num_players,
-                            game_difficulty
+                            game_difficulty,
+                            true
                             );
 
                         while (game.GQ_Is_Ongoing())
@@ -154,9 +117,13 @@ namespace Pandemic_AI_Framework.Tests
         /// </summary>
         [TestMethod()]
         public void Game_Conversions() {
+            Random randomness_provider = new Random();
+
             PD_Game original_game = PD_Game.Create_Default(
+                randomness_provider,
                 4,
-                0
+                0,
+                true
                 );
 
             //Pandemic_Mini_State mini_game = Pandemic_Mini_State.From_Normal_State(original_game);
@@ -167,23 +134,19 @@ namespace Pandemic_AI_Framework.Tests
         public void RandomSeed_Tests() {
             Random randomness_provider = new Random(1000);
 
-            string data = DataUtilities.Read_GameCreationData();
-
-            PD_Game game_1 = PD_GameCreator.CreateNewGame(
+            PD_Game game_1 = PD_Game.Create_Default(
                 randomness_provider,
                 4,
                 0,
-                data,
                 true
                 );
 
             randomness_provider = new Random(1000);
 
-            PD_Game game_2 = PD_GameCreator.CreateNewGame(
+            PD_Game game_2 = PD_Game.Create_Default(
                 randomness_provider,
                 4,
                 0,
-                data,
                 true
                 );
 
@@ -204,10 +167,11 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            string data = DataUtilities.Read_GameCreationData();
-            PD_Game game = PD_GameCreator.CreateNewGame_SpecificRoles(
+            PD_Game game = PD_Game.Create_Default(
                 randomness_provider,
-                data
+                4,
+                0,
+                true
                 );
             PD_Game gameCopy = game.GetCustomDeepCopy();
 

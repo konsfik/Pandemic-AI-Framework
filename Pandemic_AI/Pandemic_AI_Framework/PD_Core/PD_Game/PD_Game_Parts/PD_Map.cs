@@ -35,9 +35,9 @@ namespace Pandemic_AI_Framework
             Dictionary<int, List<PD_City>> cityNeighbors_PerCityID
             )
         {
-            Cities = cities;
-            CityEdges = cityEdges;
-            CityNeighbors_PerCityID = cityNeighbors_PerCityID;
+            Cities = cities.CustomDeepCopy();
+            CityEdges = cityEdges.CustomDeepCopy();
+            CityNeighbors_PerCityID = cityNeighbors_PerCityID.CustomDeepCopy();
         }
 
         // private constructor, for deepcopy purposes only

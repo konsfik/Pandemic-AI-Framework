@@ -16,7 +16,7 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            PD_Game game = PD_Game.Create_Default(
+            PD_Game game = PD_Game.Create(
                 randomness_provider,
                 4, 
                 0, 

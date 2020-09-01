@@ -75,8 +75,8 @@ namespace Pandemic_AI_Framework
         public override int GetHashCode()
         {
             int hash = 17;
-            hash = (hash * 31) + ID.GetHashCode();
-            hash = (hash * 31) + Type.GetHashCode();
+            hash = (hash * 31) + ID;
+            hash = (hash * 31) + Type;
             hash = (hash * 31) + Name.GetHashCode();
             hash = (hash * 31) + Position.GetHashCode();
             return hash;

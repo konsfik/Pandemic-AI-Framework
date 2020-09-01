@@ -250,7 +250,7 @@ namespace Experiment_1
             int gameDifficulty
             )
         {
-            return PD_Game.Create_Default(
+            return PD_Game.Create(
                 randomness_provider,
                 numberOfPlayers,
                 gameDifficulty,
@@ -269,7 +269,7 @@ namespace Experiment_1
             for (int i = 0; i < numberOfGames; i++)
             {
                 games.Add(
-                    PD_Game.Create_Default(
+                    PD_Game.Create(
                         randomness_provider,
                         numberOfPlayers, 
                         gameDifficulty, 

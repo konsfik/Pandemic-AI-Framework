@@ -36,7 +36,7 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_Game.Create_Default(
+                    PD_Game.Create(
                         randomness_provider,
                         4,
                         0,
@@ -130,7 +130,7 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_Game.Create_Default(
+                    PD_Game.Create(
                         randomness_provider,
                         4,
                         0,

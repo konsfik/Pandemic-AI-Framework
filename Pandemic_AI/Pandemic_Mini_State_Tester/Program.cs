@@ -12,9 +12,13 @@ namespace Pandemic_Mini_State_Tester
     {
         static void Main(string[] args)
         {
+#if DEBUG
+            Console.WriteLine("debug mode");
+#endif
+
             Random randomness_provider = new Random();
 
-            PD_Game randomly_generated_game = PD_Game.Create_Default(
+            PD_Game randomly_generated_game = PD_Game.Create(
                     randomness_provider,
                     4,
                     0,

@@ -14,7 +14,7 @@ namespace Pandemic_AI_Framework.Tests
         [TestMethod()]
         public void Deserialize_ExistingGame_Test()
         {
-            Random randomness_provider = new Random();
+            Random randomness_provider = new Random(1001);
 
             string saved_games_path = System.IO.Path.Combine(
                 System.IO.Directory.GetCurrentDirectory(),
@@ -79,7 +79,7 @@ namespace Pandemic_AI_Framework.Tests
                     // repeat the process 100 times!
                     for (int i = 0; i < 100; i++)
                     {
-                        PD_Game game = PD_Game.Create_Default(
+                        PD_Game game = PD_Game.Create(
                             randomness_provider,
                             num_players,
                             game_difficulty,
@@ -119,7 +119,7 @@ namespace Pandemic_AI_Framework.Tests
         public void Game_Conversions() {
             Random randomness_provider = new Random();
 
-            PD_Game original_game = PD_Game.Create_Default(
+            PD_Game original_game = PD_Game.Create(
                 randomness_provider,
                 4,
                 0,
@@ -134,7 +134,7 @@ namespace Pandemic_AI_Framework.Tests
         public void RandomSeed_Tests() {
             Random randomness_provider = new Random(1000);
 
-            PD_Game game_1 = PD_Game.Create_Default(
+            PD_Game game_1 = PD_Game.Create(
                 randomness_provider,
                 4,
                 0,
@@ -143,7 +143,7 @@ namespace Pandemic_AI_Framework.Tests
 
             randomness_provider = new Random(1000);
 
-            PD_Game game_2 = PD_Game.Create_Default(
+            PD_Game game_2 = PD_Game.Create(
                 randomness_provider,
                 4,
                 0,
@@ -167,7 +167,7 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            PD_Game game = PD_Game.Create_Default(
+            PD_Game game = PD_Game.Create(
                 randomness_provider,
                 4,
                 0,

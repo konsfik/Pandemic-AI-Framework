@@ -9,8 +9,10 @@ namespace Pandemic_AI_Framework
     /// Player discards a city card to move to the city named of the card
     /// </summary>
     [Serializable]
-    public class PD_PMA_DirectFlight : PD_MainAction_Base, I_Movement_Action
+    public class PD_PMA_DirectFlight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_City InitialLocation { get; protected set; }
 
         public PD_City TargetLocation { get; protected set; }
@@ -24,13 +26,28 @@ namespace Pandemic_AI_Framework
             PD_City initialLocation,
             PD_City targetLocation,
             PD_CityCard cityCardToDiscard
-            ) : base(
-                player
-                )
+            )
         {
+            this.Player = player;
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
             this.CityCardToDiscard = cityCardToDiscard;
+        }
+
+        // private constructor, for custom deep copy purposes only
+        private PD_PMA_DirectFlight(
+            PD_PMA_DirectFlight actionToCopy
+            )
+        {
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+            this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
+        }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PD_PMA_DirectFlight(this);
         }
 
         public override void Execute(
@@ -38,24 +55,18 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PMA_DirectFlight(Player, InitialLocation, TargetLocation, CityCardToDiscard);
-        }
+            game.GO_PlayerDiscardsPlayerCard(
+                Player,
+                CityCardToDiscard
+                );
 
-        // private constructor, for custom deep copy purposes only
-        private PD_PMA_DirectFlight(
-            PD_PMA_DirectFlight actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
-        {
-            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
-            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
-            CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
-        }
+            game.GO_MovePawnFromCityToCity(
+                game.PlayerPawnsPerPlayerID[Player.ID],
+                InitialLocation,
+                TargetLocation
+                );
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PMA_DirectFlight(this);
+            game.Medic_MoveTreat(TargetLocation);
         }
 
         public override string GetDescription()

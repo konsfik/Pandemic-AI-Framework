@@ -612,7 +612,7 @@ namespace Pandemic_AI_Framework
             {
                 int numRemainingActions = numAvailableActions - seq.Count;
 
-                PD_Player player = ((PD_MainAction_Base)seq.GetLast()).Player;
+                PD_Player player = ((I_Player_Action)seq.GetLast()).Player;
                 PD_City destination = ((I_Movement_Action)(seq.GetLast())).TargetLocation;
 
                 List<PD_GameAction_Base> completeSequence = new List<PD_GameAction_Base>();

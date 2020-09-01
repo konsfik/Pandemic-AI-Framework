@@ -68,7 +68,7 @@ namespace Pandemic_AI_Framework.Tests
         }
 
         [TestMethod()]
-        public void Generate_Game()
+        public void Generate_Game_From_Data()
         {
             Random randomness_provider = new Random();
 
@@ -93,6 +93,42 @@ namespace Pandemic_AI_Framework.Tests
                         {
                             var available_actions = game.CurrentAvailablePlayerActions;
                             var random_action = available_actions.GetOneRandom(randomness_provider);
+                            game.ApplySpecificPlayerAction(
+                                randomness_provider,
+                                random_action
+                                );
+                        }
+
+                        Assert.IsTrue(PD_Game_Queries.GQ_Is_Ongoing(game) == false);
+                    }
+                }
+            }
+
+        }
+
+        [TestMethod()]
+        public void Generate_Game_Without_Data() {
+            Random randomness_provider = new Random();
+
+            // generate 100 games for every possible settings selection
+            for (int num_players = 2; num_players <= 4; num_players++)
+            {
+                for (int game_difficulty = 0; game_difficulty <= 2; game_difficulty++)
+                {
+                    // repeat the process 100 times!
+                    for (int i = 0; i < 100; i++)
+                    {
+                        PD_Game game = PD_Game.Create_Default(
+                            num_players,
+                            game_difficulty
+                            );
+
+                        while (PD_Game_Queries.GQ_Is_Ongoing(game))
+                        {
+                            var random_action = game
+                                .CurrentAvailablePlayerActions
+                                .GetOneRandom(randomness_provider);
+
                             game.ApplySpecificPlayerAction(
                                 randomness_provider,
                                 random_action

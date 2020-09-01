@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_BuildResearchStation : PD_MainAction_Base
+    public class PD_PA_BuildResearchStation : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_CityCard Used_CityCard { get; private set; }
         public PD_City Build_RS_On { get; private set; }
 
@@ -23,16 +24,11 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_CityCard used_CityCard,
             PD_City build_RS_On
-            ) : base(
-                player
-                )
+            )
         {
-            if (used_CityCard.City != build_RS_On)
-            {
-                throw new System.Exception("City card to use does not match the city to build on.");
-            }
-            Used_CityCard = used_CityCard;
-            Build_RS_On = build_RS_On;
+            this.Player = player;
+            this.Used_CityCard = used_CityCard;
+            this.Build_RS_On = build_RS_On;
         }
 
         /// <summary>
@@ -41,12 +37,11 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_BuildResearchStation(
             PD_PA_BuildResearchStation actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
-            Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
-            Build_RS_On = actionToCopy.Build_RS_On.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
+            this.Build_RS_On = actionToCopy.Build_RS_On.GetCustomDeepCopy();
         }
         #endregion
 
@@ -55,10 +50,13 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_BuildResearchStation(
+            game.GO_PlayerDiscardsPlayerCard(
                 Player,
-                Build_RS_On,
                 Used_CityCard
+                );
+
+            game.GO_PlaceResearchStationOnCity(
+                Build_RS_On
                 );
         }
 

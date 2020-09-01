@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_TakeCard : PD_MainAction_Base
+    public class PD_PA_ShareKnowledge_TakeCard : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_Player OtherPlayer { get; private set; }
         public PD_CityCard CityCardToTake { get; private set; }
 
@@ -23,8 +24,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_Player otherPlayer,
             PD_CityCard cityCardToTake
-            ) : base(player)
+            )
         {
+            Player = player;
             OtherPlayer = otherPlayer;
             CityCardToTake = cityCardToTake;
         }
@@ -35,10 +37,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_ShareKnowledge_TakeCard(
             PD_PA_ShareKnowledge_TakeCard actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            Player = actionToCopy.Player.GetCustomDeepCopy();
             OtherPlayer = actionToCopy.OtherPlayer.GetCustomDeepCopy();
             CityCardToTake = actionToCopy.CityCardToTake.GetCustomDeepCopy();
         }
@@ -49,7 +50,8 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_ShareKnowledge_TakeCard(Player, OtherPlayer, CityCardToTake);
+            game.Cards.PlayerCardsPerPlayerID[OtherPlayer.ID].Remove(CityCardToTake);
+            game.Cards.PlayerCardsPerPlayerID[game.GQ_CurrentPlayer().ID].Add(CityCardToTake);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

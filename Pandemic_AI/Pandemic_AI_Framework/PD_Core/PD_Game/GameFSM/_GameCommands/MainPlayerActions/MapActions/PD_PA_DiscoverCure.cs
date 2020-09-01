@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_DiscoverCure : PD_MainAction_Base
+    public class PD_PA_DiscoverCure : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public List<PD_CityCard> CityCardsToDiscard { get; private set; }
         public PD_City CityOfResearchStation { get; private set; }
         public int TypeOfDiseaseToCure { get; private set; }
@@ -26,15 +27,12 @@ namespace Pandemic_AI_Framework
             PD_City cityOfResearchStation,
             List<PD_CityCard> cityCardsToDiscard,
             int typeOfDiseaseToCure
-            ) : base(player)
+            )
         {
-            if (cityCardsToDiscard.Count != 5)
-            {
-                throw new System.Exception("There should be 5 cards in that list");
-            }
-            CityCardsToDiscard = cityCardsToDiscard;
-            CityOfResearchStation = cityOfResearchStation;
-            TypeOfDiseaseToCure = typeOfDiseaseToCure;
+            this.Player = player;
+            this.CityCardsToDiscard = cityCardsToDiscard;
+            this.CityOfResearchStation = cityOfResearchStation;
+            this.TypeOfDiseaseToCure = typeOfDiseaseToCure;
         }
 
         /// <summary>
@@ -43,13 +41,12 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_DiscoverCure(
             PD_PA_DiscoverCure actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
-            CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
-            CityOfResearchStation = actionToCopy.CityOfResearchStation.GetCustomDeepCopy();
-            TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
+            this.CityOfResearchStation = actionToCopy.CityOfResearchStation.GetCustomDeepCopy();
+            this.TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
         }
         #endregion
 
@@ -58,7 +55,19 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_DiscoverCure(Player, CityCardsToDiscard, TypeOfDiseaseToCure);
+            // discard the cards
+            foreach (var cityCard in CityCardsToDiscard)
+            {
+                game.GO_PlayerDiscardsPlayerCard(
+                    Player,
+                    cityCard
+                    );
+            }
+
+            // discover the cure for the disease here...
+            game.GameStateCounter.CureDisease(TypeOfDiseaseToCure);
+
+            game.Medic_AutoTreat_AfterDiscoverCure(TypeOfDiseaseToCure);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

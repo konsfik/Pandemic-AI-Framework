@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease_Medic : PD_MainAction_Base
+    public class PD_PA_TreatDisease_Medic : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_City CityToTreatDiseaseAt { get; private set; }
         public int TypeOfDiseaseToTreat { get; private set; }
 
@@ -25,10 +26,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_City cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
-            ) : base(
-                player
-                )
+            )
         {
+            Player = player;
             CityToTreatDiseaseAt = cityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = typeOfDiseaseToTreat;
         }
@@ -39,10 +39,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_TreatDisease_Medic(
             PD_PA_TreatDisease_Medic actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            Player = actionToCopy.Player.GetCustomDeepCopy();
             CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt.GetCustomDeepCopy();
             TypeOfDiseaseToTreat = actionToCopy.TypeOfDiseaseToTreat;
         }

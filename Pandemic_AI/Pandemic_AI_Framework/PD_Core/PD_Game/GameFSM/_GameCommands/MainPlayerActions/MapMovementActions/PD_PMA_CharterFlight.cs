@@ -9,8 +9,10 @@ namespace Pandemic_AI_Framework
     /// Player Discards the City card that matches the city you are in to move to any city.
     /// </summary>
     [Serializable]
-    public class PD_PMA_CharterFlight : PD_MainAction_Base, I_Movement_Action
+    public class PD_PMA_CharterFlight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_City InitialLocation { get; protected set; }
 
         public PD_City TargetLocation { get; protected set; }
@@ -33,11 +35,12 @@ namespace Pandemic_AI_Framework
             PD_City initialLocation,
             PD_City targetLocation,
             PD_CityCard cityCardToDiscard
-            ):base(player)
+            )
         {
-            InitialLocation = initialLocation;
-            TargetLocation = targetLocation;
-            CityCardToDiscard = cityCardToDiscard;
+            this.Player = player;
+            this.InitialLocation = initialLocation;
+            this.TargetLocation = targetLocation;
+            this.CityCardToDiscard = cityCardToDiscard;
         }
 
         /// <summary>
@@ -46,11 +49,12 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PMA_CharterFlight(
             PD_PMA_CharterFlight actionToCopy
-            ) : base(actionToCopy.Player.GetCustomDeepCopy())
+            )
         {
-            InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
-            TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
-            CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
+            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+            this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
         }
         #endregion
 
@@ -59,7 +63,18 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PMA_CharterFlight(Player, InitialLocation, TargetLocation, CityCardToDiscard);
+            game.GO_PlayerDiscardsPlayerCard(
+                Player,
+                CityCardToDiscard
+                );
+
+            game.GO_MovePawnFromCityToCity(
+                game.PlayerPawnsPerPlayerID[Player.ID],
+                InitialLocation,
+                TargetLocation
+                );
+
+            game.Medic_MoveTreat(TargetLocation);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

@@ -6,8 +6,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PMA_ShuttleFlight : PD_MainAction_Base, I_Movement_Action
+    public class PD_PMA_ShuttleFlight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_City InitialLocation { get; protected set; }
 
         public PD_City TargetLocation { get; protected set; }
@@ -24,8 +26,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_City initialLocation,
             PD_City targetLocation
-            ) : base(player)
+            )
         {
+            this.Player = player;
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
         }
@@ -36,10 +39,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PMA_ShuttleFlight(
             PD_PMA_ShuttleFlight actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
             this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
             this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
         }
@@ -50,7 +52,13 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PMA_ShuttleFlight(Player, InitialLocation, TargetLocation);
+            game.GO_MovePawnFromCityToCity(
+                game.PlayerPawnsPerPlayerID[Player.ID],
+                InitialLocation,
+                TargetLocation
+                );
+
+            game.Medic_MoveTreat(TargetLocation);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

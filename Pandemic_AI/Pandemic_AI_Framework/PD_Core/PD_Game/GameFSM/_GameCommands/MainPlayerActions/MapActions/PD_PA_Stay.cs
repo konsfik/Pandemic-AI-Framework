@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Stay : PD_MainAction_Base
+    public class PD_PA_Stay : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_City CityToStayOn { get; private set; }
 
         #region constructors
@@ -22,10 +23,9 @@ namespace Pandemic_AI_Framework
         public PD_PA_Stay(
             PD_Player player,
             PD_City cityToStayOn
-            ) : base(
-                player
-                )
+            )
         {
+            Player = player;
             CityToStayOn = cityToStayOn;
         }
 
@@ -35,10 +35,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_Stay(
             PD_PA_Stay actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            Player = actionToCopy.Player.GetCustomDeepCopy();
             CityToStayOn = actionToCopy.CityToStayOn.GetCustomDeepCopy();
         }
         #endregion
@@ -48,7 +47,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_Stay();
+            // do nothing! :)
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

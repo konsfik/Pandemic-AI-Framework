@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_GiveCard_ResearcherGives : PD_MainAction_Base
+    public class PD_PA_ShareKnowledge_GiveCard_ResearcherGives : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_Player OtherPlayer { get; private set; }
         public PD_CityCard CityCardToGive { get; private set; }
 
@@ -22,10 +23,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_Player otherPlayer,
             PD_CityCard cityCardToGive
-            ) : base(
-                player
-                )
+            )
         {
+            Player = player;
             OtherPlayer = otherPlayer;
             CityCardToGive = cityCardToGive;
         }
@@ -36,10 +36,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
             PD_PA_ShareKnowledge_GiveCard_ResearcherGives actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            Player = actionToCopy.Player.GetCustomDeepCopy();
             OtherPlayer = actionToCopy.OtherPlayer.GetCustomDeepCopy();
             CityCardToGive = actionToCopy.CityCardToGive.GetCustomDeepCopy();
         }
@@ -51,11 +50,8 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_ShareKnowledge_GiveCard_ResearcherGives(
-                Player,
-                OtherPlayer,
-                CityCardToGive
-                );
+            game.Cards.PlayerCardsPerPlayerID[Player.ID].Remove(CityCardToGive);
+            game.Cards.PlayerCardsPerPlayerID[OtherPlayer.ID].Add(CityCardToGive);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

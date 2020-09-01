@@ -8,14 +8,15 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PMA_OperationsExpert_Flight : PD_MainAction_Base, I_Movement_Action
+    public class PD_PMA_OperationsExpert_Flight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_City InitialLocation { get; protected set; }
 
         public PD_City TargetLocation { get; protected set; }
 
         public PD_CityCard CityCardToDiscard { get; private set; }
-
 
         #region constructors
         /// <summary>
@@ -31,11 +32,9 @@ namespace Pandemic_AI_Framework
             PD_City initialLocation,
             PD_City targetLocation,
             PD_CityCard cityCardToDiscard
-
-            ) : base(
-                player
-                )
+            )
         {
+            this.Player = player;
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
             this.CityCardToDiscard = cityCardToDiscard;
@@ -47,13 +46,17 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PMA_OperationsExpert_Flight(
             PD_PMA_OperationsExpert_Flight actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
             this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
             this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
             this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
+        }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PD_PMA_OperationsExpert_Flight(this);
         }
         #endregion
 
@@ -63,12 +66,18 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PMA_OperationsExpertFlight(
+            game.GO_PlayerDiscardsPlayerCard(
                 Player,
-                InitialLocation,
-                TargetLocation,
                 CityCardToDiscard
                 );
+
+            game.GO_MovePawnFromCityToCity(
+                game.PlayerPawnsPerPlayerID[Player.ID],
+                InitialLocation,
+                TargetLocation
+                );
+
+            game.Medic_MoveTreat(TargetLocation);
         }
 
         public override string GetDescription()
@@ -82,11 +91,6 @@ namespace Pandemic_AI_Framework
                 );
 
             return actionDescription;
-        }
-
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PMA_OperationsExpert_Flight(this);
         }
 
         #region equality overrides

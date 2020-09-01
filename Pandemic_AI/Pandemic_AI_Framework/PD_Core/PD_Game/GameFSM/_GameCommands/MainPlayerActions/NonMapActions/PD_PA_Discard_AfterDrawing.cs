@@ -8,8 +8,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Discard_AfterDrawing : PD_MainAction_Base, I_Discard_Action
+    public class PD_PA_Discard_AfterDrawing : PD_GameAction_Base, I_Player_Action, I_Discard_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_PlayerCardBase PlayerCardToDiscard { get; protected set; }
 
         /// <summary>
@@ -21,10 +23,9 @@ namespace Pandemic_AI_Framework
         public PD_PA_Discard_AfterDrawing(
             PD_Player player,
             PD_PlayerCardBase playerCardToDiscard
-            ) : base(
-                player
-                )
+            )
         {
+            this.Player = player;
             this.PlayerCardToDiscard = playerCardToDiscard;
         }
 

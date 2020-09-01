@@ -46,7 +46,7 @@ namespace Pandemic_AI_Framework
 
         public PD_Game(Pandemic_Mini_State mini_state)
         {
-
+            throw new NotImplementedException();
         }
 
         public static PD_Game Create_Default(
@@ -189,8 +189,6 @@ namespace Pandemic_AI_Framework
                         );
                 }
             }
-
-            Dictionary<int, List<PD_City>> neighbors__per__city_id = new Dictionary<int, List<PD_City>>();
 
             List<PD_CityCard> allCityCards = new List<PD_CityCard>();
             for (int i = 0; i < 48; i++)
@@ -616,113 +614,7 @@ namespace Pandemic_AI_Framework
             UpdateAvailablePlayerActions();
         }
 
-        public void Com_PA_Stay()
-        {
-            // do nothing! :)
-        }
-
-        public void Com_PMA_DriveFerry(
-            PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation
-            )
-        {
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                this,
-                PlayerPawnsPerPlayerID[player.ID],
-                initialLocation,
-                targetLocation
-                );
-
-            Medic_MoveTreat(targetLocation);
-        }
-
-        public void Com_PMA_DirectFlight(
-            PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation,
-            PD_CityCard cityCardToDiscard
-            )
-        {
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                this,
-                player,
-                cityCardToDiscard
-                );
-
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                this,
-                PlayerPawnsPerPlayerID[player.ID],
-                initialLocation,
-                targetLocation
-                );
-
-            Medic_MoveTreat(targetLocation);
-        }
-
-        public void Com_PMA_CharterFlight(
-            PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation,
-            PD_CityCard cityCardToDiscard
-            )
-        {
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                this,
-                player,
-                cityCardToDiscard
-                );
-
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                this,
-                PlayerPawnsPerPlayerID[player.ID],
-                initialLocation,
-                targetLocation
-                );
-
-            Medic_MoveTreat(targetLocation);
-        }
-
-        public void Com_PMA_ShuttleFlight(
-            PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation
-            )
-        {
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                this,
-                PlayerPawnsPerPlayerID[player.ID],
-                initialLocation,
-                targetLocation
-                );
-
-            Medic_MoveTreat(targetLocation);
-        }
-
-        public void Com_PMA_OperationsExpertFlight(
-            PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation,
-            PD_CityCard cityCardToDiscard
-            )
-        {
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                this,
-                player,
-                cityCardToDiscard
-                );
-
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                this,
-                PlayerPawnsPerPlayerID[player.ID],
-                initialLocation,
-                targetLocation
-                );
-
-            Medic_MoveTreat(targetLocation);
-        }
-
-        private void Medic_MoveTreat(
+        public void Medic_MoveTreat(
             PD_City city
             )
         {
@@ -755,154 +647,6 @@ namespace Pandemic_AI_Framework
 
                 }
             }
-        }
-
-        public void Com_PA_BuildResearchStation(
-            PD_Player player,
-            PD_City cityToBuildResearchStationOn,
-            PD_CityCard cityCardToDiscard
-            )
-        {
-            if (MapElements.ResearchStationsPerCityID[cityToBuildResearchStationOn.ID].Count > 0)
-            {
-                throw new System.Exception("The chosen city already contains a research station");
-            }
-            if (MapElements.InactiveResearchStations.Count <= 0)
-            {
-                throw new System.Exception("There are not any inactive research stations... try move instead?");
-            }
-
-            // discard the corresponding card from players hand
-            var cityCardsInPlayerHand = this.GQ_CityCardsInPlayerHand(player);
-
-            if (cityCardToDiscard != null)
-            {
-                PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                    this,
-                    player,
-                    cityCardToDiscard
-                    );
-            }
-
-
-            PD_Game_Operators.GO_PlaceResearchStationOnCity(
-                this,
-                cityToBuildResearchStationOn
-                );
-
-        }
-
-        public void Com_PA_BuildResearchStation_OperationsExpert(
-            PD_Player player,
-            PD_City cityToBuildResearchStationOn
-            )
-        {
-            if (MapElements.ResearchStationsPerCityID[cityToBuildResearchStationOn.ID].Count > 0)
-            {
-                throw new System.Exception("The chosen city already contains a research station");
-            }
-            if (MapElements.InactiveResearchStations.Count <= 0)
-            {
-                throw new System.Exception("There are not any inactive research stations... try move instead?");
-            }
-
-            PD_Game_Operators.GO_PlaceResearchStationOnCity(
-                this,
-                cityToBuildResearchStationOn
-                );
-        }
-
-        public void Com_PA_MoveResearchStation(
-            PD_Player player,
-            PD_City cityToMoveResearchStation_From,
-            PD_City cityToMoveResearchStation_To
-            )
-        {
-            if (MapElements.ResearchStationsPerCityID[cityToMoveResearchStation_From.ID].Count <= 0)
-            {
-                throw new System.Exception("there is no research station in the FROM city");
-            }
-            if (MapElements.ResearchStationsPerCityID[cityToMoveResearchStation_To.ID].Count > 0)
-            {
-                throw new System.Exception("The TO city already contains a research station");
-            }
-
-            var cityCardsInPlayerHand = Cards.PlayerCardsPerPlayerID[player.ID].FindAll(
-                x =>
-                x.GetType() == typeof(PD_CityCard)
-                ).Cast<PD_CityCard>().ToList();
-
-            var cityCardToDiscard = cityCardsInPlayerHand.Find(
-                x =>
-                x.Name == cityToMoveResearchStation_To.Name
-                );
-
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(this, player, cityCardToDiscard);
-
-            var researchStationToMove = MapElements.ResearchStationsPerCityID[cityToMoveResearchStation_From.ID].DrawLast();
-            MapElements.ResearchStationsPerCityID[cityToMoveResearchStation_To.ID].Add(researchStationToMove);
-        }
-
-        public void Com_PA_TreatDisease(
-            PD_Player player,
-            PD_City city,
-            int treat_Type
-            )
-        {
-            if (
-                this.GQ_Count_Num_InfectionCubes_OfType_OnCity(
-                    city,
-                    treat_Type
-                    ) == 0
-                )
-            {
-                throw new System.Exception("City does not have any infection cubes of the requested type");
-            }
-
-            if (this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic)
-            {
-                throw new System.Exception(
-                    "Medic cannot perform this type of action. Use special treat disease action, instead");
-            }
-
-            bool diseaseCured = this.GQ_Is_DiseaseCured_OR_Eradicated(treat_Type);
-
-            if (diseaseCured)
-            {
-                // remove all cubes of this type
-                PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
-                    this,
-                    city,
-                    treat_Type
-                    );
-
-                // check if disease is eradicated...
-                var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
-                foreach (var someCity in Map.Cities)
-                {
-                    var cubesOfThisTypeOnSomeCity = MapElements.InfectionCubesPerCityID[someCity.ID].FindAll(
-                        x =>
-                        x.Type == treat_Type
-                        );
-                    remainingCubesOfThisType.AddRange(cubesOfThisTypeOnSomeCity);
-                }
-
-                // if disease eradicated -> set marker to 2
-                if (remainingCubesOfThisType.Count == 0)
-                {
-                    GameStateCounter.CureMarkersStates[treat_Type] = 2;
-                }
-            }
-            else
-            {
-                // remove only one cube of this type
-                PD_Game_Operators.GO_Remove_One_InfectionCube_OfType_FromCity(
-                    this,
-                    city,
-                    treat_Type
-                    );
-            }
-
         }
 
         public void Com_PA_TreatDisease_Medic(
@@ -960,120 +704,14 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public void Com_PA_ShareKnowledge_GiveCard(
-            PD_Player player_Gives_Card,
-            PD_Player otherPlayer_TakesCard,
-            PD_CityCard cityCardToGive
-            )
-        {
-            var playerLocation = this.GQ_PlayerLocation(player_Gives_Card);
-            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_TakesCard);
-            if (playerLocation != otherPlayerLocation)
-            {
-                throw new System.Exception("Players do not share location!");
-            }
-
-            Cards.PlayerCardsPerPlayerID[player_Gives_Card.ID].Remove(cityCardToGive);
-            Cards.PlayerCardsPerPlayerID[otherPlayer_TakesCard.ID].Add(cityCardToGive);
-        }
-
-        public void Com_PA_ShareKnowledge_TakeCard(
-            PD_Player player_TakesCard,
-            PD_Player otherPlayer_GivesCard,
-            PD_CityCard cityCardToTake
-            )
-        {
-            var playerLocation = this.GQ_PlayerLocation(player_TakesCard);
-            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_GivesCard);
-            if (playerLocation != otherPlayerLocation)
-            {
-                Console.WriteLine("player location: " + playerLocation.GetDescription());
-                Console.WriteLine("other player location: " + otherPlayerLocation.GetDescription());
-                throw new System.Exception("Players do not share location!");
-            }
-
-            Cards.PlayerCardsPerPlayerID[otherPlayer_GivesCard.ID].Remove(cityCardToTake);
-            Cards.PlayerCardsPerPlayerID[player_TakesCard.ID].Add(cityCardToTake);
-        }
-
-        public void Com_PA_ShareKnowledge_GiveCard_ResearcherGives(
-            PD_Player player_Researcher_GivesCard,
-            PD_Player otherPlayer_TakesCard,
-            PD_CityCard cityCardToGive
-            )
-        {
-            var playerLocation = this.GQ_PlayerLocation(player_Researcher_GivesCard);
-            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_TakesCard);
-            if (playerLocation != otherPlayerLocation)
-            {
-                Console.WriteLine("player location: " + playerLocation.GetDescription());
-                Console.WriteLine("other player location: " + otherPlayerLocation.GetDescription());
-                throw new System.Exception("Players do not share location!");
-            }
-
-            Cards.PlayerCardsPerPlayerID[player_Researcher_GivesCard.ID].Remove(cityCardToGive);
-            Cards.PlayerCardsPerPlayerID[otherPlayer_TakesCard.ID].Add(cityCardToGive);
-        }
-
-        public void Com_PA_ShareKnowledge_TakeCard_FromResearcher(
-            PD_Player player_TakesCard,
-            PD_Player otherPlayer_Researcher_GivesCard,
-            PD_CityCard cityCardToTake
-            )
-        {
-            var playerLocation = this.GQ_PlayerLocation(player_TakesCard);
-            var otherPlayerLocation = this.GQ_PlayerLocation(otherPlayer_Researcher_GivesCard);
-            if (playerLocation != otherPlayerLocation)
-            {
-                Console.WriteLine("player location: " + playerLocation.GetDescription());
-                Console.WriteLine("other player location: " + otherPlayerLocation.GetDescription());
-                throw new System.Exception("Players do not share location!");
-            }
-
-            Cards.PlayerCardsPerPlayerID[otherPlayer_Researcher_GivesCard.ID].Remove(cityCardToTake);
-            Cards.PlayerCardsPerPlayerID[player_TakesCard.ID].Add(cityCardToTake);
-        }
-
         public void Com_PA_DiscoverCure(
             PD_Player player,
             List<PD_CityCard> cityCardsToDiscard,
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Scientist;
 
-            if (player_Is_Scientist)
-            {
-                throw new System.Exception("Scientist cannot apply this kind of action");
-            }
-
-            if (cityCardsToDiscard.Count != 5)
-            {
-                throw new System.Exception("number of city cards to discard is not 5!");
-            }
-
-            foreach (var cityCard in cityCardsToDiscard)
-            {
-                if (cityCard.Type != typeOfDiseaseToCure)
-                {
-                    throw new System.Exception("The city card type does not match the cure type");
-                }
-            }
-
-            // discard the cards
-            foreach (var cityCard in cityCardsToDiscard)
-            {
-                PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                    this,
-                    player,
-                    cityCard
-                    );
-            }
-
-            // discover the cure for the disease here...
-            GameStateCounter.CureDisease(typeOfDiseaseToCure);
-
-            Medic_AutoTreat_AfterDiscoverCure(typeOfDiseaseToCure);
+            
         }
 
         public void Com_PA_DiscoverCure_Scientist(
@@ -1082,24 +720,6 @@ namespace Pandemic_AI_Framework
             int typeOfDiseaseToCure
             )
         {
-            bool player_Is_Scientist = this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Scientist;
-
-            if (player_Is_Scientist == false)
-            {
-                throw new System.Exception("Only Scientist can apply this kind of action");
-            }
-
-            if (cityCardsToDiscard.Count != 4)
-            {
-                throw new System.Exception("number of city cards to discard needs to be 4");
-            }
-            foreach (var cityCard in cityCardsToDiscard)
-            {
-                if (cityCard.Type != typeOfDiseaseToCure)
-                {
-                    throw new System.Exception("The city card type does not match the cure type");
-                }
-            }
 
             // discard the cards
             foreach (var cityCard in cityCardsToDiscard)

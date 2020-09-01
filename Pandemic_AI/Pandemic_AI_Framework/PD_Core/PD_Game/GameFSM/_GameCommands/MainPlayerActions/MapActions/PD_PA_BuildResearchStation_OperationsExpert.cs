@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_BuildResearchStation_OperationsExpert : PD_MainAction_Base
+    public class PD_PA_BuildResearchStation_OperationsExpert : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_City Build_RS_On { get; private set; }
 
         #region constructors
@@ -21,11 +22,10 @@ namespace Pandemic_AI_Framework
         public PD_PA_BuildResearchStation_OperationsExpert(
             PD_Player player,
             PD_City build_RS_On
-            ) : base(
-                player
-                )
+            )
         {
-            Build_RS_On = build_RS_On;
+            this.Player = player;
+            this.Build_RS_On = build_RS_On;
         }
 
         /// <summary>
@@ -34,11 +34,15 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_BuildResearchStation_OperationsExpert(
             PD_PA_BuildResearchStation_OperationsExpert actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
-            Build_RS_On = actionToCopy.Build_RS_On.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Build_RS_On = actionToCopy.Build_RS_On.GetCustomDeepCopy();
+        }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PD_PA_BuildResearchStation_OperationsExpert(this);
         }
         #endregion
 
@@ -47,15 +51,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_BuildResearchStation_OperationsExpert(
-                Player,
-                Build_RS_On
-                );
-        }
-
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PA_BuildResearchStation_OperationsExpert(this);
+            game.GO_PlaceResearchStationOnCity(Build_RS_On);
         }
 
         public override string GetDescription()

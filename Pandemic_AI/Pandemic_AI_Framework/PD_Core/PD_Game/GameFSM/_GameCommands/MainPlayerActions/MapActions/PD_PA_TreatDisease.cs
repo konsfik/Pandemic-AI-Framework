@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease : PD_MainAction_Base
+    public class PD_PA_TreatDisease : PD_GameAction_Base, I_Player_Action
     {
+        public PD_Player Player { get; private set; }
         public PD_City CityToTreatDiseaseAt { get; private set; }
         public int TypeOfDiseaseToTreat { get; private set; }
 
@@ -23,8 +24,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_City cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
-            ) : base(player)
+            )
         {
+            Player = player;
             CityToTreatDiseaseAt = cityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = typeOfDiseaseToTreat;
         }
@@ -35,10 +37,9 @@ namespace Pandemic_AI_Framework
         /// <param name="actionToCopy"></param>
         private PD_PA_TreatDisease(
             PD_PA_TreatDisease actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            Player = actionToCopy.Player.GetCustomDeepCopy();
             CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt.GetCustomDeepCopy();
             TypeOfDiseaseToTreat = actionToCopy.TypeOfDiseaseToTreat;
         }
@@ -49,7 +50,41 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_TreatDisease(Player, CityToTreatDiseaseAt, TypeOfDiseaseToTreat);
+            bool diseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(TypeOfDiseaseToTreat);
+
+            if (diseaseCured)
+            {
+                // remove all cubes of this type
+                game.GO_Remove_All_InfectionCubes_OfType_FromCity(
+                    CityToTreatDiseaseAt,
+                    TypeOfDiseaseToTreat
+                    );
+
+                // check if disease is eradicated...
+                var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
+                foreach (var someCity in game.Map.Cities)
+                {
+                    var cubesOfThisTypeOnSomeCity = game.MapElements.InfectionCubesPerCityID[someCity.ID].FindAll(
+                        x =>
+                        x.Type == TypeOfDiseaseToTreat
+                        );
+                    remainingCubesOfThisType.AddRange(cubesOfThisTypeOnSomeCity);
+                }
+
+                // if disease eradicated -> set marker to 2
+                if (remainingCubesOfThisType.Count == 0)
+                {
+                    game.GameStateCounter.CureMarkersStates[TypeOfDiseaseToTreat] = 2;
+                }
+            }
+            else
+            {
+                // remove only one cube of this type
+                game.GO_Remove_One_InfectionCube_OfType_FromCity(
+                    CityToTreatDiseaseAt,
+                    TypeOfDiseaseToTreat
+                    );
+            }
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

@@ -8,8 +8,10 @@ namespace Pandemic_AI_Framework
     /// A player moves to an adjacent location
     /// </summary>
     [Serializable]
-    public class PD_PMA_DriveFerry : PD_MainAction_Base, I_Movement_Action
+    public class PD_PMA_DriveFerry : PD_GameAction_Base, I_Player_Action, I_Movement_Action
     {
+        public PD_Player Player { get; private set; }
+
         public PD_City InitialLocation { get; protected set; }
 
         public PD_City TargetLocation { get; protected set; }
@@ -18,8 +20,9 @@ namespace Pandemic_AI_Framework
             PD_Player player,
             PD_City initialLocation,
             PD_City targetLocation
-            ) : base(player)
+            )
         {
+            this.Player = player;
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
         }
@@ -27,12 +30,16 @@ namespace Pandemic_AI_Framework
         // private constructor, for custom deep copy purposes only
         private PD_PMA_DriveFerry(
             PD_PMA_DriveFerry actionToCopy
-            ) : base(
-                actionToCopy.Player.GetCustomDeepCopy()
-                )
+            )
         {
+            this.Player = actionToCopy.Player.GetCustomDeepCopy();
             this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
             this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+        }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PD_PMA_DriveFerry(this);
         }
 
         public override void Execute(
@@ -40,12 +47,14 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PMA_DriveFerry(Player, InitialLocation, TargetLocation);
-        }
+            PD_Game_Operators.GO_MovePawnFromCityToCity(
+                game,
+                game.PlayerPawnsPerPlayerID[Player.ID],
+                InitialLocation,
+                TargetLocation
+                );
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PMA_DriveFerry(this);
+            game.Medic_MoveTreat(TargetLocation);
         }
 
         public override string GetDescription()

@@ -33,9 +33,16 @@ namespace Pandemic_AI_Framework.Tests
             // deserialize the mini game
             PD_MiniGame deserialized_mini_game = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
 
+
+            PD_Game deserialized_game = PD_State_Converter.Game__From__MiniGame(deserialized_mini_game);
+
             Assert.IsTrue(mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
             Assert.IsTrue(mini_game == deserialized_mini_game);
             Assert.IsTrue(mini_game.Equals(deserialized_mini_game));
+
+            //Assert.IsTrue(mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
+            //Assert.IsTrue(mini_game == deserialized_mini_game);
+            Assert.IsTrue(random_game.Equals(deserialized_game));
         }
 
         [TestMethod()]

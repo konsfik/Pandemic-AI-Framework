@@ -209,10 +209,11 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool Dictionary_Equal(
-            this Dictionary<int, PD_Point> this_dictionary,
-            Dictionary<int, PD_Point> other_dictionary
+        public static bool Dictionary_Equal<T>(
+            this Dictionary<int, T> this_dictionary,
+            Dictionary<int, T> other_dictionary
             )
+            where T: ICustomDeepCopyable<T>
         {
             List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
             List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
@@ -233,8 +234,8 @@ namespace Pandemic_AI_Framework
 
             foreach (int key in this_dictionary_keys)
             {
-                PD_Point this_value = this_dictionary[key];
-                PD_Point other_value = other_dictionary[key];
+                T this_value = this_dictionary[key];
+                T other_value = other_dictionary[key];
                 if (this_value.Equals(other_value) == false)
                 {
                     return false;
@@ -243,6 +244,41 @@ namespace Pandemic_AI_Framework
 
             return true;
         }
+
+        //public static bool Dictionary_Equal(
+        //    this Dictionary<int, PD_Point> this_dictionary,
+        //    Dictionary<int, PD_Point> other_dictionary
+        //    )
+        //{
+        //    List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+        //    List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+        //    // compare keys - size
+        //    if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+        //    {
+        //        return false;
+        //    }
+
+        //    for (int k = 0; k < this_dictionary.Keys.Count; k++)
+        //    {
+        //        if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+        //        {
+        //            return false;
+        //        }
+        //    }
+
+        //    foreach (int key in this_dictionary_keys)
+        //    {
+        //        PD_Point this_value = this_dictionary[key];
+        //        PD_Point other_value = other_dictionary[key];
+        //        if (this_value.Equals(other_value) == false)
+        //        {
+        //            return false;
+        //        }
+        //    }
+
+        //    return true;
+        //}
 
         public static bool Dictionary_Equal(
             this Dictionary<int, List<int>> this_dictionary,
@@ -306,6 +342,42 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_PlayerCardBase> this_value = this_dictionary[key];
                 List<PD_PlayerCardBase> other_value = other_dictionary[key];
+                if (this_value.List_Equal(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //Dictionary<int, List<PD_City>>
+        public static bool Dictionary_Equal(
+            this Dictionary<int, List<PD_City>> this_dictionary,
+            Dictionary<int, List<PD_City>> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                List<PD_City> this_value = this_dictionary[key];
+                List<PD_City> other_value = other_dictionary[key];
                 if (this_value.List_Equal(other_value) == false)
                 {
                     return false;

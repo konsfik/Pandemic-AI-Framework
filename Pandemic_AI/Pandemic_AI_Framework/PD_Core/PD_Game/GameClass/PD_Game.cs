@@ -1123,7 +1123,97 @@ namespace Pandemic_AI_Framework
 
 
 
-        #region equality_override
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_Game)otherObject;
+
+            if (this.GameSettings.Equals(other.GameSettings) == false)
+            {
+                return false;
+            }
+            else if (this.GameFSM.Equals(other.GameFSM) == false)
+            {
+                return false;
+            }
+            else if (this.GameStateCounter.Equals(other.GameStateCounter) == false)
+            {
+                return false;
+            }
+            else if (this.Players.List_Equal(other.Players) == false)
+            {
+                return false;
+            }
+            else if (this.Map.Equals(other.Map) == false)
+            {
+                return false;
+            }
+            else if (this.GameElementReferences.Equals(other.GameElementReferences) == false)
+            {
+                return false;
+            }
+            else if (this.Cards.Equals(other.Cards) == false)
+            {
+                return false;
+            }
+            else if (this.PlayerPawnsPerPlayerID.Dictionary_Equal(other.PlayerPawnsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else if (this.RoleCardsPerPlayerID.Dictionary_Equal(other.RoleCardsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + GameSettings.GetHashCode();
+
+
+            return hash;
+        }
+
+        public static bool operator ==(PD_Game c1, PD_Game c2)
+        {
+            if (Object.ReferenceEquals(c1, null))
+            {
+                if (Object.ReferenceEquals(c2, null))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else // c1 is not null
+            {
+                if (Object.ReferenceEquals(c2, null)) // c2 is null
+                {
+                    return false;
+                }
+            }
+            // c1 is not null && c2 is not null
+            // -> actually check equality
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(PD_Game c1, PD_Game c2)
+        {
+            return !(c1 == c2);
+        }
 
         #endregion
     }

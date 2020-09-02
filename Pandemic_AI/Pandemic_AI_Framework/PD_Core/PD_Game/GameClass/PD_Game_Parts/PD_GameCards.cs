@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameCards : ICustomDeepCopyable<PD_GameCards>
+    public class PD_GameCards : PD_GameParts_Base, ICustomDeepCopyable<PD_GameCards>
     {
 
         public List<List<PD_InfectionCard>> DividedDeckOfInfectionCards { get; private set; }

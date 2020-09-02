@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameSettings : ICustomDeepCopyable<PD_GameSettings>
+    public class PD_GameSettings : PD_GameParts_Base, ICustomDeepCopyable<PD_GameSettings>
     {
         // fixed, private settings...
         private const int _initialInfectionMarkerValue = 0;
@@ -148,37 +148,6 @@ namespace Pandemic_AI_Framework
             hash = (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer;
 
             return hash;
-        }
-
-
-        public static bool operator ==(PD_GameSettings s1, PD_GameSettings s2)
-        {
-            if (Object.ReferenceEquals(s1, null))
-            {
-                if (Object.ReferenceEquals(s2, null))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else // c1 is not null
-            {
-                if (Object.ReferenceEquals(s2, null)) // c2 is null
-                {
-                    return false;
-                }
-            }
-            // c1 is not null && c2 is not null
-            // -> actually check equality
-            return s1.Equals(s2);
-        }
-
-        public static bool operator !=(PD_GameSettings s1, PD_GameSettings s2)
-        {
-            return !(s1 == s2);
         }
         #endregion
     }

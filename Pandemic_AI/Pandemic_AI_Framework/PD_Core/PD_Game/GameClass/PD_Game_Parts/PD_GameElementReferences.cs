@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameElementReferences : ICustomDeepCopyable<PD_GameElementReferences>
+    public class PD_GameElementReferences : PD_GameParts_Base, ICustomDeepCopyable<PD_GameElementReferences>
     {
         public List<PD_InfectionCard> InfectionCards { get; private set; }
         public List<PD_CityCard> CityCards { get; private set; }
@@ -71,5 +71,65 @@ namespace Pandemic_AI_Framework
         {
             return new PD_GameElementReferences(this);
         }
+
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            var other = (PD_GameElementReferences)otherObject;
+
+            if (InfectionCards.List_Equal(other.InfectionCards) == false)
+            {
+                return false;
+            }
+            else if (CityCards.List_Equal(other.CityCards) == false)
+            {
+                return false;
+            }
+            else if (EpidemicCards.List_Equal(other.EpidemicCards) == false)
+            {
+                return false;
+            }
+            else if (PlayerPawns.List_Equal(other.PlayerPawns) == false)
+            {
+                return false;
+            }
+            else if (RoleCards.List_Equal(other.RoleCards) == false)
+            {
+                return false;
+            }
+            else if (ResearchStations.List_Equal(other.ResearchStations) == false)
+            {
+                return false;
+            }
+            else if (InfectionCubes.List_Equal(other.InfectionCubes) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + InfectionCards.Custom_HashCode();
+            hash = hash * 31 + CityCards.Custom_HashCode();
+            hash = hash * 31 + EpidemicCards.Custom_HashCode();
+            hash = hash * 31 + PlayerPawns.Custom_HashCode();
+            hash = hash * 31 + RoleCards.Custom_HashCode();
+            hash = hash * 31 + ResearchStations.Custom_HashCode();
+            hash = hash * 31 + InfectionCubes.Custom_HashCode();
+
+            return hash;
+        }
+        #endregion
     }
 }

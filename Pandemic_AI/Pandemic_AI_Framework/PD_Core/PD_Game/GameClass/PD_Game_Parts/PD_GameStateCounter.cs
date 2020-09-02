@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameStateCounter : IDescribable, ICustomDeepCopyable<PD_GameStateCounter>
+    public class PD_GameStateCounter : PD_GameParts_Base, IDescribable, ICustomDeepCopyable<PD_GameStateCounter>
     {
 
         public int NumberOfPlayers { get; private set; }
@@ -205,7 +205,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            if (this.CureMarkersStates.SequenceEqual(other.CureMarkersStates) == false)
+            if (this.CureMarkersStates.Dictionary_Equal(other.CureMarkersStates) == false)
             {
                 return false;
             }
@@ -234,49 +234,18 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = (hash * 13) + NumberOfPlayers.GetHashCode();
-            hash = (hash * 13) + CurrentPlayerActionIndex.GetHashCode();
-            hash = (hash * 13) + CurrentPlayerIndex.GetHashCode();
-            hash = (hash * 13) + CurrentTurnIndex.GetHashCode();
-            hash = (hash * 13) + CureMarkersStates.GetHashCode();
-            hash = (hash * 13) + OutbreaksCounter.GetHashCode();
-            hash = (hash * 13) + EpidemicsCounter.GetHashCode();
+            hash = (hash * 13) + NumberOfPlayers;
+            hash = (hash * 13) + CurrentPlayerActionIndex;
+            hash = (hash * 13) + CurrentPlayerIndex;
+            hash = (hash * 13) + CurrentTurnIndex;
+            hash = (hash * 13) + CureMarkersStates.Custom_HashCode();
+            hash = (hash * 13) + OutbreaksCounter;
+            hash = (hash * 13) + EpidemicsCounter;
 
             hash = (hash * 13) + NotEnoughDiseaseCubesToCompleteAnInfection.GetHashCode();
             hash = (hash * 13) + NotEnoughPlayerCardsToDraw.GetHashCode();
 
             return hash;
-        }
-
-
-        public static bool operator ==(PD_GameStateCounter s1, PD_GameStateCounter s2)
-        {
-            if (Object.ReferenceEquals(s1, null))
-            {
-                if (Object.ReferenceEquals(s2, null))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else // c1 is not null
-            {
-                if (Object.ReferenceEquals(s2, null)) // c2 is null
-                {
-                    return false;
-                }
-            }
-            // c1 is not null && c2 is not null
-            // -> actually check equality
-            return s1.Equals(s2);
-        }
-
-        public static bool operator !=(PD_GameStateCounter s1, PD_GameStateCounter s2)
-        {
-            return !(s1 == s2);
         }
         #endregion
     }

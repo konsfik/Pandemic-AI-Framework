@@ -193,6 +193,79 @@ namespace Performance_Tests
             Console.WriteLine(report_part);
             PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
 
+
+
+
+
+            // clear the games' list..
+            games.Clear();
+            game_copies.Clear();
+
+            //////////////////////////////////////////////////////////////////////////////
+            /// 3.1 Generate games and automatically perform setup...
+            //////////////////////////////////////////////////////////////////////////////
+            watch.Restart();
+            for (int i = 0; i < number_of_games; i++)
+            {
+                games.Add(
+                    PD_Game.Create(
+                        randomness_provider,
+                        4,
+                        0,
+                        true
+                        )
+                    );
+            }
+            watch.Stop();
+            time_to_generate_and_setup_games = watch.ElapsedMilliseconds;
+            report_part = String.Format(
+                "Generate {0} games from data and perform set up: {1}",
+                number_of_games,
+                time_to_generate_and_setup_games
+                );
+            Console.WriteLine(report_part);
+            PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
+
+            //////////////////////////////////////////////////////////////////////////////
+            /// 3.2. Run all games until the end, by selecting random macro actions
+            //////////////////////////////////////////////////////////////////////////////
+            //PD_AI_PathFinder pf = new PD_AI_PathFinder();
+            PD_AI_MacroAgent_HierarchicalPolicy agent = new PD_AI_MacroAgent_HierarchicalPolicy(
+                new List<PD_AI_MacroAgent_MainPolicy_Base>() {
+                    new PD_AI_MacroAgent_Policy_Cure_ASAP(),
+                    new PD_AI_MacroAgent_Policy_Treat_MinSameCubes_Now_Smart(3),
+                    new PD_AI_MacroAgent_Policy_ShareKnowledge_1_Variation_A(),
+                    new PD_AI_MacroAgent_Policy_BuildRS_MaxTotal_MinDistance(6,3),
+                    new PD_AI_MacroAgent_Policy_Treat_MinSameCubes_Now_Smart(2),
+                    new PD_AI_MacroAgent_Policy_Treat_MinSameCubes_Now_Smart(1),
+                    new PD_AI_MacroAgent_Policy_WalkAway()
+                },
+                new List<PD_AI_MacroAgent_DiscardPolicy_Base>() {
+                    new PD_AI_MacroAgent_Policy_CardDiscard_Smart()
+                }
+                );
+            watch.Restart();
+            foreach (var game in games)
+            {
+                while (PD_Game_Queries.GQ_Is_Ongoing(game))
+                {
+                    var macro = agent.GetNextMacroAction(randomness_provider, game, pf);
+                    game.ApplySpecificMacro(
+                        randomness_provider,
+                        macro
+                        );
+                }
+            }
+            watch.Stop();
+            long time_played = watch.ElapsedMilliseconds;
+            report_part = String.Format(
+                "Play {0} games until the end, using HPA: {1}",
+                number_of_games,
+                time_played
+                );
+            Console.WriteLine(report_part);
+            PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
+
         }
     }
 }

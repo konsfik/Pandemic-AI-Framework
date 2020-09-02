@@ -98,46 +98,54 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            if (
-                this.NumberOfInitialCardsPerNumberOfPlayers
-                .SequenceEqual(other.NumberOfInitialCardsPerNumberOfPlayers)
-                == false
+            else if (
+                this.NumberOfInitialCardsPerNumberOfPlayers.Dictionary_Equal(
+                    other.NumberOfInitialCardsPerNumberOfPlayers
+                    ) == false
                 )
             {
                 return false;
             }
-            if (
-                this.InfectionRatesPerEpidemicsCounter
-                .SequenceEqual(other.InfectionRatesPerEpidemicsCounter)
-                == false
+            else if (
+                this.InfectionRatesPerEpidemicsCounter.Dictionary_Equal(
+                    other.InfectionRatesPerEpidemicsCounter
+                    ) == false
                 )
             {
                 return false;
             }
-            if (
-                this.NumberOfEpidemicCardsPerDifficultyLevel
-                .SequenceEqual(other.NumberOfEpidemicCardsPerDifficultyLevel)
-                == false
+            else if (
+                this.NumberOfEpidemicCardsPerDifficultyLevel.Dictionary_Equal(
+                    other.NumberOfEpidemicCardsPerDifficultyLevel
+                    ) == false
                 )
             {
                 return false;
             }
-
-            
-
-            return true;
+            else if (this.MaximumViableOutbreaks != other.MaximumViableOutbreaks)
+            {
+                return false;
+            }
+            else if (this.MaximumNumberOfPlayerCardsPerPlayer != other.MaximumNumberOfPlayerCardsPerPlayer)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public override int GetHashCode()
         {
             int hash = 17;
 
-            hash = (hash * 13) + GameDifficultyLevel.GetHashCode();
-            hash = (hash * 13) + NumberOfInitialCardsPerNumberOfPlayers.GetHashCode();
-            hash = (hash * 13) + InfectionRatesPerEpidemicsCounter.GetHashCode();
-            hash = (hash * 13) + NumberOfEpidemicCardsPerDifficultyLevel.GetHashCode();
-            hash = (hash * 13) + MaximumViableOutbreaks.GetHashCode();
-            hash = (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer.GetHashCode();
+            hash = (hash * 13) + GameDifficultyLevel;
+            hash = (hash * 13) + NumberOfInitialCardsPerNumberOfPlayers.Custom_HashCode();
+            hash = (hash * 13) + InfectionRatesPerEpidemicsCounter.Custom_HashCode();
+            hash = (hash * 13) + NumberOfEpidemicCardsPerDifficultyLevel.Custom_HashCode();
+            hash = (hash * 13) + MaximumViableOutbreaks;
+            hash = (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer;
 
             return hash;
         }

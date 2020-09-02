@@ -84,5 +84,12 @@ namespace Pandemic_AI_Framework
         {
             return new PD_GameCards(this);
         }
+
+        #region equality override
+
+
+
+        #endregion
+
     }
 }

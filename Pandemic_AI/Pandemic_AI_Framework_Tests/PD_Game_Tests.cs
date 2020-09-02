@@ -13,40 +13,29 @@ namespace Pandemic_AI_Framework.Tests
     public class PD_Game_Tests
     {
         [TestMethod()]
-        public void Serialize_Deserialize_MiniGame() {
+        public void Serialize_Deserialize_MiniGame()
+        {
             Random randomness_provider = new Random();
-            PD_Game random_game = PD_Game.Create(
-                randomness_provider,
-                4,
-                0,
-                true
-                );
 
-            PD_MiniGame mini_game = PD_State_Converter.MiniGame__From__Game(
-                random_game
-                );
+            // create a normal game, for later use
+            PD_Game random_game = PD_Game.Create(randomness_provider, 4, 0, true);
 
+            // create a mini game
+            PD_MiniGame mini_game = PD_State_Converter.MiniGame__From__Game(random_game);
+
+            // serialize the mini game
             string serialized_mini_game = mini_game.To_Json_String(
-                Newtonsoft.Json.Formatting.None,
-                Newtonsoft.Json.TypeNameHandling.None,
-                Newtonsoft.Json.PreserveReferencesHandling.None
+                Formatting.None,
+                TypeNameHandling.None,
+                PreserveReferencesHandling.None
                 );
 
+            // deserialize the mini game
             PD_MiniGame deserialized_mini_game = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
 
+            Assert.IsTrue(mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
+            Assert.IsTrue(mini_game == deserialized_mini_game);
             Assert.IsTrue(mini_game.Equals(deserialized_mini_game));
-
-
-            int hc1 = mini_game.GetHashCode();
-            int hc2 = deserialized_mini_game.GetHashCode();
-            Assert.IsTrue(hc1 == hc2);
-
-            Assert.IsTrue(mini_game.unique_id == deserialized_mini_game.unique_id);
-            Assert.IsTrue(mini_game.settings___number_of_players == deserialized_mini_game.settings___number_of_players);
-
-            Assert.IsTrue(deserialized_mini_game == mini_game);
-
-
         }
 
         [TestMethod()]
@@ -106,7 +95,8 @@ namespace Pandemic_AI_Framework.Tests
         }
 
         [TestMethod()]
-        public void Generate_Game_Without_Data() {
+        public void Generate_Game_Without_Data()
+        {
             Random randomness_provider = new Random();
 
             // generate 100 games for every possible settings selection
@@ -154,7 +144,8 @@ namespace Pandemic_AI_Framework.Tests
         /// The whole process is repeated a number of times, with randomly set up games...
         /// </summary>
         [TestMethod()]
-        public void Game_Conversions() {
+        public void Game_Conversions()
+        {
             Random randomness_provider = new Random();
 
             PD_Game original_game = PD_Game.Create(
@@ -169,7 +160,8 @@ namespace Pandemic_AI_Framework.Tests
         }
 
         [TestMethod()]
-        public void RandomSeed_Tests() {
+        public void RandomSeed_Tests()
+        {
             Random randomness_provider = new Random(1000);
 
             PD_Game game_1 = PD_Game.Create(
@@ -193,7 +185,7 @@ namespace Pandemic_AI_Framework.Tests
                 for (int j = 0; j < game_1.Cards.DividedDeckOfPlayerCards[i].Count; j++)
                 {
                     Assert.IsTrue(
-                        game_1.Cards.DividedDeckOfPlayerCards[i][j] 
+                        game_1.Cards.DividedDeckOfPlayerCards[i][j]
                         == game_2.Cards.DividedDeckOfPlayerCards[i][j]
                         );
                 }

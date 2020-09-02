@@ -85,9 +85,68 @@ namespace Pandemic_AI_Framework
             return new PD_GameCards(this);
         }
 
-        #region equality override
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
 
+            var other = (PD_GameCards)otherObject;
 
+            if (DividedDeckOfInfectionCards.List_Equal(other.DividedDeckOfInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (ActiveInfectionCards.List_Equal(other.ActiveInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (DeckOfDiscardedInfectionCards.List_Equal(other.DeckOfDiscardedInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (DividedDeckOfPlayerCards.List_Equal(other.DividedDeckOfPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (DeckOfDiscardedPlayerCards.List_Equal(other.DeckOfDiscardedPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (DeckOfDiscardedPlayerCards.List_Equal(other.DeckOfDiscardedPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (PlayerCardsPerPlayerID.Dictionary_Equal(other.PlayerCardsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else if (InactiveRoleCards.List_Equal(other.InactiveRoleCards) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = hash * 31 + DividedDeckOfInfectionCards.Custom_HashCode();
+            hash = hash * 31 + ActiveInfectionCards.Custom_HashCode();
+            hash = hash * 31 + DeckOfDiscardedInfectionCards.Custom_HashCode();
+            hash = hash * 31 + DividedDeckOfPlayerCards.Custom_HashCode();
+            hash = hash * 31 + DeckOfDiscardedPlayerCards.Custom_HashCode();
+            hash = hash * 31 + PlayerCardsPerPlayerID.Custom_HashCode();
+            hash = hash * 31 + InactiveRoleCards.Custom_HashCode();
+
+            return hash;
+        }
 
         #endregion
 

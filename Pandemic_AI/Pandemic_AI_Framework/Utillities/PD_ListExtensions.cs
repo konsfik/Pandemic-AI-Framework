@@ -31,6 +31,102 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public static bool List_Equal<T>(
+            this List<T> this_list, List<T> other_list
+            )
+            where T : ICustomDeepCopyable<T>
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                T this_element = this_list[i];
+                T other_element = other_list[i];
+                if (this_element.Equals(other_element) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool List_Equal(
+            this List<PD_PlayerCardBase> this_list, List<PD_PlayerCardBase> other_list
+            )
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                PD_PlayerCardBase this_element = this_list[i];
+                PD_PlayerCardBase other_element = other_list[i];
+                if (this_element.Equals(other_element) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool List_Equal<T>(
+            this List<List<T>> this_list, List<List<T>> other_list
+            )
+            where T : ICustomDeepCopyable<T>
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                if (this_list[i].List_Equal(other_list[i]) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool List_Equal(
+            this List<List<PD_PlayerCardBase>> this_list, List<List<PD_PlayerCardBase>> other_list
+            )
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                List<PD_PlayerCardBase> this_sub_list = this_list[i];
+                List<PD_PlayerCardBase> other_sub_list = other_list[i];
+                if (this_sub_list.List_Equal(other_sub_list) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool List_Equal_S<T>(
             this List<T> this_list, List<T> other_list
             )
@@ -75,6 +171,8 @@ namespace Pandemic_AI_Framework
 
             return true;
         }
+
+        
 
         public static bool Dictionary_Equal(
             this Dictionary<int, string> this_dictionary,
@@ -173,6 +271,42 @@ namespace Pandemic_AI_Framework
                 List<int> this_value = this_dictionary[key];
                 List<int> other_value = other_dictionary[key];
                 if (this_value.List_Equal_S(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //Dictionary<int, List<PD_PlayerCardBase>>
+        public static bool Dictionary_Equal(
+            this Dictionary<int, List<PD_PlayerCardBase>> this_dictionary,
+            Dictionary<int, List<PD_PlayerCardBase>> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                List<PD_PlayerCardBase> this_value = this_dictionary[key];
+                List<PD_PlayerCardBase> other_value = other_dictionary[key];
+                if (this_value.List_Equal(other_value) == false)
                 {
                     return false;
                 }
@@ -347,6 +481,17 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
+        public static int Custom_HashCode<T>(this List<T> my_list)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_list.Count;
+            foreach (T element in my_list)
+            {
+                hash = hash * 13 + element.GetHashCode();
+            }
+            return hash;
+        }
+
         public static int Custom_HashCode(this List<List<int>> my_list)
         {
             int hash = 7;
@@ -354,6 +499,17 @@ namespace Pandemic_AI_Framework
             foreach (List<int> element in my_list)
             {
                 hash = hash * 13 + element.Custom_HashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode<T>(this List<List<T>> my_list)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_list.Count;
+            foreach (List<T> sub_list in my_list)
+            {
+                hash = hash * 13 + sub_list.Custom_HashCode();
             }
             return hash;
         }
@@ -369,6 +525,7 @@ namespace Pandemic_AI_Framework
             }
             return hash;
         }
+
 
         public static int Custom_HashCode(this Dictionary<int, string> my_dictionary)
         {
@@ -418,6 +575,18 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
+        public static int Custom_HashCode<T>(this Dictionary<int, List<T>> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, List<T>> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.Custom_HashCode();
+            }
+            return hash;
+        }
+
         public static int Custom_HashCode(this Dictionary<int, Dictionary<int,int>> my_dictionary)
         {
             int hash = 7;
@@ -429,6 +598,8 @@ namespace Pandemic_AI_Framework
             }
             return hash;
         }
+
+        //List<List<PD_InfectionCard>>
 
         #endregion
 

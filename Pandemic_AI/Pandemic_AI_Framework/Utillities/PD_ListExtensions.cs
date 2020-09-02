@@ -7,6 +7,431 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_ListExtensions
     {
+        #region equalities
+        public static bool Array_Equal_S<T>(
+            this T[] this_array, T[] other_array
+            )
+            where T : struct
+        {
+            // compare list sizes
+            if (this_array.Length != other_array.Length)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_array.Length; i++)
+            {
+                if (this_array[i].Equals(other_array[i]) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool List_Equal_S<T>(
+            this List<T> this_list, List<T> other_list
+            )
+            where T : struct
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                if (this_list[i].Equals(other_list[i]) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool List_Equal(
+            this List<List<int>> this_list, List<List<int>> other_list
+            )
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                if (this_list[i].List_Equal_S(other_list[i]) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equal(
+            this Dictionary<int, string> this_dictionary,
+            Dictionary<int, string> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                string this_value = this_dictionary[key];
+                string other_value = other_dictionary[key];
+                if (this_value.Equals(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equal(
+            this Dictionary<int, PD_Point> this_dictionary,
+            Dictionary<int, PD_Point> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                PD_Point this_value = this_dictionary[key];
+                PD_Point other_value = other_dictionary[key];
+                if (this_value.Equals(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equal(
+            this Dictionary<int, List<int>> this_dictionary,
+            Dictionary<int, List<int>> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                List<int> this_value = this_dictionary[key];
+                List<int> other_value = other_dictionary[key];
+                if (this_value.List_Equal_S(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equal_S<K, V>(
+            this Dictionary<K, V> this_dictionary,
+            Dictionary<K, V> other_dictionary
+            )
+            where K : struct
+            where V : struct
+        {
+            List<K> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<K> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (K key in this_dictionary_keys)
+            {
+                V this_value = this_dictionary[key];
+                V other_value = other_dictionary[key];
+                if (this_value.Equals(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //public static bool Dictionary_Equal(
+        //    this Dictionary<int, List<int>> this_dictionary,
+        //    Dictionary<int, List<int>> other_dictionary
+        //    )
+        //{
+        //    List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+        //    List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+        //    // compare keys - size
+        //    if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+        //    {
+        //        return false;
+        //    }
+
+        //    for (int k = 0; k < this_dictionary.Keys.Count; k++)
+        //    {
+        //        if (this_dictionary_keys[k] != other_dictionary_keys[k])
+        //        {
+        //            return false;
+        //        }
+        //    }
+
+        //    foreach (int key in this_dictionary_keys)
+        //    {
+        //        List<int> this_value = this_dictionary[key];
+        //        List<int> other_value = other_dictionary[key];
+        //        if (this_value.SequenceEqual(other_value) == false)
+        //        {
+        //            return false;
+        //        }
+        //    }
+
+        //    return true;
+        //}
+
+        public static bool Dictionary_Equal(
+            this Dictionary<int, Dictionary<int, int>> this_dictionary,
+            Dictionary<int, Dictionary<int, int>> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k] != other_dictionary_keys[k])
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                Dictionary<int, int> this_value = this_dictionary[key];
+                Dictionary<int, int> other_value = other_dictionary[key];
+                if (this_value.SequenceEqual(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equal(
+            this Dictionary<int, int> this_dictionary,
+            Dictionary<int, int> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k] != other_dictionary_keys[k])
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                int this_value = this_dictionary[key];
+                int other_value = other_dictionary[key];
+                if (this_value != other_value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region custom hash codes
+        public static int Custom_HashCode(this int[] my_array)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_array.Length;
+            foreach (int element in my_array)
+            {
+                hash = hash * 13 + element;
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this List<int> my_list)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_list.Count;
+            foreach (int element in my_list)
+            {
+                hash = hash * 13 + element;
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this List<List<int>> my_list)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_list.Count;
+            foreach (List<int> element in my_list)
+            {
+                hash = hash * 13 + element.Custom_HashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, int> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, int> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value;
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, string> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, string> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.GetHashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, bool> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, bool> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.GetHashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, PD_Point> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, PD_Point> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.GetHashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, List<int>> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, List<int>> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.Custom_HashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode(this Dictionary<int, Dictionary<int,int>> my_dictionary)
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, Dictionary<int, int>> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.Custom_HashCode();
+            }
+            return hash;
+        }
+
+        #endregion
+
         public static bool ContainsAll<T>(this List<T> mainList, List<T> containedList)
         {
             foreach (T item in containedList)
@@ -17,6 +442,18 @@ namespace Pandemic_AI_Framework
                 }
             }
             return true;
+        }
+
+        public static List<int> CustomDeepCopy(this List<int> originalList)
+        {
+            List<int> copyList = new List<int>();
+
+            foreach (int element in originalList)
+            {
+                copyList.Add(element);
+            }
+
+            return copyList;
         }
 
         public static List<T> CustomDeepCopy<T>(this List<T> originalList)
@@ -56,6 +493,18 @@ namespace Pandemic_AI_Framework
             return copyList;
         }
 
+        public static List<List<int>> CustomDeepCopy(this List<List<int>> originalListOfLists)
+        {
+            List<List<int>> copyListOfLists = new List<List<int>>();
+
+            foreach (var subList in originalListOfLists)
+            {
+                copyListOfLists.Add(subList.CustomDeepCopy());
+            }
+
+            return copyListOfLists;
+        }
+
         public static List<List<PD_PlayerCardBase>> CustomDeepCopy(this List<List<PD_PlayerCardBase>> originalListOfLists)
         {
             List<List<PD_PlayerCardBase>> copyListOfLists = new List<List<PD_PlayerCardBase>>();
@@ -77,6 +526,77 @@ namespace Pandemic_AI_Framework
             foreach (var kvp in originalDictionary)
             {
                 dictionaryCopy.Add(kvp.Key, kvp.Value);
+            }
+
+            return dictionaryCopy;
+        }
+
+        public static Dictionary<int, Dictionary<int, int>> CustomDeepCopy(
+            this Dictionary<int, Dictionary<int, int>> originalDictionary
+            )
+        {
+            Dictionary<int, Dictionary<int, int>> dictionaryCopy
+                = new Dictionary<int, Dictionary<int, int>>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
+            }
+
+            return dictionaryCopy;
+        }
+
+        public static Dictionary<int, bool> CustomDeepCopy(
+            this Dictionary<int, bool> originalDictionary
+            )
+        {
+            Dictionary<int, bool> dictionaryCopy = new Dictionary<int, bool>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value);
+            }
+
+            return dictionaryCopy;
+        }
+
+        public static Dictionary<int, List<int>> CustomDeepCopy(
+            this Dictionary<int, List<int>> originalDictionary
+            )
+        {
+            Dictionary<int, List<int>> dictionaryCopy = new Dictionary<int, List<int>>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
+            }
+
+            return dictionaryCopy;
+        }
+
+        public static Dictionary<int, string> CustomDeepCopy(
+            this Dictionary<int, string> originalDictionary
+            )
+        {
+            Dictionary<int, string> dictionaryCopy = new Dictionary<int, string>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value);
+            }
+
+            return dictionaryCopy;
+        }
+
+        public static Dictionary<int, PD_Point> CustomDeepCopy(
+            this Dictionary<int, PD_Point> originalDictionary
+            )
+        {
+            Dictionary<int, PD_Point> dictionaryCopy = new Dictionary<int, PD_Point>();
+
+            foreach (var kvp in originalDictionary)
+            {
+                dictionaryCopy.Add(kvp.Key, kvp.Value.GetCustomDeepCopy());
             }
 
             return dictionaryCopy;
@@ -305,7 +825,7 @@ namespace Pandemic_AI_Framework
 
 
         public static void SetFirstItemByIndex<T>(
-            this List<T> items, 
+            this List<T> items,
             int index
             )
         {
@@ -411,7 +931,7 @@ namespace Pandemic_AI_Framework
         /// <param name="numRandomUniqueItemsToGet"></param>
         /// <returns></returns>
         public static List<T> GetManyRandomUnique<T>(
-            this List<T> items, 
+            this List<T> items,
             Random randomness_provider,
             int numRandomUniqueItemsToGet)
         {
@@ -544,7 +1064,7 @@ namespace Pandemic_AI_Framework
         /// <param name="numberOfItems"></param>
         /// <returns></returns>
         public static List<T> DrawManyRandomUnique<T>(
-            this List<T> items, 
+            this List<T> items,
             Random randomness_provider,
             int numberOfUniqueItemsToDraw)
         {
@@ -707,7 +1227,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static List<List<T>> GetAllSubSetsOfSpecificSize<T>(
-            this List<T> originalGroup, 
+            this List<T> originalGroup,
             int subGroupsSize
             )
         {

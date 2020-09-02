@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+//using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Transactions;
@@ -47,16 +48,16 @@ namespace Pandemic_AI_Framework
         public int[] role__per__player;
 
         // map - data
-        public int _map___number_of_cities;
-        public List<int> _map___cities;
-        public Dictionary<int, string> _map___name__per__city;
-        public Dictionary<int, PD_Point> _map___position__per__city;
-        public Dictionary<int, int> _map___infection_type__per__city;
-        public Dictionary<int, List<int>> _map___neighbors__per__city;
+        public int map___number_of_cities;
+        public List<int> map___cities;
+        public Dictionary<int, string> map___name__per__city;
+        public Dictionary<int, PD_Point> map___position__per__city;
+        public Dictionary<int, int> map___infection_type__per__city;
+        public Dictionary<int, List<int>> map___neighbors__per__city;
 
-        public Dictionary<int, bool> _map___research_station__per__city;
-        public Dictionary<int, int> _map___location__per__player;
-        public Dictionary<int, Dictionary<int, int>> _map___infection_cubes__per__type__per__city;
+        public Dictionary<int, bool> map___research_station__per__city;
+        public Dictionary<int, int> map___location__per__player;
+        public Dictionary<int, Dictionary<int, int>> map___infection_cubes__per__type__per__city;
 
         // game elements
         public int available_research_stations;
@@ -74,21 +75,160 @@ namespace Pandemic_AI_Framework
         public Dictionary<int, int> state_counter___disease_states;
 
         // flags
-        public bool NotEnoughDiseaseCubesToCompleteAnInfection;
-        public bool NotEnoughPlayerCardsToDraw;
-        public bool operations_expert_flight_used_this_turn;
+        public bool flag___NotEnoughDiseaseCubesToCompleteAnInfection;
+        public bool flag___NotEnoughPlayerCardsToDraw;
+        public bool flag___operations_expert_flight_used_this_turn;
 
         // initial card - containers:
-        public List<List<int>> _cards___divided_deck_of_infection_cards;
-        public List<int> _cards___active_infection_cards;
-        public List<int> _cards___deck_of_discarded_infection_cards;
-        public List<List<int>> _cards___divided_deck_of_player_cards;
-        public List<int> _cards___deck_of_discarded_player_cards;
-        public Dictionary<int, List<int>> _cards___player_cards__per__player;
+        public List<List<int>> cards___divided_deck_of_infection_cards;
+        public List<int> cards___active_infection_cards;
+        public List<int> cards___deck_of_discarded_infection_cards;
+        public List<List<int>> cards___divided_deck_of_player_cards;
+        public List<int> cards___deck_of_discarded_player_cards;
+        public Dictionary<int, List<int>> cards___player_cards__per__player;
 
 
 
         #endregion
+
+        [JsonConstructor]
+        public PD_MiniGame(
+            long unique_id,
+
+            // game - settings:
+            int settings___number_of_players,
+            int settings___game_difficulty,
+            int settings___maximum_viable_outbreaks,
+            int settings___maximum_player_hand_size,
+            Dictionary<int, int> settings___initial_hand_size__per__number_of_players,
+            Dictionary<int, int> settings___epidemic_cards__per__game_difficulty,
+            Dictionary<int, int> settings___infection_rate__per__epidemics,
+
+            // general - data
+            List<int> players,
+
+            // player - roles
+            List<int> unassigned_player_roles,
+            int[] role__per__player,
+
+            // map - data
+            int map___number_of_cities,
+            List<int> map___cities,
+            Dictionary<int, string> map___name__per__city,
+            Dictionary<int, PD_Point> map___position__per__city,
+            Dictionary<int, int> map___infection_type__per__city,
+            Dictionary<int, List<int>> map___neighbors__per__city,
+
+            Dictionary<int, bool> map___research_station__per__city,
+            Dictionary<int, int> map___location__per__player,
+            Dictionary<int, Dictionary<int, int>> map___infection_cubes__per__type__per__city,
+
+            // game elements
+            int available_research_stations,
+            Dictionary<int, int> available_infection_cubes__per__type,
+
+            // state - counters:
+            int state_counter___current_state,
+
+            int state_counter___current_turn,
+            int state_counter___current_player,
+            int state_counter___current_player_action_index,
+
+            int state_counter___number_of_outbreaks,
+            int state_counter___number_of_epidemics,
+            Dictionary<int, int> state_counter___disease_states,
+
+            // flags
+            bool flag___NotEnoughDiseaseCubesToCompleteAnInfection,
+            bool flag___NotEnoughPlayerCardsToDraw,
+            bool flag___operations_expert_flight_used_this_turn,
+
+            // initial card - containers:
+            List<List<int>> cards___divided_deck_of_infection_cards,
+            List<int> cards___active_infection_cards,
+            List<int> cards___deck_of_discarded_infection_cards,
+            List<List<int>> cards___divided_deck_of_player_cards,
+            List<int> cards___deck_of_discarded_player_cards,
+            Dictionary<int, List<int>> cards___player_cards__per__player
+
+            )
+        {
+            this.unique_id = unique_id;
+
+            // game - settings:
+            this.settings___number_of_players = settings___number_of_players;
+            this.settings___game_difficulty = settings___game_difficulty;
+            this.settings___maximum_viable_outbreaks = settings___maximum_viable_outbreaks;
+            this.settings___maximum_player_hand_size = settings___maximum_player_hand_size;
+            this.settings___initial_hand_size__per__number_of_players
+                = settings___initial_hand_size__per__number_of_players.CustomDeepCopy();
+            this.settings___epidemic_cards__per__game_difficulty
+                = settings___epidemic_cards__per__game_difficulty.CustomDeepCopy();
+            this.settings___infection_rate__per__epidemics
+                = settings___infection_rate__per__epidemics;
+
+            // general - data
+            this.players = players.CustomDeepCopy();
+
+            // player - roles
+            this.unassigned_player_roles = unassigned_player_roles.CustomDeepCopy();
+            this.role__per__player = role__per__player.CustomDeepCopy();
+
+            // map - data
+            this.map___number_of_cities = map___number_of_cities;
+            this.map___cities = map___cities.CustomDeepCopy();
+            this.map___name__per__city = map___name__per__city.CustomDeepCopy();
+            this.map___position__per__city 
+                = map___position__per__city.CustomDeepCopy();
+            this.map___infection_type__per__city 
+                = map___infection_type__per__city.CustomDeepCopy();
+            this.map___neighbors__per__city 
+                = map___neighbors__per__city.CustomDeepCopy();
+            this.map___research_station__per__city 
+                = map___research_station__per__city.CustomDeepCopy();
+            this.map___location__per__player 
+                = map___location__per__player.CustomDeepCopy();
+            this.map___infection_cubes__per__type__per__city
+                = map___infection_cubes__per__type__per__city.CustomDeepCopy();
+
+            // game elements
+            this.available_research_stations = available_research_stations;
+            this.available_infection_cubes__per__type = available_infection_cubes__per__type;
+
+            // state - counters:
+            this.state_counter___current_state = state_counter___current_state;
+
+            this.state_counter___current_turn = state_counter___current_turn;
+            this.state_counter___current_player = state_counter___current_player;
+            this.state_counter___current_player_action_index
+                = state_counter___current_player_action_index;
+
+            this.state_counter___number_of_outbreaks = state_counter___number_of_outbreaks;
+            this.state_counter___number_of_epidemics = state_counter___number_of_epidemics;
+            this.state_counter___disease_states = state_counter___disease_states.CustomDeepCopy();
+
+            // flags
+            this.flag___NotEnoughDiseaseCubesToCompleteAnInfection 
+                = flag___NotEnoughDiseaseCubesToCompleteAnInfection;
+            this.flag___NotEnoughPlayerCardsToDraw
+                = flag___NotEnoughPlayerCardsToDraw;
+            this.flag___operations_expert_flight_used_this_turn
+                = flag___operations_expert_flight_used_this_turn;
+
+            // initial card - containers:
+            this.cards___divided_deck_of_infection_cards
+                = cards___divided_deck_of_infection_cards.CustomDeepCopy();
+            this.cards___active_infection_cards
+                = cards___active_infection_cards.CustomDeepCopy();
+            this.cards___deck_of_discarded_infection_cards
+                = cards___deck_of_discarded_infection_cards.CustomDeepCopy();
+            this.cards___divided_deck_of_player_cards
+                = cards___divided_deck_of_player_cards.CustomDeepCopy();
+            this.cards___deck_of_discarded_player_cards
+                = cards___deck_of_discarded_player_cards.CustomDeepCopy();
+            this.cards___player_cards__per__player
+                = cards___player_cards__per__player.CustomDeepCopy();
+        }
 
         public PD_MiniGame()
         {
@@ -105,6 +245,203 @@ namespace Pandemic_AI_Framework
             return new PD_MiniGame(this);
         }
 
+        #region equality overrides
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject.GetType() != this.GetType())
+            {
+                return false;
+            }
 
+            var other = (PD_MiniGame)otherObject;
+
+            if (this.unique_id != other.unique_id)
+            {
+                return false;
+            }
+
+            // game - settings:
+            else if (this.settings___number_of_players
+                != other.settings___number_of_players) return false;
+            else if (this.settings___game_difficulty
+                != other.settings___game_difficulty) return false;
+            else if (this.settings___maximum_viable_outbreaks
+                != other.settings___maximum_viable_outbreaks) return false;
+            else if (this.settings___maximum_player_hand_size
+                != other.settings___maximum_player_hand_size) return false;
+            else if (this.settings___initial_hand_size__per__number_of_players
+                .Dictionary_Equal(other.settings___initial_hand_size__per__number_of_players) == false) return false;
+            else if (this.settings___epidemic_cards__per__game_difficulty
+                .Dictionary_Equal(other.settings___epidemic_cards__per__game_difficulty) == false) return false;
+            else if (this.settings___infection_rate__per__epidemics
+                .Dictionary_Equal(other.settings___infection_rate__per__epidemics) == false) return false;
+
+            // general - data
+            else if (this.players
+                .List_Equal_S(other.players) == false) return false;
+
+            // player - roles
+            else if (this.unassigned_player_roles
+                .List_Equal_S(other.unassigned_player_roles) == false) return false;
+            else if (this.role__per__player
+                .Array_Equal_S(other.role__per__player) == false) return false;
+
+            // map - data
+            else if (this.map___number_of_cities
+                != other.map___number_of_cities) return false;
+            else if (this.map___cities
+                .List_Equal_S(other.map___cities) == false) return false;
+            else if (this.map___name__per__city
+                .Dictionary_Equal(other.map___name__per__city) == false) return false;
+            else if (this.map___position__per__city
+                .Dictionary_Equal(other.map___position__per__city) == false) return false;
+            else if (this.map___infection_type__per__city
+                .Dictionary_Equal_S(other.map___infection_type__per__city) == false) return false;
+            else if (this.map___neighbors__per__city
+                .Dictionary_Equal(other.map___neighbors__per__city) == false) return false;
+
+            else if (this.map___research_station__per__city
+                .Dictionary_Equal_S(other.map___research_station__per__city) == false) return false;
+            else if (this.map___location__per__player
+                .Dictionary_Equal_S(other.map___location__per__player) == false) return false;
+            else if (this.map___infection_cubes__per__type__per__city
+                .Dictionary_Equal(other.map___infection_cubes__per__type__per__city) == false) return false;
+
+            // game elements
+            else if (this.available_research_stations
+                != other.available_research_stations) return false;
+            else if (this.available_infection_cubes__per__type
+                .Dictionary_Equal_S(other.available_infection_cubes__per__type) == false) return false;
+
+            // state counters
+            else if (this.state_counter___current_state
+                != other.state_counter___current_state) return false;
+
+            else if (this.state_counter___current_turn
+                != other.state_counter___current_turn) return false;
+            else if (this.state_counter___current_player
+                != other.state_counter___current_player) return false;
+            else if (this.state_counter___current_player_action_index
+                != other.state_counter___current_player_action_index) return false;
+
+            else if (this.state_counter___number_of_outbreaks
+                != other.state_counter___number_of_outbreaks) return false;
+            else if (this.state_counter___number_of_epidemics
+                != other.state_counter___number_of_epidemics) return false;
+            else if (this.state_counter___disease_states
+                .Dictionary_Equal_S(other.state_counter___disease_states) == false) return false;
+
+            // flags
+            else if (this.flag___NotEnoughDiseaseCubesToCompleteAnInfection
+                != other.flag___NotEnoughDiseaseCubesToCompleteAnInfection) return false;
+            else if (this.flag___NotEnoughPlayerCardsToDraw
+                != other.flag___NotEnoughPlayerCardsToDraw) return false;
+            else if (this.flag___operations_expert_flight_used_this_turn
+                != other.flag___operations_expert_flight_used_this_turn) return false;
+
+            // initial card - containers:
+            else if (this.cards___divided_deck_of_infection_cards
+                .List_Equal(other.cards___divided_deck_of_infection_cards) == false) return false;
+            else if (this.cards___active_infection_cards
+                .List_Equal_S(other.cards___active_infection_cards) == false) return false;
+            else if (this.cards___deck_of_discarded_infection_cards
+                .List_Equal_S(other.cards___deck_of_discarded_infection_cards) == false) return false;
+            else if (this.cards___divided_deck_of_player_cards
+                .List_Equal(other.cards___divided_deck_of_player_cards) == false) return false;
+            else if (this.cards___deck_of_discarded_player_cards
+                .List_Equal_S(other.cards___deck_of_discarded_player_cards) == false) return false;
+            else if (this.cards___player_cards__per__player
+                .Dictionary_Equal(other.cards___player_cards__per__player) == false) return false;
+
+            else return true;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 7;
+
+            hash = (hash * 13) + (int)unique_id;
+
+            // settings
+            hash = (hash * 13) + settings___number_of_players;
+            hash = (hash * 13) + settings___game_difficulty;
+            hash = (hash * 13) + settings___maximum_viable_outbreaks;
+            hash = (hash * 13) + settings___maximum_player_hand_size;
+            hash = (hash * 13) + settings___initial_hand_size__per__number_of_players.Custom_HashCode();
+            hash = (hash * 13) + settings___epidemic_cards__per__game_difficulty.Custom_HashCode();
+            hash = (hash * 13) + settings___infection_rate__per__epidemics.Custom_HashCode();
+
+            hash = (hash * 13) + players.Custom_HashCode();
+
+            hash = (hash * 13) + unassigned_player_roles.Custom_HashCode();
+            hash = (hash * 13) + role__per__player.Custom_HashCode();
+
+            // map - data
+            hash = (hash * 13) + map___number_of_cities;
+            hash = (hash * 13) + map___cities.Custom_HashCode();
+            hash = (hash * 13) + map___name__per__city.Custom_HashCode();
+            hash = (hash * 13) + map___position__per__city.Custom_HashCode();
+            hash = (hash * 13) + map___infection_type__per__city.Custom_HashCode();
+            hash = (hash * 13) + map___neighbors__per__city.Custom_HashCode();
+
+            hash = (hash * 13) + map___research_station__per__city.Custom_HashCode();
+            hash = (hash * 13) + map___location__per__player.Custom_HashCode();
+            hash = (hash * 13) + map___infection_cubes__per__type__per__city.Custom_HashCode();
+
+            // game elements
+            hash = (hash * 13) + available_research_stations;
+            hash = (hash * 13) + available_infection_cubes__per__type.Custom_HashCode();
+
+            // state - counters:
+            hash = (hash * 13) + state_counter___current_state;
+
+            hash = (hash * 13) + state_counter___current_turn;
+            hash = (hash * 13) + state_counter___current_player;
+            hash = (hash * 13) + state_counter___current_player_action_index;
+
+            hash = (hash * 13) + state_counter___number_of_outbreaks;
+            hash = (hash * 13) + state_counter___number_of_epidemics;
+            hash = (hash * 13) + state_counter___disease_states.Custom_HashCode();
+
+            // flags
+            hash = (hash * 13) + cards___divided_deck_of_infection_cards.Custom_HashCode();
+            hash = (hash * 13) + cards___active_infection_cards.Custom_HashCode();
+            hash = (hash * 13) + cards___deck_of_discarded_infection_cards.Custom_HashCode();
+            hash = (hash * 13) + cards___divided_deck_of_player_cards.Custom_HashCode();
+            hash = (hash * 13) + cards___deck_of_discarded_player_cards.Custom_HashCode();
+            hash = (hash * 13) + cards___player_cards__per__player.Custom_HashCode();
+
+
+            return hash;
+        }
+
+        public static bool operator ==(PD_MiniGame mg1, PD_MiniGame mg2)
+        {
+            if (Object.ReferenceEquals(mg1, null))
+            {
+                if (Object.ReferenceEquals(mg2, null))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else // c1 is not null
+            {
+                if (Object.ReferenceEquals(mg2, null)) // c2 is null
+                {
+                    return false;
+                }
+            }
+            return mg1.Equals(mg2);
+        }
+
+        public static bool operator !=(PD_MiniGame mg1, PD_MiniGame mg2)
+        {
+            return !(mg1 == mg2);
+        }
+        #endregion
     }
 }

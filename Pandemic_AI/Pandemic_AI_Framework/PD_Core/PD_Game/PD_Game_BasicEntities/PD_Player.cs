@@ -1,20 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PD_Player : ICustomDeepCopyable<PD_Player>
     {
+        #region properties
         public int ID { get; private set; }
         public string Name { get; private set; }
+        #endregion
 
-        public PD_Player(int id, string name)
+        #region constructors
+        /// <summary>
+        /// public constructor, also used for json deserialization...
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        [JsonConstructor]
+        public PD_Player(
+            int id,
+            string name
+            )
         {
             ID = id;
             Name = name;
         }
+
+        /// <summary>
+        /// private constructor, used for deep copy purposes, only
+        /// </summary>
+        /// <param name="player_to_copy"></param>
+        private PD_Player(PD_Player player_to_copy)
+        {
+            this.ID = player_to_copy.ID;
+            this.Name = player_to_copy.Name;
+        }
+
+        public PD_Player GetCustomDeepCopy()
+        {
+            return new PD_Player(this);
+        }
+        #endregion
 
         #region equality overrides
 
@@ -45,13 +74,7 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
-        public PD_Player GetCustomDeepCopy()
-        {
-            return new PD_Player(
-                this.ID,
-                this.Name
-                );
-        }
+
 
         public static bool operator ==(PD_Player p1, PD_Player p2)
         {

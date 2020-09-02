@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Pandemic_AI_Framework;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,43 @@ namespace Pandemic_AI_Framework.Tests
     [TestClass()]
     public class PD_Game_Tests
     {
+        [TestMethod()]
+        public void Serialize_Deserialize_MiniGame() {
+            Random randomness_provider = new Random();
+            PD_Game random_game = PD_Game.Create(
+                randomness_provider,
+                4,
+                0,
+                true
+                );
+
+            PD_MiniGame mini_game = PD_State_Converter.MiniGame__From__Game(
+                random_game
+                );
+
+            string serialized_mini_game = mini_game.To_Json_String(
+                Newtonsoft.Json.Formatting.None,
+                Newtonsoft.Json.TypeNameHandling.None,
+                Newtonsoft.Json.PreserveReferencesHandling.None
+                );
+
+            PD_MiniGame deserialized_mini_game = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
+
+            Assert.IsTrue(mini_game.Equals(deserialized_mini_game));
+
+
+            int hc1 = mini_game.GetHashCode();
+            int hc2 = deserialized_mini_game.GetHashCode();
+            Assert.IsTrue(hc1 == hc2);
+
+            Assert.IsTrue(mini_game.unique_id == deserialized_mini_game.unique_id);
+            Assert.IsTrue(mini_game.settings___number_of_players == deserialized_mini_game.settings___number_of_players);
+
+            Assert.IsTrue(deserialized_mini_game == mini_game);
+
+
+        }
+
         [TestMethod()]
         public void Deserialize_ExistingGame_Test()
         {

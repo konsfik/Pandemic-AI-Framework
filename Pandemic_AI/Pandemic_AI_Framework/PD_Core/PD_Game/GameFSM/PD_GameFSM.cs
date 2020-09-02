@@ -20,7 +20,7 @@ namespace Pandemic_AI_Framework
         // custom constructor for deep copy
         // and for json serializer
         [JsonConstructor]
-        private PD_GameFSM(
+        public PD_GameFSM(
             PD_GameStateBase currentState
             )
         {

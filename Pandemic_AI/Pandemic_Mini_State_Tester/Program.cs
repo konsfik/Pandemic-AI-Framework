@@ -25,11 +25,19 @@ namespace Pandemic_Mini_State_Tester
                     true
                 );
 
-            PD_MiniGame mini_state = PD_State_Converter.MiniGame__From__Game(
-                randomly_generated_game
+            PD_MiniGame mini_state = randomly_generated_game.To_MiniGame();
+
+            string serialized_mini_state = mini_state.To_Json_String(
+                Formatting.None,
+                TypeNameHandling.None,
+                PreserveReferencesHandling.None
+                );
+            Console.WriteLine(serialized_mini_state);
+
+            PD_MiniGame deserialized_mini_state = JsonConvert.DeserializeObject<PD_MiniGame>(
+                serialized_mini_state
                 );
 
-            Console.WriteLine(mini_state.state_counter___current_player);
 
             string objectSerializedToString =
                 JsonConvert.SerializeObject(

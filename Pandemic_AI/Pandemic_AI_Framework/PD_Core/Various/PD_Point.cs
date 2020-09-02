@@ -86,5 +86,13 @@ namespace Pandemic_AI_Framework
             return !(p1 == p2);
         }
         #endregion
+
+        public override string ToString()
+        {
+            return String.Format(
+                "point:({0},{1})",
+                X,Y
+                );
+        }
     }
 }

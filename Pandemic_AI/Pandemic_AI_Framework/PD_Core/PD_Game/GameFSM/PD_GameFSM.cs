@@ -24,36 +24,26 @@ namespace Pandemic_AI_Framework
             PD_GameStateBase currentState
             )
         {
-            if (currentState.GetType() == typeof(PD_GS_Idle))
-                CurrentState = ((PD_GS_Idle)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions))
-                CurrentState = ((PD_GS_ApplyingMainPlayerActions)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_Discarding_DuringMainPlayerActions))
-                CurrentState = ((PD_GS_Discarding_DuringMainPlayerActions)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_DrawingNewPlayerCards))
-                CurrentState = ((PD_GS_DrawingNewPlayerCards)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_ApplyingEpidemicCard))
-                CurrentState = ((PD_GS_ApplyingEpidemicCard)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_Discarding_AfterDrawing))
-                CurrentState = ((PD_GS_Discarding_AfterDrawing)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_DrawingNewInfectionCards))
-                CurrentState = ((PD_GS_DrawingNewInfectionCards)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_ApplyingInfectionCards))
-                CurrentState = ((PD_GS_ApplyingInfectionCards)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_GameLost))
-                CurrentState = ((PD_GS_GameLost)currentState)
-                    .GetCustomDeepCopy();
-            else if (currentState.GetType() == typeof(PD_GS_GameWon))
-                CurrentState = ((PD_GS_GameWon)currentState)
-                    .GetCustomDeepCopy();
+            if (currentState is PD_GS_Idle idle_state)
+                CurrentState = idle_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_ApplyingMainPlayerActions main_actions_state)
+                CurrentState = main_actions_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_Discarding_DuringMainPlayerActions discarding_main_state)
+                CurrentState = discarding_main_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_DrawingNewPlayerCards drawing_player_cards_state)
+                CurrentState = drawing_player_cards_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_ApplyingEpidemicCard epidemic_state)
+                CurrentState = epidemic_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_Discarding_AfterDrawing discarding_after_state)
+                CurrentState = discarding_after_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_DrawingNewInfectionCards drawing_infection_cards_state)
+                CurrentState = drawing_infection_cards_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_ApplyingInfectionCards infection_state)
+                CurrentState = infection_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_GameLost lost_state)
+                CurrentState = lost_state.GetCustomDeepCopy();
+            else if (currentState is PD_GS_GameWon won_state)
+                CurrentState = won_state.GetCustomDeepCopy();
         }
         #endregion
 

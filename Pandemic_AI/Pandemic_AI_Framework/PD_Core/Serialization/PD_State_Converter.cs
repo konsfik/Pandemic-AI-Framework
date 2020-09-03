@@ -9,10 +9,6 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_State_Converter
     {
-        public static PD_MiniGame To_MiniGame(this PD_Game game)
-        {
-            return MiniGame__From__Game(game);
-        }
 
         public static string To_Json_String(
             this PD_MiniGame mini_game,
@@ -364,53 +360,58 @@ namespace Pandemic_AI_Framework
             return mini_game;
         }
 
+        public static PD_MiniGame To_MiniGame(this PD_Game game)
+        {
+            return MiniGame__From__Game(game);
+        }
+
         public static PD_Game Game__From__MiniGame(PD_MiniGame mini_game)
         {
 
             // game settings...
             int game_difficulty_level = mini_game.settings___game_difficulty;
-            PD_GameSettings game_settings = new PD_GameSettings(game_difficulty_level);
+            PD_GameSettings GAME_SETTINGS = new PD_GameSettings(game_difficulty_level);
 
             // game FSM
-            PD_GameFSM game_fsm;
+            PD_GameFSM GAME_FSM;
             switch (mini_game.state_counter___current_state)
             {
                 case PD_MiniGame__GameState.IDLE:
-                    game_fsm = new PD_GameFSM(new PD_GS_Idle());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_Idle());
                     break;
                 case PD_MiniGame__GameState.MAIN_PLAYER_ACTIONS:
-                    game_fsm = new PD_GameFSM(new PD_GS_ApplyingMainPlayerActions());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_ApplyingMainPlayerActions());
                     break;
                 case PD_MiniGame__GameState.DISCARDING_DURING_PLAY:
-                    game_fsm = new PD_GameFSM(new PD_GS_Discarding_DuringMainPlayerActions());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_Discarding_DuringMainPlayerActions());
                     break;
                 case PD_MiniGame__GameState.DRAWING_NEW_PLAYER_CARDS:
-                    game_fsm = new PD_GameFSM(new PD_GS_DrawingNewPlayerCards());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_DrawingNewPlayerCards());
                     break;
                 case PD_MiniGame__GameState.DISCARDING_AFTER_DRAWING:
-                    game_fsm = new PD_GameFSM(new PD_GS_Discarding_AfterDrawing());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_Discarding_AfterDrawing());
                     break;
                 case PD_MiniGame__GameState.APPLYING_EPIDEMIC_CARDS:
-                    game_fsm = new PD_GameFSM(new PD_GS_ApplyingEpidemicCard());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_ApplyingEpidemicCard());
                     break;
                 case PD_MiniGame__GameState.DRAWING_NEW_INFECTION_CARDS:
-                    game_fsm = new PD_GameFSM(new PD_GS_DrawingNewInfectionCards());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_DrawingNewInfectionCards());
                     break;
                 case PD_MiniGame__GameState.APPLYING_INFECTION_CARDS:
-                    game_fsm = new PD_GameFSM(new PD_GS_ApplyingInfectionCards());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_ApplyingInfectionCards());
                     break;
                 case PD_MiniGame__GameState.GAME_LOST:
-                    game_fsm = new PD_GameFSM(new PD_GS_GameLost());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_GameLost());
                     break;
                 case PD_MiniGame__GameState.GAME_WON:
-                    game_fsm = new PD_GameFSM(new PD_GS_GameWon());
+                    GAME_FSM = new PD_GameFSM(new PD_GS_GameWon());
                     break;
                 default:
                     throw new System.Exception("incorrect state!");
             }
 
             // game state counter...
-            PD_GameStateCounter game_state_counter = new PD_GameStateCounter(
+            PD_GameStateCounter GAME_STATE_COUNTER = new PD_GameStateCounter(
                 mini_game.settings___number_of_players,
                 mini_game.state_counter___current_player_action_index,
                 mini_game.state_counter___current_player,
@@ -425,10 +426,11 @@ namespace Pandemic_AI_Framework
             ////////////////////////////////////////////////////////////
             /// players
             ////////////////////////////////////////////////////////////
-            List<PD_Player> players = new List<PD_Player>();
+            List<PD_Player> PLAYERS = new List<PD_Player>();
             foreach (int p in mini_game.players)
             {
                 PD_Player player = new PD_Player(p, "Player " + p.ToString());
+                PLAYERS.Add(player);
             }
 
             ////////////////////////////////////////////////////////////
@@ -476,7 +478,7 @@ namespace Pandemic_AI_Framework
                 }
             }
             // map
-            PD_Map map = new PD_Map(
+            PD_Map MAP = new PD_Map(
                 cities,
                 edges,
                 neighbors__per__city
@@ -492,6 +494,7 @@ namespace Pandemic_AI_Framework
             foreach (int c in mini_game.map___cities)
             {
                 PD_CityCard city_card = new PD_CityCard(c, cities[c]);
+                city_cards.Add(city_card);
             }
 
             // infection cards
@@ -499,6 +502,7 @@ namespace Pandemic_AI_Framework
             foreach (int c in mini_game.map___cities)
             {
                 PD_InfectionCard infection_card = new PD_InfectionCard(c, cities[c]);
+                infection_cards.Add(infection_card);
             }
 
             // epidemic cards
@@ -562,7 +566,7 @@ namespace Pandemic_AI_Framework
             }
 
             // game element references...
-            PD_GameElementReferences game_element_references = new PD_GameElementReferences(
+            PD_GameElementReferences GAME_ELEMENT_REFERENCES = new PD_GameElementReferences(
                 city_cards,
                 infection_cards,
                 epidemic_cards,
@@ -571,6 +575,21 @@ namespace Pandemic_AI_Framework
                 research_stations,
                 infection_cubes
                 );
+
+            Dictionary<int, PD_ME_PlayerPawn> PLAYER_PAWNS__PER__PLAYER_ID = new Dictionary<int, PD_ME_PlayerPawn>();
+            Dictionary<int, PD_Role_Card> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, PD_Role_Card>();
+            foreach (int p in mini_game.players)
+            {
+                int mini_player_role = mini_game.role__per__player[p];
+                PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
+
+                PD_ME_PlayerPawn pawn = player_pawns.Find(x => x.Role == player_role);
+                PLAYER_PAWNS__PER__PLAYER_ID.Add(p, pawn);
+
+                PD_Role_Card role_card = role_cards.Find(x => x.Role == player_role);
+                ROLE_CARDS__PER__PLAYER_ID.Add(p, role_card);
+            }
+
 
             ////////////////////////////////////////////////////////////
             /// map elements
@@ -605,33 +624,64 @@ namespace Pandemic_AI_Framework
             foreach (int c in mini_game.map___cities)
             {
                 player_pawns__per__city_id.Add(c, new List<PD_ME_PlayerPawn>());
+                foreach (int p in mini_game.players)
+                {
+                    int mini_player_role = mini_game.role__per__player[p];
+                    PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
+
+                    PD_ME_PlayerPawn player_pawn = player_pawns.Find(x => x.Role == player_role);
+                    if (player_pawn != null) {
+                        player_pawns__per__city_id[c].Add(player_pawn);
+                    }
+                }
             }
-            //foreach (int p in mini_game.players) {
-            //    int player_location = mini_game._map___location__per__player[p];
-            //    int mini_player_role = mini_game.role__per__player[p];
 
-            //    PD_ME_PlayerPawn player_pawn = 
-            //}
+            PD_MapElements MAP_ELEMENTS = new PD_MapElements(
+                inactive_player_pawns,
+                player_pawns__per__city_id,
+                new Dictionary<int, List<PD_ME_InfectionCube>>(),
+                new Dictionary<int, List<PD_ME_InfectionCube>>(),
+                new List<PD_ME_ResearchStation>(),
+                new Dictionary<int, List<PD_ME_ResearchStation>>()
+                );
 
-            //PD_MapElements map_elements = new PD_MapElements(
-            //    inactive_player_pawns,
+            PD_GameCards CARDS = new PD_GameCards(
+                new List<List<PD_InfectionCard>>(),
+                new List<PD_InfectionCard>(),
+                new List<PD_InfectionCard>(),
+                new List<List<PD_PlayerCardBase>>(),
+                new List<PD_PlayerCardBase>(),
+                new Dictionary<int, List<PD_PlayerCardBase>>(),
+                new List<PD_Role_Card>()
+                ) ;
 
-            //    );
 
+            PD_Game game = new PD_Game(
+                mini_game.unique_id,                        // unique id
+                DateTime.UtcNow,                            // start time
+                DateTime.UtcNow,                            // end time
+                GAME_SETTINGS,                              // game settings
+                GAME_FSM,                                   // game fsm
+                GAME_STATE_COUNTER,                         // game state counter
+                PLAYERS,                                    // players
+                MAP,                                        // map
+                GAME_ELEMENT_REFERENCES,                    // game element references
+                MAP_ELEMENTS,                               // map elements
+                CARDS,                                      // cards
+                PLAYER_PAWNS__PER__PLAYER_ID,               // player pawns per player id
+                ROLE_CARDS__PER__PLAYER_ID,                 // role cards per player id     
+                new List<PD_GameAction_Base>(),             // player actions history
+                new List<PD_InfectionReport>(),             // infection reports
+                new List<PD_GameAction_Base>(),             // current aavailable player actions
+                new List<PD_MacroAction>()                  // current available player actions
+                );
 
-            //PD_Game game = new PD_Game(
-            //    0,
-            //    DateTime.UtcNow,
-            //    DateTime.UtcNow,
-            //    game_settings,
-            //    game_fsm,
-            //    game_state_counter,
-            //    players,
-            //    map,
-            //    game_element_references,
-            //    );
+            return game;
+        }
 
-            return null;
+        public static PD_Game To_Game(this PD_MiniGame mini_game)
+        {
+            return Game__From__MiniGame(mini_game);
         }
 
         public static int MiniGame_PlayerCard__FROM__Game_PlayerCard(PD_PlayerCardBase card)
@@ -651,6 +701,51 @@ namespace Pandemic_AI_Framework
             else
             {
                 throw new System.Exception("incorrect card type");
+            }
+        }
+
+
+        public static PD_Player_Roles PlayerRole__From__MiniGamePlayerRole(int mini_game__player_role)
+        {
+            switch (mini_game__player_role)
+            {
+                case PD_MiniGame__PlayerRole.UNDEFINED:
+                    return PD_Player_Roles.None;
+                case PD_MiniGame__PlayerRole.Contingency_Planner:
+                    return PD_Player_Roles.None;
+                case PD_MiniGame__PlayerRole.Operations_Expert:
+                    return PD_Player_Roles.Operations_Expert;
+                case PD_MiniGame__PlayerRole.Dispatcher:
+                    return PD_Player_Roles.None;
+                case PD_MiniGame__PlayerRole.Quarantine_Specialist:
+                    return PD_Player_Roles.None;
+                case PD_MiniGame__PlayerRole.Researcher:
+                    return PD_Player_Roles.Researcher;
+                case PD_MiniGame__PlayerRole.Medic:
+                    return PD_Player_Roles.Medic;
+                case PD_MiniGame__PlayerRole.Scientist:
+                    return PD_Player_Roles.Scientist;
+                default:
+                    return PD_Player_Roles.None;
+            }
+        }
+
+        public static int MiniGame_PlayerRole__From__PlayerRole(PD_Player_Roles player_role)
+        {
+            switch (player_role)
+            {
+                case PD_Player_Roles.None:
+                    return PD_MiniGame__PlayerRole.UNDEFINED;
+                case PD_Player_Roles.Operations_Expert:
+                    return PD_MiniGame__PlayerRole.Operations_Expert;
+                case PD_Player_Roles.Researcher:
+                    return PD_MiniGame__PlayerRole.Researcher;
+                case PD_Player_Roles.Medic:
+                    return PD_MiniGame__PlayerRole.Medic;
+                case PD_Player_Roles.Scientist:
+                    return PD_MiniGame__PlayerRole.Scientist;
+                default:
+                    return PD_MiniGame__PlayerRole.UNDEFINED;
             }
         }
     }

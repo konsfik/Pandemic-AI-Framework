@@ -63,6 +63,11 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
         #endregion
+        public override string ToString()
+        {
+            return String.Format("Infection Card {0}:{1}",ID, City.ToString());
+        }
     }
 }

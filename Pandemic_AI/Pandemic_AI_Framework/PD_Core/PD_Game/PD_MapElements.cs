@@ -66,12 +66,12 @@ namespace Pandemic_AI_Framework
             Dictionary<int, List<PD_ME_ResearchStation>> researchStationsPerCityID
             )
         {
-            this.InactivePlayerPawns = inactivePlayerPawns;
-            this.PlayerPawnsPerCityID = playerPawnsPerCityID;
-            this.InactiveInfectionCubesPerType = inactiveInfectionCubesPerType;
-            this.InfectionCubesPerCityID = infectionCubesPerCityID;
-            this.InactiveResearchStations = inactiveResearchStations;
-            this.ResearchStationsPerCityID = researchStationsPerCityID;
+            this.InactivePlayerPawns = inactivePlayerPawns.CustomDeepCopy();
+            this.PlayerPawnsPerCityID = playerPawnsPerCityID.CustomDeepCopy();
+            this.InactiveInfectionCubesPerType = inactiveInfectionCubesPerType.CustomDeepCopy();
+            this.InfectionCubesPerCityID = infectionCubesPerCityID.CustomDeepCopy();
+            this.InactiveResearchStations = inactiveResearchStations.CustomDeepCopy();
+            this.ResearchStationsPerCityID = researchStationsPerCityID.CustomDeepCopy();
         }
 
         /// <summary>

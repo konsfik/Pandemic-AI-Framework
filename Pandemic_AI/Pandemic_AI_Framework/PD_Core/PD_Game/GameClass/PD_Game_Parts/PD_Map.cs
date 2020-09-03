@@ -85,14 +85,14 @@ namespace Pandemic_AI_Framework
 
             PD_Map other = (PD_Map)otherObject;
 
-            if (this.Cities.List_Equal(other.Cities) == false)
+            if (this.Cities.List_Equals(other.Cities) == false)
             {
                 return false;
             }
-            else if (this.CityEdges.List_Equal(other.CityEdges) == false)
-            {
-                return false;
-            }
+            //else if (this.CityEdges.List_Equals(other.CityEdges) == false)
+            //{
+            //    return false;
+            //}
             else if (this.CityNeighbors_PerCityID.Dictionary_Equal(other.CityNeighbors_PerCityID) == false)
             {
                 return false;

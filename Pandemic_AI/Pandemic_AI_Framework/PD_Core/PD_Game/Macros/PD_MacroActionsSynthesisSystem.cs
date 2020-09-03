@@ -1792,11 +1792,12 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
-                                currentPlayer,
-                                otherPlayer,
-                                cityCardToGive
-                                );
+                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction = 
+                                new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
+                                    currentPlayer,
+                                    otherPlayer,
+                                    cityCardToGive
+                                    );
 
                             List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
                             actionsList.AddRange(walkSequence);

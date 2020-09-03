@@ -52,6 +52,11 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
+
         #endregion
+        public override string ToString()
+        {
+            return String.Format("Epidemic Card {0}", ID);
+        }
     }
 }

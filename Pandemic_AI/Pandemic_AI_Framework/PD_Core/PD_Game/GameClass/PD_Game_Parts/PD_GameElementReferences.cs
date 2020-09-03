@@ -82,31 +82,31 @@ namespace Pandemic_AI_Framework
 
             var other = (PD_GameElementReferences)otherObject;
 
-            if (InfectionCards.List_Equal(other.InfectionCards) == false)
+            if (InfectionCards.List_Equals(other.InfectionCards) == false)
             {
                 return false;
             }
-            else if (CityCards.List_Equal(other.CityCards) == false)
+            else if (CityCards.List_Equals(other.CityCards) == false)
             {
                 return false;
             }
-            else if (EpidemicCards.List_Equal(other.EpidemicCards) == false)
+            else if (EpidemicCards.List_Equals(other.EpidemicCards) == false)
             {
                 return false;
             }
-            else if (PlayerPawns.List_Equal(other.PlayerPawns) == false)
+            else if (PlayerPawns.List_Equals(other.PlayerPawns) == false)
             {
                 return false;
             }
-            else if (RoleCards.List_Equal(other.RoleCards) == false)
+            else if (RoleCards.List_Equals(other.RoleCards) == false)
             {
                 return false;
             }
-            else if (ResearchStations.List_Equal(other.ResearchStations) == false)
+            else if (ResearchStations.List_Equals(other.ResearchStations) == false)
             {
                 return false;
             }
-            else if (InfectionCubes.List_Equal(other.InfectionCubes) == false)
+            else if (InfectionCubes.List_Equals(other.InfectionCubes) == false)
             {
                 return false;
             }

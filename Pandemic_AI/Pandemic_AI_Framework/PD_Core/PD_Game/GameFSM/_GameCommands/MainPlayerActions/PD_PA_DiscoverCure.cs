@@ -55,6 +55,35 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
+
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (game.GQ_Is_City_ResearchStation(current_player_location) == false)
+            {
+                throw new System.Exception("current player location is not a research station");
+            }
+            else if (game.GQ_Is_City_ResearchStation(CityOfResearchStation) == false)
+            {
+                throw new System.Exception("selected city is not a research station");
+            }
+            else if (current_player_location != CityOfResearchStation)
+            {
+                throw new System.Exception("selected city is not the player's location");
+            }
+            List<PD_CityCard> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
+            foreach (var city_card in CityCardsToDiscard)
+            {
+                if (city_cards_in_player_hand.Contains(city_card) == false)
+                {
+                    throw new System.Exception("player does not have this card: " + city_card.ToString());
+                }
+            }
+#endif
+
             // discard the cards
             foreach (var cityCard in CityCardsToDiscard)
             {
@@ -109,17 +138,9 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.CityCardsToDiscard.Count != other.CityCardsToDiscard.Count)
+            else if (CityCardsToDiscard.List_Equals(other.CityCardsToDiscard) == false)
             {
                 return false;
-            }
-
-            for (int i = 0; i < CityCardsToDiscard.Count; i++)
-            {
-                if (this.CityCardsToDiscard[i] != other.CityCardsToDiscard[i])
-                {
-                    return false;
-                }
             }
 
             return true;
@@ -132,11 +153,7 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + Player.GetHashCode();
             hash = hash * 31 + CityOfResearchStation.GetHashCode();
             hash = hash * 31 + TypeOfDiseaseToCure.GetHashCode();
-            hash = hash * 31 + CityCardsToDiscard.Count;
-            foreach (var city in CityCardsToDiscard)
-            {
-                hash = hash * 31 + city.GetHashCode();
-            }
+            hash = hash * 31 + CityCardsToDiscard.Custom_HashCode();
 
             return hash;
         }

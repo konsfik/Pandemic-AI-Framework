@@ -83,11 +83,11 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            if (this.OtherPlayer != other.OtherPlayer)
+            else if (this.OtherPlayer != other.OtherPlayer)
             {
                 return false;
             }
-            if (this.CityCardToGive != other.CityCardToGive)
+            else if (this.CityCardToGive != other.CityCardToGive)
             {
                 return false;
             }

@@ -47,7 +47,7 @@ namespace Pandemic_AI_Framework
         /// <param name="deckOfDiscardedPlayerCards"></param>
         /// <param name="playerCardsPerPlayerID"></param>
         [JsonConstructor]
-        private PD_GameCards(
+        public PD_GameCards(
             List<List<PD_InfectionCard>> dividedDeckOfInfectionCards,
             List<PD_InfectionCard> activeInfectionCards,
             List<PD_InfectionCard> deckOfDiscardedInfectionCards,
@@ -99,11 +99,11 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (ActiveInfectionCards.List_Equal(other.ActiveInfectionCards) == false)
+            else if (ActiveInfectionCards.List_Equals(other.ActiveInfectionCards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedInfectionCards.List_Equal(other.DeckOfDiscardedInfectionCards) == false)
+            else if (DeckOfDiscardedInfectionCards.List_Equals(other.DeckOfDiscardedInfectionCards) == false)
             {
                 return false;
             }
@@ -123,7 +123,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (InactiveRoleCards.List_Equal(other.InactiveRoleCards) == false)
+            else if (InactiveRoleCards.List_Equals(other.InactiveRoleCards) == false)
             {
                 return false;
             }

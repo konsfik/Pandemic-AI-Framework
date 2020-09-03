@@ -82,7 +82,7 @@ namespace Experiment_1
             bool keep_trace = false;
 
             // debugging settings
-            bool display_actions = false;
+            bool display_actions = true;
             bool display_end_state = true;
 
             // define the agent and the dictionary for the experiment runner
@@ -144,7 +144,7 @@ namespace Experiment_1
             bool keep_trace = false;
 
             // debugging settings
-            bool display_actions = false;
+            bool display_actions = true;
             bool display_end_state = true;
 
             // initialize the pathFinder

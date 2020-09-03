@@ -72,7 +72,12 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
         #endregion
+        public override string ToString()
+        {
+            return String.Format("Role Card {0}:{1}",ID, Role.ToString());
+        }
     }
 
     // certain player roles are omitted...

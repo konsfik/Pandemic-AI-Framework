@@ -52,5 +52,7 @@ namespace Pandemic_AI_Framework
         }
 
         #endregion
+
+        public abstract override string ToString();
     }
 }

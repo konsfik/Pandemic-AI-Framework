@@ -1145,7 +1145,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.Players.List_Equal(other.Players) == false)
+            else if (this.Players.List_Equals(other.Players) == false)
             {
                 return false;
             }

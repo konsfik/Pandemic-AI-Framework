@@ -46,10 +46,32 @@ namespace Pandemic_AI_Framework
         #endregion
 
         public override void Execute(
-            Random randomness_provider, 
+            Random randomness_provider,
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player...");
+            }
+            else if (Used_CityCard.City != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("city card does not match current player position");
+            }
+            else if (Build_RS_On != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("selected city does not match current player position");
+            }
+            else if (game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Operations_Expert)
+            {
+                throw new System.Exception("wrong player role!");
+            }
+#endif
             game.GO_PlayerDiscardsPlayerCard(
                 Player,
                 Used_CityCard
@@ -112,7 +134,6 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
-
         #endregion
     }
 }

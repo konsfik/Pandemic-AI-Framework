@@ -18,31 +18,38 @@ namespace Pandemic_AI_Framework.Tests
             Random randomness_provider = new Random();
 
             // create a normal game, for later use
-            PD_Game random_game = PD_Game.Create(randomness_provider, 4, 0, true);
+            PD_Game initial_game = PD_Game.Create(randomness_provider, 4, 0, true);
 
             // create a mini game
-            PD_MiniGame mini_game = PD_State_Converter.MiniGame__From__Game(random_game);
+            PD_MiniGame mini_game__from__initial_game = PD_State_Converter.MiniGame__From__Game(initial_game);
 
             // serialize the mini game
-            string serialized_mini_game = mini_game.To_Json_String(
+            string serialized_string__from__mini_game = mini_game__from__initial_game.To_Json_String(
                 Formatting.None,
                 TypeNameHandling.None,
                 PreserveReferencesHandling.None
                 );
 
             // deserialize the mini game
-            PD_MiniGame deserialized_mini_game = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
+            PD_MiniGame deserialized_game__from__serialized_string = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_string__from__mini_game);
 
+            // test that the deserialized game is exactly the same as the mini game
+            Assert.IsTrue(mini_game__from__initial_game.GetHashCode() == deserialized_game__from__serialized_string.GetHashCode());
+            Assert.IsTrue(mini_game__from__initial_game == deserialized_game__from__serialized_string);
+            Assert.IsTrue(mini_game__from__initial_game.Equals(deserialized_game__from__serialized_string));
 
-            PD_Game deserialized_game = PD_State_Converter.Game__From__MiniGame(deserialized_mini_game);
+            // create a normal game, from the deserialized game
+            PD_Game final_game__from__deserialized_game = deserialized_game__from__serialized_string.To_Game();
 
-            Assert.IsTrue(mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
-            Assert.IsTrue(mini_game == deserialized_mini_game);
-            Assert.IsTrue(mini_game.Equals(deserialized_mini_game));
+            // check that the final game is the same as the initial game...
+            Assert.IsTrue(final_game__from__deserialized_game != null);
+            Assert.IsTrue(final_game__from__deserialized_game.GameSettings.Equals(initial_game.GameSettings));
+            Assert.IsTrue(final_game__from__deserialized_game.GameFSM.Equals(initial_game.GameFSM));
+            Assert.IsTrue(final_game__from__deserialized_game.GameStateCounter.Equals(initial_game.GameStateCounter));
+            Assert.IsTrue(final_game__from__deserialized_game.Players.List_Equals(initial_game.Players));
+            Assert.IsTrue(final_game__from__deserialized_game.Map.Equals(initial_game.Map));
+            //Assert.IsTrue(final_game__from__deserialized_game.GameElementReferences.Equals(initial_game.GameElementReferences));
 
-            //Assert.IsTrue(mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
-            //Assert.IsTrue(mini_game == deserialized_mini_game);
-            Assert.IsTrue(random_game.Equals(deserialized_game));
         }
 
         [TestMethod()]

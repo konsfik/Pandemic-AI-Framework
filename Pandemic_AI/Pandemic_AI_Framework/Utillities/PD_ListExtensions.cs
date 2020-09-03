@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool List_Equal<T>(
+        public static bool List_Equals<T>(
             this List<T> this_list, List<T> other_list
             )
             where T : ICustomDeepCopyable<T>
@@ -45,9 +45,7 @@ namespace Pandemic_AI_Framework
             // compare list elements
             for (int i = 0; i < this_list.Count; i++)
             {
-                T this_element = this_list[i];
-                T other_element = other_list[i];
-                if (this_element.Equals(other_element) == false)
+                if (this_list[i].Equals(other_list[i]) == false)
                 {
                     return false;
                 }
@@ -69,9 +67,7 @@ namespace Pandemic_AI_Framework
             // compare list elements
             for (int i = 0; i < this_list.Count; i++)
             {
-                PD_PlayerCardBase this_element = this_list[i];
-                PD_PlayerCardBase other_element = other_list[i];
-                if (this_element.Equals(other_element) == false)
+                if (this_list[i].Equals(other_list[i]) == false)
                 {
                     return false;
                 }
@@ -94,7 +90,7 @@ namespace Pandemic_AI_Framework
             // compare list elements
             for (int i = 0; i < this_list.Count; i++)
             {
-                if (this_list[i].List_Equal(other_list[i]) == false)
+                if (this_list[i].List_Equals(other_list[i]) == false)
                 {
                     return false;
                 }
@@ -378,7 +374,7 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_City> this_value = this_dictionary[key];
                 List<PD_City> other_value = other_dictionary[key];
-                if (this_value.List_Equal(other_value) == false)
+                if (this_value.List_Equals(other_value) == false)
                 {
                     return false;
                 }

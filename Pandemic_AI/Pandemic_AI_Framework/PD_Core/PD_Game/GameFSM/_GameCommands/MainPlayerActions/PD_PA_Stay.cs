@@ -47,6 +47,16 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+#endif
             // do nothing! :)
         }
 

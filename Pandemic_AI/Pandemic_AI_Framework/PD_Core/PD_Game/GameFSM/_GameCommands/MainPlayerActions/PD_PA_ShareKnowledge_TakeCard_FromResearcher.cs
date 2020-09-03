@@ -50,6 +50,24 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+            else if (game.GQ_Find_Player_Role(OtherPlayer) != PD_Player_Roles.Researcher)
+            {
+                throw new System.Exception("the other player must be researcher!");
+            }
+            else if (game.GQ_PlayerLocation(Player) != game.GQ_PlayerLocation(OtherPlayer))
+            {
+                throw new System.Exception("Players do not share the same location");
+            }
+#endif
             game.Cards.PlayerCardsPerPlayerID[OtherPlayer.ID].Remove(CityCardToTake);
             game.Cards.PlayerCardsPerPlayerID[Player.ID].Add(CityCardToTake);
         }

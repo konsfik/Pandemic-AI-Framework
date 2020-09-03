@@ -15,6 +15,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
+#if DEBUG
             if (game.GQ_IsInState_Discard_Any() == false)
             {
                 throw new System.Exception("wrong state");
@@ -28,6 +29,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("non discard actions are included here...");
             }
+#endif
 
             return allMacros;
         }

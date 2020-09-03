@@ -22,11 +22,12 @@ namespace Pandemic_AI_Framework
 
         public override List<PD_MacroAction> FilterMacros(PD_Game game, PD_AI_PathFinder pathFinder, List<PD_MacroAction> allMacros)
         {
+#if DEBUG
             if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
-
+#endif
             var treatDiseaseMacros = allMacros.FindAll(
                 x => x.Is_TypeOf_TreatDisease_Any()
                 );

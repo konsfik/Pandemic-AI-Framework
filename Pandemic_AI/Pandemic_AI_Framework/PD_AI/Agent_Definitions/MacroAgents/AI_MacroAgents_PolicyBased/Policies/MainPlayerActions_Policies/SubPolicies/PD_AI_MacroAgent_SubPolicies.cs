@@ -14,10 +14,12 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
+#if DEBUG
             if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
+#endif
 
             var shareKnowledgeMacros_ExecutableNow = allMacros.FindAll(
                 x =>
@@ -72,10 +74,12 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
+#if DEBUG
             if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
+#endif
 
             int numberOfStepsUntilEndOfNextRound = 4 + game.GQ_RemainingPlayerActions_ThisRound();
             var shareKnowledgeMacros_ExecutableNextRound = allMacros.FindAll(

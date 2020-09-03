@@ -16,10 +16,12 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> allMacros
             )
         {
+#if DEBUG
             if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
                 throw new System.Exception("wrong state.");
             }
+#endif
 
             // share positive now
             List<PD_MacroAction> shareKnowledge_Positive_Now_Macros =

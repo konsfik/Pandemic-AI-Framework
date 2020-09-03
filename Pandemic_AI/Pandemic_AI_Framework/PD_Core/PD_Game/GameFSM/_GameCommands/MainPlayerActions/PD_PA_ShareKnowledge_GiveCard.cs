@@ -50,6 +50,24 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+            else if (game.GQ_PlayerLocation(Player) != game.GQ_PlayerLocation(OtherPlayer))
+            {
+                throw new System.Exception("Players do not share the same location");
+            }
+            else if (game.GQ_PlayerLocation(Player) != CityCardToGive.City)
+            {
+                throw new System.Exception("Player is not on the correct city");
+            }
+#endif
             game.Cards.PlayerCardsPerPlayerID[Player.ID].Remove(CityCardToGive);
             game.Cards.PlayerCardsPerPlayerID[OtherPlayer.ID].Add(CityCardToGive);
         }
@@ -87,7 +105,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if(this.CityCardToGive != other.CityCardToGive)
+            else if (this.CityCardToGive != other.CityCardToGive)
             {
                 return false;
             }

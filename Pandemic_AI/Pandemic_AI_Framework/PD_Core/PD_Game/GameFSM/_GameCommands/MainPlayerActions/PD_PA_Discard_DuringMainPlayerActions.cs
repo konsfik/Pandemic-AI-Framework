@@ -30,25 +30,25 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            if (PlayerCardToDiscard.GetType() == typeof(PD_CityCard))
+            if (PlayerCardToDiscard is PD_CityCard city_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
                     Player.GetCustomDeepCopy(),
-                    ((PD_CityCard)PlayerCardToDiscard).GetCustomDeepCopy()
+                    city_card.GetCustomDeepCopy()
                     );
             }
-            else if (PlayerCardToDiscard.GetType() == typeof(PD_EpidemicCard))
+            else if (PlayerCardToDiscard is PD_EpidemicCard epidemic_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
                     Player.GetCustomDeepCopy(),
-                    ((PD_EpidemicCard)PlayerCardToDiscard).GetCustomDeepCopy()
+                    epidemic_card.GetCustomDeepCopy()
                     );
             }
-            else if (PlayerCardToDiscard.GetType() == typeof(PD_InfectionCard))
+            else if (PlayerCardToDiscard is PD_InfectionCard infection_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
                     Player.GetCustomDeepCopy(),
-                    ((PD_InfectionCard)PlayerCardToDiscard).GetCustomDeepCopy()
+                    infection_card.GetCustomDeepCopy()
                     );
             }
             return null;

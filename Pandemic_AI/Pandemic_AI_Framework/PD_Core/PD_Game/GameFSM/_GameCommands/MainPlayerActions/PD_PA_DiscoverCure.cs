@@ -62,6 +62,10 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong state!");
             }
+            else if (game.GQ_Is_DiseaseCured_OR_Eradicated(TypeOfDiseaseToCure))
+            {
+                throw new System.Exception("disease is already cured!");
+            }
             else if (game.GQ_Is_City_ResearchStation(current_player_location) == false)
             {
                 throw new System.Exception("current player location is not a research station");

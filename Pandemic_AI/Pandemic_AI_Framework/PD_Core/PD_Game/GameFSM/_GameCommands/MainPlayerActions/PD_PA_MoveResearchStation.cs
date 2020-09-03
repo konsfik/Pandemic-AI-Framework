@@ -55,19 +55,31 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            var cityCardsInPlayerHand = game.Cards.PlayerCardsPerPlayerID[Player.ID].FindAll(
-                x =>
-                x.GetType() == typeof(PD_CityCard)
-                ).Cast<PD_CityCard>().ToList();
-
-            var cityCardToDiscard = cityCardsInPlayerHand.Find(
-                x =>
-                x.Name == Move_RS_To.Name
-                );
-
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (game.GQ_NumInactiveResearchStations() > 0)
+            {
+                throw new System.Exception("there are inactive research stations available!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+            else if (Used_CityCard.City != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("city card does not match current player position");
+            }
+            else if (Move_RS_To != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("selected city does not match current player position");
+            }
+#endif
             game.GO_PlayerDiscardsPlayerCard(
-                Player, 
-                cityCardToDiscard
+                Player,
+                Used_CityCard
                 );
 
             var researchStationToMove = game

@@ -1,23 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
-
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PD_CityCard : PD_PlayerCardBase, ICustomDeepCopyable<PD_CityCard>
     {
-        private readonly PD_City _city;
+        public PD_City City { get; private set; }
 
-        public PD_City City { get { return _city; } }
+        public string Name { get { return City.Name; } }
+        public int Type { get { return City.Type; } }
 
-        public string Name { get { return _city.Name; } }
-        public int Type { get { return _city.Type; } }
-
+        [JsonConstructor]
         public PD_CityCard(int id, PD_City city) : base(id)
         {
-            _city = city;
+            City = city;
         }
 
         public PD_CityCard GetCustomDeepCopy()
@@ -47,7 +46,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this._city != other._city)
+            else if (this.City != other.City)
             {
                 return false;
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
@@ -10,22 +11,13 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; protected set; }
 
+        #region constructors
+        [JsonConstructor]
         public PD_ApplyEpidemicCard(
             PD_Player player
             )
         {
-            this.Player = player;
-        }
-
-        public override void Execute(
-            Random randomness_provider,
-            PD_Game game
-            )
-        {
-            game.Com_ApplyEpidemicCard(
-                randomness_provider,
-                Player
-                );
+            this.Player = player.GetCustomDeepCopy();
         }
 
         // private constructor, for custom deep copy purposes only
@@ -39,6 +31,18 @@ namespace Pandemic_AI_Framework
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
             return new PD_ApplyEpidemicCard(this);
+        }
+        #endregion
+
+        public override void Execute(
+            Random randomness_provider,
+            PD_Game game
+            )
+        {
+            game.Com_ApplyEpidemicCard(
+                randomness_provider,
+                Player
+                );
         }
 
         public override string GetDescription()

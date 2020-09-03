@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
@@ -9,11 +10,12 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; protected set; }
 
+        [JsonConstructor]
         public PD_DrawNewPlayerCards(
             PD_Player player
             )
         {
-            this.Player = player;
+            this.Player = player.GetCustomDeepCopy();
         }
 
         // private constructor, for custom deep copy purposes only
@@ -34,7 +36,15 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_DrawNewPlayerCards(Player);
+            // draw new player cards...
+            var newPlayerCards = new List<PD_PlayerCardBase>();
+
+            for (int i = 0; i < 2; i++)
+            {
+                newPlayerCards.Add(game.Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
+            }
+
+            game.Cards.PlayerCardsPerPlayerID[Player.ID].AddRange(newPlayerCards);
         }
 
         public override string GetDescription()

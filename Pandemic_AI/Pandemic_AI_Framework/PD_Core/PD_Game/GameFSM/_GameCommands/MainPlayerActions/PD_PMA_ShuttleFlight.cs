@@ -45,6 +45,11 @@ namespace Pandemic_AI_Framework
             this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
             this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
         }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PD_PMA_ShuttleFlight(this);
+        }
         #endregion
 
         public override void Execute(
@@ -52,6 +57,25 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player...");
+            }
+            else if (game.GQ_Is_City_ResearchStation(InitialLocation) == false)
+            {
+                throw new System.Exception("initial location is NOT a research station!");
+            }
+            else if (game.GQ_Is_City_ResearchStation(TargetLocation) == false)
+            {
+                throw new System.Exception("final location is NOT a research station!");
+            }
+#endif
+
             game.GO_MovePawnFromCityToCity(
                 game.PlayerPawnsPerPlayerID[Player.ID],
                 InitialLocation,
@@ -59,23 +83,6 @@ namespace Pandemic_AI_Framework
                 );
 
             game.Medic_MoveTreat(TargetLocation);
-        }
-
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PMA_ShuttleFlight(this);
-        }
-
-        public override string GetDescription()
-        {
-            string actionDescription = String.Format(
-                "{0}: SHUTTLE_FLIGHT {1} -> {2}",
-                Player.Name,
-                InitialLocation.Name,
-                TargetLocation.Name
-                );
-
-            return actionDescription;
         }
 
         #region equality overrides
@@ -118,5 +125,17 @@ namespace Pandemic_AI_Framework
         }
 
         #endregion
+
+        public override string GetDescription()
+        {
+            string actionDescription = String.Format(
+                "{0}: SHUTTLE_FLIGHT {1} -> {2}",
+                Player.Name,
+                InitialLocation.Name,
+                TargetLocation.Name
+                );
+
+            return actionDescription;
+        }
     }
 }

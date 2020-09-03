@@ -18,8 +18,8 @@ namespace Pandemic_AI_Framework
             PD_InfectionCard infectionCardToApply
             )
         {
-            this.Player = player;
-            this.InfectionCardToApply = infectionCardToApply;
+            this.Player = player.GetCustomDeepCopy();
+            this.InfectionCardToApply = infectionCardToApply.GetCustomDeepCopy();
         }
 
         // private constructor, for custom deep copy purposes only

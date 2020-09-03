@@ -710,39 +710,6 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public void Com_PA_DiscoverCure(
-            PD_Player player,
-            List<PD_CityCard> cityCardsToDiscard,
-            int typeOfDiseaseToCure
-            )
-        {
-
-            
-        }
-
-        public void Com_PA_DiscoverCure_Scientist(
-            PD_Player player,
-            List<PD_CityCard> cityCardsToDiscard,
-            int typeOfDiseaseToCure
-            )
-        {
-
-            // discard the cards
-            foreach (var cityCard in cityCardsToDiscard)
-            {
-                PD_Game_Operators.GO_PlayerDiscardsPlayerCard(
-                    this,
-                    player,
-                    cityCard
-                    );
-            }
-
-            // discover the cure for the disease here...
-            GameStateCounter.CureDisease(typeOfDiseaseToCure);
-
-            Medic_AutoTreat_AfterDiscoverCure(typeOfDiseaseToCure);
-        }
-
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
         {
             PD_City medicLocation = this.GQ_Find_Medic_Location();
@@ -761,21 +728,6 @@ namespace Pandemic_AI_Framework
                         );
                 }
             }
-        }
-
-        public void Com_DrawNewPlayerCards(
-            PD_Player player
-            )
-        {
-            // draw new player cards...
-            var newPlayerCards = new List<PD_PlayerCardBase>();
-
-            for (int i = 0; i < 2; i++)
-            {
-                newPlayerCards.Add(Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
-            }
-
-            Cards.PlayerCardsPerPlayerID[player.ID].AddRange(newPlayerCards);
         }
 
         public void Com_ApplyEpidemicCard(

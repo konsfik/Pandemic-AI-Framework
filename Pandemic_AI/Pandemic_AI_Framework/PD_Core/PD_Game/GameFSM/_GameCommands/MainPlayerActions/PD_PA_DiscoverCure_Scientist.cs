@@ -88,8 +88,19 @@ namespace Pandemic_AI_Framework
                 }
             }
 #endif
+            // discard the cards
+            foreach (var cityCard in CityCardsToDiscard)
+            {
+                game.GO_PlayerDiscardsPlayerCard(
+                    Player,
+                    cityCard
+                    );
+            }
 
-            game.Com_PA_DiscoverCure_Scientist(Player, CityCardsToDiscard, TypeOfDiseaseToCure);
+            // discover the cure for the disease here...
+            game.GameStateCounter.CureDisease(TypeOfDiseaseToCure);
+
+            game.Medic_AutoTreat_AfterDiscoverCure(TypeOfDiseaseToCure);
         }
 
         public override string GetDescription()

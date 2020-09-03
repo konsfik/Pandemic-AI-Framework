@@ -445,7 +445,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
-                game.GQ_Find_InfectionCubeTypes_OnCity(currentPlayerLocation);
+                game.GQ_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
             List<PD_PA_TreatDisease> availableTreatDiseaseActions = new List<PD_PA_TreatDisease>();
 
@@ -472,7 +472,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
-                game.GQ_Find_InfectionCubeTypes_OnCity(currentPlayerLocation);
+                game.GQ_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
             List<PD_PA_TreatDisease_Medic> availableTreatDiseaseMedicActions = new List<PD_PA_TreatDisease_Medic>();
 

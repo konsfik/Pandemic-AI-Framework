@@ -65,18 +65,18 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong state!");
             }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player...");
+            }
             else if (
                 game.Cards.PlayerCardsPerPlayerID[Player.ID].Count
                 <= game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer)
             {
                 throw new System.Exception("Player does not need to discard cards!");
             }
-            else if (Player != game.GQ_CurrentPlayer())
-            {
-                throw new System.Exception("wrong player...");
-            }
 #endif
-            game.Com_Discard_AfterDrwing(Player, PlayerCardToDiscard);
+            game.GO_PlayerDiscardsPlayerCard(Player, PlayerCardToDiscard);
         }
 
         #region equality overrides

@@ -333,7 +333,7 @@ namespace Pandemic_AI_Framework
             return citiesWith_X_SameTypeCubes;
         }
 
-        public static List<int> GQ_Find_InfectionCubeTypes_OnCity(
+        public static List<int> GQ_InfectionCubeTypes_OnCity(
             this PD_Game game,
             PD_City city
             )
@@ -350,16 +350,16 @@ namespace Pandemic_AI_Framework
             return infectionCubeTypesOnSpecificCity;
         }
 
-        public static Dictionary<PD_City, List<int>> GQ_Find_InfectionCubeTypesPerInfectedCity(
+        public static Dictionary<PD_City, List<int>> GQ_InfectionCubeTypesPerInfectedCity(
             this PD_Game game
             )
         {
             Dictionary<PD_City, List<int>> infectionCubeTypesPerInfectedCity = new Dictionary<PD_City, List<int>>();
 
-            var allInfectedCities = GQ_Find_InfectedCities(game);
+            var allInfectedCities = GQ_InfectedCities(game);
             foreach (var city in allInfectedCities)
             {
-                List<int> infectionCubeTypesOnThisCity = GQ_Find_InfectionCubeTypes_OnCity(game, city);
+                List<int> infectionCubeTypesOnThisCity = GQ_InfectionCubeTypes_OnCity(game, city);
                 infectionCubeTypesPerInfectedCity.Add(city, infectionCubeTypesOnThisCity);
             }
             return infectionCubeTypesPerInfectedCity;
@@ -371,7 +371,7 @@ namespace Pandemic_AI_Framework
             )
         {
             var discoverCureCardGroups = GQ_Find_DiscoverCureCardGroups(game, player);
-            var uncuredDiseaseTypes = GQ_Find_UncuredDiseaseTypes(game);
+            var uncuredDiseaseTypes = GQ_UncuredDiseaseTypes(game);
 
             var usableDiscoverCureCardGroups = new List<List<PD_CityCard>>();
             foreach (var cardGroup in discoverCureCardGroups)
@@ -540,7 +540,7 @@ namespace Pandemic_AI_Framework
             return game.MapElements.ResearchStationsPerCityID[city.ID].Count > 0;
         }
 
-        public static List<PD_City> GQ_Find_InfectedCities(
+        public static List<PD_City> GQ_InfectedCities(
             this PD_Game game
             )
         {
@@ -599,7 +599,7 @@ namespace Pandemic_AI_Framework
             return cityCardsInPlayerHand;
         }
 
-        public static List<int> GQ_Find_UncuredDiseaseTypes(
+        public static List<int> GQ_UncuredDiseaseTypes(
             this PD_Game game
             )
         {

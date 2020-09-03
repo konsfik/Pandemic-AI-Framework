@@ -37,7 +37,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var city in infectedCities_MinCubes_AnyType)
             {
-                List<int> infectionCubeTypes = game.GQ_Find_InfectionCubeTypes_OnCity(city);
+                List<int> infectionCubeTypes = game.GQ_InfectionCubeTypes_OnCity(city);
                 foreach (var type in infectionCubeTypes)
                 {
                     int numCubesOfThisTypeOnThisCity = game.MapElements.InfectionCubesPerCityID[city.ID].FindAll(

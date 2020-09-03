@@ -50,6 +50,31 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+            else if (game.GQ_Find_Player_Role(Player) == PD_Player_Roles.Medic)
+            {
+                throw new System.Exception("wrong player role!");
+            }
+            else if (CityToTreatDiseaseAt != game.GQ_PlayerLocation(Player))
+            {
+                throw new System.Exception("wrong player location");
+            }
+            else if (
+                game.GQ_InfectionCubeTypes_OnCity(CityToTreatDiseaseAt)
+                .Contains(TypeOfDiseaseToTreat) == false)
+            {
+                throw new System.Exception("the selected city does not have cubes of this type!");
+            }
+#endif
+
             bool diseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(TypeOfDiseaseToTreat);
 
             if (diseaseCured)

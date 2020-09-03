@@ -71,7 +71,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("Player does not need to discard cards!");
             }
 #endif
-            game.Com_Discard_DuringMainPlayerActions(Player, PlayerCardToDiscard);
+            game.GO_PlayerDiscardsPlayerCard( Player, PlayerCardToDiscard);
         }
 
         #region equality overrides

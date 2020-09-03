@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public partial class PD_Game : ICustomDeepCopyable<PD_Game>
+    public class PD_Game : ICustomDeepCopyable<PD_Game>
     {
         #region properties
         public long UniqueID { get; private set; }
@@ -627,7 +627,7 @@ namespace Pandemic_AI_Framework
             // if player is a medic:
             if (this.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic)
             {
-                List<int> typesOfInfectionCubesOnTargetLocation = this.GQ_Find_InfectionCubeTypes_OnCity(
+                List<int> typesOfInfectionCubesOnTargetLocation = this.GQ_InfectionCubeTypes_OnCity(
                     city
                     );
                 foreach (var type in typesOfInfectionCubesOnTargetLocation)
@@ -661,17 +661,6 @@ namespace Pandemic_AI_Framework
             int treat_Type
             )
         {
-            if (this.GQ_Count_Num_InfectionCubes_OfType_OnCity(city, treat_Type) == 0)
-            {
-                throw new System.Exception("City does not have any infection cubes of the requested type");
-            }
-
-            if (this.GQ_CurrentPlayer_Role() != PD_Player_Roles.Medic)
-            {
-                throw new System.Exception(
-                    "Only Medic can perform this type of action.");
-            }
-
             if (this.GQ_Is_DiseaseCured_OR_Eradicated(treat_Type))
             {
                 // remove all cubes of this type
@@ -716,7 +705,7 @@ namespace Pandemic_AI_Framework
             if (medicLocation != null)
             {
                 List<int> infectionCubeTypes_OnMedicLocation =
-                    this.GQ_Find_InfectionCubeTypes_OnCity(medicLocation);
+                    this.GQ_InfectionCubeTypes_OnCity(medicLocation);
 
                 if (infectionCubeTypes_OnMedicLocation.Contains(curedDiseaaseType))
                 {
@@ -795,22 +784,6 @@ namespace Pandemic_AI_Framework
             Cards.DividedDeckOfInfectionCards.Add(
                 Cards.DeckOfDiscardedInfectionCards.DrawAll()
                 );
-        }
-
-        public void Com_Discard_AfterDrwing(
-            PD_Player player,
-            PD_PlayerCardBase playerCardToDiscard
-            )
-        {
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(this, player, playerCardToDiscard);
-        }
-
-        public void Com_Discard_DuringMainPlayerActions(
-            PD_Player player,
-            PD_PlayerCardBase playerCardToDiscard
-            )
-        {
-            PD_Game_Operators.GO_PlayerDiscardsPlayerCard(this, player, playerCardToDiscard);
         }
 
         public void Com_DrawNewInfectionCards(PD_Player player)

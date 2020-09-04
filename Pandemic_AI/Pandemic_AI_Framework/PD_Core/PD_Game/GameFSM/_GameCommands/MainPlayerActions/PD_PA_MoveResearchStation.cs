@@ -7,7 +7,10 @@ using System.Linq;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_MoveResearchStation : PD_GameAction_Base, I_Player_Action
+    public class PD_PA_MoveResearchStation : 
+        PD_GameAction_Base, 
+        IEquatable<PD_PA_MoveResearchStation>,
+        I_Player_Action
     {
         public PD_Player Player { get; private set; }
         public PD_CityCard Used_CityCard { get; private set; }
@@ -105,15 +108,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_PA_MoveResearchStation other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_PA_MoveResearchStation)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -136,6 +132,29 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_PA_MoveResearchStation other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_PA_MoveResearchStation other_action)
+            {
+                return Equals(other_action);
+            }
+            else {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -147,6 +166,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+        
 
         #endregion
     }

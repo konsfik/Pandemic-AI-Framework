@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_CityEdge : ICustomDeepCopyable<PD_CityEdge>
+    public class PD_CityEdge :
+        IEquatable<PD_CityEdge>,
+        ICustomDeepCopyable<PD_CityEdge>
     {
         public PD_City City1 { get; private set; }
         public PD_City City2 { get; private set; }
@@ -20,6 +22,14 @@ namespace Pandemic_AI_Framework
             }
             City1 = city1;
             City2 = city2;
+        }
+
+        public PD_CityEdge GetCustomDeepCopy()
+        {
+            return new PD_CityEdge(
+                City1.GetCustomDeepCopy(),
+                City2.GetCustomDeepCopy()
+                );
         }
 
         public bool ContainsCity(PD_City city)
@@ -39,26 +49,33 @@ namespace Pandemic_AI_Framework
                 return City1;
         }
 
-        public override bool Equals(object obj)
+        #region equality override
+        public bool Equals(PD_CityEdge other)
         {
-            if (obj.GetType() != this.GetType())
+            if (other.City1 == City1 && other.City2 == City2)
+            {
+                return true;
+            }
+            else if (other.City1 == City2 && other.City2 == City1)
+            {
+                return true;
+            }
+            else
             {
                 return false;
             }
+        }
 
-            PD_CityEdge edge = (PD_CityEdge)obj;
-
-            if (edge.City1 == City1 && edge.City2 == City2)
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_CityEdge other_city)
             {
-                return true;
+                return Equals(other_city);
             }
-
-            if (edge.City1 == City2 && edge.City2 == City1)
+            else
             {
-                return true;
+                return false;
             }
-
-            return false;
         }
 
         public override int GetHashCode()
@@ -70,13 +87,7 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
-        public PD_CityEdge GetCustomDeepCopy()
-        {
-            return new PD_CityEdge(
-                City1.GetCustomDeepCopy(),
-                City2.GetCustomDeepCopy()
-                );
-        }
+
 
         public static bool operator ==(PD_CityEdge edge1, PD_CityEdge edge2)
         {
@@ -87,5 +98,6 @@ namespace Pandemic_AI_Framework
         {
             return !edge1.Equals(edge2);
         }
+        #endregion
     }
 }

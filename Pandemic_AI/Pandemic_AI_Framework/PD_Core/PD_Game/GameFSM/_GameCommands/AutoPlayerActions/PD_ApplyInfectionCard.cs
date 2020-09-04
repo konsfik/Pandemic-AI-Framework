@@ -6,7 +6,11 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyInfectionCard : PD_GameAction_Base, I_Auto_Action, I_Player_Action
+    public class PD_ApplyInfectionCard : 
+        PD_GameAction_Base, 
+        IEquatable<PD_ApplyInfectionCard>,
+        I_Auto_Action, 
+        I_Player_Action
     {
         public PD_Player Player { get; protected set; }
 
@@ -80,8 +84,6 @@ namespace Pandemic_AI_Framework
             game.Cards.DeckOfDiscardedInfectionCards.Add(InfectionCardToApply);
         }
 
-        
-
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
             return new PD_ApplyInfectionCard(this);
@@ -93,25 +95,43 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+
+        public bool Equals(PD_ApplyInfectionCard other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_ApplyInfectionCard)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
             }
-            else if (this.InfectionCardToApply != other.InfectionCardToApply) {
+            else if (this.InfectionCardToApply != other.InfectionCardToApply)
+            {
                 return false;
             }
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_ApplyInfectionCard other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_ApplyInfectionCard other_action)
+            {
+                return Equals(other_action);
+            }
+            else {
+                return false;
             }
         }
 

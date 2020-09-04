@@ -8,7 +8,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameCards : PD_GameParts_Base, ICustomDeepCopyable<PD_GameCards>
+    public class PD_GameCards : 
+        PD_GameParts_Base, 
+        IEquatable<PD_GameCards>, 
+        ICustomDeepCopyable<PD_GameCards>
     {
 
         public List<List<PD_InfectionCard>> DividedDeckOfInfectionCards { get; private set; }
@@ -80,15 +83,8 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_GameCards other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_GameCards)otherObject;
-
             if (DividedDeckOfInfectionCards.List_Equal(other.DividedDeckOfInfectionCards) == false)
             {
                 return false;
@@ -127,6 +123,15 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_GameCards other_game_cards)
+            {
+                return Equals(other_game_cards);
+            }
+            else return false;
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -141,6 +146,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+        
 
         #endregion
 

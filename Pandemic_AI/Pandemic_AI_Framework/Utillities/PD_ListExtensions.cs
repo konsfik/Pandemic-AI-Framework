@@ -168,7 +168,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        
+
 
         public static bool Dictionary_Equal(
             this Dictionary<int, string> this_dictionary,
@@ -209,7 +209,7 @@ namespace Pandemic_AI_Framework
             this Dictionary<int, T> this_dictionary,
             Dictionary<int, T> other_dictionary
             )
-            where T: ICustomDeepCopyable<T>
+            where T : ICustomDeepCopyable<T>
         {
             List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
             List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
@@ -315,7 +315,7 @@ namespace Pandemic_AI_Framework
             this Dictionary<int, List<T>> this_dictionary,
             Dictionary<int, List<T>> other_dictionary
             )
-            where T:ICustomDeepCopyable<T>
+            where T : ICustomDeepCopyable<T>
         {
             List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
             List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
@@ -584,6 +584,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static int Custom_HashCode<T>(this List<T> my_list)
+            where T:IEquatable<T>
         {
             int hash = 7;
             hash = hash * 13 + my_list.Count;
@@ -606,6 +607,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static int Custom_HashCode<T>(this List<List<T>> my_list)
+            where T : IEquatable<T>
         {
             int hash = 7;
             hash = hash * 13 + my_list.Count;
@@ -642,7 +644,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static int Custom_HashCode<T>(this Dictionary<int, T> my_dictionary)
-            where T: ICustomDeepCopyable<T>
+            where T : IEquatable<T>
         {
             int hash = 7;
             hash = hash * 13 + my_dictionary.Count;
@@ -661,19 +663,7 @@ namespace Pandemic_AI_Framework
             foreach (KeyValuePair<int, bool> key_value_pair in my_dictionary)
             {
                 hash = hash * 13 + key_value_pair.Key;
-                hash = hash * 13 + key_value_pair.Value.GetHashCode();
-            }
-            return hash;
-        }
-
-        public static int Custom_HashCode(this Dictionary<int, PD_Point> my_dictionary)
-        {
-            int hash = 7;
-            hash = hash * 13 + my_dictionary.Count;
-            foreach (KeyValuePair<int, PD_Point> key_value_pair in my_dictionary)
-            {
-                hash = hash * 13 + key_value_pair.Key;
-                hash = hash * 13 + key_value_pair.Value.GetHashCode();
+                hash = hash * 13 + (key_value_pair.Value == true ? 1 : 0);
             }
             return hash;
         }
@@ -691,6 +681,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static int Custom_HashCode<T>(this Dictionary<int, List<T>> my_dictionary)
+            where T : IEquatable<T>
         {
             int hash = 7;
             hash = hash * 13 + my_dictionary.Count;
@@ -702,7 +693,7 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
-        public static int Custom_HashCode(this Dictionary<int, Dictionary<int,int>> my_dictionary)
+        public static int Custom_HashCode(this Dictionary<int, Dictionary<int, int>> my_dictionary)
         {
             int hash = 7;
             hash = hash * 13 + my_dictionary.Count;

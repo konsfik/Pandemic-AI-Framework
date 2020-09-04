@@ -9,7 +9,10 @@ namespace Pandemic_AI_Framework
     /// All the relations of type: This is IN this Position
     /// </summary>
     [Serializable]
-    public class PD_MapElements : PD_GameParts_Base, ICustomDeepCopyable<PD_MapElements>
+    public class PD_MapElements :
+        PD_GameParts_Base,
+        IEquatable<PD_MapElements>,
+        ICustomDeepCopyable<PD_MapElements>
     {
         #region properties
 
@@ -86,15 +89,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_MapElements other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_MapElements other = (PD_MapElements)otherObject;
-
             if (this.InactivePlayerPawns.List_Equals(
                 other.InactivePlayerPawns) == false)
             {
@@ -128,6 +124,18 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_MapElements other_map_elments)
+            {
+                return Equals(other_map_elments);
+            }
+            else
+            {
+                return false;
             }
         }
 

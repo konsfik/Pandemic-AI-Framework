@@ -5,7 +5,10 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_EpidemicCard : PD_PlayerCardBase, ICustomDeepCopyable<PD_EpidemicCard>
+    public class PD_EpidemicCard :
+        PD_PlayerCardBase,
+        IEquatable<PD_EpidemicCard>,
+        ICustomDeepCopyable<PD_EpidemicCard>
     {
 
         public PD_EpidemicCard(int id) : base(id)
@@ -24,15 +27,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_EpidemicCard other)
         {
-            if (otherObject.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_EpidemicCard)otherObject;
-
             if (this.ID != other.ID)
             {
                 return false;
@@ -40,6 +36,30 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_PlayerCardBase other)
+        {
+            if (other is PD_EpidemicCard other_epidemic_card)
+            {
+                return Equals(other_epidemic_card);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_EpidemicCard other_epidemic_card)
+            {
+                return Equals(other_epidemic_card);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -58,5 +78,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format("Epidemic Card {0}", ID);
         }
+
+        
     }
 }

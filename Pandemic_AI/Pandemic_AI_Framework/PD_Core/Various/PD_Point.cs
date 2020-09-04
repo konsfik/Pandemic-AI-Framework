@@ -6,12 +6,15 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_Point :ICustomDeepCopyable<PD_Point>
+    public class PD_Point :
+        IEquatable<PD_Point>,
+        ICustomDeepCopyable<PD_Point>
     {
         public float X { get; private set; }
         public float Y { get; private set; }
 
-        public PD_Point() {
+        public PD_Point()
+        {
             X = 0;
             Y = 0;
         }
@@ -33,35 +36,43 @@ namespace Pandemic_AI_Framework
 
 
         #region equality overrides
-
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_Point other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_Point other = (PD_Point)otherObject;
-
             if (
                 this.X == other.X &&
-                this.Y== other.Y
+                this.Y == other.Y
                 )
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+        }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Point other_point)
+            {
+                return Equals(other_point);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override int GetHashCode()
         {
             int hash = 17;
+
             hash = hash * 31 + X.GetHashCode();
             hash = hash * 31 + Y.GetHashCode();
+
             return hash;
         }
 
-        
+
         public static bool operator ==(PD_Point p1, PD_Point p2)
         {
             if (ReferenceEquals(p1, null))
@@ -72,7 +83,8 @@ namespace Pandemic_AI_Framework
                 }
                 return false;
             }
-            else {
+            else
+            {
                 if (ReferenceEquals(p2, null))
                 {
                     return false;
@@ -91,7 +103,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "point:({0},{1})",
-                X,Y
+                X, Y
                 );
         }
     }

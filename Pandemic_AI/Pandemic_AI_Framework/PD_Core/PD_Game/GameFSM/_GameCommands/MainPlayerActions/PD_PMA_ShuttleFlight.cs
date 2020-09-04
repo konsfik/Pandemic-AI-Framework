@@ -6,7 +6,11 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PMA_ShuttleFlight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
+    public class PD_PMA_ShuttleFlight :
+        PD_GameAction_Base,
+        IEquatable<PD_PMA_ShuttleFlight>,
+        I_Player_Action,
+        I_Movement_Action
     {
         public PD_Player Player { get; private set; }
 
@@ -86,15 +90,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_PMA_ShuttleFlight other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_PMA_ShuttleFlight)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -110,6 +107,30 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_PMA_ShuttleFlight other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_PMA_ShuttleFlight other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -137,5 +158,7 @@ namespace Pandemic_AI_Framework
 
             return actionDescription;
         }
+
+
     }
 }

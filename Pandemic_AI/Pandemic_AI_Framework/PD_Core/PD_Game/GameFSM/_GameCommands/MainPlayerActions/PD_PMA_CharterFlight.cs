@@ -9,7 +9,11 @@ namespace Pandemic_AI_Framework
     /// Player Discards the City card that matches the city you are in to move to any city.
     /// </summary>
     [Serializable]
-    public class PD_PMA_CharterFlight : PD_GameAction_Base, I_Player_Action, I_Movement_Action
+    public class PD_PMA_CharterFlight :
+        PD_GameAction_Base,
+        IEquatable<PD_PMA_CharterFlight>,
+        I_Player_Action,
+        I_Movement_Action
     {
         public PD_Player Player { get; private set; }
 
@@ -96,15 +100,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_PMA_CharterFlight other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_PMA_CharterFlight)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -127,6 +124,30 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_PMA_CharterFlight other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_PMA_CharterFlight other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -138,6 +159,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+
 
         #endregion
     }

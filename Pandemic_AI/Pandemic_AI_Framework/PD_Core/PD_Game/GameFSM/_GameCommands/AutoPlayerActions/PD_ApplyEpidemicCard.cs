@@ -7,7 +7,11 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyEpidemicCard : PD_GameAction_Base, I_Auto_Action, I_Player_Action
+    public class PD_ApplyEpidemicCard : 
+        PD_GameAction_Base, 
+        IEquatable<PD_ApplyEpidemicCard>,
+        I_Auto_Action, 
+        I_Player_Action
     {
         public PD_Player Player { get; protected set; }
 
@@ -117,15 +121,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_ApplyEpidemicCard other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_ApplyEpidemicCard)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -133,6 +130,29 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_ApplyEpidemicCard other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_ApplyEpidemicCard other_action)
+            {
+                return Equals(other_action);
+            }
+            else {
+                return false;
             }
         }
 
@@ -144,6 +164,10 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+        
+
+
 
         #endregion
     }

@@ -5,11 +5,13 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GA_SetupGame_Random : PD_GameAction_Base
+    public class PD_GA_SetupGame_Random :
+        PD_GameAction_Base,
+        IEquatable<PD_GA_SetupGame_Random>
     {
         public PD_GA_SetupGame_Random()
         {
-            
+
         }
 
         public override void Execute(
@@ -32,20 +34,41 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_GA_SetupGame_Random other)
         {
-            if (this.GetType() != otherObject.GetType())
+            return true;
+        }
+
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_GA_SetupGame_Random other_action)
+            {
+                return Equals(other_action);
+            }
+            else
             {
                 return false;
             }
+        }
 
-            return true;
+        public override bool Equals(object other)
+        {
+            if (other is PD_GA_SetupGame_Random other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override int GetHashCode()
         {
             return 0;
         }
+
+
 
         #endregion
     }

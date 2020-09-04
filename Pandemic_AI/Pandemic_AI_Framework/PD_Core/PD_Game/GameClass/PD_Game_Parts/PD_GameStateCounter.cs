@@ -7,7 +7,11 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameStateCounter : PD_GameParts_Base, IDescribable, ICustomDeepCopyable<PD_GameStateCounter>
+    public class PD_GameStateCounter : 
+        PD_GameParts_Base, 
+        IEquatable<PD_GameStateCounter>,
+        IDescribable, 
+        ICustomDeepCopyable<PD_GameStateCounter>
     {
         public int NumberOfPlayers { get; private set; }
         public int CurrentPlayerActionIndex { get; private set; }
@@ -181,15 +185,8 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_GameStateCounter other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_GameStateCounter other = (PD_GameStateCounter)otherObject;
-
             if (this.NumberOfPlayers != other.NumberOfPlayers)
             {
                 return false;
@@ -231,6 +228,18 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_GameStateCounter other_game_state_counter)
+            {
+                return Equals(other_game_state_counter);
+            }
+            else 
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -248,6 +257,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+        
         #endregion
     }
 }

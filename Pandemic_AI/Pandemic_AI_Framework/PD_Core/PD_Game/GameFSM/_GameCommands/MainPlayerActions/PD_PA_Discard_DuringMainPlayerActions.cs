@@ -8,7 +8,11 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Discard_DuringMainPlayerActions : PD_GameAction_Base, I_Player_Action, I_Discard_Action
+    public class PD_PA_Discard_DuringMainPlayerActions :
+        PD_GameAction_Base,
+        IEquatable<PD_PA_Discard_DuringMainPlayerActions>,
+        I_Player_Action,
+        I_Discard_Action
     {
         public PD_Player Player { get; private set; }
         public PD_PlayerCardBase PlayerCardToDiscard { get; protected set; }
@@ -71,19 +75,12 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("Player does not need to discard cards!");
             }
 #endif
-            game.GO_PlayerDiscardsPlayerCard( Player, PlayerCardToDiscard);
+            game.GO_PlayerDiscardsPlayerCard(Player, PlayerCardToDiscard);
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_PA_Discard_DuringMainPlayerActions other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_PA_Discard_DuringMainPlayerActions)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -95,6 +92,30 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_PA_Discard_DuringMainPlayerActions other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_PA_Discard_DuringMainPlayerActions other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -118,6 +139,8 @@ namespace Pandemic_AI_Framework
                 this.PlayerCardToDiscard.GetDescription()
                 );
         }
+
+
     }
 
 }

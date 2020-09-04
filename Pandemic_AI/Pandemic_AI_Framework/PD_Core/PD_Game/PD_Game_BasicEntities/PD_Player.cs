@@ -6,7 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_Player : ICustomDeepCopyable<PD_Player>
+    public class PD_Player :
+        IEquatable<PD_Player>,
+        ICustomDeepCopyable<PD_Player>
     {
         #region properties
         public int ID { get; private set; }
@@ -46,16 +48,8 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region equality overrides
-
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_Player other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_Player other = (PD_Player)otherObject;
-
             if (
                 this.ID == other.ID &&
                 this.Name == other.Name
@@ -63,7 +57,20 @@ namespace Pandemic_AI_Framework
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+        }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Player other_player)
+            {
+                return Equals(other_player);
+            }
+            else {
+                return false;
+            }
         }
 
         public override int GetHashCode()

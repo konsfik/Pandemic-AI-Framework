@@ -9,7 +9,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_Map : PD_GameParts_Base, ICustomDeepCopyable<PD_Map>
+    public class PD_Map :
+        PD_GameParts_Base,
+        IEquatable<PD_Map>,
+        ICustomDeepCopyable<PD_Map>
     {
         public List<PD_City> Cities { get; private set; }
         public List<PD_CityEdge> CityEdges { get; private set; }
@@ -76,15 +79,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_Map other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_Map other = (PD_Map)otherObject;
-
             if (this.Cities.List_Equals(other.Cities) == false)
             {
                 return false;
@@ -97,8 +93,21 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else {
+            else
+            {
                 return true;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Map other_map)
+            {
+                return Equals(other_map);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -112,6 +121,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+
         #endregion
     }
 }

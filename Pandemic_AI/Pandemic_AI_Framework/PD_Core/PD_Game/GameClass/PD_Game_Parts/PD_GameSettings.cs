@@ -7,7 +7,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameSettings : PD_GameParts_Base, ICustomDeepCopyable<PD_GameSettings>
+    public class PD_GameSettings : 
+        PD_GameParts_Base, 
+        IEquatable<PD_GameSettings>,
+        ICustomDeepCopyable<PD_GameSettings>
     {
         // fixed, private settings...
         //private const int _maximumViableOutbreaks = 7;
@@ -103,15 +106,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_GameSettings other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_GameSettings)otherObject;
-
             if (this.GameDifficultyLevel != other.GameDifficultyLevel)
             {
                 return false;
@@ -141,14 +137,14 @@ namespace Pandemic_AI_Framework
                 return false;
             }
             else if (
-                this.MaximumViableOutbreaks 
+                this.MaximumViableOutbreaks
                 != other.MaximumViableOutbreaks
                 )
             {
                 return false;
             }
             else if (
-                this.MaximumNumberOfPlayerCardsPerPlayer 
+                this.MaximumNumberOfPlayerCardsPerPlayer
                 != other.MaximumNumberOfPlayerCardsPerPlayer
                 )
             {
@@ -157,6 +153,17 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_GameSettings other_game_settings)
+            {
+                return Equals(other_game_settings);
+            }
+            else {
+                return false;
             }
         }
 
@@ -173,6 +180,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+        
         #endregion
     }
 }

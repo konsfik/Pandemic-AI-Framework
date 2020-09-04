@@ -8,7 +8,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_InfectionReport : IDescribable, ICustomDeepCopyable<PD_InfectionReport>
+    public class PD_InfectionReport :
+        IDescribable,
+        IEquatable<PD_InfectionReport>,
+        ICustomDeepCopyable<PD_InfectionReport>
     {
 
         #region Properties
@@ -140,6 +143,11 @@ namespace Pandemic_AI_Framework
             this.FailureReason =
                 reportToCopy.FailureReason;
         }
+
+        public PD_InfectionReport GetCustomDeepCopy()
+        {
+            return new PD_InfectionReport(this);
+        }
         #endregion
 
         public void AddUsedCubes(int usedCubes)
@@ -209,10 +217,115 @@ namespace Pandemic_AI_Framework
             return description;
         }
 
-        public PD_InfectionReport GetCustomDeepCopy()
+        #region equality override
+        public bool Equals(PD_InfectionReport other)
         {
-            return new PD_InfectionReport(this);
+            if (this.HappenedDuringGameSetup != other.HappenedDuringGameSetup)
+            {
+                return false;
+            }
+            else if (this.PlayerWhoAppliesInfection != other.PlayerWhoAppliesInfection)
+            {
+                return false;
+            }
+            else if (this.InitialCity != other.InitialCity)
+            {
+                return false;
+            }
+            else if (this.InfectionType != other.InfectionType)
+            {
+                return false;
+            }
+            else if (this.InitialNumberOfCubes != other.InitialNumberOfCubes)
+            {
+                return false;
+            }
+            else if (this.InfectedCities != other.InfectedCities)
+            {
+                return false;
+            }
+            else if (this.InfectionsPrevented_ByMedic != other.InfectionsPrevented_ByMedic)
+            {
+                return false;
+            }
+            else if (this.CitiesThatHaveCausedOutbreaks != other.CitiesThatHaveCausedOutbreaks)
+            {
+                return false;
+            }
+            else if (this.NumberOfInfectionCubesUsed != other.NumberOfInfectionCubesUsed)
+            {
+                return false;
+            }
+            else if (this.FailureReason != other.FailureReason)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is PD_InfectionReport other_infection_report)
+            {
+                return Equals(other_infection_report);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = (hash * 31) + (HappenedDuringGameSetup == true ? 1 : 0);
+            hash = (hash * 31) + PlayerWhoAppliesInfection.GetHashCode();
+            hash = (hash * 31) + InitialCity.GetHashCode();
+            hash = (hash * 31) + InfectionType;
+            hash = (hash * 31) + InitialNumberOfCubes;
+            hash = (hash * 31) + InfectedCities.Custom_HashCode();
+            hash = (hash * 31) + InfectionsPrevented_ByMedic.Custom_HashCode();
+            hash = (hash * 31) + CitiesThatHaveCausedOutbreaks.Custom_HashCode();
+            hash = (hash * 31) + NumberOfInfectionCubesUsed;
+            hash = (hash * 31) + FailureReason.GetHashCode();
+
+            return hash;
+        }
+
+        public static bool operator ==(PD_InfectionReport c1, PD_InfectionReport c2)
+        {
+            if (Object.ReferenceEquals(c1, null))
+            {
+                if (Object.ReferenceEquals(c2, null))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else // c1 is not null
+            {
+                if (Object.ReferenceEquals(c2, null)) // c2 is null
+                {
+                    return false;
+                }
+            }
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(PD_InfectionReport c1, PD_InfectionReport c2)
+        {
+            return !(c1 == c2);
+        }
+        #endregion
+
+
     }
 }
 

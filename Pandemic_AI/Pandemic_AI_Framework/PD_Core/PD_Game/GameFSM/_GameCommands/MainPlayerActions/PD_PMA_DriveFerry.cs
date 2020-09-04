@@ -8,7 +8,11 @@ namespace Pandemic_AI_Framework
     /// A player moves to an adjacent location
     /// </summary>
     [Serializable]
-    public class PD_PMA_DriveFerry : PD_GameAction_Base, I_Player_Action, I_Movement_Action
+    public class PD_PMA_DriveFerry :
+        PD_GameAction_Base,
+        IEquatable<PD_PMA_DriveFerry>,
+        I_Player_Action,
+        I_Movement_Action
     {
         public PD_Player Player { get; private set; }
 
@@ -70,15 +74,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_PMA_DriveFerry other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_PMA_DriveFerry)otherObject;
-
             if (this.Player != other.Player)
             {
                 return false;
@@ -97,6 +94,29 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public override bool Equals(PD_GameAction_Base other)
+        {
+            if (other is PD_PMA_DriveFerry other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public override bool Equals(object other)
+        {
+            if (other is PD_PMA_DriveFerry other_action)
+            {
+                return Equals(other_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -107,6 +127,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+
 
         #endregion
     }

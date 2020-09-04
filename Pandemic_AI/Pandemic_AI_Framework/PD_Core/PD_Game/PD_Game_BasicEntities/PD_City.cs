@@ -6,7 +6,10 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_City : IDescribable, ICustomDeepCopyable<PD_City>
+    public class PD_City :
+        IDescribable,
+        IEquatable<PD_City>,
+        ICustomDeepCopyable<PD_City>
     {
 
         #region properties
@@ -51,15 +54,8 @@ namespace Pandemic_AI_Framework
 
         #region equality overrides
 
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_City other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_City other = (PD_City)otherObject;
-
             if (
                 this.ID == other.ID &&
                 this.Type == other.Type &&
@@ -69,7 +65,21 @@ namespace Pandemic_AI_Framework
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_City other_city)
+            {
+                return Equals(other_city);
+            }
+            else {
+                return false;
+            }
         }
 
         public override int GetHashCode()

@@ -5,9 +5,13 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ME_InfectionCube : PD_MapElement_Base, IDescribable, ICustomDeepCopyable<PD_ME_InfectionCube>
+    public class PD_ME_InfectionCube :
+        PD_MapElement_Base,
+        IEquatable<PD_ME_InfectionCube>,
+        IDescribable,
+        ICustomDeepCopyable<PD_ME_InfectionCube>
     {
-         private readonly int _type;
+        private readonly int _type;
 
         public int Type { get { return _type; } }
 
@@ -24,21 +28,14 @@ namespace Pandemic_AI_Framework
         public PD_ME_InfectionCube GetCustomDeepCopy()
         {
             return new PD_ME_InfectionCube(
-                this.ID, 
+                this.ID,
                 this.Type
                 );
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_ME_InfectionCube other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_ME_InfectionCube)otherObject;
-
             if (this.ID != other.ID)
             {
                 return false;
@@ -50,6 +47,17 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_ME_InfectionCube other_infection_cube)
+            {
+                return Equals(other_infection_cube);
+            }
+            else
+            {
+                return false;
             }
         }
 

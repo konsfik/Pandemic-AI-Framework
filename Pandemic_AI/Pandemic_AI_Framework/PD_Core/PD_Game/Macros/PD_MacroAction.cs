@@ -11,7 +11,10 @@ namespace Pandemic_AI_Framework
     /// A macro command is a series of commands (steps) that lead to the 
     /// fulfilment of a goal.
     /// </summary>
-    public class PD_MacroAction : IDescribable, ICustomDeepCopyable<PD_MacroAction>
+    public class PD_MacroAction :
+        IDescribable,
+        IEquatable<PD_MacroAction>,
+        ICustomDeepCopyable<PD_MacroAction>
     {
         public List<PD_GameAction_Base> Actions_All { get; private set; }
         public List<PD_GameAction_Base> Actions_Executable_Now { get; private set; }
@@ -379,15 +382,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_MacroAction other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            PD_MacroAction other = (PD_MacroAction)otherObject;
-
             if (this.Count_Total_Length() != other.Count_Total_Length())
             {
                 return false;
@@ -442,6 +438,17 @@ namespace Pandemic_AI_Framework
             }
             return false;
         }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_MacroAction other_macro_action)
+            {
+                return Equals(other_macro_action);
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public override int GetHashCode()
         {
@@ -463,6 +470,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+
 
         public static bool operator ==(PD_MacroAction c1, PD_MacroAction c2)
         {

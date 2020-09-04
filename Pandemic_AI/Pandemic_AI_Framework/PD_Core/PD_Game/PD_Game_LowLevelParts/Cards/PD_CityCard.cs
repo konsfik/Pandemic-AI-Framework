@@ -6,7 +6,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_CityCard : PD_PlayerCardBase, ICustomDeepCopyable<PD_CityCard>
+    public class PD_CityCard :
+        PD_PlayerCardBase,
+        IEquatable<PD_CityCard>,
+        ICustomDeepCopyable<PD_CityCard>
     {
         public PD_City City { get; private set; }
 
@@ -33,15 +36,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_CityCard other)
         {
-            if (otherObject.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_CityCard)otherObject;
-
             if (this.ID != other.ID)
             {
                 return false;
@@ -53,6 +49,30 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(PD_PlayerCardBase other)
+        {
+            if (other is PD_CityCard other_city_card)
+            {
+                return Equals(other_city_card);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is PD_CityCard other_city_card)
+            {
+                return Equals(other_city_card);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -71,6 +91,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format("City Card {0}:{1}", ID, City.ToString());
         }
+
 
     }
 }

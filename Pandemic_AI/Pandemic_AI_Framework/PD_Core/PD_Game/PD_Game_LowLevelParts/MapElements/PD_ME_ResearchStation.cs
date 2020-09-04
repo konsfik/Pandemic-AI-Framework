@@ -6,7 +6,10 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ME_ResearchStation : PD_MapElement_Base, ICustomDeepCopyable<PD_ME_ResearchStation>
+    public class PD_ME_ResearchStation :
+        PD_MapElement_Base,
+        IEquatable<PD_ME_ResearchStation>,
+        ICustomDeepCopyable<PD_ME_ResearchStation>
     {
 
         public PD_ME_ResearchStation(int id) : base(id)
@@ -22,15 +25,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_ME_ResearchStation other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_ME_ResearchStation)otherObject;
-
             if (this.ID != other.ID)
             {
                 return false;
@@ -38,6 +34,18 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_ME_ResearchStation other_research_station)
+            {
+                return Equals(other_research_station);
+            }
+            else
+            {
+                return false;
             }
         }
 

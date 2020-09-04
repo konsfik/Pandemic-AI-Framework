@@ -6,7 +6,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ME_PlayerPawn : PD_MapElement_Base, ICustomDeepCopyable<PD_ME_PlayerPawn>
+    public class PD_ME_PlayerPawn : 
+        PD_MapElement_Base, 
+        IEquatable<PD_ME_PlayerPawn>,
+        ICustomDeepCopyable<PD_ME_PlayerPawn>
     {
         public PD_Player_Roles Role;
 
@@ -43,15 +46,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
-        {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_ME_PlayerPawn)otherObject;
-
+        public bool Equals(PD_ME_PlayerPawn other) {
             if (this.ID != other.ID)
             {
                 return false;
@@ -66,11 +61,22 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_ME_PlayerPawn other_pawn)
+            {
+                return Equals(other_pawn);
+            }
+            else {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
 
-            hash = hash * 31 + ID.GetHashCode();
+            hash = hash * 31 + ID;
             hash = hash * 31 + Role.GetHashCode();
 
             return hash;

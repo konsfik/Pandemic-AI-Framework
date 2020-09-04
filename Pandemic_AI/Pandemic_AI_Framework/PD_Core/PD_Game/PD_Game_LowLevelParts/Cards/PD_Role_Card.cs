@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Pandemic_AI_Framework
 {
-    public class PD_Role_Card : PD_Card_Base, ICustomDeepCopyable<PD_Role_Card>
+    public class PD_Role_Card :
+        PD_Card_Base,
+        IEquatable<PD_Role_Card>,
+        ICustomDeepCopyable<PD_Role_Card>
     {
         public PD_Player_Roles Role { get; private set; }
 
@@ -22,7 +25,7 @@ namespace Pandemic_AI_Framework
 
         private PD_Role_Card(
             PD_Role_Card roleCardToCopy
-            ):base(
+            ) : base(
             roleCardToCopy.ID
             )
         {
@@ -40,15 +43,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_Role_Card other)
         {
-            if (otherObject.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_Role_Card)otherObject;
-
             if (this.ID != other.ID)
             {
                 return false;
@@ -60,6 +56,17 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Role_Card other_role_card)
+            {
+                return Equals(other_role_card);
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -76,12 +83,13 @@ namespace Pandemic_AI_Framework
         #endregion
         public override string ToString()
         {
-            return String.Format("Role Card {0}:{1}",ID, Role.ToString());
+            return String.Format("Role Card {0}:{1}", ID, Role.ToString());
         }
     }
 
     // certain player roles are omitted...
-    public enum PD_Player_Roles {
+    public enum PD_Player_Roles
+    {
         None,
         //Contingency_Planner, // this one is removed, because it depends on event cards which are omitted
         Operations_Expert,

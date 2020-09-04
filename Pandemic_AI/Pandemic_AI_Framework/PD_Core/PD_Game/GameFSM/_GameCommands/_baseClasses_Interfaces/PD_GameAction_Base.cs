@@ -7,7 +7,10 @@ using Pandemic_AI_Framework;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public abstract class PD_GameAction_Base : IGameAction, ICustomDeepCopyable<PD_GameAction_Base>
+    public abstract class PD_GameAction_Base : 
+        IGameAction, 
+        IEquatable<PD_GameAction_Base>,
+        ICustomDeepCopyable<PD_GameAction_Base>
     {
 
         public abstract PD_GameAction_Base GetCustomDeepCopy();
@@ -18,7 +21,7 @@ namespace Pandemic_AI_Framework
         public abstract string GetDescription();
 
         #region equalityOverride
-
+        public abstract bool Equals(PD_GameAction_Base other);
         public abstract override bool Equals(object otherObject);
         public abstract override int GetHashCode();
 

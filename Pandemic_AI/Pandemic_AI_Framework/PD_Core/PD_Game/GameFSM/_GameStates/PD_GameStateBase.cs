@@ -22,24 +22,9 @@ namespace Pandemic_AI_Framework
         public abstract void OnExit(PD_Game game);
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
-        {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
+        public abstract override bool Equals(object otherObject);
 
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 17;
-
-            hash = (hash * 13) + this.GetType().Name.ToString().GetHashCode();
-
-            return hash;
-        }
+        public abstract override int GetHashCode();
 
 
         public static bool operator ==(PD_GameStateBase s1, PD_GameStateBase s2)

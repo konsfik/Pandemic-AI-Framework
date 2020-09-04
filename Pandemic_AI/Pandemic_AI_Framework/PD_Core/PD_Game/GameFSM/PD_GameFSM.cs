@@ -45,6 +45,13 @@ namespace Pandemic_AI_Framework
             else if (currentState is PD_GS_GameWon won_state)
                 CurrentState = won_state.GetCustomDeepCopy();
         }
+
+        public PD_GameFSM GetCustomDeepCopy()
+        {
+            return new PD_GameFSM(
+                CurrentState
+                );
+        }
         #endregion
 
         public void OnCommand(
@@ -55,7 +62,7 @@ namespace Pandemic_AI_Framework
         {
             PD_GameStateBase nextState = CurrentState.OnCommand(
                 randomness_provider,
-                game, 
+                game,
                 command
                 );
             if (nextState == null)
@@ -76,28 +83,26 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public PD_GameFSM GetCustomDeepCopy()
-        {
-            return new PD_GameFSM(
-                CurrentState
-                );
-        }
+
 
         #region equalityOverride
         public override bool Equals(object otherObject)
         {
-            if (this.GetType() != otherObject.GetType())
+            if (otherObject is PD_GameFSM other_game_fsm)
+            {
+                if (other_game_fsm.CurrentState == this.CurrentState)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
             {
                 return false;
             }
-
-            PD_GameFSM other = (PD_GameFSM)otherObject;
-
-            if (this.CurrentState != other.CurrentState) {
-                return false;
-            }
-
-            return true;
         }
 
         public override int GetHashCode()

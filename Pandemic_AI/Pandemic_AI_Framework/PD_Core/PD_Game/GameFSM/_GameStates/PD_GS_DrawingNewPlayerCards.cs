@@ -59,5 +59,22 @@ namespace Pandemic_AI_Framework
         {
 
         }
+
+        #region equality override
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetType().Name.GetHashCode();
+        }
+        #endregion
     }
 }

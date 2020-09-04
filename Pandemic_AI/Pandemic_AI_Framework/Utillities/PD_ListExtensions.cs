@@ -205,7 +205,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool Dictionary_Equal<T>(
+        public static bool Dictionary_Equals<T>(
             this Dictionary<int, T> this_dictionary,
             Dictionary<int, T> other_dictionary
             )
@@ -303,6 +303,40 @@ namespace Pandemic_AI_Framework
                 List<int> this_value = this_dictionary[key];
                 List<int> other_value = other_dictionary[key];
                 if (this_value.List_Equal_S(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equals<T>(
+            this Dictionary<int, List<T>> this_dictionary,
+            Dictionary<int, List<T>> other_dictionary
+            )
+            where T:ICustomDeepCopyable<T>
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                if (this_dictionary[key].List_Equals(other_dictionary[key]) == false)
                 {
                     return false;
                 }
@@ -490,7 +524,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool Dictionary_Equal(
+        public static bool Dictionary_Equals(
             this Dictionary<int, int> this_dictionary,
             Dictionary<int, int> other_dictionary
             )
@@ -600,6 +634,19 @@ namespace Pandemic_AI_Framework
             int hash = 7;
             hash = hash * 13 + my_dictionary.Count;
             foreach (KeyValuePair<int, string> key_value_pair in my_dictionary)
+            {
+                hash = hash * 13 + key_value_pair.Key;
+                hash = hash * 13 + key_value_pair.Value.GetHashCode();
+            }
+            return hash;
+        }
+
+        public static int Custom_HashCode<T>(this Dictionary<int, T> my_dictionary)
+            where T: ICustomDeepCopyable<T>
+        {
+            int hash = 7;
+            hash = hash * 13 + my_dictionary.Count;
+            foreach (KeyValuePair<int, T> key_value_pair in my_dictionary)
             {
                 hash = hash * 13 + key_value_pair.Key;
                 hash = hash * 13 + key_value_pair.Value.GetHashCode();

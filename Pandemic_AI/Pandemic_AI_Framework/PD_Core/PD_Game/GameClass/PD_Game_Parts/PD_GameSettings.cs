@@ -10,19 +10,16 @@ namespace Pandemic_AI_Framework
     public class PD_GameSettings : PD_GameParts_Base, ICustomDeepCopyable<PD_GameSettings>
     {
         // fixed, private settings...
-        private const int _initialInfectionMarkerValue = 0;
-        private const int _minimumNumberOfPlayers = 2;
-        private const int _maximumNumberOfPlayers = 4;
-        private const int _maximumViableOutbreaks = 7;
-        private const int _maximumNumberOfPlayerCardsPerPlayer = 7;
+        //private const int _maximumViableOutbreaks = 7;
+        //private const int _maximumNumberOfPlayerCardsPerPlayer = 7;
 
         #region properties
         public int GameDifficultyLevel { get; private set; }
         public Dictionary<int, int> NumberOfInitialCardsPerNumberOfPlayers { get; private set; }
         public Dictionary<int, int> InfectionRatesPerEpidemicsCounter { get; private set; }
         public Dictionary<int, int> NumberOfEpidemicCardsPerDifficultyLevel { get; private set; }
-        public int MaximumViableOutbreaks { get { return _maximumViableOutbreaks; } }
-        public int MaximumNumberOfPlayerCardsPerPlayer { get { return _maximumNumberOfPlayerCardsPerPlayer; } }
+        public int MaximumViableOutbreaks { get; private set; }
+        public int MaximumNumberOfPlayerCardsPerPlayer { get; private set; }
         #endregion
 
         #region constructors
@@ -39,21 +36,34 @@ namespace Pandemic_AI_Framework
 
             NumberOfEpidemicCardsPerDifficultyLevel = new Dictionary<int, int>() {
                 {0,4}, {1,5}, {2,6} };
+
+            MaximumViableOutbreaks = 7;
+            MaximumNumberOfPlayerCardsPerPlayer = 7;
         }
 
-        // custom private constructor for deep copy!
+        // custom constructor for json deserialization...
         [JsonConstructor]
         public PD_GameSettings(
             int gameDifficultyLevel,
             Dictionary<int, int> numberOfInitialCardsPerNumberOfPlayers,
             Dictionary<int, int> infectionRatesPerEpidemicsCounter,
-            Dictionary<int, int> numberOfEpidemicCardsPerDifficultyLevel
+            Dictionary<int, int> numberOfEpidemicCardsPerDifficultyLevel,
+            int maximumViableOutbreaks,
+            int maximumNumberOfPlayerCardsPerPlayer
             )
         {
-            GameDifficultyLevel = gameDifficultyLevel;
-            NumberOfInitialCardsPerNumberOfPlayers = numberOfInitialCardsPerNumberOfPlayers;
-            InfectionRatesPerEpidemicsCounter = infectionRatesPerEpidemicsCounter;
-            NumberOfEpidemicCardsPerDifficultyLevel = numberOfEpidemicCardsPerDifficultyLevel;
+            this.GameDifficultyLevel 
+                = gameDifficultyLevel;
+            this.NumberOfInitialCardsPerNumberOfPlayers 
+                = numberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
+            this.InfectionRatesPerEpidemicsCounter 
+                = infectionRatesPerEpidemicsCounter.CustomDeepCopy();
+            this.NumberOfEpidemicCardsPerDifficultyLevel 
+                = numberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
+            this.MaximumViableOutbreaks 
+                = maximumViableOutbreaks;
+            this.MaximumNumberOfPlayerCardsPerPlayer 
+                = maximumNumberOfPlayerCardsPerPlayer;
         }
 
         // custom private constructor for deep copy!
@@ -61,10 +71,24 @@ namespace Pandemic_AI_Framework
             PD_GameSettings gameSettingsToCopy
             )
         {
-            this.GameDifficultyLevel = gameSettingsToCopy.GameDifficultyLevel;
-            this.NumberOfInitialCardsPerNumberOfPlayers = gameSettingsToCopy.NumberOfInitialCardsPerNumberOfPlayers;
-            this.InfectionRatesPerEpidemicsCounter = gameSettingsToCopy.InfectionRatesPerEpidemicsCounter;
-            this.NumberOfEpidemicCardsPerDifficultyLevel = gameSettingsToCopy.NumberOfEpidemicCardsPerDifficultyLevel;
+            this.GameDifficultyLevel 
+                = gameSettingsToCopy.GameDifficultyLevel;
+            this.NumberOfInitialCardsPerNumberOfPlayers 
+                = gameSettingsToCopy.NumberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
+            this.InfectionRatesPerEpidemicsCounter 
+                = gameSettingsToCopy.InfectionRatesPerEpidemicsCounter.CustomDeepCopy();
+            this.NumberOfEpidemicCardsPerDifficultyLevel
+                = gameSettingsToCopy.NumberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
+            this.MaximumViableOutbreaks
+                = gameSettingsToCopy.MaximumViableOutbreaks;
+            this.MaximumNumberOfPlayerCardsPerPlayer
+                = gameSettingsToCopy.MaximumNumberOfPlayerCardsPerPlayer;
+        }
+
+        // custom deep copy
+        public PD_GameSettings GetCustomDeepCopy()
+        {
+            return new PD_GameSettings(this);
         }
         #endregion
 
@@ -76,12 +100,6 @@ namespace Pandemic_AI_Framework
         public int GetNumberOfEpidemicCardsToUseInGame()
         {
             return NumberOfEpidemicCardsPerDifficultyLevel[GameDifficultyLevel];
-        }
-
-        // custom deep copy
-        public PD_GameSettings GetCustomDeepCopy()
-        {
-            return new PD_GameSettings(this);
         }
 
         #region equalityOverride
@@ -99,7 +117,7 @@ namespace Pandemic_AI_Framework
                 return false;
             }
             else if (
-                this.NumberOfInitialCardsPerNumberOfPlayers.Dictionary_Equal(
+                this.NumberOfInitialCardsPerNumberOfPlayers.Dictionary_Equals(
                     other.NumberOfInitialCardsPerNumberOfPlayers
                     ) == false
                 )
@@ -107,7 +125,7 @@ namespace Pandemic_AI_Framework
                 return false;
             }
             else if (
-                this.InfectionRatesPerEpidemicsCounter.Dictionary_Equal(
+                this.InfectionRatesPerEpidemicsCounter.Dictionary_Equals(
                     other.InfectionRatesPerEpidemicsCounter
                     ) == false
                 )
@@ -115,18 +133,24 @@ namespace Pandemic_AI_Framework
                 return false;
             }
             else if (
-                this.NumberOfEpidemicCardsPerDifficultyLevel.Dictionary_Equal(
+                this.NumberOfEpidemicCardsPerDifficultyLevel.Dictionary_Equals(
                     other.NumberOfEpidemicCardsPerDifficultyLevel
                     ) == false
                 )
             {
                 return false;
             }
-            else if (this.MaximumViableOutbreaks != other.MaximumViableOutbreaks)
+            else if (
+                this.MaximumViableOutbreaks 
+                != other.MaximumViableOutbreaks
+                )
             {
                 return false;
             }
-            else if (this.MaximumNumberOfPlayerCardsPerPlayer != other.MaximumNumberOfPlayerCardsPerPlayer)
+            else if (
+                this.MaximumNumberOfPlayerCardsPerPlayer 
+                != other.MaximumNumberOfPlayerCardsPerPlayer
+                )
             {
                 return false;
             }

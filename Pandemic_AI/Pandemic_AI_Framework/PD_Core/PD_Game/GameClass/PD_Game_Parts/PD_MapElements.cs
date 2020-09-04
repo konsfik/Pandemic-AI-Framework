@@ -9,7 +9,7 @@ namespace Pandemic_AI_Framework
     /// All the relations of type: This is IN this Position
     /// </summary>
     [Serializable]
-    public class PD_MapElements : ICustomDeepCopyable<PD_MapElements>
+    public class PD_MapElements : PD_GameParts_Base, ICustomDeepCopyable<PD_MapElements>
     {
         #region properties
 
@@ -22,11 +22,8 @@ namespace Pandemic_AI_Framework
 
         #endregion
 
-        /// <summary>
-        /// normal constructor!
-        /// </summary>
-        /// <param name="players"></param>
-        /// <param name="cities"></param>
+        #region constructors
+        // normal constructor
         public PD_MapElements(
             List<PD_City> cities
             )
@@ -47,15 +44,7 @@ namespace Pandemic_AI_Framework
                 ResearchStationsPerCityID.Add(city.ID, new List<PD_ME_ResearchStation>());
         }
 
-        /// <summary>
-        /// special constructor, for use with the json serializer
-        /// </summary>
-        /// <param name="inactivePlayerPawns"></param>
-        /// <param name="playerPawnsPerCityID"></param>
-        /// <param name="inactiveInfectionCubesPerType"></param>
-        /// <param name="infectionCubesPerCityID"></param>
-        /// <param name="inactiveResearchStations"></param>
-        /// <param name="researchStationsPerCityID"></param>
+        // special constructor, for use with the json serializer
         [JsonConstructor]
         public PD_MapElements(
             List<PD_ME_PlayerPawn> inactivePlayerPawns,
@@ -74,6 +63,12 @@ namespace Pandemic_AI_Framework
             this.ResearchStationsPerCityID = researchStationsPerCityID.CustomDeepCopy();
         }
 
+        public PD_MapElements GetCustomDeepCopy()
+        {
+            return new PD_MapElements(this);
+        }
+        #endregion
+
         /// <summary>
         /// private constructor, for use with custom deep copy, only!
         /// </summary>
@@ -90,9 +85,65 @@ namespace Pandemic_AI_Framework
             this.ResearchStationsPerCityID = mapElementsToCopy.ResearchStationsPerCityID.CustomDeepCopy();
         }
 
-        public PD_MapElements GetCustomDeepCopy()
+        #region equalityOverride
+        public override bool Equals(object otherObject)
         {
-            return new PD_MapElements(this);
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            PD_MapElements other = (PD_MapElements)otherObject;
+
+            if (this.InactivePlayerPawns.List_Equals(
+                other.InactivePlayerPawns) == false)
+            {
+                return false;
+            }
+            else if (this.PlayerPawnsPerCityID.Dictionary_Equals(
+                other.PlayerPawnsPerCityID) == false)
+            {
+                return false;
+            }
+            else if (this.InactiveInfectionCubesPerType.Dictionary_Equals(
+                other.InactiveInfectionCubesPerType) == false)
+            {
+                return false;
+            }
+            else if (this.InfectionCubesPerCityID.Dictionary_Equals(
+                other.InfectionCubesPerCityID) == false)
+            {
+                return false;
+            }
+            else if (this.InactiveResearchStations.List_Equals(
+                other.InactiveResearchStations) == false)
+            {
+                return false;
+            }
+            else if (this.ResearchStationsPerCityID.Dictionary_Equals(
+                other.ResearchStationsPerCityID) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = (hash * 13) + InactivePlayerPawns.Custom_HashCode();
+            hash = (hash * 13) + PlayerPawnsPerCityID.Custom_HashCode();
+            hash = (hash * 13) + InactiveInfectionCubesPerType.Custom_HashCode();
+            hash = (hash * 13) + InfectionCubesPerCityID.Custom_HashCode();
+            hash = (hash * 13) + InactiveResearchStations.Custom_HashCode();
+            hash = (hash * 13) + ResearchStationsPerCityID.Custom_HashCode();
+
+            return hash;
+        }
+        #endregion
     }
 }

@@ -20,6 +20,7 @@ namespace Pandemic_AI_Framework
         public List<PD_Role_Card> InactiveRoleCards { get; private set; }
 
         #region constructors
+        // normal constructor
         public PD_GameCards(
             List<PD_Player> players,
             List<PD_Role_Card> allRoleCards
@@ -37,15 +38,7 @@ namespace Pandemic_AI_Framework
             InactiveRoleCards = allRoleCards.CustomDeepCopy();
         }
 
-        /// <summary>
-        /// special constructor, for use with the JSON serializer
-        /// </summary>
-        /// <param name="dividedDeckOfInfectionCards"></param>
-        /// <param name="activeInfectionCards"></param>
-        /// <param name="deckOfDiscardedInfectionCards"></param>
-        /// <param name="dividedDeckOfPlayerCards"></param>
-        /// <param name="deckOfDiscardedPlayerCards"></param>
-        /// <param name="playerCardsPerPlayerID"></param>
+        // special constructor, for use with the JSON serializer
         [JsonConstructor]
         public PD_GameCards(
             List<List<PD_InfectionCard>> dividedDeckOfInfectionCards,
@@ -57,15 +50,16 @@ namespace Pandemic_AI_Framework
             List<PD_Role_Card> inactiveRoleCards
             )
         {
-            DividedDeckOfInfectionCards = dividedDeckOfInfectionCards;
-            ActiveInfectionCards = activeInfectionCards;
-            DeckOfDiscardedInfectionCards = deckOfDiscardedInfectionCards;
-            DividedDeckOfPlayerCards = dividedDeckOfPlayerCards;
-            DeckOfDiscardedPlayerCards = deckOfDiscardedPlayerCards;
-            PlayerCardsPerPlayerID = playerCardsPerPlayerID;
-            InactiveRoleCards = inactiveRoleCards;
+            DividedDeckOfInfectionCards = dividedDeckOfInfectionCards.CustomDeepCopy();
+            ActiveInfectionCards = activeInfectionCards.CustomDeepCopy();
+            DeckOfDiscardedInfectionCards = deckOfDiscardedInfectionCards.CustomDeepCopy();
+            DividedDeckOfPlayerCards = dividedDeckOfPlayerCards.CustomDeepCopy();
+            DeckOfDiscardedPlayerCards = deckOfDiscardedPlayerCards.CustomDeepCopy();
+            PlayerCardsPerPlayerID = playerCardsPerPlayerID.CustomDeepCopy();
+            InactiveRoleCards = inactiveRoleCards.CustomDeepCopy();
         }
 
+        // private constructor, for deep copy purposes only
         private PD_GameCards(
             PD_GameCards gameCardsToCopy
             )
@@ -78,12 +72,12 @@ namespace Pandemic_AI_Framework
             PlayerCardsPerPlayerID = gameCardsToCopy.PlayerCardsPerPlayerID.CustomDeepCopy();
             InactiveRoleCards = gameCardsToCopy.InactiveRoleCards.CustomDeepCopy();
         }
-        #endregion
 
         public PD_GameCards GetCustomDeepCopy()
         {
             return new PD_GameCards(this);
         }
+        #endregion
 
         #region equality overrides
         public override bool Equals(object otherObject)

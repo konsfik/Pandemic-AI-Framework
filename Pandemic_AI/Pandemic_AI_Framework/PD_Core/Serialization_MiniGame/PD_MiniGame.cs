@@ -270,11 +270,11 @@ namespace Pandemic_AI_Framework
             else if (this.settings___maximum_player_hand_size
                 != other.settings___maximum_player_hand_size) return false;
             else if (this.settings___initial_hand_size__per__number_of_players
-                .Dictionary_Equal(other.settings___initial_hand_size__per__number_of_players) == false) return false;
+                .Dictionary_Equals(other.settings___initial_hand_size__per__number_of_players) == false) return false;
             else if (this.settings___epidemic_cards__per__game_difficulty
-                .Dictionary_Equal(other.settings___epidemic_cards__per__game_difficulty) == false) return false;
+                .Dictionary_Equals(other.settings___epidemic_cards__per__game_difficulty) == false) return false;
             else if (this.settings___infection_rate__per__epidemics
-                .Dictionary_Equal(other.settings___infection_rate__per__epidemics) == false) return false;
+                .Dictionary_Equals(other.settings___infection_rate__per__epidemics) == false) return false;
 
             // general - data
             else if (this.players
@@ -294,7 +294,7 @@ namespace Pandemic_AI_Framework
             else if (this.map___name__per__city
                 .Dictionary_Equal(other.map___name__per__city) == false) return false;
             else if (this.map___position__per__city
-                .Dictionary_Equal(other.map___position__per__city) == false) return false;
+                .Dictionary_Equals(other.map___position__per__city) == false) return false;
             else if (this.map___infection_type__per__city
                 .Dictionary_Equal_S(other.map___infection_type__per__city) == false) return false;
             else if (this.map___neighbors__per__city

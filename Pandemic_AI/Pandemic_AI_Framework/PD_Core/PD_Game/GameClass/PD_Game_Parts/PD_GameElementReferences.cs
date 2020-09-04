@@ -8,6 +8,7 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameElementReferences : PD_GameParts_Base, ICustomDeepCopyable<PD_GameElementReferences>
     {
+        #region properties
         public List<PD_InfectionCard> InfectionCards { get; private set; }
         public List<PD_CityCard> CityCards { get; private set; }
         public List<PD_EpidemicCard> EpidemicCards { get; private set; }
@@ -17,6 +18,7 @@ namespace Pandemic_AI_Framework
 
         public List<PD_ME_ResearchStation> ResearchStations { get; private set; }
         public List<PD_ME_InfectionCube> InfectionCubes { get; private set; }
+        #endregion
 
         /// <summary>
         /// Normal Constructor
@@ -75,44 +77,44 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public override bool Equals(object otherObject)
         {
-            if (this.GetType() != otherObject.GetType())
+            if (otherObject is PD_GameElementReferences other_elements)
             {
-                return false;
-            }
-
-            var other = (PD_GameElementReferences)otherObject;
-
-            if (InfectionCards.List_Equals(other.InfectionCards) == false)
-            {
-                return false;
-            }
-            else if (CityCards.List_Equals(other.CityCards) == false)
-            {
-                return false;
-            }
-            else if (EpidemicCards.List_Equals(other.EpidemicCards) == false)
-            {
-                return false;
-            }
-            else if (PlayerPawns.List_Equals(other.PlayerPawns) == false)
-            {
-                return false;
-            }
-            else if (RoleCards.List_Equals(other.RoleCards) == false)
-            {
-                return false;
-            }
-            else if (ResearchStations.List_Equals(other.ResearchStations) == false)
-            {
-                return false;
-            }
-            else if (InfectionCubes.List_Equals(other.InfectionCubes) == false)
-            {
-                return false;
+                if (InfectionCards.List_Equals(other_elements.InfectionCards) == false)
+                {
+                    return false;
+                }
+                else if (CityCards.List_Equals(other_elements.CityCards) == false)
+                {
+                    return false;
+                }
+                else if (EpidemicCards.List_Equals(other_elements.EpidemicCards) == false)
+                {
+                    return false;
+                }
+                else if (PlayerPawns.List_Equals(other_elements.PlayerPawns) == false)
+                {
+                    return false;
+                }
+                else if (RoleCards.List_Equals(other_elements.RoleCards) == false)
+                {
+                    return false;
+                }
+                else if (ResearchStations.List_Equals(other_elements.ResearchStations) == false)
+                {
+                    return false;
+                }
+                else if (InfectionCubes.List_Equals(other_elements.InfectionCubes) == false)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
-                return true;
+                return false;
             }
         }
 

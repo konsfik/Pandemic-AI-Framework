@@ -7,11 +7,17 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GS_ApplyingMainPlayerActions : PD_GameStateBase, ICustomDeepCopyable<PD_GS_ApplyingMainPlayerActions>
     {
+        #region constructors
+        public PD_GS_ApplyingMainPlayerActions()
+        {
+
+        }
 
         public PD_GS_ApplyingMainPlayerActions GetCustomDeepCopy()
         {
             return new PD_GS_ApplyingMainPlayerActions();
         }
+        #endregion
 
         public override PD_GameStateBase OnCommand(
             Random randommness_provider,
@@ -108,5 +114,22 @@ namespace Pandemic_AI_Framework
         {
 
         }
+
+        #region equality override
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetType().Name.GetHashCode();
+        }
+        #endregion
     }
 }

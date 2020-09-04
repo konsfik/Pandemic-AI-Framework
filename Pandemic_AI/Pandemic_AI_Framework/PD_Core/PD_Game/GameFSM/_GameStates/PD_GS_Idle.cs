@@ -12,6 +12,11 @@ namespace Pandemic_AI_Framework
 
         }
 
+        public PD_GS_Idle GetCustomDeepCopy()
+        {
+            return new PD_GS_Idle();
+        }
+
         public override PD_GameStateBase OnCommand(
             Random randomness_provider,
             PD_Game game,
@@ -39,9 +44,21 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public PD_GS_Idle GetCustomDeepCopy()
+        #region equality override
+        public override bool Equals(object otherObject)
         {
-            return new PD_GS_Idle();
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            return true;
         }
+
+        public override int GetHashCode()
+        {
+            return this.GetType().Name.GetHashCode();
+        }
+        #endregion
     }
 }

@@ -9,7 +9,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameStateCounter : PD_GameParts_Base, IDescribable, ICustomDeepCopyable<PD_GameStateCounter>
     {
-
         public int NumberOfPlayers { get; private set; }
         public int CurrentPlayerActionIndex { get; private set; }
         public int CurrentPlayerIndex { get; private set; }
@@ -56,10 +55,11 @@ namespace Pandemic_AI_Framework
             CurrentPlayerActionIndex = currentPlayerActionIndex;
             CurrentPlayerIndex = currentPlayerIndex;
             CurrentTurnIndex = currentTurnIndex;
-            CureMarkersStates = new Dictionary<int, int>(cureMarkersStates);
+            CureMarkersStates = cureMarkersStates.CustomDeepCopy();
             OutbreaksCounter = outbreaksCounter;
             EpidemicsCounter = epidemicsCounter;
-            NotEnoughDiseaseCubesToCompleteAnInfection = notEnoughDiseaseCubesToCompleteAnInfection;
+            NotEnoughDiseaseCubesToCompleteAnInfection 
+                = notEnoughDiseaseCubesToCompleteAnInfection;
             NotEnoughPlayerCardsToDraw = notEnoughPlayerCardsToDraw;
         }
 
@@ -72,11 +72,17 @@ namespace Pandemic_AI_Framework
             this.CurrentPlayerActionIndex = gameStateCounterToCopy.CurrentPlayerActionIndex;
             this.CurrentPlayerIndex = gameStateCounterToCopy.CurrentPlayerIndex;
             this.CurrentTurnIndex = gameStateCounterToCopy.CurrentTurnIndex;
-            this.CureMarkersStates = new Dictionary<int, int>(gameStateCounterToCopy.CureMarkersStates);
+            this.CureMarkersStates =
+                gameStateCounterToCopy.CureMarkersStates.CustomDeepCopy();
             this.OutbreaksCounter = gameStateCounterToCopy.OutbreaksCounter;
             this.EpidemicsCounter = gameStateCounterToCopy.EpidemicsCounter;
             this.NotEnoughDiseaseCubesToCompleteAnInfection = gameStateCounterToCopy.NotEnoughDiseaseCubesToCompleteAnInfection;
             this.NotEnoughPlayerCardsToDraw = gameStateCounterToCopy.NotEnoughPlayerCardsToDraw;
+        }
+
+        public PD_GameStateCounter GetCustomDeepCopy()
+        {
+            return new PD_GameStateCounter(this);
         }
         #endregion
 
@@ -174,11 +180,6 @@ namespace Pandemic_AI_Framework
         }
         #endregion
 
-        public PD_GameStateCounter GetCustomDeepCopy()
-        {
-            return new PD_GameStateCounter(this);
-        }
-
         #region equalityOverride
         public override bool Equals(object otherObject)
         {
@@ -205,7 +206,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            if (this.CureMarkersStates.Dictionary_Equal(other.CureMarkersStates) == false)
+            if (this.CureMarkersStates.Dictionary_Equals(other.CureMarkersStates) == false)
             {
                 return false;
             }

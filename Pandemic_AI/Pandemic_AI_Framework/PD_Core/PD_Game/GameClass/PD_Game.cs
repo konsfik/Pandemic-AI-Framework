@@ -276,7 +276,8 @@ namespace Pandemic_AI_Framework
                 infection_cubes
                 );
 
-            if (auto_game_setup) {
+            if (auto_game_setup)
+            {
                 new_game.ApplySpecificPlayerAction(
                     randomness_provider,
                     new_game.CurrentAvailablePlayerActions[0]
@@ -718,126 +719,6 @@ namespace Pandemic_AI_Framework
                 }
             }
         }
-
-        public void Com_ApplyEpidemicCard(
-            Random randomness_provider,
-            PD_Player player
-            )
-        {
-            // 0. discard the epidemic card...
-            var allCards_InPlayerHand = Cards.PlayerCardsPerPlayerID[player.ID];
-            var epidemicCard = allCards_InPlayerHand.Find(
-                x =>
-                x.GetType() == typeof(PD_EpidemicCard)
-                );
-            Cards.PlayerCardsPerPlayerID[player.ID].Remove(epidemicCard);
-            Cards.DeckOfDiscardedPlayerCards.Add(epidemicCard);
-
-            // 1. move the infection rate marker by one position
-            GameStateCounter.IncreaseEpidemicsCounter();
-
-            // 2. Infect: Draw the bottom card from the Infection Deck. 
-            // Unless its disease color has been eradicated, put 3 disease cubes of that color on the named city.
-            // If the city already has cubes of this color, do not add 3 cubes to it.
-            // Instead, add just enough cubes so that it has 3 cubes of this color and then an outbreak of this disease occurs in the city(see Outbreaks below). 
-            // Discard this card to the Infection Discard Pile.
-            var cardFromBottom = Cards.DividedDeckOfInfectionCards.DrawFirstElementOfFirstSubList();
-
-            int epidemicInfectionType = cardFromBottom.Type;
-            bool diseaseTypeEradicated = this.GQ_Is_Disease_Eradicated(epidemicInfectionType);
-
-            if (diseaseTypeEradicated == false)
-            {
-                // actually apply the epidemic infection here...
-
-                PD_InfectionReport initialReport = new PD_InfectionReport(
-                    false, // not game setup...
-                    player,
-                    cardFromBottom.City,
-                    cardFromBottom.Type,
-                    3
-                    );
-
-                // apply infection of this city here
-                PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
-                    this,
-                    cardFromBottom.City,
-                    3,
-                    initialReport,
-                    false
-                    );
-
-                InfectionReports.Add(finalReport);
-
-                if (finalReport.FailureReason == InfectionFailureReasons.notEnoughDiseaseCubes)
-                {
-                    GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection = true;
-                }
-            }
-
-            // put card in discarded infection cards pile
-            Cards.DeckOfDiscardedInfectionCards.Add(cardFromBottom);
-
-            // 3. intensify: Reshuffle just the cards in the Infection Discard Pile 
-            // and place them on top of the Infection Deck.
-            Cards.DeckOfDiscardedInfectionCards.Shuffle(randomness_provider);
-            Cards.DividedDeckOfInfectionCards.Add(
-                Cards.DeckOfDiscardedInfectionCards.DrawAll()
-                );
-        }
-
-        public void Com_DrawNewInfectionCards(PD_Player player)
-        {
-            int numberOfInfectionCardsToDraw =
-                GameSettings.InfectionRatesPerEpidemicsCounter[GameStateCounter.EpidemicsCounter];
-
-            var infectionCards = new List<PD_InfectionCard>();
-
-            for (int i = 0; i < numberOfInfectionCardsToDraw; i++)
-            {
-                infectionCards.Add(Cards.DividedDeckOfInfectionCards.DrawLastElementOfLastSubList());
-            }
-
-            Cards.ActiveInfectionCards.AddRange(infectionCards);
-
-        }
-
-        public void Com_ApplyInfectionCard(PD_Player player, PD_InfectionCard infectionCard)
-        {
-            int infectionType = infectionCard.Type;
-            bool diseaseEradicated = this.GQ_Is_Disease_Eradicated(infectionType);
-
-            if (diseaseEradicated == false)
-            {
-                PD_InfectionReport initialReport = new PD_InfectionReport(
-                    false, // not game setup
-                    player,
-                    infectionCard.City,
-                    infectionCard.Type,
-                    1
-                    );
-
-                PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
-                    this,
-                    infectionCard.City,
-                    1,
-                    initialReport,
-                    false
-                    );
-
-                InfectionReports.Add(finalReport);
-
-                if (finalReport.FailureReason == InfectionFailureReasons.notEnoughDiseaseCubes)
-                {
-                    GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection = true;
-                }
-            }
-
-            // remove the infection card from the active infection cards pile
-            Cards.ActiveInfectionCards.Remove(infectionCard);
-            Cards.DeckOfDiscardedInfectionCards.Add(infectionCard);
-
-        }
         #endregion
 
         public void UpdateAvailablePlayerActions()
@@ -1039,14 +920,10 @@ namespace Pandemic_AI_Framework
             return gameCopy;
         }
 
-
-
         public PD_Game GetCustomDeepCopy()
         {
             return new PD_Game(this);
         }
-
-
 
         #region equality overrides
         public override bool Equals(object otherObject)
@@ -1058,7 +935,19 @@ namespace Pandemic_AI_Framework
 
             var other = (PD_Game)otherObject;
 
-            if (this.GameSettings.Equals(other.GameSettings) == false)
+            if (this.UniqueID != other.UniqueID)
+            {
+                return false;
+            }
+            else if (this.StartTime != other.StartTime)
+            {
+                return false;
+            }
+            else if (this.EndTime != other.EndTime)
+            {
+                return false;
+            }
+            else if (this.GameSettings.Equals(other.GameSettings) == false)
             {
                 return false;
             }
@@ -1086,11 +975,31 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.PlayerPawnsPerPlayerID.Dictionary_Equal(other.PlayerPawnsPerPlayerID) == false)
+            else if (this.MapElements.Equals(other.MapElements) == false)
             {
                 return false;
             }
-            else if (this.RoleCardsPerPlayerID.Dictionary_Equal(other.RoleCardsPerPlayerID) == false)
+            else if (this.PlayerPawnsPerPlayerID.Dictionary_Equals(other.PlayerPawnsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else if (this.RoleCardsPerPlayerID.Dictionary_Equals(other.RoleCardsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else if (this.PlayerActionsHistory.List_Equals(other.PlayerActionsHistory) == false)
+            {
+                return false;
+            }
+            else if (this.InfectionReports.List_Equals(other.InfectionReports) == false)
+            {
+                return false;
+            }
+            else if (this.CurrentAvailablePlayerActions.List_Equals(other.CurrentAvailablePlayerActions) == false)
+            {
+                return false;
+            }
+            else if (this.CurrentAvailableMacros.List_Equals(other.CurrentAvailableMacros) == false)
             {
                 return false;
             }
@@ -1104,8 +1013,30 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + GameSettings.GetHashCode();
+            hash = hash * 31 + UniqueID.GetHashCode();
+            hash = hash * 31 + StartTime.GetHashCode();
+            hash = hash * 31 + EndTime.GetHashCode();
 
+            hash = hash * 31 + GameSettings.GetHashCode();
+            hash = hash * 31 + GameFSM.GetHashCode();
+
+            hash = hash * 31 + GameStateCounter.GetHashCode();
+
+            hash = hash * 31 + Players.Custom_HashCode();
+            hash = hash * 31 + Map.GetHashCode();
+            hash = hash * 31 + GameElementReferences.GetHashCode();
+
+            hash = hash * 31 + Cards.GetHashCode();
+            hash = hash * 31 + MapElements.GetHashCode();
+
+            hash = hash * 31 + PlayerPawnsPerPlayerID.Custom_HashCode();
+            hash = hash * 31 + RoleCardsPerPlayerID.Custom_HashCode();
+
+            hash = hash * 31 + PlayerActionsHistory.Custom_HashCode();
+            hash = hash * 31 + InfectionReports.Custom_HashCode();
+
+            hash = hash * 31 + CurrentAvailablePlayerActions.Custom_HashCode();
+            hash = hash * 31 + CurrentAvailableMacros.Custom_HashCode();
 
             return hash;
         }

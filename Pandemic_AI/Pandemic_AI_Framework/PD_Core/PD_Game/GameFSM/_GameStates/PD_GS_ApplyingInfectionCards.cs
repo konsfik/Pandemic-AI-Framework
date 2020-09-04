@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GS_ApplyingInfectionCards : PD_GameStateBase, ICustomDeepCopyable<PD_GS_ApplyingInfectionCards>
     {
-
+        #region constructors
         public PD_GS_ApplyingInfectionCards()
         {
 
@@ -17,6 +17,7 @@ namespace Pandemic_AI_Framework
         {
             return new PD_GS_ApplyingInfectionCards();
         }
+        #endregion
 
         public override PD_GameStateBase OnCommand(
             Random randomness_provider,
@@ -56,5 +57,22 @@ namespace Pandemic_AI_Framework
         {
 
         }
+
+        #region equality override
+        public override bool Equals(object otherObject)
+        {
+            if (this.GetType() != otherObject.GetType())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetType().Name.GetHashCode();
+        }
+        #endregion
     }
 }

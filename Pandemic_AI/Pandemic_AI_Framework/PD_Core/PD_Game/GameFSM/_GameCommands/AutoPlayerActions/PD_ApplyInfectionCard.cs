@@ -36,7 +36,48 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_ApplyInfectionCard(Player, InfectionCardToApply);
+#if DEBUG
+            if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+            else if ((game.GameFSM.CurrentState is PD_GS_ApplyingInfectionCards) == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+#endif
+            int infectionType = InfectionCardToApply.Type;
+            bool diseaseEradicated = game.GQ_Is_Disease_Eradicated(infectionType);
+
+            if (diseaseEradicated == false)
+            {
+                PD_InfectionReport initialReport = new PD_InfectionReport(
+                    false, // not game setup
+                    Player,
+                    InfectionCardToApply.City,
+                    InfectionCardToApply.Type,
+                    1
+                    );
+
+                PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
+                    game,
+                    InfectionCardToApply.City,
+                    1,
+                    initialReport,
+                    false
+                    );
+
+                game.InfectionReports.Add(finalReport);
+
+                if (finalReport.FailureReason == InfectionFailureReasons.notEnoughDiseaseCubes)
+                {
+                    game.GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection = true;
+                }
+            }
+
+            // remove the infection card from the active infection cards pile
+            game.Cards.ActiveInfectionCards.Remove(InfectionCardToApply);
+            game.Cards.DeckOfDiscardedInfectionCards.Add(InfectionCardToApply);
         }
 
         

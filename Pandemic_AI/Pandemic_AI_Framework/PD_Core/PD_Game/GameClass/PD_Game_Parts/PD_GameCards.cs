@@ -85,7 +85,7 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public bool Equals(PD_GameCards other)
         {
-            if (DividedDeckOfInfectionCards.List_Equal(other.DividedDeckOfInfectionCards) == false)
+            if (DividedDeckOfInfectionCards.List_Equals(other.DividedDeckOfInfectionCards) == false)
             {
                 return false;
             }
@@ -97,15 +97,15 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (DividedDeckOfPlayerCards.List_Equal(other.DividedDeckOfPlayerCards) == false)
+            else if (DividedDeckOfPlayerCards.List_Equals(other.DividedDeckOfPlayerCards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedPlayerCards.List_Equal(other.DeckOfDiscardedPlayerCards) == false)
+            else if (DeckOfDiscardedPlayerCards.List_Equals(other.DeckOfDiscardedPlayerCards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedPlayerCards.List_Equal(other.DeckOfDiscardedPlayerCards) == false)
+            else if (DeckOfDiscardedPlayerCards.List_Equals(other.DeckOfDiscardedPlayerCards) == false)
             {
                 return false;
             }

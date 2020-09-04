@@ -31,10 +31,32 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public static bool List_Equals(
+            this List<int> this_list, List<int> other_list
+            )
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                if (this_list[i] != other_list[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool List_Equals<T>(
             this List<T> this_list, List<T> other_list
             )
-            where T : ICustomDeepCopyable<T>
+            where T : IEquatable<T>
         {
             // compare list sizes
             if (this_list.Count != other_list.Count)
@@ -54,32 +76,10 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool List_Equal(
-            this List<PD_PlayerCardBase> this_list, List<PD_PlayerCardBase> other_list
-            )
-        {
-            // compare list sizes
-            if (this_list.Count != other_list.Count)
-            {
-                return false;
-            }
-
-            // compare list elements
-            for (int i = 0; i < this_list.Count; i++)
-            {
-                if (this_list[i].Equals(other_list[i]) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool List_Equal<T>(
+        public static bool List_Equals<T>(
             this List<List<T>> this_list, List<List<T>> other_list
             )
-            where T : ICustomDeepCopyable<T>
+            where T : IEquatable<T>
         {
             // compare list sizes
             if (this_list.Count != other_list.Count)
@@ -99,54 +99,30 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool List_Equal(
-            this List<List<PD_PlayerCardBase>> this_list, List<List<PD_PlayerCardBase>> other_list
-            )
-        {
-            // compare list sizes
-            if (this_list.Count != other_list.Count)
-            {
-                return false;
-            }
+        //public static bool List_Equal_S<T>(
+        //    this List<T> this_list, List<T> other_list
+        //    )
+        //    where T : struct
+        //{
+        //    // compare list sizes
+        //    if (this_list.Count != other_list.Count)
+        //    {
+        //        return false;
+        //    }
 
-            // compare list elements
-            for (int i = 0; i < this_list.Count; i++)
-            {
-                List<PD_PlayerCardBase> this_sub_list = this_list[i];
-                List<PD_PlayerCardBase> other_sub_list = other_list[i];
-                if (this_sub_list.List_Equal(other_sub_list) == false)
-                {
-                    return false;
-                }
-            }
+        //    // compare list elements
+        //    for (int i = 0; i < this_list.Count; i++)
+        //    {
+        //        if (this_list[i].Equals(other_list[i]) == false)
+        //        {
+        //            return false;
+        //        }
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        public static bool List_Equal_S<T>(
-            this List<T> this_list, List<T> other_list
-            )
-            where T : struct
-        {
-            // compare list sizes
-            if (this_list.Count != other_list.Count)
-            {
-                return false;
-            }
-
-            // compare list elements
-            for (int i = 0; i < this_list.Count; i++)
-            {
-                if (this_list[i].Equals(other_list[i]) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool List_Equal(
+        public static bool List_Equals(
             this List<List<int>> this_list, List<List<int>> other_list
             )
         {
@@ -159,7 +135,7 @@ namespace Pandemic_AI_Framework
             // compare list elements
             for (int i = 0; i < this_list.Count; i++)
             {
-                if (this_list[i].List_Equal_S(other_list[i]) == false)
+                if (this_list[i].List_Equals(other_list[i]) == false)
                 {
                     return false;
                 }
@@ -302,7 +278,7 @@ namespace Pandemic_AI_Framework
             {
                 List<int> this_value = this_dictionary[key];
                 List<int> other_value = other_dictionary[key];
-                if (this_value.List_Equal_S(other_value) == false)
+                if (this_value.List_Equals(other_value) == false)
                 {
                     return false;
                 }
@@ -315,7 +291,7 @@ namespace Pandemic_AI_Framework
             this Dictionary<int, List<T>> this_dictionary,
             Dictionary<int, List<T>> other_dictionary
             )
-            where T : ICustomDeepCopyable<T>
+            where T : IEquatable<T>
         {
             List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
             List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
@@ -372,7 +348,7 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_PlayerCardBase> this_value = this_dictionary[key];
                 List<PD_PlayerCardBase> other_value = other_dictionary[key];
-                if (this_value.List_Equal(other_value) == false)
+                if (this_value.List_Equals(other_value) == false)
                 {
                     return false;
                 }
@@ -584,7 +560,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static int Custom_HashCode<T>(this List<T> my_list)
-            where T:IEquatable<T>
+            where T : IEquatable<T>
         {
             int hash = 7;
             hash = hash * 13 + my_list.Count;
@@ -629,7 +605,6 @@ namespace Pandemic_AI_Framework
             }
             return hash;
         }
-
 
         public static int Custom_HashCode(this Dictionary<int, string> my_dictionary)
         {

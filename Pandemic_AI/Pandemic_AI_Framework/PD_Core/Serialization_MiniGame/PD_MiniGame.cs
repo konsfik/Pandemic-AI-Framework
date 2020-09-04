@@ -278,11 +278,11 @@ namespace Pandemic_AI_Framework
 
             // general - data
             else if (this.players
-                .List_Equal_S(other.players) == false) return false;
+                .List_Equals(other.players) == false) return false;
 
             // player - roles
             else if (this.unassigned_player_roles
-                .List_Equal_S(other.unassigned_player_roles) == false) return false;
+                .List_Equals(other.unassigned_player_roles) == false) return false;
             else if (this.role__per__player
                 .Array_Equal_S(other.role__per__player) == false) return false;
 
@@ -290,7 +290,7 @@ namespace Pandemic_AI_Framework
             else if (this.map___number_of_cities
                 != other.map___number_of_cities) return false;
             else if (this.map___cities
-                .List_Equal_S(other.map___cities) == false) return false;
+                .List_Equals(other.map___cities) == false) return false;
             else if (this.map___name__per__city
                 .Dictionary_Equal(other.map___name__per__city) == false) return false;
             else if (this.map___position__per__city
@@ -341,15 +341,15 @@ namespace Pandemic_AI_Framework
 
             // initial card - containers:
             else if (this.cards___divided_deck_of_infection_cards
-                .List_Equal(other.cards___divided_deck_of_infection_cards) == false) return false;
+                .List_Equals(other.cards___divided_deck_of_infection_cards) == false) return false;
             else if (this.cards___active_infection_cards
-                .List_Equal_S(other.cards___active_infection_cards) == false) return false;
+                .List_Equals(other.cards___active_infection_cards) == false) return false;
             else if (this.cards___deck_of_discarded_infection_cards
-                .List_Equal_S(other.cards___deck_of_discarded_infection_cards) == false) return false;
+                .List_Equals(other.cards___deck_of_discarded_infection_cards) == false) return false;
             else if (this.cards___divided_deck_of_player_cards
-                .List_Equal(other.cards___divided_deck_of_player_cards) == false) return false;
+                .List_Equals(other.cards___divided_deck_of_player_cards) == false) return false;
             else if (this.cards___deck_of_discarded_player_cards
-                .List_Equal_S(other.cards___deck_of_discarded_player_cards) == false) return false;
+                .List_Equals(other.cards___deck_of_discarded_player_cards) == false) return false;
             else if (this.cards___player_cards__per__player
                 .Dictionary_Equal(other.cards___player_cards__per__player) == false) return false;
 

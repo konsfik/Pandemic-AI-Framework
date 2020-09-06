@@ -67,7 +67,8 @@ namespace Pandemic_AI_Framework
             {
                 return Equals(other_pawn);
             }
-            else {
+            else 
+            {
                 return false;
             }
         }
@@ -83,5 +84,14 @@ namespace Pandemic_AI_Framework
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return String.Format(
+                "{0}, {1}",
+                ID,
+                Role.ToString()
+                );
+        }
     }
 }

@@ -76,6 +76,28 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public static bool List_Equals(
+            this List<PD_ME_PlayerPawn> this_list, List<PD_ME_PlayerPawn> other_list
+            )
+        {
+            // compare list sizes
+            if (this_list.Count != other_list.Count)
+            {
+                return false;
+            }
+
+            // compare list elements
+            for (int i = 0; i < this_list.Count; i++)
+            {
+                if (this_list[i].Equals(other_list[i]) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool List_Equals<T>(
             this List<List<T>> this_list, List<List<T>> other_list
             )

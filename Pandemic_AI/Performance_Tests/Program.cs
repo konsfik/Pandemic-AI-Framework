@@ -15,6 +15,7 @@ namespace Performance_Tests
             DateTime dateTimeOfExperiment = DateTime.UtcNow;
             int number_of_games = 1000;
             Random randomness_provider = new Random(1000);
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string report_file_name = "report_" + dateTimeOfExperiment.Ticks.ToString() + ".txt";

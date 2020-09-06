@@ -80,38 +80,22 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public bool Equals(PD_GameElementReferences other)
         {
-            if (InfectionCards.List_Equals(other.InfectionCards) == false)
-            {
+            if (this.InfectionCards.List_Equals(other.InfectionCards) == false)
                 return false;
-            }
-            else if (CityCards.List_Equals(other.CityCards) == false)
-            {
+            else if (this.CityCards.List_Equals(other.CityCards) == false)
                 return false;
-            }
-            else if (EpidemicCards.List_Equals(other.EpidemicCards) == false)
-            {
+            else if (this.EpidemicCards.List_Equals(other.EpidemicCards) == false)
                 return false;
-            }
-            else if (PlayerPawns.List_Equals(other.PlayerPawns) == false)
-            {
+            else if (this.PlayerPawns.List_Equals(other.PlayerPawns) == false)
                 return false;
-            }
-            else if (RoleCards.List_Equals(other.RoleCards) == false)
-            {
+            else if (this.RoleCards.List_Equals(other.RoleCards) == false)
                 return false;
-            }
-            else if (ResearchStations.List_Equals(other.ResearchStations) == false)
-            {
+            else if (this.ResearchStations.List_Equals(other.ResearchStations) == false)
                 return false;
-            }
-            else if (InfectionCubes.List_Equals(other.InfectionCubes) == false)
-            {
+            else if (this.InfectionCubes.List_Equals(other.InfectionCubes) == false)
                 return false;
-            }
             else
-            {
                 return true;
-            }
         }
 
         public override bool Equals(object otherObject)

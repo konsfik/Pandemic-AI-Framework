@@ -61,9 +61,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)GameCreationData" mkdir "$(ProjectDir)$(OutDir)GameCreationData"
-copy $(SolutionDir)GameCreationData\* $(ProjectDir)$(OutDir)GameCreationData
-if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed"
+    <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed"
 copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed</PostBuildEvent>
   </PropertyGroup>
 </Project>

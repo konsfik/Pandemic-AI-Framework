@@ -41,15 +41,238 @@ namespace Pandemic_AI_Framework.Tests
             // create a normal game, from the deserialized game
             PD_Game final_game__from__deserialized_game = deserialized_game__from__serialized_string.To_Game();
 
-            // check that the final game is the same as the initial game...
-            Assert.IsTrue(final_game__from__deserialized_game != null);
-            Assert.IsTrue(final_game__from__deserialized_game.GameSettings.Equals(initial_game.GameSettings));
-            Assert.IsTrue(final_game__from__deserialized_game.GameFSM.Equals(initial_game.GameFSM));
-            Assert.IsTrue(final_game__from__deserialized_game.GameStateCounter.Equals(initial_game.GameStateCounter));
-            Assert.IsTrue(final_game__from__deserialized_game.Players.List_Equals(initial_game.Players));
-            Assert.IsTrue(final_game__from__deserialized_game.Map.Equals(initial_game.Map));
-            //Assert.IsTrue(final_game__from__deserialized_game.GameElementReferences.Equals(initial_game.GameElementReferences));
+            Assert.IsTrue(
+                Games_Practically_Equal(
+                    initial_game,
+                    final_game__from__deserialized_game
+                    )
+                );
 
+            // check that the final game is the same as the initial game...
+            //Assert.IsTrue(final_game__from__deserialized_game != null);
+            //Assert.IsTrue(final_game__from__deserialized_game.GameSettings.Equals(initial_game.GameSettings));
+            //Assert.IsTrue(final_game__from__deserialized_game.GameFSM.Equals(initial_game.GameFSM));
+            //Assert.IsTrue(final_game__from__deserialized_game.GameStateCounter.Equals(initial_game.GameStateCounter));
+            //Assert.IsTrue(final_game__from__deserialized_game.Players.List_Equals(initial_game.Players));
+            //Assert.IsTrue(final_game__from__deserialized_game.Map.Equals(initial_game.Map));
+            //Assert.IsTrue(final_game__from__deserialized_game.GameElementReferences.Equals(initial_game.GameElementReferences));
+            final_game__from__deserialized_game.UpdateAvailablePlayerActions();
+
+            while (final_game__from__deserialized_game.GQ_Is_Ongoing()) {
+                var action = final_game__from__deserialized_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
+                final_game__from__deserialized_game.ApplySpecificPlayerAction(
+                    randomness_provider,
+                    action);
+            }
+            Assert.IsTrue(final_game__from__deserialized_game.GQ_Is_Ongoing() == false);
+        }
+
+        private bool Games_Practically_Equal(PD_Game game_1, PD_Game game_2)
+        {
+            if (game_1.UniqueID != game_2.UniqueID)
+            {
+                return false;
+            }
+            else if (game_1.GameSettings.Equals(game_2.GameSettings) == false)
+            {
+                return false;
+            }
+            else if (game_1.GameFSM.Equals(game_2.GameFSM) == false)
+            {
+                return false;
+            }
+            else if (game_1.GameStateCounter.Equals(game_2.GameStateCounter) == false)
+            {
+                return false;
+            }
+            else if (game_1.Players.List_Equals(game_2.Players) == false)
+            {
+                return false;
+            }
+            else if (game_1.Map.Equals(game_2.Map) == false)
+            {
+                return false;
+            }
+            else if (PracticalGameComparison_GameElementReferences(game_1, game_2) == false)
+            {
+                return false;
+            }
+            else if (PracticalGameComparison_Cards(game_1, game_2) == false)
+            {
+                return false;
+            }
+            else if (PracticalGameComparison_MapElements(game_1, game_2) == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool PracticalGameComparison_GameElementReferences(PD_Game game_1, PD_Game game_2)
+        {
+            if (game_1.GameElementReferences.InfectionCards.List_Equals(
+                game_2.GameElementReferences.InfectionCards) == false)
+                return false;
+            else if (game_1.GameElementReferences.CityCards.List_Equals(
+                game_2.GameElementReferences.CityCards) == false)
+                return false;
+            else if (game_1.GameElementReferences.EpidemicCards.List_Equals(
+                game_2.GameElementReferences.EpidemicCards) == false)
+                return false;
+
+            // make sure the pawns correspond to the same roles.
+            // skip checking the pawn - ids, this is not important...
+            if (game_1.GameElementReferences.PlayerPawns.Count
+                != game_2.GameElementReferences.PlayerPawns.Count)
+            {
+                return false;
+            }
+            for (int pp = 0; pp < game_1.GameElementReferences.PlayerPawns.Count; pp++)
+            {
+                if (game_1.GameElementReferences.PlayerPawns[pp].Role
+                    != game_2.GameElementReferences.PlayerPawns[pp].Role)
+                {
+                    return false;
+                }
+            }
+
+            // same as in the pawns, only check the roles, not the card ids.
+            if (game_1.GameElementReferences.RoleCards.Count
+                != game_2.GameElementReferences.RoleCards.Count)
+            {
+                return false;
+            }
+            for (int pp = 0; pp < game_1.GameElementReferences.RoleCards.Count; pp++)
+            {
+                if (game_1.GameElementReferences.RoleCards[pp].Role
+                    != game_2.GameElementReferences.RoleCards[pp].Role)
+                {
+                    return false;
+                }
+            }
+
+            if (game_1.GameElementReferences.ResearchStations.List_Equals(
+                game_2.GameElementReferences.ResearchStations) == false)
+                return false;
+            else if (game_1.GameElementReferences.InfectionCubes.List_Equals(
+                game_2.GameElementReferences.InfectionCubes) == false)
+                return false;
+            else
+                return true;
+        }
+
+        public bool PracticalGameComparison_Cards(PD_Game game_1, PD_Game game_2)
+        {
+            if (game_1.Cards.DividedDeckOfInfectionCards.List_Equals(
+                game_2.Cards.DividedDeckOfInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.ActiveInfectionCards.List_Equals(
+                game_2.Cards.ActiveInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.DeckOfDiscardedInfectionCards.List_Equals(
+                game_2.Cards.DeckOfDiscardedInfectionCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.DividedDeckOfPlayerCards.List_Equals(
+                game_2.Cards.DividedDeckOfPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.DeckOfDiscardedPlayerCards.List_Equals(
+                game_2.Cards.DeckOfDiscardedPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.DeckOfDiscardedPlayerCards.List_Equals(
+                game_2.Cards.DeckOfDiscardedPlayerCards) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.PlayerCardsPerPlayerID.Dictionary_Equal(
+                game_2.Cards.PlayerCardsPerPlayerID) == false)
+            {
+                return false;
+            }
+            else if (game_1.Cards.InactiveRoleCards.List_Equals(
+                game_2.Cards.InactiveRoleCards) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool PracticalGameComparison_MapElements(PD_Game game_1, PD_Game game_2)
+        {
+            // inactive player pawns
+            if (game_1.MapElements.InactivePlayerPawns.Count
+                != game_2.MapElements.InactivePlayerPawns.Count)
+            {
+                return false;
+            }
+            foreach (var pp in game_1.MapElements.InactivePlayerPawns)
+            {
+                if (game_2.MapElements.InactivePlayerPawns.Any(x => x.Role == pp.Role) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (var city in game_1.Map.Cities)
+            {
+                List<PD_ME_PlayerPawn> this_city_pawns = game_1.MapElements.PlayerPawnsPerCityID[city.ID];
+                List<PD_ME_PlayerPawn> other_city_pawns = game_2.MapElements.PlayerPawnsPerCityID[city.ID];
+                foreach (var pawn in this_city_pawns)
+                {
+                    if (other_city_pawns.Any(x => x.Role == pawn.Role) == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (game_1.MapElements.InactiveInfectionCubesPerType.Dictionary_Equals(
+                game_2.MapElements.InactiveInfectionCubesPerType) == false)
+            {
+                return false;
+            }
+
+            foreach (var city in game_1.Map.Cities)
+            {
+                for (int t = 0; t < 4; t++) {
+                    if (
+                        game_1.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count
+                        !=
+                        game_2.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count
+                        )
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (game_1.MapElements.InactiveResearchStations.List_Equals(
+                game_2.MapElements.InactiveResearchStations) == false)
+            {
+                return false;
+            }
+            else if (game_1.MapElements.ResearchStationsPerCityID.Dictionary_Equals(
+                game_2.MapElements.ResearchStationsPerCityID) == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         [TestMethod()]

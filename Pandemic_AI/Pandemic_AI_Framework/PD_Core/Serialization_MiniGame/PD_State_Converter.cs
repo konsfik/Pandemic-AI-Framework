@@ -551,17 +551,17 @@ namespace Pandemic_AI_Framework
             }
 
             // infection cubes
-            List<PD_ME_InfectionCube> infection_cubes = new List<PD_ME_InfectionCube>();
-            for (int i = 0; i < 24; i++)
+            List<PD_ME_InfectionCube> all_infection_cubes_references = new List<PD_ME_InfectionCube>();
+            for (int t = 0; t < 4; t++)
             {
-                for (int t = 0; t < 4; t++)
+                for (int i = 0; i < 24; i++)
                 {
                     int index = t * 24 + i;
                     PD_ME_InfectionCube ic = new PD_ME_InfectionCube(
                         index,
                         t
                         );
-                    infection_cubes.Add(ic);
+                    all_infection_cubes_references.Add(ic);
                 }
             }
 
@@ -573,7 +573,7 @@ namespace Pandemic_AI_Framework
                 player_pawns,
                 role_cards,
                 research_stations,
-                infection_cubes
+                all_infection_cubes_references
                 );
 
             Dictionary<int, PD_ME_PlayerPawn> PLAYER_PAWNS__PER__PLAYER_ID = new Dictionary<int, PD_ME_PlayerPawn>();
@@ -630,30 +630,210 @@ namespace Pandemic_AI_Framework
                     PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
 
                     PD_ME_PlayerPawn player_pawn = player_pawns.Find(x => x.Role == player_role);
-                    if (player_pawn != null) {
+                    if (player_pawn != null)
+                    {
                         player_pawns__per__city_id[c].Add(player_pawn);
                     }
                 }
             }
 
+            // inactive_infection_cubes_per_type
+            Dictionary<int, List<PD_ME_InfectionCube>> inactive_infection_cubes_per_type
+                = new Dictionary<int, List<PD_ME_InfectionCube>>();
+            for (int t = 0; t < 4; t++)
+            {
+                inactive_infection_cubes_per_type.Add(t, new List<PD_ME_InfectionCube>());
+                int num_this_type = mini_game.available_infection_cubes__per__type[t];
+                for (int c = 0; c < num_this_type; c++)
+                {
+                    int id = t * 24 + c;
+                    PD_ME_InfectionCube cube = all_infection_cubes_references.Find(
+                        x => x.ID == id
+                    );
+                    inactive_infection_cubes_per_type[t].Add(cube.GetCustomDeepCopy());
+                }
+            }
+
+            // infection_cubes_per_city_id
+            Dictionary<int, List<PD_ME_InfectionCube>> infection_cubes_per_city_id
+                = new Dictionary<int, List<PD_ME_InfectionCube>>();
+            foreach (PD_City city in cities)
+            {
+                infection_cubes_per_city_id.Add(city.ID, new List<PD_ME_InfectionCube>());
+            }
+            for (int t = 0; t < 4; t++)
+            {
+                int type_counter = inactive_infection_cubes_per_type[t].Count;
+                foreach (PD_City city in cities)
+                {
+                    int num_cubes_this_city_this_type =
+                        mini_game.map___infection_cubes__per__type__per__city[city.ID][t];
+
+                    for (int ic = 0; ic < num_cubes_this_city_this_type; ic++)
+                    {
+                        int id = t * 24 + type_counter;
+                        PD_ME_InfectionCube cube = all_infection_cubes_references[id];
+                        infection_cubes_per_city_id[city.ID].Add(cube);
+                        type_counter++;
+                    }
+                }
+            }
+
+            // inactive_research_stations
+            List<PD_ME_ResearchStation> inactive_research_stations
+                = new List<PD_ME_ResearchStation>();
+            for (int r = 0; r < mini_game.available_research_stations; r++)
+            {
+                inactive_research_stations.Add(research_stations[r].GetCustomDeepCopy());
+            }
+
+            // research_stations_per_city
+            Dictionary<int, List<PD_ME_ResearchStation>> research_stations_per_city
+                = new Dictionary<int, List<PD_ME_ResearchStation>>();
+            int rs_id = inactive_research_stations.Count;
+            foreach (var city in cities)
+            {
+                if (mini_game.map___research_station__per__city[city.ID] == true)
+                {
+                    PD_ME_ResearchStation rs = research_stations.Find(x => x.ID == rs_id);
+                    research_stations_per_city.Add(city.ID, new List<PD_ME_ResearchStation>() { rs });
+                    rs_id++;
+                }
+                else
+                {
+                    research_stations_per_city.Add(city.ID, new List<PD_ME_ResearchStation>());
+                }
+            }
+
+            // map elements...
             PD_MapElements MAP_ELEMENTS = new PD_MapElements(
                 inactive_player_pawns,
                 player_pawns__per__city_id,
-                new Dictionary<int, List<PD_ME_InfectionCube>>(),
-                new Dictionary<int, List<PD_ME_InfectionCube>>(),
-                new List<PD_ME_ResearchStation>(),
-                new Dictionary<int, List<PD_ME_ResearchStation>>()
+                inactive_infection_cubes_per_type,
+                infection_cubes_per_city_id,
+                inactive_research_stations,
+                research_stations_per_city
                 );
 
+
+            ////////////////////////////////////////////////////////////
+            /// CARDS
+            ////////////////////////////////////////////////////////////
+
+            // divided_deck_of_infection_cards
+            List<List<PD_InfectionCard>> divided_deck_of_infection_cards
+                = new List<List<PD_InfectionCard>>();
+            foreach (List<int> mini_cards_group in mini_game.cards___divided_deck_of_infection_cards)
+            {
+                List<PD_InfectionCard> cards_group = new List<PD_InfectionCard>();
+                foreach (int mini_infection_card in mini_cards_group)
+                {
+                    int id = mini_infection_card;
+                    PD_City city = cities.Find(x => x.ID == id);
+                    cards_group.Add(
+                        new PD_InfectionCard(id, city)
+                        );
+                }
+                divided_deck_of_infection_cards.Add(cards_group);
+            }
+
+            // active_infection_cards
+            List<PD_InfectionCard> active_infection_cards
+                = new List<PD_InfectionCard>();
+            foreach (int mini_card in mini_game.cards___active_infection_cards)
+            {
+                int id = mini_card;
+                PD_City city = cities.Find(x => x.ID == id);
+                active_infection_cards.Add(
+                    new PD_InfectionCard(id, city)
+                    );
+            }
+
+            // deck_of_discarded_infection_cards
+            List<PD_InfectionCard> deck_of_discarded_infection_cards
+                = new List<PD_InfectionCard>();
+            foreach (int mini_card in mini_game.cards___deck_of_discarded_infection_cards)
+            {
+                int id = mini_card;
+                PD_City city = cities.Find(x => x.ID == id);
+                deck_of_discarded_infection_cards.Add(
+                    new PD_InfectionCard(id, city)
+                    );
+            }
+
+            // divided_deck_of_player_cards
+            List<List<PD_PlayerCardBase>> divided_deck_of_player_cards
+                = new List<List<PD_PlayerCardBase>>();
+            foreach (List<int> mini_cards_group in mini_game.cards___divided_deck_of_player_cards)
+            {
+                List<PD_PlayerCardBase> cards_group = new List<PD_PlayerCardBase>();
+                foreach (int mini_player_card in mini_cards_group)
+                {
+                    PD_PlayerCardBase card = Game_PlayerCard__FROM__MiniGame_PlayerCard(
+                        mini_player_card,
+                        cities
+                        );
+                    cards_group.Add(
+                        card
+                        );
+                }
+                divided_deck_of_player_cards.Add(cards_group);
+            }
+
+            // deck_of_dicarded_player_cards
+            List<PD_PlayerCardBase> deck_of_dicarded_player_cards = new List<PD_PlayerCardBase>();
+            foreach (int mini_player_card in mini_game.cards___deck_of_discarded_player_cards)
+            {
+                PD_PlayerCardBase player_card = Game_PlayerCard__FROM__MiniGame_PlayerCard(
+                    mini_player_card,
+                    cities
+                    );
+                deck_of_dicarded_player_cards.Add(player_card);
+            }
+
+            // player_cards_per_player
+            Dictionary<int, List<PD_PlayerCardBase>> player_cards_per_player
+                = new Dictionary<int, List<PD_PlayerCardBase>>();
+            foreach (int mini_player in mini_game.players)
+            {
+                PD_Player player = PLAYERS.Find(x => x.ID == mini_player);
+                List<PD_PlayerCardBase> player_cards_in_player_hand = new List<PD_PlayerCardBase>();
+                foreach (int mini_card in mini_game.cards___player_cards__per__player[mini_player])
+                {
+                    player_cards_in_player_hand.Add(
+                        Game_PlayerCard__FROM__MiniGame_PlayerCard(mini_card, cities)
+                        );
+                }
+                player_cards_per_player.Add(
+                    mini_player, player_cards_in_player_hand
+                    );
+            }
+
+
+            List<PD_Role_Card> all_role_cards = new List<PD_Role_Card>() {
+                new PD_Role_Card(0,PD_Player_Roles.Operations_Expert),
+                new PD_Role_Card(1,PD_Player_Roles.Researcher),
+                new PD_Role_Card(2,PD_Player_Roles.Medic),
+                new PD_Role_Card(3,PD_Player_Roles.Scientist)
+            };
+
+            List<PD_Role_Card> inactive_role_cards = all_role_cards.CustomDeepCopy();
+            foreach (int player in mini_game.players)
+            {
+                int mini_role = mini_game.role__per__player[player];
+                PD_Role_Card role_card = Game_RoleCard__FROM__MiniGame_Role(mini_role);
+                inactive_role_cards.RemoveAll(x => x.Role == role_card.Role);
+            }
+
             PD_GameCards CARDS = new PD_GameCards(
-                new List<List<PD_InfectionCard>>(),
-                new List<PD_InfectionCard>(),
-                new List<PD_InfectionCard>(),
-                new List<List<PD_PlayerCardBase>>(),
-                new List<PD_PlayerCardBase>(),
-                new Dictionary<int, List<PD_PlayerCardBase>>(),
-                new List<PD_Role_Card>()
-                ) ;
+                divided_deck_of_infection_cards,
+                active_infection_cards,
+                deck_of_discarded_infection_cards,
+                divided_deck_of_player_cards,
+                deck_of_dicarded_player_cards,
+                player_cards_per_player,
+                inactive_role_cards
+                );
 
 
             PD_Game game = new PD_Game(
@@ -704,6 +884,41 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public static PD_PlayerCardBase Game_PlayerCard__FROM__MiniGame_PlayerCard(
+            int mini_game_player_card,
+            List<PD_City> cities
+            )
+        {
+            // city card...
+            if (mini_game_player_card < cities.Count)
+            {
+                int id = mini_game_player_card;
+                PD_City city = cities.Find(x => x.ID == id);
+                return new PD_CityCard(id, city);
+            }
+            // epidemic card
+            else if (
+                mini_game_player_card >= 128
+                &&
+                mini_game_player_card <= 136
+                )
+            {
+                return new PD_EpidemicCard(mini_game_player_card - 128);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static PD_Role_Card Game_RoleCard__FROM__MiniGame_Role(int mini_role)
+        {
+            PD_Player_Roles role = PlayerRole__From__MiniGamePlayerRole(mini_role);
+            int id = mini_role;
+            return new PD_Role_Card(
+                id, role
+                );
+        }
 
         public static PD_Player_Roles PlayerRole__From__MiniGamePlayerRole(int mini_game__player_role)
         {

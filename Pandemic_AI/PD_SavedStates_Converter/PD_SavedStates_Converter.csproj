@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5756A819-66E4-491D-8951-BF6A19BBFEE6}</ProjectGuid>
+    <ProjectGuid>{74C9D810-8B57-4F5C-A3D2-03965656CD00}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Performance_Tests</RootNamespace>
-    <AssemblyName>Performance_Tests</AssemblyName>
+    <RootNamespace>PD_SavedStates_Converter</RootNamespace>
+    <AssemblyName>PD_SavedStates_Converter</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -28,14 +28,9 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Performance_Tests.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,15 +49,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pandemic_AI_Framework\Pandemic_AI_Framework.csproj">
-      <Project>{68a51164-128f-47dd-8283-5ad22170c070}</Project>
-      <Name>Pandemic_AI_Framework</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed"
-copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed</PostBuildEvent>
-  </PropertyGroup>
 </Project>

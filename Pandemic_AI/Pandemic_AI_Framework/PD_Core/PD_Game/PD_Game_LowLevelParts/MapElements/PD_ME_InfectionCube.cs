@@ -72,5 +72,10 @@ namespace Pandemic_AI_Framework
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return "Infection Cube " + ID.ToString() + " | Type:" + Type.ToString();
+        }
     }
 }

@@ -59,20 +59,29 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality override
+        public bool Equals(PD_GS_ApplyingInfectionCards other)
+        {
+            return true;
+        }
+
         public override bool Equals(object otherObject)
         {
-            if (this.GetType() != otherObject.GetType())
+            if (otherObject is PD_GS_ApplyingInfectionCards other_action)
+            {
+                return Equals(other_action);
+            }
+            else
             {
                 return false;
             }
-
-            return true;
         }
 
         public override int GetHashCode()
         {
             return this.GetType().Name.GetHashCode();
         }
+
+
         #endregion
     }
 }

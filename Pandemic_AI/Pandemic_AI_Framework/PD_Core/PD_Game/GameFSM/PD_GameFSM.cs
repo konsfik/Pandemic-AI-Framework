@@ -86,18 +86,22 @@ namespace Pandemic_AI_Framework
 
 
         #region equalityOverride
+        public bool Equals(PD_GameFSM other)
+        {
+            if (other.CurrentState == this.CurrentState)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public override bool Equals(object otherObject)
         {
             if (otherObject is PD_GameFSM other_game_fsm)
             {
-                if (other_game_fsm.CurrentState == this.CurrentState)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return Equals(other_game_fsm);
             }
             else
             {
@@ -113,6 +117,7 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
 
 
         public static bool operator ==(PD_GameFSM s1, PD_GameFSM s2)

@@ -38,20 +38,29 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality override
+        public bool Equals(PD_GS_GameWon other)
+        {
+            return true;
+        }
+
         public override bool Equals(object otherObject)
         {
-            if (this.GetType() != otherObject.GetType())
+            if (otherObject is PD_GS_GameWon other_state)
+            {
+                return Equals(other_state);
+            }
+            else
             {
                 return false;
             }
-
-            return true;
         }
 
         public override int GetHashCode()
         {
             return this.GetType().Name.GetHashCode();
         }
+
+
         #endregion
     }
 }

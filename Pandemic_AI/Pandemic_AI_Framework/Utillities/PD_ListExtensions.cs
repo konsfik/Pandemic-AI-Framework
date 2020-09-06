@@ -876,22 +876,22 @@ namespace Pandemic_AI_Framework
             return dictionaryCopy;
         }
 
-        public static Dictionary<PD_CityEdge_Directed, List<PD_City>> CustomDeepCopy(
-            this Dictionary<PD_CityEdge_Directed, List<PD_City>> originalDictionary
-            )
-        {
-            Dictionary<PD_CityEdge_Directed, List<PD_City>> dictionaryCopy =
-                new Dictionary<PD_CityEdge_Directed, List<PD_City>>();
+        //public static Dictionary<PD_CityEdge_Directed, List<PD_City>> CustomDeepCopy(
+        //    this Dictionary<PD_CityEdge_Directed, List<PD_City>> originalDictionary
+        //    )
+        //{
+        //    Dictionary<PD_CityEdge_Directed, List<PD_City>> dictionaryCopy =
+        //        new Dictionary<PD_CityEdge_Directed, List<PD_City>>();
 
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
-            }
+        //    foreach (var kvp in originalDictionary)
+        //    {
+        //        var key = kvp.Key;
+        //        var value = kvp.Value;
+        //        dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
+        //    }
 
-            return dictionaryCopy;
-        }
+        //    return dictionaryCopy;
+        //}
 
         public static Dictionary<int, List<PD_City>> CustomDeepCopy(
             this Dictionary<int, List<PD_City>> originalDictionary

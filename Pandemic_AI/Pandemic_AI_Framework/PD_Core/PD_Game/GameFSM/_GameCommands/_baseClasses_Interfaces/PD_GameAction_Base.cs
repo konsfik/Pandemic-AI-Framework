@@ -8,7 +8,6 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public abstract class PD_GameAction_Base : 
-        IGameAction, 
         IEquatable<PD_GameAction_Base>,
         ICustomDeepCopyable<PD_GameAction_Base>
     {

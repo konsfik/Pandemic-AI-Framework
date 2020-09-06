@@ -926,15 +926,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
-        {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_Game)otherObject;
-
+        public bool Equals(PD_Game other) {
             if (this.UniqueID != other.UniqueID)
             {
                 return false;
@@ -1006,6 +998,16 @@ namespace Pandemic_AI_Framework
             else
             {
                 return true;
+            }
+        }
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Game other_game)
+            {
+                return Equals(other_game);
+            }
+            else {
+                return false;
             }
         }
 

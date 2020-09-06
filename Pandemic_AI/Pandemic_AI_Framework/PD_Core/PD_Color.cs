@@ -66,5 +66,87 @@ namespace Pandemic_AI_Framework
                 this.A
                 );
         }
+
+        #region equalityOverride
+        public bool Equals(PD_Color other)
+        {
+            if (other.R != this.R)
+            {
+                return false;
+            }
+            if (other.G != this.G)
+            {
+                return false;
+            }
+            if (other.B != this.B)
+            {
+                return false;
+            }
+            if (other.A != this.A)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_Color other_game_fsm)
+            {
+                return Equals(other_game_fsm);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+
+            hash = (hash * 13) + this.R.GetHashCode();
+            hash = (hash * 13) + this.G.GetHashCode();
+            hash = (hash * 13) + this.B.GetHashCode();
+            hash = (hash * 13) + this.A.GetHashCode();
+
+            return hash;
+        }
+
+
+
+        public static bool operator ==(PD_Color s1, PD_Color s2)
+        {
+            if (Object.ReferenceEquals(s1, null))
+            {
+                if (Object.ReferenceEquals(s2, null))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else // c1 is not null
+            {
+                if (Object.ReferenceEquals(s2, null)) // c2 is null
+                {
+                    return false;
+                }
+            }
+            // c1 is not null && c2 is not null
+            // -> actually check equality
+            return s1.Equals(s2);
+        }
+
+        public static bool operator !=(PD_Color s1, PD_Color s2)
+        {
+            return !(s1 == s2);
+        }
+        #endregion
     }
 }

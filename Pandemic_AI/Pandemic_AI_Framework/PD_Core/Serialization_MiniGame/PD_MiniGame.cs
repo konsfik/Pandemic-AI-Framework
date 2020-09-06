@@ -178,15 +178,15 @@ namespace Pandemic_AI_Framework
             this.map___number_of_cities = map___number_of_cities;
             this.map___cities = map___cities.CustomDeepCopy();
             this.map___name__per__city = map___name__per__city.CustomDeepCopy();
-            this.map___position__per__city 
+            this.map___position__per__city
                 = map___position__per__city.CustomDeepCopy();
-            this.map___infection_type__per__city 
+            this.map___infection_type__per__city
                 = map___infection_type__per__city.CustomDeepCopy();
-            this.map___neighbors__per__city 
+            this.map___neighbors__per__city
                 = map___neighbors__per__city.CustomDeepCopy();
-            this.map___research_station__per__city 
+            this.map___research_station__per__city
                 = map___research_station__per__city.CustomDeepCopy();
-            this.map___location__per__player 
+            this.map___location__per__player
                 = map___location__per__player.CustomDeepCopy();
             this.map___infection_cubes__per__type__per__city
                 = map___infection_cubes__per__type__per__city.CustomDeepCopy();
@@ -208,7 +208,7 @@ namespace Pandemic_AI_Framework
             this.state_counter___disease_states = state_counter___disease_states.CustomDeepCopy();
 
             // flags
-            this.flag___NotEnoughDiseaseCubesToCompleteAnInfection 
+            this.flag___NotEnoughDiseaseCubesToCompleteAnInfection
                 = flag___NotEnoughDiseaseCubesToCompleteAnInfection;
             this.flag___NotEnoughPlayerCardsToDraw
                 = flag___NotEnoughPlayerCardsToDraw;
@@ -246,15 +246,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public override bool Equals(object otherObject)
+        public bool Equals(PD_MiniGame other)
         {
-            if (otherObject.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            var other = (PD_MiniGame)otherObject;
-
             if (this.unique_id != other.unique_id)
             {
                 return false;
@@ -356,6 +349,18 @@ namespace Pandemic_AI_Framework
             else return true;
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is PD_MiniGame other_mini_game)
+            {
+                return Equals(other_mini_game);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 7;
@@ -414,6 +419,8 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
+
 
         public static bool operator ==(PD_MiniGame mg1, PD_MiniGame mg2)
         {

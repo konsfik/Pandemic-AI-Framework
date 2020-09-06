@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pandemic_AI_Framework
 {
-    public interface ICustomDeepCopyable<T>
+    public interface ICustomDeepCopyable<T> : IEquatable<T>
     {
         T GetCustomDeepCopy();
     }

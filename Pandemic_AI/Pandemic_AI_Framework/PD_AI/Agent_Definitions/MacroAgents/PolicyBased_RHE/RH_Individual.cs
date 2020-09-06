@@ -191,7 +191,7 @@ namespace Pandemic_AI_Framework
                     }
                 }
 
-                if (evaluation_GameState.GQ_Is_Ongoing()&& IsComplete() == false)
+                if (evaluation_GameState.GQ_Is_Ongoing() && IsComplete() == false)
                 {
                     Expand(
                         randomness_provider,
@@ -447,15 +447,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(RH_Individual other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (RH_Individual)otherObject;
-
             if (this.NumSimulationsForEvaluation != other.NumSimulationsForEvaluation)
             {
                 return false;
@@ -483,6 +476,18 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is RH_Individual other_individual)
+            {
+                return Equals(other_individual);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -496,6 +501,7 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
 
 
         public static bool operator ==(RH_Individual c1, RH_Individual c2)

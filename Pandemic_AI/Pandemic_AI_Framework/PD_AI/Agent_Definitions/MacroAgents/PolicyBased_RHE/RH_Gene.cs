@@ -551,15 +551,8 @@ namespace Pandemic_AI_Framework
 
 
         #region equalityOverride
-        public override bool Equals(object otherObject)
+        public bool Equals(RH_Gene other)
         {
-            if (this.GetType() != otherObject.GetType())
-            {
-                return false;
-            }
-
-            var other = (RH_Gene)otherObject;
-
             if (this.Gene_TurnIndex != other.Gene_TurnIndex)
             {
                 return false;
@@ -583,6 +576,18 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public override bool Equals(object otherObject)
+        {
+            if (otherObject is RH_Gene other_gene)
+            {
+                return Equals(other_gene);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override int GetHashCode()
         {
             int hash = 17;
@@ -595,6 +600,7 @@ namespace Pandemic_AI_Framework
 
             return hash;
         }
+
 
 
         public static bool operator ==(RH_Gene c1, RH_Gene c2)

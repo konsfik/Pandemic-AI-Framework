@@ -5,7 +5,7 @@ using System;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public abstract class PD_GameStateBase : IGameState
+    public abstract class PD_GameStateBase
     {
 
         public PD_GameStateBase()

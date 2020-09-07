@@ -30,7 +30,6 @@ namespace Pandemic_AI_Framework
         public PD_MapElements MapElements { get; private set; }
 
         // OWNERSHIPS
-        public Dictionary<int, PD_ME_PlayerPawn> PlayerPawnsPerPlayerID { get; private set; }
         public Dictionary<int, PD_Role_Card> RoleCardsPerPlayerID { get; private set; }
 
         // GAME HISTORY
@@ -306,25 +305,6 @@ namespace Pandemic_AI_Framework
                 all_epidemic_cards.Add(new PD_EpidemicCard(i));
             }
 
-            List<PD_ME_PlayerPawn> playerPawns = new List<PD_ME_PlayerPawn>() {
-                new PD_ME_PlayerPawn(
-                    2,
-                    PD_Player_Roles.Operations_Expert
-                    ),
-                new PD_ME_PlayerPawn(
-                    4,
-                    PD_Player_Roles.Researcher
-                    ),
-                new PD_ME_PlayerPawn(
-                    5,
-                    PD_Player_Roles.Medic
-                    ),
-                new PD_ME_PlayerPawn(
-                    6,
-                    PD_Player_Roles.Scientist
-                    )
-            };
-
             List<PD_Role_Card> roleCards = new List<PD_Role_Card>() {
                 new PD_Role_Card(
                     2,
@@ -376,7 +356,6 @@ namespace Pandemic_AI_Framework
                 allCityCards,
                 all_infection_cards,
                 all_epidemic_cards,
-                playerPawns,
                 roleCards,
                 research_stations,
                 infection_cubes
@@ -411,7 +390,6 @@ namespace Pandemic_AI_Framework
             List<PD_InfectionCard> allInfectionCards,
             List<PD_EpidemicCard> allEpidemicCards,
 
-            List<PD_ME_PlayerPawn> allPlayerPawns,
             List<PD_Role_Card> allRoleCards,
             List<PD_ME_ResearchStation> allResearchStations,
             List<PD_ME_InfectionCube> allInfectionCubes
@@ -450,21 +428,15 @@ namespace Pandemic_AI_Framework
                 allInfectionCards,
                 allEpidemicCards,
 
-                allPlayerPawns,
                 allRoleCards,
 
                 allResearchStations,
                 allInfectionCubes
                 );
 
-            MapElements = new PD_MapElements(cities);
+            MapElements = new PD_MapElements(players,cities);
             Cards = new PD_GameCards(Players, allRoleCards);
 
-            PlayerPawnsPerPlayerID = new Dictionary<int, PD_ME_PlayerPawn>();
-            foreach (var player in Players)
-            {
-                PlayerPawnsPerPlayerID.Add(player.ID, null);
-            }
 
             RoleCardsPerPlayerID = new Dictionary<int, PD_Role_Card>();
             foreach (var player in players)
@@ -495,7 +467,6 @@ namespace Pandemic_AI_Framework
             PD_MapElements mapElements,
             PD_GameCards cards,
 
-            Dictionary<int, PD_ME_PlayerPawn> playerPawnsPerPlayerID,
             Dictionary<int, PD_Role_Card> roleCardsPerPlayerID,
 
             List<PD_GameAction_Base> playerActionsHistory,
@@ -520,7 +491,6 @@ namespace Pandemic_AI_Framework
             MapElements = mapElements.GetCustomDeepCopy();
             Cards = cards.GetCustomDeepCopy();
 
-            PlayerPawnsPerPlayerID = playerPawnsPerPlayerID.CustomDeepCopy();
             RoleCardsPerPlayerID = roleCardsPerPlayerID.CustomDeepCopy();
 
             PlayerActionsHistory = playerActionsHistory.CustomDeepCopy();
@@ -553,7 +523,6 @@ namespace Pandemic_AI_Framework
             MapElements = gameToCopy.MapElements.GetCustomDeepCopy();
             Cards = gameToCopy.Cards.GetCustomDeepCopy();
 
-            PlayerPawnsPerPlayerID = gameToCopy.PlayerPawnsPerPlayerID.CustomDeepCopy();
             RoleCardsPerPlayerID = gameToCopy.RoleCardsPerPlayerID.CustomDeepCopy();
 
             PlayerActionsHistory = gameToCopy.PlayerActionsHistory.CustomDeepCopy();
@@ -642,17 +611,15 @@ namespace Pandemic_AI_Framework
 
             // 4. Give each player cards and a pawn
             // 4.1. Assign random roles and pawns to players
-            MapElements.InactivePlayerPawns.AddRange(GameElementReferences.PlayerPawns);
-
+            List<PD_Player_Roles> available_roles = new List<PD_Player_Roles>() { 
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
             foreach (var player in Players)
             {
-                var pawn = MapElements.InactivePlayerPawns.DrawOneRandom(randomness_provider);
-                var roleCard = GameElementReferences.RoleCards.Find(
-                    x =>
-                    x.Role == pawn.Role
-                    );
-                Cards.InactiveRoleCards.Remove(roleCard);
-                PlayerPawnsPerPlayerID[player.ID] = pawn;
+                var roleCard = Cards.InactiveRoleCards.DrawOneRandom(randomness_provider);
                 RoleCardsPerPlayerID[player.ID] = roleCard;
             }
 
@@ -1094,10 +1061,6 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.PlayerPawnsPerPlayerID.Dictionary_Equals(other.PlayerPawnsPerPlayerID) == false)
-            {
-                return false;
-            }
             else if (this.RoleCardsPerPlayerID.Dictionary_Equals(other.RoleCardsPerPlayerID) == false)
             {
                 return false;
@@ -1154,7 +1117,6 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + Cards.GetHashCode();
             hash = hash * 31 + MapElements.GetHashCode();
 
-            hash = hash * 31 + PlayerPawnsPerPlayerID.Custom_HashCode();
             hash = hash * 31 + RoleCardsPerPlayerID.Custom_HashCode();
 
             hash = hash * 31 + PlayerActionsHistory.Custom_HashCode();

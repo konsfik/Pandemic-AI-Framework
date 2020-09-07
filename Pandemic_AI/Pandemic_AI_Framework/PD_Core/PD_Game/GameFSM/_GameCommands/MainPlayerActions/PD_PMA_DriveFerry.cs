@@ -51,9 +51,8 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                game,
-                game.PlayerPawnsPerPlayerID[Player.ID],
+            game.GO_MovePawnFromCityToCity(
+                Player,
                 InitialLocation,
                 TargetLocation
                 );

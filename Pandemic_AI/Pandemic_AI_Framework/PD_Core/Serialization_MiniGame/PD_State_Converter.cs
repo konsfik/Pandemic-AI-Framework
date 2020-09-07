@@ -477,21 +477,6 @@ namespace Pandemic_AI_Framework
                 epidemic_cards.Add(epidemic_card);
             }
 
-            // player pawns
-            List<PD_ME_PlayerPawn> player_pawns = new List<PD_ME_PlayerPawn>();
-            player_pawns.Add(
-                new PD_ME_PlayerPawn(PD_MiniGame__PlayerRole.Operations_Expert, PD_Player_Roles.Operations_Expert)
-                );
-            player_pawns.Add(
-                new PD_ME_PlayerPawn(PD_MiniGame__PlayerRole.Researcher, PD_Player_Roles.Researcher)
-                );
-            player_pawns.Add(
-                new PD_ME_PlayerPawn(PD_MiniGame__PlayerRole.Medic, PD_Player_Roles.Medic)
-                );
-            player_pawns.Add(
-                new PD_ME_PlayerPawn(PD_MiniGame__PlayerRole.Scientist, PD_Player_Roles.Scientist)
-                );
-
             // role cards
             List<PD_Role_Card> role_cards = new List<PD_Role_Card>();
             role_cards.Add(
@@ -534,21 +519,16 @@ namespace Pandemic_AI_Framework
                 city_cards,
                 infection_cards,
                 epidemic_cards,
-                player_pawns,
                 role_cards,
                 research_stations,
                 all_infection_cubes_references
                 );
 
-            Dictionary<int, PD_ME_PlayerPawn> PLAYER_PAWNS__PER__PLAYER_ID = new Dictionary<int, PD_ME_PlayerPawn>();
             Dictionary<int, PD_Role_Card> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, PD_Role_Card>();
             foreach (int p in mini_game.players)
             {
                 int mini_player_role = mini_game.role__per__player[p];
                 PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
-
-                PD_ME_PlayerPawn pawn = player_pawns.Find(x => x.Role == player_role);
-                PLAYER_PAWNS__PER__PLAYER_ID.Add(p, pawn);
 
                 PD_Role_Card role_card = role_cards.Find(x => x.Role == player_role);
                 ROLE_CARDS__PER__PLAYER_ID.Add(p, role_card);
@@ -558,50 +538,15 @@ namespace Pandemic_AI_Framework
             ////////////////////////////////////////////////////////////
             /// map elements
             ////////////////////////////////////////////////////////////
+            ///
 
-            // inactive player pawns
-            List<PD_ME_PlayerPawn> inactive_player_pawns = new List<PD_ME_PlayerPawn>();
-            foreach (int ur in mini_game.unassigned_player_roles)
-            {
-                switch (ur)
-                {
-                    case PD_MiniGame__PlayerRole.UNDEFINED:
-                        inactive_player_pawns.Add(player_pawns.Find(x => x.Role == PD_Player_Roles.None));
-                        break;
-                    case PD_MiniGame__PlayerRole.Operations_Expert:
-                        inactive_player_pawns.Add(player_pawns.Find(x => x.Role == PD_Player_Roles.Operations_Expert));
-                        break;
-                    case PD_MiniGame__PlayerRole.Researcher:
-                        inactive_player_pawns.Add(player_pawns.Find(x => x.Role == PD_Player_Roles.Researcher));
-                        break;
-                    case PD_MiniGame__PlayerRole.Medic:
-                        inactive_player_pawns.Add(player_pawns.Find(x => x.Role == PD_Player_Roles.Medic));
-                        break;
-                    case PD_MiniGame__PlayerRole.Scientist:
-                        inactive_player_pawns.Add(player_pawns.Find(x => x.Role == PD_Player_Roles.Scientist));
-                        break;
-                }
+            // location per player
+            Dictionary<int, int> location__per__player = new Dictionary<int, int>();
+            foreach (int p in mini_game.players) { 
+                int location = mini_game.map_elements___location__per__player[p];
+                location__per__player.Add(p, location);
             }
 
-            // player pawns per city id
-            Dictionary<int, List<PD_ME_PlayerPawn>> player_pawns__per__city_id = new Dictionary<int, List<PD_ME_PlayerPawn>>();
-            foreach (int c in mini_game.map___cities)
-            {
-                player_pawns__per__city_id.Add(c, new List<PD_ME_PlayerPawn>());
-                foreach (int p in mini_game.players)
-                {
-                    if (mini_game.map_elements___location__per__player[p] == c) {
-                        int mini_player_role = mini_game.role__per__player[p];
-                        PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
-
-                        PD_ME_PlayerPawn player_pawn = player_pawns.Find(x => x.Role == player_role);
-                        if (player_pawn != null)
-                        {
-                            player_pawns__per__city_id[c].Add(player_pawn);
-                        }
-                    }
-                }
-            }
 
             // inactive_infection_cubes_per_type
             Dictionary<int, List<PD_ME_InfectionCube>> inactive_infection_cubes_per_type
@@ -673,8 +618,7 @@ namespace Pandemic_AI_Framework
 
             // map elements...
             PD_MapElements MAP_ELEMENTS = new PD_MapElements(
-                inactive_player_pawns,
-                player_pawns__per__city_id,
+                location__per__player,
                 inactive_infection_cubes_per_type,
                 infection_cubes_per_city_id,
                 inactive_research_stations,
@@ -814,7 +758,6 @@ namespace Pandemic_AI_Framework
                 GAME_ELEMENT_REFERENCES,                    // game element references
                 MAP_ELEMENTS,                               // map elements
                 CARDS,                                      // cards
-                PLAYER_PAWNS__PER__PLAYER_ID,               // player pawns per player id
                 ROLE_CARDS__PER__PLAYER_ID,                 // role cards per player id     
                 new List<PD_GameAction_Base>(),             // player actions history
                 new List<PD_InfectionReport>(),             // infection reports

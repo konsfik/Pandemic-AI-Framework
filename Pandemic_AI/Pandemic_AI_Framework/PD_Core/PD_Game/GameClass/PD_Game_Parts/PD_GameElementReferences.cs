@@ -16,7 +16,6 @@ namespace Pandemic_AI_Framework
         public List<PD_CityCard> CityCards { get; private set; }
         public List<PD_EpidemicCard> EpidemicCards { get; private set; }
 
-        public List<PD_ME_PlayerPawn> PlayerPawns { get; private set; }
         public List<PD_Role_Card> RoleCards { get; private set; }
 
         public List<PD_ME_ResearchStation> ResearchStations { get; private set; }
@@ -39,7 +38,6 @@ namespace Pandemic_AI_Framework
             List<PD_InfectionCard> infectionCards,
             List<PD_EpidemicCard> epidemicCards,
 
-            List<PD_ME_PlayerPawn> playerPawns,
             List<PD_Role_Card> roleCards,
             List<PD_ME_ResearchStation> researchStations,
             List<PD_ME_InfectionCube> infectionCubes
@@ -49,7 +47,6 @@ namespace Pandemic_AI_Framework
             InfectionCards = infectionCards.CustomDeepCopy();
             EpidemicCards = epidemicCards.CustomDeepCopy();
 
-            PlayerPawns = playerPawns.CustomDeepCopy();
             RoleCards = roleCards.CustomDeepCopy();
             ResearchStations = researchStations.CustomDeepCopy();
             InfectionCubes = infectionCubes.CustomDeepCopy();
@@ -66,7 +63,6 @@ namespace Pandemic_AI_Framework
             CityCards = gameElementReferencesToCopy.CityCards.CustomDeepCopy();
             InfectionCards = gameElementReferencesToCopy.InfectionCards.CustomDeepCopy();
             EpidemicCards = gameElementReferencesToCopy.EpidemicCards.CustomDeepCopy();
-            PlayerPawns = gameElementReferencesToCopy.PlayerPawns.CustomDeepCopy();
             RoleCards = gameElementReferencesToCopy.RoleCards.CustomDeepCopy();
             ResearchStations = gameElementReferencesToCopy.ResearchStations.CustomDeepCopy();
             InfectionCubes = gameElementReferencesToCopy.InfectionCubes.CustomDeepCopy();
@@ -85,8 +81,6 @@ namespace Pandemic_AI_Framework
             else if (this.CityCards.List_Equals(other.CityCards) == false)
                 return false;
             else if (this.EpidemicCards.List_Equals(other.EpidemicCards) == false)
-                return false;
-            else if (this.PlayerPawns.List_Equals(other.PlayerPawns) == false)
                 return false;
             else if (this.RoleCards.List_Equals(other.RoleCards) == false)
                 return false;
@@ -117,7 +111,6 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + InfectionCards.Custom_HashCode();
             hash = hash * 31 + CityCards.Custom_HashCode();
             hash = hash * 31 + EpidemicCards.Custom_HashCode();
-            hash = hash * 31 + PlayerPawns.Custom_HashCode();
             hash = hash * 31 + RoleCards.Custom_HashCode();
             hash = hash * 31 + ResearchStations.Custom_HashCode();
             hash = hash * 31 + InfectionCubes.Custom_HashCode();

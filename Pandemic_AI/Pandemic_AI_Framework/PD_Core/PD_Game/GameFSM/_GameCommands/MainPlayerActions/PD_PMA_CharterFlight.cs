@@ -73,7 +73,7 @@ namespace Pandemic_AI_Framework
                 );
 
             game.GO_MovePawnFromCityToCity(
-                game.PlayerPawnsPerPlayerID[Player.ID],
+                Player,
                 InitialLocation,
                 TargetLocation
                 );

@@ -196,8 +196,7 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            var currentPawnLocation = game.GQ_Find_PlayerPawnLocation(currentPlayerPawn);
+            var current_player_location = game.GQ_CurrentPlayer_Location();
 
             var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
@@ -212,18 +211,18 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-            if (allLocationsWithResearchStations.Any(x => x == currentPawnLocation))
+            if (allLocationsWithResearchStations.Any(x => x == current_player_location))
             {
                 var allOtherLocationsWithResearchStations = allLocationsWithResearchStations.FindAll(
                     x =>
-                    x != currentPawnLocation
+                    x != current_player_location
                     );
 
                 foreach (var city in allOtherLocationsWithResearchStations)
                 {
                     var action = new PD_PMA_ShuttleFlight(
                         currentPlayer,
-                        currentPawnLocation,
+                        current_player_location,
                         city
                         );
                     shuttleFlightActions.Add(action);

@@ -83,21 +83,18 @@ namespace Pandemic_AI_Framework.Tests
                 game.Map.name__per__city[x] == "Atlanta"
                 );
 
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                game,
-                game.GQ_Find_PlayerPawn(game.Players[1]),
+            game.GO_MovePawnFromCityToCity(
+                game.Players[1],
                 Atlanta,
                 Milan
                 );
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                game,
-                game.GQ_Find_PlayerPawn(game.Players[2]),
+            game.GO_MovePawnFromCityToCity(
+                game.Players[2],
                 Atlanta,
                 Milan
                 );
-            PD_Game_Operators.GO_MovePawnFromCityToCity(
-                game,
-                game.GQ_Find_PlayerPawn(game.Players[3]),
+            game.GO_MovePawnFromCityToCity(
+                game.Players[3],
                 Atlanta,
                 Milan
                 );

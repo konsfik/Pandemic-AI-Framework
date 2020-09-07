@@ -64,21 +64,6 @@ namespace Pandemic_AI_Framework
             return game.MapElements.InactiveInfectionCubesPerType[type].Count;
         }
 
-        public static PD_Player Find_OwnerOfPawn(
-            this PD_Game game,
-            PD_ME_PlayerPawn pawn
-            )
-        {
-            foreach (var player in game.Players)
-            {
-                if (game.PlayerPawnsPerPlayerID[player.ID] == pawn)
-                {
-                    return player;
-                }
-            }
-            return null;
-        }
-
         public static int GQ_RemainingPlayerActions_ThisRound(
             this PD_Game game
             )
@@ -454,9 +439,8 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            var currentPlayer = GQ_CurrentPlayer(game);
-            var currentPlayerPawn = game.PlayerPawnsPerPlayerID[currentPlayer.ID];
-            return GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
+            PD_Player currentPlayer = GQ_CurrentPlayer(game);
+            return game.MapElements.location__per__player[currentPlayer.ID];
         }
 
         public static int GQ_PlayerLocation(
@@ -464,29 +448,7 @@ namespace Pandemic_AI_Framework
             PD_Player player
             )
         {
-            var playerPawn = game.PlayerPawnsPerPlayerID[player.ID];
-            return GQ_Find_PlayerPawnLocation(game, playerPawn);
-        }
-
-        public static int GQ_Find_PlayerPawnLocation(
-            this PD_Game game,
-            PD_ME_PlayerPawn playerPawn
-            )
-        {
-            if (playerPawn == null)
-            {
-                throw new System.Exception("the player pawn is null");
-            }
-
-            foreach (var city in game.Map.cities)
-            {
-                if (game.MapElements.PlayerPawnsPerCityID[city].Contains(playerPawn))
-                {
-                    return city;
-                }
-            }
-
-            return -1;
+            return game.MapElements.location__per__player[player.ID];
         }
 
         public static int GQ_Find_CityByName(
@@ -498,14 +460,6 @@ namespace Pandemic_AI_Framework
                 x =>
                 game.Map.name__per__city[x] == cityName
                 );
-        }
-
-        public static PD_ME_PlayerPawn GQ_Find_PlayerPawn(
-            this PD_Game game,
-            PD_Player player
-            )
-        {
-            return game.PlayerPawnsPerPlayerID[player.ID];
         }
 
         public static List<int> GQ_ResearchStationCities(

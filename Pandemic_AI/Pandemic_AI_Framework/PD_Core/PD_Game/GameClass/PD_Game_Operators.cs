@@ -95,9 +95,7 @@ namespace Pandemic_AI_Framework
             int atlanta = game.GQ_Find_CityByName("Atlanta");
             foreach (var player in game.Players)
             {
-                game.MapElements.PlayerPawnsPerCityID[atlanta].Add(
-                    game.GQ_Find_PlayerPawn(player)
-                    );
+                game.MapElements.location__per__player[player.ID] = atlanta;
             }
         }
 
@@ -270,13 +268,12 @@ namespace Pandemic_AI_Framework
 
         public static void GO_MovePawnFromCityToCity(
             this PD_Game game,
-            PD_ME_PlayerPawn pawn,
+            PD_Player player,
             int initialCity,
             int targetCity
             )
         {
-            game.MapElements.PlayerPawnsPerCityID[initialCity].Remove(pawn);
-            game.MapElements.PlayerPawnsPerCityID[targetCity].Add(pawn);
+            game.MapElements.location__per__player[player.ID] = targetCity;
         }
 
         public static void GO_PlayerDiscardsPlayerCard(

@@ -16,8 +16,7 @@ namespace Pandemic_AI_Framework
     {
         #region properties
 
-        public List<PD_ME_PlayerPawn> InactivePlayerPawns { get; private set; }
-        public Dictionary<int, List<PD_ME_PlayerPawn>> PlayerPawnsPerCityID { get; private set; }
+        public Dictionary<int, int> location__per__player;
         public Dictionary<int, List<PD_ME_InfectionCube>> InactiveInfectionCubesPerType { get; private set; }
         public Dictionary<int, List<PD_ME_InfectionCube>> InfectionCubesPerCityID { get; private set; }
         public List<PD_ME_ResearchStation> InactiveResearchStations { get; private set; }
@@ -28,13 +27,14 @@ namespace Pandemic_AI_Framework
         #region constructors
         // normal constructor
         public PD_MapElements(
+            List<PD_Player> players,
             List<int> cities
             )
         {
-            InactivePlayerPawns = new List<PD_ME_PlayerPawn>();
-            PlayerPawnsPerCityID = new Dictionary<int, List<PD_ME_PlayerPawn>>();
-            foreach (var city in cities)
-                PlayerPawnsPerCityID.Add(city, new List<PD_ME_PlayerPawn>());
+            location__per__player = new Dictionary<int, int>();
+            foreach (var player in players) {
+                location__per__player.Add(player.ID, -1);
+            }
 
             InactiveInfectionCubesPerType = new Dictionary<int, List<PD_ME_InfectionCube>>();
             InfectionCubesPerCityID = new Dictionary<int, List<PD_ME_InfectionCube>>();
@@ -50,16 +50,14 @@ namespace Pandemic_AI_Framework
         // special constructor, for use with the json serializer
         [JsonConstructor]
         public PD_MapElements(
-            List<PD_ME_PlayerPawn> inactivePlayerPawns,
-            Dictionary<int, List<PD_ME_PlayerPawn>> playerPawnsPerCityID,
+            Dictionary<int, int> location__per__player,
             Dictionary<int, List<PD_ME_InfectionCube>> inactiveInfectionCubesPerType,
             Dictionary<int, List<PD_ME_InfectionCube>> infectionCubesPerCityID,
             List<PD_ME_ResearchStation> inactiveResearchStations,
             Dictionary<int, List<PD_ME_ResearchStation>> researchStationsPerCityID
             )
         {
-            this.InactivePlayerPawns = inactivePlayerPawns.CustomDeepCopy();
-            this.PlayerPawnsPerCityID = playerPawnsPerCityID.CustomDeepCopy();
+            this.location__per__player = location__per__player.CustomDeepCopy();
             this.InactiveInfectionCubesPerType = inactiveInfectionCubesPerType.CustomDeepCopy();
             this.InfectionCubesPerCityID = infectionCubesPerCityID.CustomDeepCopy();
             this.InactiveResearchStations = inactiveResearchStations.CustomDeepCopy();
@@ -80,8 +78,7 @@ namespace Pandemic_AI_Framework
             PD_MapElements mapElementsToCopy
             )
         {
-            this.InactivePlayerPawns = mapElementsToCopy.InactivePlayerPawns.CustomDeepCopy();
-            this.PlayerPawnsPerCityID = mapElementsToCopy.PlayerPawnsPerCityID.CustomDeepCopy();
+            this.location__per__player = mapElementsToCopy.location__per__player.CustomDeepCopy();
             this.InactiveInfectionCubesPerType = mapElementsToCopy.InactiveInfectionCubesPerType.CustomDeepCopy();
             this.InfectionCubesPerCityID = mapElementsToCopy.InfectionCubesPerCityID.CustomDeepCopy();
             this.InactiveResearchStations = mapElementsToCopy.InactiveResearchStations.CustomDeepCopy();
@@ -91,13 +88,8 @@ namespace Pandemic_AI_Framework
         #region equalityOverride
         public bool Equals(PD_MapElements other)
         {
-            if (this.InactivePlayerPawns.List_Equals(
-                other.InactivePlayerPawns) == false)
-            {
-                return false;
-            }
-            else if (this.PlayerPawnsPerCityID.Dictionary_Equals(
-                other.PlayerPawnsPerCityID) == false)
+            if (this.location__per__player.Dictionary_Equals(
+                other.location__per__player) == false)
             {
                 return false;
             }
@@ -143,8 +135,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = (hash * 13) + InactivePlayerPawns.Custom_HashCode();
-            hash = (hash * 13) + PlayerPawnsPerCityID.Custom_HashCode();
+            hash = (hash * 13) + location__per__player.Custom_HashCode();
             hash = (hash * 13) + InactiveInfectionCubesPerType.Custom_HashCode();
             hash = (hash * 13) + InfectionCubesPerCityID.Custom_HashCode();
             hash = (hash * 13) + InactiveResearchStations.Custom_HashCode();

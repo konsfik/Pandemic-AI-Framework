@@ -141,21 +141,6 @@ namespace Pandemic_AI_Framework.Tests
                 game_2.GameElementReferences.EpidemicCards) == false)
                 return false;
 
-            // make sure the pawns correspond to the same roles.
-            // skip checking the pawn - ids, this is not important...
-            if (game_1.GameElementReferences.PlayerPawns.Count
-                != game_2.GameElementReferences.PlayerPawns.Count)
-            {
-                return false;
-            }
-            for (int pp = 0; pp < game_1.GameElementReferences.PlayerPawns.Count; pp++)
-            {
-                if (game_1.GameElementReferences.PlayerPawns[pp].Role
-                    != game_2.GameElementReferences.PlayerPawns[pp].Role)
-                {
-                    return false;
-                }
-            }
 
             // same as in the pawns, only check the roles, not the card ids.
             if (game_1.GameElementReferences.RoleCards.Count
@@ -233,31 +218,6 @@ namespace Pandemic_AI_Framework.Tests
         public bool PracticalGameComparison_MapElements(PD_Game game_1, PD_Game game_2)
         {
             // inactive player pawns
-            if (game_1.MapElements.InactivePlayerPawns.Count
-                != game_2.MapElements.InactivePlayerPawns.Count)
-            {
-                return false;
-            }
-            foreach (var pp in game_1.MapElements.InactivePlayerPawns)
-            {
-                if (game_2.MapElements.InactivePlayerPawns.Any(x => x.Role == pp.Role) == false)
-                {
-                    return false;
-                }
-            }
-
-            foreach (int city in game_1.Map.cities)
-            {
-                List<PD_ME_PlayerPawn> this_city_pawns = game_1.MapElements.PlayerPawnsPerCityID[city];
-                List<PD_ME_PlayerPawn> other_city_pawns = game_2.MapElements.PlayerPawnsPerCityID[city];
-                foreach (var pawn in this_city_pawns)
-                {
-                    if (other_city_pawns.Any(x => x.Role == pawn.Role) == false)
-                    {
-                        return false;
-                    }
-                }
-            }
 
             for (int t = 0; t < 4; t++)
             {

@@ -48,14 +48,6 @@ namespace Pandemic_AI_Framework.Tests
                     )
                 );
 
-            // check that the final game is the same as the initial game...
-            //Assert.IsTrue(final_game__from__deserialized_game != null);
-            //Assert.IsTrue(final_game__from__deserialized_game.GameSettings.Equals(initial_game.GameSettings));
-            //Assert.IsTrue(final_game__from__deserialized_game.GameFSM.Equals(initial_game.GameFSM));
-            //Assert.IsTrue(final_game__from__deserialized_game.GameStateCounter.Equals(initial_game.GameStateCounter));
-            //Assert.IsTrue(final_game__from__deserialized_game.Players.List_Equals(initial_game.Players));
-            //Assert.IsTrue(final_game__from__deserialized_game.Map.Equals(initial_game.Map));
-            //Assert.IsTrue(final_game__from__deserialized_game.GameElementReferences.Equals(initial_game.GameElementReferences));
             final_game__from__deserialized_game.UpdateAvailablePlayerActions();
 
             while (final_game__from__deserialized_game.GQ_Is_Ongoing()) {
@@ -103,6 +95,13 @@ namespace Pandemic_AI_Framework.Tests
             }
             else if (PracticalGameComparison_MapElements(game_1, game_2) == false)
             {
+                return false;
+            }
+            else if (
+                game_1.CurrentAvailablePlayerActions.List_Equals(
+                    game_2.CurrentAvailablePlayerActions
+                    ) == false
+                ) {
                 return false;
             }
 

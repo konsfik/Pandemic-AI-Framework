@@ -856,6 +856,8 @@ namespace Pandemic_AI_Framework
                 new List<PD_MacroAction>()                  // current available player actions
                 );
 
+            game.UpdateAvailablePlayerActions();
+
             return game;
         }
 

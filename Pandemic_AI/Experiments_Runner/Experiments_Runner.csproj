@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if not exist &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot; mkdir &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot;&#xD;&#xA;copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed" />
+    <Exec Command="if not exist &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot; mkdir &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed&quot;&#xD;&#xA;copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed&#xD;&#xA;if not exist &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation&quot; mkdir &quot;$(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation&quot;&#xD;&#xA;copy $(SolutionDir)ParameterTuning_TestBed_NewRepresentation\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation" />
   </Target>
 
 </Project>

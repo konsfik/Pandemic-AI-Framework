@@ -10,7 +10,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_InfectionReport :
         IDescribable,
-        IEquatable<PD_InfectionReport>,
         ICustomDeepCopyable<PD_InfectionReport>
     {
 
@@ -240,15 +239,15 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.InfectedCities != other.InfectedCities)
+            else if (this.InfectedCities.List_Equals(other.InfectedCities) == false)
             {
                 return false;
             }
-            else if (this.InfectionsPrevented_ByMedic != other.InfectionsPrevented_ByMedic)
+            else if (this.InfectionsPrevented_ByMedic.List_Equals(other.InfectionsPrevented_ByMedic) == false)
             {
                 return false;
             }
-            else if (this.CitiesThatHaveCausedOutbreaks != other.CitiesThatHaveCausedOutbreaks)
+            else if (this.CitiesThatHaveCausedOutbreaks.List_Equals(other.CitiesThatHaveCausedOutbreaks) == false)
             {
                 return false;
             }

@@ -62,6 +62,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed"
-copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed</PostBuildEvent>
+copy $(SolutionDir)ParameterTuning_TestBed\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed
+if not exist "$(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation" mkdir "$(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation"
+copy $(SolutionDir)ParameterTuning_TestBed_NewRepresentation\* $(ProjectDir)$(OutDir)ParameterTuning_TestBed_NewRepresentation</PostBuildEvent>
   </PropertyGroup>
 </Project>

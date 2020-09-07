@@ -894,9 +894,18 @@ namespace Pandemic_AI_Framework
             }
         }
 
+        public void OverrideUniqueID(long unique_id) {
+            UniqueID = unique_id;
+        }
+
         public void OverrideStartTime()
         {
             StartTime = DateTime.UtcNow;
+        }
+
+        public void OverrideStartTime(DateTime date_time)
+        {
+            StartTime = date_time;
         }
 
         /// <summary>
@@ -905,6 +914,11 @@ namespace Pandemic_AI_Framework
         public void OverrideEndTime()
         {
             EndTime = DateTime.UtcNow;
+        }
+
+        public void OverrideEndTime(DateTime date_time)
+        {
+            EndTime = date_time;
         }
 
         public PD_Game Request_Fair_ForwardModel(Random randomness_provider)

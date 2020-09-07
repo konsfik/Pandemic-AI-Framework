@@ -55,13 +55,13 @@ namespace Pandemic_AI_Framework
         public Dictionary<int, int> map___infection_type__per__city;
         public Dictionary<int, List<int>> map___neighbors__per__city;
 
-        public Dictionary<int, bool> map___research_station__per__city;
-        public Dictionary<int, int> map___location__per__player;
-        public Dictionary<int, Dictionary<int, int>> map___infection_cubes__per__type__per__city;
+        public Dictionary<int, bool> map_elements___research_station__per__city;
+        public Dictionary<int, int> map_elements___location__per__player;
+        public Dictionary<int, Dictionary<int, int>> map_elements___infection_cubes__per__type__per__city;
 
         // game elements
-        public int available_research_stations;
-        public Dictionary<int, int> available_infection_cubes__per__type;
+        public int map_elements___available_research_stations;
+        public Dictionary<int, int> map_elements___available_infection_cubes__per__type;
 
         // state - counters:
         public int state_counter___current_state;
@@ -75,8 +75,8 @@ namespace Pandemic_AI_Framework
         public Dictionary<int, int> state_counter___disease_states;
 
         // flags
-        public bool flag___NotEnoughDiseaseCubesToCompleteAnInfection;
-        public bool flag___NotEnoughPlayerCardsToDraw;
+        public bool flag___insufficient_disease_cubes_during_infection;
+        public bool flag___insufficient_player_cards_to_draw;
         public bool flag___operations_expert_flight_used_this_turn;
 
         // initial card - containers:
@@ -111,7 +111,7 @@ namespace Pandemic_AI_Framework
             List<int> unassigned_player_roles,
             int[] role__per__player,
 
-            // map - data
+            // map
             int map___number_of_cities,
             List<int> map___cities,
             Dictionary<int, string> map___name__per__city,
@@ -119,13 +119,12 @@ namespace Pandemic_AI_Framework
             Dictionary<int, int> map___infection_type__per__city,
             Dictionary<int, List<int>> map___neighbors__per__city,
 
-            Dictionary<int, bool> map___research_station__per__city,
-            Dictionary<int, int> map___location__per__player,
-            Dictionary<int, Dictionary<int, int>> map___infection_cubes__per__type__per__city,
-
-            // game elements
-            int available_research_stations,
-            Dictionary<int, int> available_infection_cubes__per__type,
+            // map - elements
+            Dictionary<int, bool> map_elements___research_station__per__city,
+            Dictionary<int, int> map_elements___location__per__player,
+            Dictionary<int, Dictionary<int, int>> map_elements___infection_cubes__per__type__per__city,
+            int map_elements___available_research_stations,
+            Dictionary<int, int> map_elements___available_infection_cubes__per__type,
 
             // state - counters:
             int state_counter___current_state,
@@ -139,8 +138,8 @@ namespace Pandemic_AI_Framework
             Dictionary<int, int> state_counter___disease_states,
 
             // flags
-            bool flag___NotEnoughDiseaseCubesToCompleteAnInfection,
-            bool flag___NotEnoughPlayerCardsToDraw,
+            bool flag___insufficient_disease_cubes_during_infection,
+            bool flag___insufficient_player_cards_to_draw,
             bool flag___operations_expert_flight_used_this_turn,
 
             // initial card - containers:
@@ -184,34 +183,42 @@ namespace Pandemic_AI_Framework
                 = map___infection_type__per__city.CustomDeepCopy();
             this.map___neighbors__per__city
                 = map___neighbors__per__city.CustomDeepCopy();
-            this.map___research_station__per__city
-                = map___research_station__per__city.CustomDeepCopy();
-            this.map___location__per__player
-                = map___location__per__player.CustomDeepCopy();
-            this.map___infection_cubes__per__type__per__city
-                = map___infection_cubes__per__type__per__city.CustomDeepCopy();
+            this.map_elements___research_station__per__city
+                = map_elements___research_station__per__city.CustomDeepCopy();
+            this.map_elements___location__per__player
+                = map_elements___location__per__player.CustomDeepCopy();
+            this.map_elements___infection_cubes__per__type__per__city
+                = map_elements___infection_cubes__per__type__per__city.CustomDeepCopy();
 
             // game elements
-            this.available_research_stations = available_research_stations;
-            this.available_infection_cubes__per__type = available_infection_cubes__per__type;
+            this.map_elements___available_research_stations 
+                = map_elements___available_research_stations;
+            this.map_elements___available_infection_cubes__per__type 
+                = map_elements___available_infection_cubes__per__type;
 
             // state - counters:
-            this.state_counter___current_state = state_counter___current_state;
+            this.state_counter___current_state 
+                = state_counter___current_state;
 
-            this.state_counter___current_turn = state_counter___current_turn;
-            this.state_counter___current_player = state_counter___current_player;
+            this.state_counter___current_turn 
+                = state_counter___current_turn;
+            this.state_counter___current_player 
+                = state_counter___current_player;
             this.state_counter___current_player_action_index
                 = state_counter___current_player_action_index;
 
-            this.state_counter___number_of_outbreaks = state_counter___number_of_outbreaks;
-            this.state_counter___number_of_epidemics = state_counter___number_of_epidemics;
-            this.state_counter___disease_states = state_counter___disease_states.CustomDeepCopy();
+            this.state_counter___number_of_outbreaks 
+                = state_counter___number_of_outbreaks;
+            this.state_counter___number_of_epidemics 
+                = state_counter___number_of_epidemics;
+            this.state_counter___disease_states 
+                = state_counter___disease_states.CustomDeepCopy();
 
             // flags
-            this.flag___NotEnoughDiseaseCubesToCompleteAnInfection
-                = flag___NotEnoughDiseaseCubesToCompleteAnInfection;
-            this.flag___NotEnoughPlayerCardsToDraw
-                = flag___NotEnoughPlayerCardsToDraw;
+            this.flag___insufficient_disease_cubes_during_infection
+                = flag___insufficient_disease_cubes_during_infection;
+            this.flag___insufficient_player_cards_to_draw
+                = flag___insufficient_player_cards_to_draw;
             this.flag___operations_expert_flight_used_this_turn
                 = flag___operations_expert_flight_used_this_turn;
 
@@ -293,18 +300,18 @@ namespace Pandemic_AI_Framework
             else if (this.map___neighbors__per__city
                 .Dictionary_Equal(other.map___neighbors__per__city) == false) return false;
 
-            else if (this.map___research_station__per__city
-                .Dictionary_Equal_S(other.map___research_station__per__city) == false) return false;
-            else if (this.map___location__per__player
-                .Dictionary_Equal_S(other.map___location__per__player) == false) return false;
-            else if (this.map___infection_cubes__per__type__per__city
-                .Dictionary_Equal(other.map___infection_cubes__per__type__per__city) == false) return false;
+            else if (this.map_elements___research_station__per__city
+                .Dictionary_Equal_S(other.map_elements___research_station__per__city) == false) return false;
+            else if (this.map_elements___location__per__player
+                .Dictionary_Equal_S(other.map_elements___location__per__player) == false) return false;
+            else if (this.map_elements___infection_cubes__per__type__per__city
+                .Dictionary_Equal(other.map_elements___infection_cubes__per__type__per__city) == false) return false;
 
             // game elements
-            else if (this.available_research_stations
-                != other.available_research_stations) return false;
-            else if (this.available_infection_cubes__per__type
-                .Dictionary_Equal_S(other.available_infection_cubes__per__type) == false) return false;
+            else if (this.map_elements___available_research_stations
+                != other.map_elements___available_research_stations) return false;
+            else if (this.map_elements___available_infection_cubes__per__type
+                .Dictionary_Equal_S(other.map_elements___available_infection_cubes__per__type) == false) return false;
 
             // state counters
             else if (this.state_counter___current_state
@@ -325,10 +332,10 @@ namespace Pandemic_AI_Framework
                 .Dictionary_Equal_S(other.state_counter___disease_states) == false) return false;
 
             // flags
-            else if (this.flag___NotEnoughDiseaseCubesToCompleteAnInfection
-                != other.flag___NotEnoughDiseaseCubesToCompleteAnInfection) return false;
-            else if (this.flag___NotEnoughPlayerCardsToDraw
-                != other.flag___NotEnoughPlayerCardsToDraw) return false;
+            else if (this.flag___insufficient_disease_cubes_during_infection
+                != other.flag___insufficient_disease_cubes_during_infection) return false;
+            else if (this.flag___insufficient_player_cards_to_draw
+                != other.flag___insufficient_player_cards_to_draw) return false;
             else if (this.flag___operations_expert_flight_used_this_turn
                 != other.flag___operations_expert_flight_used_this_turn) return false;
 
@@ -389,13 +396,13 @@ namespace Pandemic_AI_Framework
             hash = (hash * 13) + map___infection_type__per__city.Custom_HashCode();
             hash = (hash * 13) + map___neighbors__per__city.Custom_HashCode();
 
-            hash = (hash * 13) + map___research_station__per__city.Custom_HashCode();
-            hash = (hash * 13) + map___location__per__player.Custom_HashCode();
-            hash = (hash * 13) + map___infection_cubes__per__type__per__city.Custom_HashCode();
+            hash = (hash * 13) + map_elements___research_station__per__city.Custom_HashCode();
+            hash = (hash * 13) + map_elements___location__per__player.Custom_HashCode();
+            hash = (hash * 13) + map_elements___infection_cubes__per__type__per__city.Custom_HashCode();
 
             // game elements
-            hash = (hash * 13) + available_research_stations;
-            hash = (hash * 13) + available_infection_cubes__per__type.Custom_HashCode();
+            hash = (hash * 13) + map_elements___available_research_stations;
+            hash = (hash * 13) + map_elements___available_infection_cubes__per__type.Custom_HashCode();
 
             // state - counters:
             hash = (hash * 13) + state_counter___current_state;

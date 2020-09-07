@@ -17,7 +17,7 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 // create a normal game, for later use
                 PD_Game initial_game = PD_Game.Create(randomness_provider, 4, 0, true);
@@ -42,24 +42,28 @@ namespace Pandemic_AI_Framework.Tests
                 Assert.IsTrue(converted_mini_game.Equals(deserialized_mini_game));
 
                 // create a normal game, from the deserialized game
-                PD_Game final_game__from__deserialized_game = deserialized_mini_game.Convert_To_Game();
+                PD_Game final_game = deserialized_mini_game.Convert_To_Game();
 
                 Assert.IsTrue(
                     Games_Practically_Equal(
                         initial_game,
-                        final_game__from__deserialized_game
+                        final_game
                         )
                     );
 
-                final_game__from__deserialized_game.UpdateAvailablePlayerActions();
+                final_game.UpdateAvailablePlayerActions();
 
                 randomness_provider = new Random(i);
-                while (final_game__from__deserialized_game.GQ_Is_Ongoing())
+                while (final_game.GQ_Is_Ongoing())
                 {
-                    var action = final_game__from__deserialized_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
-                    final_game__from__deserialized_game.ApplySpecificPlayerAction(
+                    PD_GameAction_Base action =
+                        final_game
+                        .CurrentAvailablePlayerActions
+                        .GetOneRandom(randomness_provider);
+                    final_game.ApplySpecificPlayerAction(
                         randomness_provider,
-                        action);
+                        action
+                        );
                 }
                 randomness_provider = new Random(i);
                 while (initial_game.GQ_Is_Ongoing())
@@ -70,15 +74,11 @@ namespace Pandemic_AI_Framework.Tests
                         action);
                 }
 
-                Assert.IsTrue(Games_Practically_Equal(initial_game, final_game__from__deserialized_game));
+                Assert.IsTrue(Games_Practically_Equal(initial_game, final_game));
             }
-
-
-
-
-
         }
 
+        #region help methods
         private bool Games_Practically_Equal(PD_Game game_1, PD_Game game_2)
         {
             if (game_1.UniqueID != game_2.UniqueID)
@@ -301,6 +301,7 @@ namespace Pandemic_AI_Framework.Tests
                 return true;
             }
         }
+        #endregion
 
         [TestMethod()]
         public void Deserialize_ExistingGame_Test()
@@ -359,6 +360,67 @@ namespace Pandemic_AI_Framework.Tests
         }
 
         [TestMethod()]
+        public void Deserialize_ExistingGame_NewRepresentation_Test()
+        {
+            Random randomness_provider = new Random(1001);
+
+            string saved_games_path = System.IO.Path.Combine(
+                System.IO.Directory.GetCurrentDirectory(),
+                "ParameterTuning_TestBed_NewRepresentation"
+                );
+            var game_file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
+
+            // play the games until the end, using single actions
+            foreach (var game_file_path in game_file_paths)
+            {
+                string serialized_mini_game = PD_IO_Utilities.ReadFile(game_file_path);
+
+                PD_MiniGame deserialized_mini_game = 
+                    JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
+
+                PD_Game game = deserialized_mini_game.Convert_To_Game();
+
+                // play the game until the end...
+                while (game.GQ_Is_Ongoing())
+                {
+                    var available_actions = game.CurrentAvailablePlayerActions;
+                    var random_action = available_actions.GetOneRandom(randomness_provider);
+                    game.ApplySpecificPlayerAction(
+                        randomness_provider,
+                        random_action
+                        );
+                }
+
+                Assert.IsTrue(game.GQ_Is_Ongoing() == false);
+            }
+
+            // play the games until the end, using macro actions
+            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
+            foreach (var game_file_path in game_file_paths)
+            {
+                string serialized_mini_game = PD_IO_Utilities.ReadFile(game_file_path);
+
+                PD_MiniGame deserialized_mini_game =
+                    JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
+
+                PD_Game game = deserialized_mini_game.Convert_To_Game();
+
+                // play the game until the end...
+                while (game.GQ_Is_Ongoing())
+                {
+                    var available_macro_actions = game.GetAvailableMacros(pathFinder);
+                    var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
+                    game.ApplySpecificMacro(
+                        randomness_provider,
+                        random_macro_action
+                        );
+                }
+
+                Assert.IsTrue(game.GQ_Is_Ongoing() == false);
+            }
+        }
+
+        [TestMethod()]
         public void Generate_Game_Without_Data()
         {
             Random randomness_provider = new Random();
@@ -397,31 +459,6 @@ namespace Pandemic_AI_Framework.Tests
 
         }
 
-        /// <summary>
-        /// Converts the game from its default implementation
-        /// to the minified game state, 
-        /// then to a serialized state (json_
-        /// then back to the minified state
-        /// and finally back to the default implementation...
-        /// Then, the final game state must be playable until the end, without any errors...
-        /// 
-        /// The whole process is repeated a number of times, with randomly set up games...
-        /// </summary>
-        [TestMethod()]
-        public void Game_Conversions()
-        {
-            Random randomness_provider = new Random();
-
-            PD_Game original_game = PD_Game.Create(
-                randomness_provider,
-                4,
-                0,
-                true
-                );
-
-            //Pandemic_Mini_State mini_game = Pandemic_Mini_State.From_Normal_State(original_game);
-
-        }
 
         [TestMethod()]
         public void RandomSeed_Tests()
@@ -444,16 +481,31 @@ namespace Pandemic_AI_Framework.Tests
                 true
                 );
 
-            for (int i = 0; i < game_1.Cards.DividedDeckOfPlayerCards.Count; i++)
+            randomness_provider = new Random(1000);
+            while (game_1.GQ_Is_Ongoing())
             {
-                for (int j = 0; j < game_1.Cards.DividedDeckOfPlayerCards[i].Count; j++)
-                {
-                    Assert.IsTrue(
-                        game_1.Cards.DividedDeckOfPlayerCards[i][j]
-                        == game_2.Cards.DividedDeckOfPlayerCards[i][j]
-                        );
-                }
+                game_1.ApplySpecificPlayerAction(
+                    randomness_provider,
+                    game_1.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider)
+                    );
             }
+
+            randomness_provider = new Random(1000);
+            while (game_2.GQ_Is_Ongoing())
+            {
+                game_2.ApplySpecificPlayerAction(
+                    randomness_provider,
+                    game_2.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider)
+                    );
+            }
+
+            game_2.OverrideUniqueID(game_1.UniqueID);
+            game_2.OverrideStartTime(game_1.StartTime);
+            game_2.OverrideEndTime(game_1.EndTime);
+
+            Assert.IsTrue(game_1.Equals(game_2));
+            Assert.IsTrue(game_1 == game_2);
+            Assert.IsTrue(game_1.GetHashCode() == game_2.GetHashCode());
         }
 
         [TestMethod()]

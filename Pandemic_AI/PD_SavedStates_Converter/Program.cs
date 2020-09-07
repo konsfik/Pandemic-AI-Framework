@@ -42,7 +42,7 @@ namespace PD_SavedStates_Converter
             {
                 PD_Game game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(game_file_path);
                 games.Add(game);
-                PD_MiniGame mini_game = game.To_MiniGame();
+                PD_MiniGame mini_game = game.Convert_To_MiniGame();
                 mini_games.Add(mini_game);
                 string serialized_mini_game = mini_game.To_Json_String(
                     Newtonsoft.Json.Formatting.Indented,
@@ -66,7 +66,7 @@ namespace PD_SavedStates_Converter
             }
 
             foreach (var mini_game in mini_games) {
-                PD_Game g = mini_game.To_Game();
+                PD_Game g = mini_game.Convert_To_Game();
                 g.UpdateAvailablePlayerActions();
                 while (g.GQ_Is_Ongoing()) {
                     var available_actions = g.CurrentAvailablePlayerActions;

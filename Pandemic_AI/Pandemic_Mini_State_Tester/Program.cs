@@ -25,7 +25,7 @@ namespace Pandemic_Mini_State_Tester
                     true
                 );
 
-            PD_MiniGame mini_state = randomly_generated_game.To_MiniGame();
+            PD_MiniGame mini_state = randomly_generated_game.Convert_To_MiniGame();
 
             string serialized_mini_state = mini_state.To_Json_String(
                 Formatting.None,

@@ -17,46 +17,66 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            // create a normal game, for later use
-            PD_Game initial_game = PD_Game.Create(randomness_provider, 4, 0, true);
+            for (int i = 0; i < 1000; i++)
+            {
+                // create a normal game, for later use
+                PD_Game initial_game = PD_Game.Create(randomness_provider, 4, 0, true);
 
-            // create a mini game
-            PD_MiniGame mini_game__from__initial_game = PD_State_Converter.MiniGame__From__Game(initial_game);
+                // convert to mini game
+                PD_MiniGame converted_mini_game = initial_game.Convert_To_MiniGame();
 
-            // serialize the mini game
-            string serialized_string__from__mini_game = mini_game__from__initial_game.To_Json_String(
-                Formatting.None,
-                TypeNameHandling.None,
-                PreserveReferencesHandling.None
-                );
+                // serialize the mini game
+                string serialized_mini_game = converted_mini_game.To_Json_String(
+                    Formatting.None,
+                    TypeNameHandling.None,
+                    PreserveReferencesHandling.None
+                    );
 
-            // deserialize the mini game
-            PD_MiniGame deserialized_game__from__serialized_string = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_string__from__mini_game);
+                // deserialize the mini game
+                PD_MiniGame deserialized_mini_game
+                    = JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
 
-            // test that the deserialized game is exactly the same as the mini game
-            Assert.IsTrue(mini_game__from__initial_game.GetHashCode() == deserialized_game__from__serialized_string.GetHashCode());
-            Assert.IsTrue(mini_game__from__initial_game == deserialized_game__from__serialized_string);
-            Assert.IsTrue(mini_game__from__initial_game.Equals(deserialized_game__from__serialized_string));
+                // test that the deserialized game is exactly the same as the mini game
+                Assert.IsTrue(converted_mini_game.GetHashCode() == deserialized_mini_game.GetHashCode());
+                Assert.IsTrue(converted_mini_game == deserialized_mini_game);
+                Assert.IsTrue(converted_mini_game.Equals(deserialized_mini_game));
 
-            // create a normal game, from the deserialized game
-            PD_Game final_game__from__deserialized_game = deserialized_game__from__serialized_string.To_Game();
+                // create a normal game, from the deserialized game
+                PD_Game final_game__from__deserialized_game = deserialized_mini_game.Convert_To_Game();
 
-            Assert.IsTrue(
-                Games_Practically_Equal(
-                    initial_game,
-                    final_game__from__deserialized_game
-                    )
-                );
+                Assert.IsTrue(
+                    Games_Practically_Equal(
+                        initial_game,
+                        final_game__from__deserialized_game
+                        )
+                    );
 
-            final_game__from__deserialized_game.UpdateAvailablePlayerActions();
+                final_game__from__deserialized_game.UpdateAvailablePlayerActions();
 
-            while (final_game__from__deserialized_game.GQ_Is_Ongoing()) {
-                var action = final_game__from__deserialized_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
-                final_game__from__deserialized_game.ApplySpecificPlayerAction(
-                    randomness_provider,
-                    action);
+                randomness_provider = new Random(i);
+                while (final_game__from__deserialized_game.GQ_Is_Ongoing())
+                {
+                    var action = final_game__from__deserialized_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
+                    final_game__from__deserialized_game.ApplySpecificPlayerAction(
+                        randomness_provider,
+                        action);
+                }
+                randomness_provider = new Random(i);
+                while (initial_game.GQ_Is_Ongoing())
+                {
+                    var action = initial_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
+                    initial_game.ApplySpecificPlayerAction(
+                        randomness_provider,
+                        action);
+                }
+
+                Assert.IsTrue(Games_Practically_Equal(initial_game, final_game__from__deserialized_game));
             }
-            Assert.IsTrue(final_game__from__deserialized_game.GQ_Is_Ongoing() == false);
+
+
+
+
+
         }
 
         private bool Games_Practically_Equal(PD_Game game_1, PD_Game game_2)
@@ -101,7 +121,8 @@ namespace Pandemic_AI_Framework.Tests
                 game_1.CurrentAvailablePlayerActions.List_Equals(
                     game_2.CurrentAvailablePlayerActions
                     ) == false
-                ) {
+                )
+            {
                 return false;
             }
 
@@ -238,15 +259,22 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.MapElements.InactiveInfectionCubesPerType.Dictionary_Equals(
-                game_2.MapElements.InactiveInfectionCubesPerType) == false)
+            for (int t = 0; t < 4; t++)
             {
-                return false;
+                if (
+                    game_1.MapElements.InactiveInfectionCubesPerType[t].Count
+                    !=
+                    game_2.MapElements.InactiveInfectionCubesPerType[t].Count
+                    )
+                {
+                    return false;
+                }
             }
 
             foreach (var city in game_1.Map.Cities)
             {
-                for (int t = 0; t < 4; t++) {
+                for (int t = 0; t < 4; t++)
+                {
                     if (
                         game_1.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count
                         !=

@@ -28,7 +28,9 @@ namespace Pandemic_AI_Framework
             );
         }
 
-        public static PD_MiniGame MiniGame__From__Game(PD_Game game)
+        public static PD_MiniGame Convert_To_MiniGame(
+            this PD_Game game
+            )
         {
             PD_MiniGame mini_game = new PD_MiniGame();
 
@@ -360,14 +362,10 @@ namespace Pandemic_AI_Framework
             return mini_game;
         }
 
-        public static PD_MiniGame To_MiniGame(this PD_Game game)
+        public static PD_Game Convert_To_Game(
+            this PD_MiniGame mini_game
+            )
         {
-            return MiniGame__From__Game(game);
-        }
-
-        public static PD_Game Game__From__MiniGame(PD_MiniGame mini_game)
-        {
-
             // game settings...
             int game_difficulty_level = mini_game.settings___game_difficulty;
             PD_GameSettings GAME_SETTINGS = new PD_GameSettings(game_difficulty_level);
@@ -626,13 +624,15 @@ namespace Pandemic_AI_Framework
                 player_pawns__per__city_id.Add(c, new List<PD_ME_PlayerPawn>());
                 foreach (int p in mini_game.players)
                 {
-                    int mini_player_role = mini_game.role__per__player[p];
-                    PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
+                    if (mini_game.map___location__per__player[p] == c) {
+                        int mini_player_role = mini_game.role__per__player[p];
+                        PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
 
-                    PD_ME_PlayerPawn player_pawn = player_pawns.Find(x => x.Role == player_role);
-                    if (player_pawn != null)
-                    {
-                        player_pawns__per__city_id[c].Add(player_pawn);
+                        PD_ME_PlayerPawn player_pawn = player_pawns.Find(x => x.Role == player_role);
+                        if (player_pawn != null)
+                        {
+                            player_pawns__per__city_id[c].Add(player_pawn);
+                        }
                     }
                 }
             }
@@ -861,12 +861,9 @@ namespace Pandemic_AI_Framework
             return game;
         }
 
-        public static PD_Game To_Game(this PD_MiniGame mini_game)
-        {
-            return Game__From__MiniGame(mini_game);
-        }
-
-        public static int MiniGame_PlayerCard__FROM__Game_PlayerCard(PD_PlayerCardBase card)
+        public static int MiniGame_PlayerCard__FROM__Game_PlayerCard(
+            PD_PlayerCardBase card
+            )
         {
             if (card is PD_CityCard cc)
             {

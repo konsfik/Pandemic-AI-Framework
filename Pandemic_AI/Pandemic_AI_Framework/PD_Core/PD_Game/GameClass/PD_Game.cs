@@ -125,57 +125,57 @@ namespace Pandemic_AI_Framework
             };
 
             Dictionary<int, PD_Point> position__per__city = new Dictionary<int, PD_Point>() {
-                {0,   new PD_Point( 379,  837  )          },
-                {1,   new PD_Point( 330,  934  )          },
-                {2,   new PD_Point( 942,  1026 )          },
-                {3,   new PD_Point( 809,  1002 )          },
-                {4,   new PD_Point( 790,  872  )          },
-                {5,   new PD_Point( 997,  963  )          },
-                {6,   new PD_Point( 462,  939  )          },
-                {7,   new PD_Point( 564,  924  )          },
-                {8,   new PD_Point( 910,  938  )          },
-                {9,   new PD_Point( 161,  885  )          },
-                {10,  new PD_Point( 1089, 1054 )          },
-                {11,  new PD_Point( 519,  844  )          },
+                {0,   new PD_Point( 379,  837  ) },
+                {1,   new PD_Point( 330,  934  ) },
+                {2,   new PD_Point( 942,  1026 ) },
+                {3,   new PD_Point( 809,  1002 ) },
+                {4,   new PD_Point( 790,  872  ) },
+                {5,   new PD_Point( 997,  963  ) },
+                {6,   new PD_Point( 462,  939  ) },
+                {7,   new PD_Point( 564,  924  ) },
+                {8,   new PD_Point( 910,  938  ) },
+                {9,   new PD_Point( 161,  885  ) },
+                {10,  new PD_Point( 1089, 1054 ) },
+                {11,  new PD_Point( 519,  844  ) },
                                 
-                {12,  new PD_Point( 452,  595  )          },
-                {13,  new PD_Point( 561,  331  )          },
-                {14,  new PD_Point( 1055, 392  )          },
-                {15,  new PD_Point( 1065, 643  )          },
-                {16,  new PD_Point( 980,  526  )          },
-                {17,  new PD_Point( 896,  619  )          },
-                {18,  new PD_Point( 405,  452  )          },
-                {19,  new PD_Point( 188,  753  )          },
-                {20,  new PD_Point( 311,  709  )          },
-                {21,  new PD_Point( 463,  729  )          },
-                {22,  new PD_Point( 423,  305  )          },
-                {23,  new PD_Point( 638,  432  )          },
+                {12,  new PD_Point( 452,  595  ) },
+                {13,  new PD_Point( 561,  331  ) },
+                {14,  new PD_Point( 1055, 392  ) },
+                {15,  new PD_Point( 1065, 643  ) },
+                {16,  new PD_Point( 980,  526  ) },
+                {17,  new PD_Point( 896,  619  ) },
+                {18,  new PD_Point( 405,  452  ) },
+                {19,  new PD_Point( 188,  753  ) },
+                {20,  new PD_Point( 311,  709  ) },
+                {21,  new PD_Point( 463,  729  ) },
+                {22,  new PD_Point( 423,  305  ) },
+                {23,  new PD_Point( 638,  432  ) },
                                 
-                {24,  new PD_Point( 938,  800  )          },
-                {25,  new PD_Point( 1150, 818  )          },
-                {26,  new PD_Point( 1037, 773  )          },
-                {27,  new PD_Point( 1392, 605  )          },
-                {28,  new PD_Point( 1373, 812  )          },
-                {29,  new PD_Point( 1056, 887  )          },
-                {30,  new PD_Point( 1276, 775  )          },
-                {31,  new PD_Point( 1466, 780  )          },
-                {32,  new PD_Point( 1160, 964  )          },
-                {33,  new PD_Point( 1289, 677  )          },
-                {34,  new PD_Point( 1165, 699  )          },
-                {35,  new PD_Point( 1250, 901  )          },
+                {24,  new PD_Point( 938,  800  ) },
+                {25,  new PD_Point( 1150, 818  ) },
+                {26,  new PD_Point( 1037, 773  ) },
+                {27,  new PD_Point( 1392, 605  ) },
+                {28,  new PD_Point( 1373, 812  ) },
+                {29,  new PD_Point( 1056, 887  ) },
+                {30,  new PD_Point( 1276, 775  ) },
+                {31,  new PD_Point( 1466, 780  ) },
+                {32,  new PD_Point( 1160, 964  ) },
+                {33,  new PD_Point( 1289, 677  ) },
+                {34,  new PD_Point( 1165, 699  ) },
+                {35,  new PD_Point( 1250, 901  ) },
                                 
-                {36,  new PD_Point( 1486, 668  )          },
-                {37,  new PD_Point( 1543, 931  )          },
-                {38,  new PD_Point( 1567, 574  )          },
-                {39,  new PD_Point( 1563, 727  )          },
-                {40,  new PD_Point( 1486, 490  )          },
-                {41,  new PD_Point( 1697, 582  )          },
-                {42,  new PD_Point( 1764, 786  )          },
-                {43,  new PD_Point( 1660, 938  )          },
-                {44,  new PD_Point( 1551, 839  )          },
-                {45,  new PD_Point( 1773, 310  )          },
-                {46,  new PD_Point( 1668, 746  )          },
-                {47,  new PD_Point( 1753, 885  )          }
+                {36,  new PD_Point( 1486, 668  ) },
+                {37,  new PD_Point( 1543, 931  ) },
+                {38,  new PD_Point( 1567, 574  ) },
+                {39,  new PD_Point( 1563, 727  ) },
+                {40,  new PD_Point( 1486, 490  ) },
+                {41,  new PD_Point( 1697, 582  ) },
+                {42,  new PD_Point( 1764, 786  ) },
+                {43,  new PD_Point( 1660, 938  ) },
+                {44,  new PD_Point( 1551, 839  ) },
+                {45,  new PD_Point( 1773, 310  ) },
+                {46,  new PD_Point( 1668, 746  ) },
+                {47,  new PD_Point( 1753, 885  ) }
             };
 
             Dictionary<int, int> infection_type__per__city = new Dictionary<int, int>() {
@@ -324,12 +324,7 @@ namespace Pandemic_AI_Framework
                     ),
             };
 
-            List<PD_ME_ResearchStation> research_stations = new List<PD_ME_ResearchStation>();
-            for (int i = 0; i < 6; i++)
-            {
-                PD_ME_ResearchStation rs = new PD_ME_ResearchStation(i);
-                research_stations.Add(rs);
-            }
+            int number_of_research_stations = 6;
 
             List<PD_ME_InfectionCube> infection_cubes = new List<PD_ME_InfectionCube>();
             int infectionCubeID = 0;
@@ -357,7 +352,7 @@ namespace Pandemic_AI_Framework
                 all_infection_cards,
                 all_epidemic_cards,
                 roleCards,
-                research_stations,
+                number_of_research_stations,
                 infection_cubes
                 );
 
@@ -391,7 +386,7 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> allEpidemicCards,
 
             List<PD_Role_Card> allRoleCards,
-            List<PD_ME_ResearchStation> allResearchStations,
+            int number_of_research_stations,
             List<PD_ME_InfectionCube> allInfectionCubes
             )
         {
@@ -430,7 +425,6 @@ namespace Pandemic_AI_Framework
 
                 allRoleCards,
 
-                allResearchStations,
                 allInfectionCubes
                 );
 
@@ -539,8 +533,7 @@ namespace Pandemic_AI_Framework
         {
             // 1. Set out board and pieces
             // 1.1. put research stations in research stations container
-            MapElements.InactiveResearchStations.AddRange(
-                new List<PD_ME_ResearchStation>(GameElementReferences.ResearchStations));
+            MapElements.inactive_research_stations = 6;
 
             // 1.2. separate the infection cubes by color (type) in their containers
             for (int i = 0; i < 4; i++)
@@ -779,7 +772,7 @@ namespace Pandemic_AI_Framework
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
         {
             int medicLocation = this.GQ_Find_Medic_Location();
-            if (medicLocation != null)
+            if (medicLocation != -1)
             {
                 List<int> infectionCubeTypes_OnMedicLocation =
                     this.GQ_InfectionCubeTypes_OnCity(medicLocation);

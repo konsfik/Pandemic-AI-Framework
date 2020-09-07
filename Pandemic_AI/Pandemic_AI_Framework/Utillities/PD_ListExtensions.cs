@@ -181,6 +181,41 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
+        public static bool Dictionary_Equals(
+            this Dictionary<int, bool> this_dictionary,
+            Dictionary<int, bool> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                bool this_value = this_dictionary[key];
+                bool other_value = other_dictionary[key];
+                if (this_value != other_value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool Dictionary_Equals<T>(
             this Dictionary<int, T> this_dictionary,
             Dictionary<int, T> other_dictionary

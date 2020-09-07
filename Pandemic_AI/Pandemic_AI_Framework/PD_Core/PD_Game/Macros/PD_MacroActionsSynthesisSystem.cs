@@ -1122,14 +1122,15 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.MapElements.InactiveResearchStations.Count;
+            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
                 return new List<PD_MacroAction>();
             }
 
-            bool currentLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+            bool currentLocationIsResearchStation
+                = game.MapElements.research_stations__per__city[currentPlayerLocation] == true;
 
             if (currentLocationIsResearchStation)
             {
@@ -1205,7 +1206,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.MapElements.InactiveResearchStations.Count;
+            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
@@ -1223,7 +1224,7 @@ namespace Pandemic_AI_Framework
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
                 bool destinationIsResearchStation
-                    = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
+                    = game.MapElements.research_stations__per__city[destination] == true;
 
                 if (destinationIsResearchStation)
                 {
@@ -1380,7 +1381,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.MapElements.InactiveResearchStations.Count;
+            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
 
             if (numInactiveResearchStations > 0)
             {
@@ -1392,7 +1393,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> moveResearchStationMacros = new List<PD_MacroAction>();
 
             bool destinationIsResearchStation
-                = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+                = game.MapElements.research_stations__per__city[currentPlayerLocation]==true;
 
             if (destinationIsResearchStation)
             {
@@ -1446,7 +1447,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.MapElements.InactiveResearchStations.Count;
+            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
 
             if (numInactiveResearchStations > 0)
             {
@@ -1461,8 +1462,7 @@ namespace Pandemic_AI_Framework
             {
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
-                bool destinationIsResearchStation
-                    = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
+                bool destinationIsResearchStation = game.GQ_Is_City_ResearchStation(destination);
 
                 if (destinationIsResearchStation)
                 {
@@ -2374,7 +2374,8 @@ namespace Pandemic_AI_Framework
                 return new List<PD_MacroAction>();
             }
 
-            bool currentPlayerLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+            bool currentPlayerLocationIsResearchStation 
+                = game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             if (currentPlayerLocationIsResearchStation == false)
             {
@@ -2480,7 +2481,8 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
+                    bool destinationIsResearchStation 
+                        = game.GQ_Is_City_ResearchStation(destination);
                     if (destinationIsResearchStation == false)
                     {
                         continue;

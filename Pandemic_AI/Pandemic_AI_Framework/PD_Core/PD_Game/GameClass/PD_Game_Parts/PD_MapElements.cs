@@ -19,8 +19,9 @@ namespace Pandemic_AI_Framework
         public Dictionary<int, int> location__per__player;
         public Dictionary<int, List<PD_ME_InfectionCube>> InactiveInfectionCubesPerType { get; private set; }
         public Dictionary<int, List<PD_ME_InfectionCube>> InfectionCubesPerCityID { get; private set; }
-        public List<PD_ME_ResearchStation> InactiveResearchStations { get; private set; }
-        public Dictionary<int, List<PD_ME_ResearchStation>> ResearchStationsPerCityID { get; private set; }
+
+        public int inactive_research_stations;
+        public Dictionary<int, bool> research_stations__per__city;
 
         #endregion
 
@@ -32,7 +33,8 @@ namespace Pandemic_AI_Framework
             )
         {
             location__per__player = new Dictionary<int, int>();
-            foreach (var player in players) {
+            foreach (var player in players)
+            {
                 location__per__player.Add(player.ID, -1);
             }
 
@@ -41,10 +43,12 @@ namespace Pandemic_AI_Framework
             foreach (var city in cities)
                 InfectionCubesPerCityID.Add(city, new List<PD_ME_InfectionCube>());
 
-            InactiveResearchStations = new List<PD_ME_ResearchStation>();
-            ResearchStationsPerCityID = new Dictionary<int, List<PD_ME_ResearchStation>>();
-            foreach (var city in cities)
-                ResearchStationsPerCityID.Add(city, new List<PD_ME_ResearchStation>());
+            inactive_research_stations = 6;
+            research_stations__per__city = new Dictionary<int, bool>();
+            foreach (int city in cities)
+            {
+                research_stations__per__city.Add(city, false);
+            }
         }
 
         // special constructor, for use with the json serializer
@@ -53,15 +57,15 @@ namespace Pandemic_AI_Framework
             Dictionary<int, int> location__per__player,
             Dictionary<int, List<PD_ME_InfectionCube>> inactiveInfectionCubesPerType,
             Dictionary<int, List<PD_ME_InfectionCube>> infectionCubesPerCityID,
-            List<PD_ME_ResearchStation> inactiveResearchStations,
-            Dictionary<int, List<PD_ME_ResearchStation>> researchStationsPerCityID
+            int inactive_research_stations,
+            Dictionary<int, bool> research_stations__per__city
             )
         {
             this.location__per__player = location__per__player.CustomDeepCopy();
             this.InactiveInfectionCubesPerType = inactiveInfectionCubesPerType.CustomDeepCopy();
             this.InfectionCubesPerCityID = infectionCubesPerCityID.CustomDeepCopy();
-            this.InactiveResearchStations = inactiveResearchStations.CustomDeepCopy();
-            this.ResearchStationsPerCityID = researchStationsPerCityID.CustomDeepCopy();
+            this.inactive_research_stations = inactive_research_stations;
+            this.research_stations__per__city = research_stations__per__city;
         }
 
         public PD_MapElements GetCustomDeepCopy()
@@ -81,8 +85,8 @@ namespace Pandemic_AI_Framework
             this.location__per__player = mapElementsToCopy.location__per__player.CustomDeepCopy();
             this.InactiveInfectionCubesPerType = mapElementsToCopy.InactiveInfectionCubesPerType.CustomDeepCopy();
             this.InfectionCubesPerCityID = mapElementsToCopy.InfectionCubesPerCityID.CustomDeepCopy();
-            this.InactiveResearchStations = mapElementsToCopy.InactiveResearchStations.CustomDeepCopy();
-            this.ResearchStationsPerCityID = mapElementsToCopy.ResearchStationsPerCityID.CustomDeepCopy();
+            this.inactive_research_stations = mapElementsToCopy.inactive_research_stations;
+            this.research_stations__per__city = mapElementsToCopy.research_stations__per__city.CustomDeepCopy();
         }
 
         #region equalityOverride
@@ -103,13 +107,13 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.InactiveResearchStations.List_Equals(
-                other.InactiveResearchStations) == false)
+            else if (this.inactive_research_stations
+                != other.inactive_research_stations)
             {
                 return false;
             }
-            else if (this.ResearchStationsPerCityID.Dictionary_Equals(
-                other.ResearchStationsPerCityID) == false)
+            else if (this.research_stations__per__city.Dictionary_Equals(
+                other.research_stations__per__city) == false)
             {
                 return false;
             }
@@ -138,8 +142,8 @@ namespace Pandemic_AI_Framework
             hash = (hash * 13) + location__per__player.Custom_HashCode();
             hash = (hash * 13) + InactiveInfectionCubesPerType.Custom_HashCode();
             hash = (hash * 13) + InfectionCubesPerCityID.Custom_HashCode();
-            hash = (hash * 13) + InactiveResearchStations.Custom_HashCode();
-            hash = (hash * 13) + ResearchStationsPerCityID.Custom_HashCode();
+            hash = (hash * 13) + inactive_research_stations;
+            hash = (hash * 13) + research_stations__per__city.Custom_HashCode();
 
             return hash;
         }

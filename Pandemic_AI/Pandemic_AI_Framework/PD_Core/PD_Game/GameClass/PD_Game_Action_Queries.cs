@@ -205,7 +205,7 @@ namespace Pandemic_AI_Framework
             var allLocationsWithResearchStations = new List<int>();
             foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.ResearchStationsPerCityID[city].Count > 0)
+                if (game.GQ_Is_City_ResearchStation(city))
                 {
                     allLocationsWithResearchStations.Add(city);
                 }
@@ -298,10 +298,10 @@ namespace Pandemic_AI_Framework
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
             bool currentLocation_Is_RS =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+                game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             bool inactive_RS_Available =
-                game.MapElements.InactiveResearchStations.Count > 0;
+                game.MapElements.inactive_research_stations > 0;
 
             if (
                 currentLocation_Is_RS
@@ -352,11 +352,10 @@ namespace Pandemic_AI_Framework
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
-            bool currentLocation_Is_RS =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+            bool currentLocation_Is_RS = game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             bool inactive_RS_Available =
-                game.MapElements.InactiveResearchStations.Count > 0;
+                game.MapElements.inactive_research_stations > 0;
 
             if (
                 currentLocation_Is_RS
@@ -682,7 +681,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+                game.GQ_Is_City_ResearchStation(currentPlayerLocation);
             if (currentPlayerLocationIsResearchStation == false)
             {
                 return new List<PD_PA_DiscoverCure>();
@@ -726,7 +725,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
+                game.GQ_Is_City_ResearchStation(currentPlayerLocation);
             if (currentPlayerLocationIsResearchStation == false)
             {
                 return new List<PD_PA_DiscoverCure_Scientist>();

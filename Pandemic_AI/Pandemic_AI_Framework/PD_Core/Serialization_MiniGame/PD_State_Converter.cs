@@ -193,7 +193,8 @@ namespace Pandemic_AI_Framework
             /////////////////////////////////////////////////
 
             // availablee research stations
-            mini_game.map_elements___available_research_stations = game.MapElements.InactiveResearchStations.Count;
+            mini_game.map_elements___available_research_stations 
+                = game.MapElements.inactive_research_stations;
             // available infection cubes per type
             mini_game.map_elements___available_infection_cubes__per__type = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
@@ -492,13 +493,6 @@ namespace Pandemic_AI_Framework
                 new PD_Role_Card(PD_MiniGame__PlayerRole.Scientist, PD_Player_Roles.Scientist)
                 );
 
-            // research stations
-            List<PD_ME_ResearchStation> research_stations = new List<PD_ME_ResearchStation>();
-            for (int i = 0; i < 6; i++)
-            {
-                research_stations.Add(new PD_ME_ResearchStation(i));
-            }
-
             // infection cubes
             List<PD_ME_InfectionCube> all_infection_cubes_references = new List<PD_ME_InfectionCube>();
             for (int t = 0; t < 4; t++)
@@ -520,7 +514,6 @@ namespace Pandemic_AI_Framework
                 infection_cards,
                 epidemic_cards,
                 role_cards,
-                research_stations,
                 all_infection_cubes_references
                 );
 
@@ -591,30 +584,10 @@ namespace Pandemic_AI_Framework
             }
 
             // inactive_research_stations
-            List<PD_ME_ResearchStation> inactive_research_stations
-                = new List<PD_ME_ResearchStation>();
-            for (int r = 0; r < mini_game.map_elements___available_research_stations; r++)
-            {
-                inactive_research_stations.Add(research_stations[r].GetCustomDeepCopy());
-            }
+            int inactive_research_stations = mini_game.map_elements___available_research_stations;
 
             // research_stations_per_city
-            Dictionary<int, List<PD_ME_ResearchStation>> research_stations_per_city
-                = new Dictionary<int, List<PD_ME_ResearchStation>>();
-            int rs_id = inactive_research_stations.Count;
-            foreach (int city in mini_game.map___cities)
-            {
-                if (mini_game.map_elements___research_station__per__city[city] == true)
-                {
-                    PD_ME_ResearchStation rs = research_stations.Find(x => x.ID == rs_id);
-                    research_stations_per_city.Add(city, new List<PD_ME_ResearchStation>() { rs });
-                    rs_id++;
-                }
-                else
-                {
-                    research_stations_per_city.Add(city, new List<PD_ME_ResearchStation>());
-                }
-            }
+            Dictionary<int, bool> research_stations_per_city = mini_game.map_elements___research_station__per__city.CustomDeepCopy();
 
             // map elements...
             PD_MapElements MAP_ELEMENTS = new PD_MapElements(

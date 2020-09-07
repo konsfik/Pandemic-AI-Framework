@@ -85,11 +85,9 @@ namespace Pandemic_AI_Framework
                 Used_CityCard
                 );
 
-            var researchStationToMove = game
-                .MapElements
-                .ResearchStationsPerCityID[Move_RS_From].DrawLast();
+            game.MapElements.research_stations__per__city[Move_RS_From] = false;
+            game.MapElements.research_stations__per__city[Move_RS_To] = true;
 
-            game.MapElements.ResearchStationsPerCityID[Move_RS_To].Add(researchStationToMove);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

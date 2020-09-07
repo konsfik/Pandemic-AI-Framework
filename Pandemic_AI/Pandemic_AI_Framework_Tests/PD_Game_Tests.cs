@@ -157,10 +157,7 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.GameElementReferences.ResearchStations.List_Equals(
-                game_2.GameElementReferences.ResearchStations) == false)
-                return false;
-            else if (game_1.GameElementReferences.InfectionCubes.List_Equals(
+            if (game_1.GameElementReferences.InfectionCubes.List_Equals(
                 game_2.GameElementReferences.InfectionCubes) == false)
                 return false;
             else
@@ -246,13 +243,12 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.MapElements.InactiveResearchStations.List_Equals(
-                game_2.MapElements.InactiveResearchStations) == false)
+            if (game_1.MapElements.inactive_research_stations != game_2.MapElements.inactive_research_stations)
             {
                 return false;
             }
-            else if (game_1.MapElements.ResearchStationsPerCityID.Dictionary_Equals(
-                game_2.MapElements.ResearchStationsPerCityID) == false)
+            else if (game_1.MapElements.research_stations__per__city.Dictionary_Equals(
+                game_2.MapElements.research_stations__per__city) == false)
             {
                 return false;
             }
@@ -327,7 +323,7 @@ namespace Pandemic_AI_Framework.Tests
         [TestMethod()]
         public void Generate_Game_Without_Data()
         {
-            Random randomness_provider = new Random();
+            Random randomness_provider = new Random(1000);
 
             // generate 100 games for every possible settings selection
             for (int num_players = 2; num_players <= 4; num_players++)
@@ -335,7 +331,7 @@ namespace Pandemic_AI_Framework.Tests
                 for (int game_difficulty = 0; game_difficulty <= 2; game_difficulty++)
                 {
                     // repeat the process 100 times!
-                    for (int i = 0; i < 100; i++)
+                    for (int i = 0; i < 1000; i++)
                     {
                         PD_Game game = PD_Game.Create(
                             randomness_provider,

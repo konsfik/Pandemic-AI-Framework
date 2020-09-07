@@ -200,7 +200,7 @@ namespace Pandemic_AI_Framework
             NumResearchStationsOnMap = 0;
             foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.ResearchStationsPerCityID[city].Count > 0)
+                if(game.GQ_Is_City_ResearchStation(city))
                     NumResearchStationsOnMap++;
             }
         }

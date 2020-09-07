@@ -18,7 +18,6 @@ namespace Pandemic_AI_Framework
 
         public List<PD_Role_Card> RoleCards { get; private set; }
 
-        public List<PD_ME_ResearchStation> ResearchStations { get; private set; }
         public List<PD_ME_InfectionCube> InfectionCubes { get; private set; }
         #endregion
 
@@ -39,7 +38,6 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> epidemicCards,
 
             List<PD_Role_Card> roleCards,
-            List<PD_ME_ResearchStation> researchStations,
             List<PD_ME_InfectionCube> infectionCubes
             )
         {
@@ -48,7 +46,6 @@ namespace Pandemic_AI_Framework
             EpidemicCards = epidemicCards.CustomDeepCopy();
 
             RoleCards = roleCards.CustomDeepCopy();
-            ResearchStations = researchStations.CustomDeepCopy();
             InfectionCubes = infectionCubes.CustomDeepCopy();
         }
 
@@ -64,7 +61,6 @@ namespace Pandemic_AI_Framework
             InfectionCards = gameElementReferencesToCopy.InfectionCards.CustomDeepCopy();
             EpidemicCards = gameElementReferencesToCopy.EpidemicCards.CustomDeepCopy();
             RoleCards = gameElementReferencesToCopy.RoleCards.CustomDeepCopy();
-            ResearchStations = gameElementReferencesToCopy.ResearchStations.CustomDeepCopy();
             InfectionCubes = gameElementReferencesToCopy.InfectionCubes.CustomDeepCopy();
         }
 
@@ -83,8 +79,6 @@ namespace Pandemic_AI_Framework
             else if (this.EpidemicCards.List_Equals(other.EpidemicCards) == false)
                 return false;
             else if (this.RoleCards.List_Equals(other.RoleCards) == false)
-                return false;
-            else if (this.ResearchStations.List_Equals(other.ResearchStations) == false)
                 return false;
             else if (this.InfectionCubes.List_Equals(other.InfectionCubes) == false)
                 return false;
@@ -112,7 +106,6 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + CityCards.Custom_HashCode();
             hash = hash * 31 + EpidemicCards.Custom_HashCode();
             hash = hash * 31 + RoleCards.Custom_HashCode();
-            hash = hash * 31 + ResearchStations.Custom_HashCode();
             hash = hash * 31 + InfectionCubes.Custom_HashCode();
 
             return hash;

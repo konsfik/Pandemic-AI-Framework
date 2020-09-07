@@ -262,8 +262,8 @@ namespace Pandemic_AI_Framework
             int city
             )
         {
-            PD_ME_ResearchStation researchStation = game.MapElements.InactiveResearchStations.DrawLast();
-            game.MapElements.ResearchStationsPerCityID[city].Add(researchStation);
+            game.MapElements.inactive_research_stations--;
+            game.MapElements.research_stations__per__city[city] = true;
         }
 
         public static void GO_MovePawnFromCityToCity(

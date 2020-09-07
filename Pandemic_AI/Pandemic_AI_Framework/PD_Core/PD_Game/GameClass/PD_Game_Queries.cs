@@ -482,7 +482,7 @@ namespace Pandemic_AI_Framework
             int city
             )
         {
-            return game.MapElements.ResearchStationsPerCityID[city].Count > 0;
+            return game.MapElements.research_stations__per__city[city]==true;
         }
 
         public static List<int> GQ_InfectedCities(
@@ -710,7 +710,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            return game.MapElements.InactiveResearchStations.Count;
+            return game.MapElements.inactive_research_stations;
         }
 
         public static int GQ_NumActiveResearchStations(

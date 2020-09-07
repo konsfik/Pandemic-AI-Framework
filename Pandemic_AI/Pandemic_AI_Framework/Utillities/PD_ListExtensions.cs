@@ -379,42 +379,6 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        //Dictionary<int, List<PD_City>>
-        public static bool Dictionary_Equal(
-            this Dictionary<int, List<PD_City>> this_dictionary,
-            Dictionary<int, List<PD_City>> other_dictionary
-            )
-        {
-            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-            // compare keys - size
-            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-            {
-                return false;
-            }
-
-            for (int k = 0; k < this_dictionary.Keys.Count; k++)
-            {
-                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
-                {
-                    return false;
-                }
-            }
-
-            foreach (int key in this_dictionary_keys)
-            {
-                List<PD_City> this_value = this_dictionary[key];
-                List<PD_City> other_value = other_dictionary[key];
-                if (this_value.List_Equals(other_value) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public static bool Dictionary_Equal_S<K, V>(
             this Dictionary<K, V> this_dictionary,
             Dictionary<K, V> other_dictionary
@@ -871,57 +835,6 @@ namespace Pandemic_AI_Framework
             foreach (var kvp in originalDictionary)
             {
                 dictionaryCopy.Add(kvp.Key, kvp.Value.GetCustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        //public static Dictionary<PD_CityEdge_Directed, List<PD_City>> CustomDeepCopy(
-        //    this Dictionary<PD_CityEdge_Directed, List<PD_City>> originalDictionary
-        //    )
-        //{
-        //    Dictionary<PD_CityEdge_Directed, List<PD_City>> dictionaryCopy =
-        //        new Dictionary<PD_CityEdge_Directed, List<PD_City>>();
-
-        //    foreach (var kvp in originalDictionary)
-        //    {
-        //        var key = kvp.Key;
-        //        var value = kvp.Value;
-        //        dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
-        //    }
-
-        //    return dictionaryCopy;
-        //}
-
-        public static Dictionary<int, List<PD_City>> CustomDeepCopy(
-            this Dictionary<int, List<PD_City>> originalDictionary
-            )
-        {
-            Dictionary<int, List<PD_City>> dictionaryCopy =
-                new Dictionary<int, List<PD_City>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                List<PD_City> value = kvp.Value;
-                dictionaryCopy.Add(key, value.CustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<PD_City, List<PD_City>> CustomDeepCopy(
-            this Dictionary<PD_City, List<PD_City>> originalDictionary
-            )
-        {
-            Dictionary<PD_City, List<PD_City>> dictionaryCopy =
-                new Dictionary<PD_City, List<PD_City>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
             }
 
             return dictionaryCopy;

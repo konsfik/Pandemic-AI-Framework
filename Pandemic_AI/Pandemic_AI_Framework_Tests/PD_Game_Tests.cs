@@ -246,10 +246,10 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            foreach (var city in game_1.Map.Cities)
+            foreach (int city in game_1.Map.cities)
             {
-                List<PD_ME_PlayerPawn> this_city_pawns = game_1.MapElements.PlayerPawnsPerCityID[city.ID];
-                List<PD_ME_PlayerPawn> other_city_pawns = game_2.MapElements.PlayerPawnsPerCityID[city.ID];
+                List<PD_ME_PlayerPawn> this_city_pawns = game_1.MapElements.PlayerPawnsPerCityID[city];
+                List<PD_ME_PlayerPawn> other_city_pawns = game_2.MapElements.PlayerPawnsPerCityID[city];
                 foreach (var pawn in this_city_pawns)
                 {
                     if (other_city_pawns.Any(x => x.Role == pawn.Role) == false)
@@ -271,7 +271,7 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            foreach (var city in game_1.Map.Cities)
+            foreach (int city in game_1.Map.cities)
             {
                 for (int t = 0; t < 4; t++)
                 {

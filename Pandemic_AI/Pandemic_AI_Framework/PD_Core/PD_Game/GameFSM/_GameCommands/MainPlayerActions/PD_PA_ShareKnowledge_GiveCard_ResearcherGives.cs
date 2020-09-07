@@ -85,7 +85,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: SHARE_KNOWLEDGE_RESEARCHER | GIVE {1} to {2}",
                 Player.Name,
-                CityCardToGive.City.Name,
+                CityCardToGive.City.ToString(),
                 OtherPlayer.Name
                 );
         }

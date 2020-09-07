@@ -7,10 +7,10 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyEpidemicCard : 
-        PD_GameAction_Base, 
+    public class PD_ApplyEpidemicCard :
+        PD_GameAction_Base,
         IEquatable<PD_ApplyEpidemicCard>,
-        I_Auto_Action, 
+        I_Auto_Action,
         I_Player_Action
     {
         public PD_Player Player { get; protected set; }
@@ -72,7 +72,7 @@ namespace Pandemic_AI_Framework
             // Discard this card to the Infection Discard Pile.
             var cardFromBottom = game.Cards.DividedDeckOfInfectionCards.DrawFirstElementOfFirstSubList();
 
-            int epidemicInfectionType = cardFromBottom.Type;
+            int epidemicInfectionType = game.GQ_City_InfectionType(cardFromBottom.City);
             bool diseaseTypeEradicated = game.GQ_Is_Disease_Eradicated(epidemicInfectionType);
 
             if (diseaseTypeEradicated == false)
@@ -83,7 +83,7 @@ namespace Pandemic_AI_Framework
                     false, // not game setup...
                     Player,
                     cardFromBottom.City,
-                    cardFromBottom.Type,
+                    epidemicInfectionType,
                     3
                     );
 
@@ -151,7 +151,8 @@ namespace Pandemic_AI_Framework
             {
                 return Equals(other_action);
             }
-            else {
+            else
+            {
                 return false;
             }
         }
@@ -165,7 +166,7 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
-        
+
 
 
 

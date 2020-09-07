@@ -74,13 +74,13 @@ namespace Pandemic_AI_Framework.Tests
 
             Assert.IsTrue(simpleWalks.Count == 47);
 
-            PD_City Milan = game.Map.Cities.Find(
+            int Milan = game.Map.cities.Find(
                 x =>
-                x.Name == "Milan"
+                game.Map.name__per__city[x] == "Milan"
                 );
-            PD_City Atlanta = game.Map.Cities.Find(
+            int Atlanta = game.Map.cities.Find(
                 x =>
-                x.Name == "Atlanta"
+                game.Map.name__per__city[x] == "Atlanta"
                 );
 
             PD_Game_Operators.GO_MovePawnFromCityToCity(
@@ -105,13 +105,13 @@ namespace Pandemic_AI_Framework.Tests
             game.Cards.PlayerCardsPerPlayerID[0].Add(
                 game.GameElementReferences.CityCards.Find(
                     x =>
-                    x.Name == "Milan"
+                    game.Map.name__per__city[x.City] == "Milan"
                     )
                 );
             game.Cards.PlayerCardsPerPlayerID[0].Add(
                 game.GameElementReferences.CityCards.Find(
                     x =>
-                    x.Name == "Chicago"
+                    game.Map.name__per__city[x.City] == "Chicago"
                     )
                 );
 

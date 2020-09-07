@@ -68,7 +68,7 @@ namespace Pandemic_AI_Framework
                     )
                 {
                     PD_PA_TreatDisease treatAction = (PD_PA_TreatDisease)macro.Find_LastCommand();
-                    PD_City destination = treatAction.CityToTreatDiseaseAt;
+                    int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
                         game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
@@ -85,7 +85,7 @@ namespace Pandemic_AI_Framework
                     )
                 {
                     PD_PA_TreatDisease_Medic treatAction = (PD_PA_TreatDisease_Medic)macro.Find_LastCommand();
-                    PD_City destination = treatAction.CityToTreatDiseaseAt;
+                    int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
                         game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
@@ -101,8 +101,8 @@ namespace Pandemic_AI_Framework
                     macro.MacroAction_Type == PD_MacroAction_Type.AutoTreatDisease_Medic_Macro
                     )
                 {
-                    PD_City destination = macro.Find_Destination();
-                    int treatType = destination.Type;
+                    int destination = macro.Find_Destination();
+                    int treatType = game.GQ_City_InfectionType(destination);
                     int numCubesThisTypeOnThatCity =
                         game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
                             destination,

@@ -28,23 +28,23 @@ namespace Pandemic_AI_Framework
         #region constructors
         // normal constructor
         public PD_MapElements(
-            List<PD_City> cities
+            List<int> cities
             )
         {
             InactivePlayerPawns = new List<PD_ME_PlayerPawn>();
             PlayerPawnsPerCityID = new Dictionary<int, List<PD_ME_PlayerPawn>>();
             foreach (var city in cities)
-                PlayerPawnsPerCityID.Add(city.ID, new List<PD_ME_PlayerPawn>());
+                PlayerPawnsPerCityID.Add(city, new List<PD_ME_PlayerPawn>());
 
             InactiveInfectionCubesPerType = new Dictionary<int, List<PD_ME_InfectionCube>>();
             InfectionCubesPerCityID = new Dictionary<int, List<PD_ME_InfectionCube>>();
             foreach (var city in cities)
-                InfectionCubesPerCityID.Add(city.ID, new List<PD_ME_InfectionCube>());
+                InfectionCubesPerCityID.Add(city, new List<PD_ME_InfectionCube>());
 
             InactiveResearchStations = new List<PD_ME_ResearchStation>();
             ResearchStationsPerCityID = new Dictionary<int, List<PD_ME_ResearchStation>>();
             foreach (var city in cities)
-                ResearchStationsPerCityID.Add(city.ID, new List<PD_ME_ResearchStation>());
+                ResearchStationsPerCityID.Add(city, new List<PD_ME_ResearchStation>());
         }
 
         // special constructor, for use with the json serializer

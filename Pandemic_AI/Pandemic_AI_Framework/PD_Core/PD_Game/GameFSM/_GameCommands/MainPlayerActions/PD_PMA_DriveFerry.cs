@@ -16,17 +16,17 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; private set; }
 
-        public PD_City InitialLocation { get; protected set; }
+        public int InitialLocation { get; protected set; }
 
-        public PD_City TargetLocation { get; protected set; }
+        public int TargetLocation { get; protected set; }
 
         public PD_PMA_DriveFerry(
             PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation
+            int initialLocation,
+            int targetLocation
             )
         {
-            this.Player = player;
+            this.Player = player.GetCustomDeepCopy();
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
         }
@@ -37,8 +37,8 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player.GetCustomDeepCopy();
-            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
-            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+            this.InitialLocation = actionToCopy.InitialLocation;
+            this.TargetLocation = actionToCopy.TargetLocation;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -66,8 +66,8 @@ namespace Pandemic_AI_Framework
             string actionDescription = String.Format(
                 "{0}: DRIVE_FERRY: {1} -> {2}",
                 Player.Name,
-                InitialLocation.Name,
-                TargetLocation.Name
+                InitialLocation.ToString(),
+                TargetLocation.ToString()
                 );
 
             return actionDescription;
@@ -122,8 +122,8 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + InitialLocation.GetHashCode();
-            hash = hash * 31 + TargetLocation.GetHashCode();
+            hash = hash * 31 + InitialLocation;
+            hash = hash * 31 + TargetLocation;
 
             return hash;
         }

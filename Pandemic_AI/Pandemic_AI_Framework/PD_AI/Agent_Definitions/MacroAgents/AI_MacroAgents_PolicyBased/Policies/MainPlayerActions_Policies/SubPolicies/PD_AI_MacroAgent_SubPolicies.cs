@@ -192,9 +192,9 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_GiveCard action =
                                 (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
-                            PD_City destination = action.CityCardToGive.City;
+                            int destination = action.CityCardToGive.City;
                             PD_Player otherPlayer = action.OtherPlayer;
-                            PD_City otherPlayerLocation =
+                            int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
@@ -215,9 +215,9 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_TakeCard action =
                                 (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
-                            PD_City destination = action.CityCardToTake.City;
+                            int destination = action.CityCardToTake.City;
                             PD_Player otherPlayer = action.OtherPlayer;
-                            PD_City otherPlayerLocation =
+                            int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
@@ -360,9 +360,9 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_GiveCard action =
                                 (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
-                            PD_City destination = action.CityCardToGive.City;
+                            int destination = action.CityCardToGive.City;
                             PD_Player otherPlayer = action.OtherPlayer;
-                            PD_City otherPlayerLocation =
+                            int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,
@@ -383,9 +383,9 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_TakeCard action =
                                 (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
-                            PD_City destination = action.CityCardToTake.City;
+                            int destination = action.CityCardToTake.City;
                             PD_Player otherPlayer = action.OtherPlayer;
-                            PD_City otherPlayerLocation =
+                            int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
                             int distanceFromOtherPlayer = pathFinder.GetPrecalculatedShortestDistance(
                                 game,

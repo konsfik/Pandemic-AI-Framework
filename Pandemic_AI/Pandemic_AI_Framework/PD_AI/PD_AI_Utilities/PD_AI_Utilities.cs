@@ -9,7 +9,7 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_AI_Utilities
     {
-        
+
 
         /// <summary>
         /// Returns a dictionary of Infection Types per City,
@@ -18,7 +18,7 @@ namespace Pandemic_AI_Framework
         /// <param name="game"></param>
         /// <param name="min_SameType_InfectionCubes"></param>
         /// <returns></returns>
-        public static Dictionary<PD_City, List<int>> Find_InfectionTypesPerCity_MinCubesSameType(
+        public static Dictionary<int, List<int>> Find_InfectionTypesPerCity_MinCubesSameType(
             PD_Game game,
             int min_SameType_InfectionCubes
             )
@@ -31,19 +31,20 @@ namespace Pandemic_AI_Framework
             var infectedCities_MinCubes_AnyType =
                 game.GQ_Find_InfectionTypePerCity_MinCubes(min_SameType_InfectionCubes);
 
-            if (infectedCities_MinCubes_AnyType.Count == 0) return new Dictionary<PD_City, List<int>>();
+            if (infectedCities_MinCubes_AnyType.Count == 0) return new Dictionary<int, List<int>>();
 
-            var infectionTypesPerCity_MinSameCubes = new Dictionary<PD_City, List<int>>();
+            var infectionTypesPerCity_MinSameCubes = new Dictionary<int, List<int>>();
 
             foreach (var city in infectedCities_MinCubes_AnyType)
             {
                 List<int> infectionCubeTypes = game.GQ_InfectionCubeTypes_OnCity(city);
                 foreach (var type in infectionCubeTypes)
                 {
-                    int numCubesOfThisTypeOnThisCity = game.MapElements.InfectionCubesPerCityID[city.ID].FindAll(
-                        x =>
-                        x.Type == type
-                        ).Count;
+                    int numCubesOfThisTypeOnThisCity
+                        = game.MapElements.InfectionCubesPerCityID[city].FindAll(
+                            x =>
+                            x.Type == type
+                            ).Count;
                     if (numCubesOfThisTypeOnThisCity > min_SameType_InfectionCubes)
                     {
                         if (infectionTypesPerCity_MinSameCubes.Keys.Contains(city))
@@ -61,21 +62,21 @@ namespace Pandemic_AI_Framework
             return infectionTypesPerCity_MinSameCubes;
         }
 
-        public static List<PD_City> Find_InfectedCities(
+        public static List<int> Find_InfectedCities(
             PD_Game game,
             int minimumNumberOfAnyTypeInfectionCubes,
             int minimumNumberOfSameTypeInfectionCubes
             )
         {
-            var infectedCities = new List<PD_City>();
+            var infectedCities = new List<int>();
 
-            foreach (var city in game.Map.Cities)
+            foreach (var city in game.Map.cities)
             {
                 if (
-                    game.MapElements.InfectionCubesPerCityID[city.ID].Count > minimumNumberOfAnyTypeInfectionCubes
+                    game.MapElements.InfectionCubesPerCityID[city].Count > minimumNumberOfAnyTypeInfectionCubes
                     )
                 {
-                    var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city.ID];
+                    var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city];
                     List<int> infectionCubeTypes = new List<int>();
                     foreach (var ic in infectionCubesOnThisCity)
                     {

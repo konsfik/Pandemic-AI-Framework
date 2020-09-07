@@ -14,8 +14,8 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; private set; }
         public PD_CityCard Used_CityCard { get; private set; }
-        public PD_City Move_RS_From { get; private set; }
-        public PD_City Move_RS_To { get; private set; }
+        public int Move_RS_From { get; private set; }
+        public int Move_RS_To { get; private set; }
         #region constructors
         /// <summary>
         /// Normal & Json constructor
@@ -28,12 +28,12 @@ namespace Pandemic_AI_Framework
         public PD_PA_MoveResearchStation(
             PD_Player player,
             PD_CityCard used_CityCard,
-            PD_City move_RS_From,
-            PD_City move_RS_To
+            int move_RS_From,
+            int move_RS_To
             )
         {
-            this.Player = player;
-            this.Used_CityCard = used_CityCard;
+            this.Player = player.GetCustomDeepCopy();
+            this.Used_CityCard = used_CityCard.GetCustomDeepCopy();
             this.Move_RS_From = move_RS_From;
             this.Move_RS_To = move_RS_To;
         }
@@ -48,8 +48,8 @@ namespace Pandemic_AI_Framework
         {
             this.Player = actionToCopy.Player.GetCustomDeepCopy();
             this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
-            this.Move_RS_From = actionToCopy.Move_RS_From.GetCustomDeepCopy();
-            this.Move_RS_To = actionToCopy.Move_RS_To.GetCustomDeepCopy();
+            this.Move_RS_From = actionToCopy.Move_RS_From;
+            this.Move_RS_To = actionToCopy.Move_RS_To;
         }
         #endregion
 
@@ -87,9 +87,9 @@ namespace Pandemic_AI_Framework
 
             var researchStationToMove = game
                 .MapElements
-                .ResearchStationsPerCityID[Move_RS_From.ID].DrawLast();
+                .ResearchStationsPerCityID[Move_RS_From].DrawLast();
 
-            game.MapElements.ResearchStationsPerCityID[Move_RS_To.ID].Add(researchStationToMove);
+            game.MapElements.ResearchStationsPerCityID[Move_RS_To].Add(researchStationToMove);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -102,8 +102,8 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: MOVE_RESEARCH_STATION from {1} to {2}",
                 Player.Name,
-                Move_RS_From.Name,
-                Move_RS_To.Name
+                Move_RS_From.ToString(),
+                Move_RS_To.ToString()
                 );
         }
 
@@ -161,8 +161,8 @@ namespace Pandemic_AI_Framework
 
             hash = hash * 31 + Player.GetHashCode();
             hash = hash * 31 + Used_CityCard.GetHashCode();
-            hash = hash * 31 + Move_RS_From.GetHashCode();
-            hash = hash * 31 + Move_RS_To.GetHashCode();
+            hash = hash * 31 + Move_RS_From;
+            hash = hash * 31 + Move_RS_To;
 
             return hash;
         }

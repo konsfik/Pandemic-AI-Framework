@@ -13,7 +13,7 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; private set; }
         public List<PD_CityCard> CityCardsToDiscard { get; private set; }
-        public PD_City CityOfResearchStation { get; private set; }
+        public int CityOfResearchStation { get; private set; }
         public int TypeOfDiseaseToCure { get; private set; }
 
         #region constructors
@@ -27,13 +27,13 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_DiscoverCure_Scientist(
             PD_Player player,
-            PD_City cityOfResearchStation,
+            int cityOfResearchStation,
             List<PD_CityCard> cityCardsToDiscard,
             int typeOfDiseaseToCure
             )
         {
-            this.Player = player;
-            this.CityCardsToDiscard = cityCardsToDiscard;
+            this.Player = player.GetCustomDeepCopy();
+            this.CityCardsToDiscard = cityCardsToDiscard.CustomDeepCopy();
             this.CityOfResearchStation = cityOfResearchStation;
             this.TypeOfDiseaseToCure = typeOfDiseaseToCure;
         }
@@ -48,7 +48,7 @@ namespace Pandemic_AI_Framework
         {
             this.Player = actionToCopy.Player.GetCustomDeepCopy();
             this.CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
-            this.CityOfResearchStation = actionToCopy.CityOfResearchStation.GetCustomDeepCopy();
+            this.CityOfResearchStation = actionToCopy.CityOfResearchStation;
             this.TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
         }
 
@@ -64,7 +64,7 @@ namespace Pandemic_AI_Framework
             )
         {
 #if DEBUG
-            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
+            int current_player_location = game.GQ_CurrentPlayer_Location();
 
             if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
             {
@@ -116,7 +116,7 @@ namespace Pandemic_AI_Framework
                 "{0}: DISCOVER_CURE_SCIENTIST of type {1} on {2}",
                 Player.Name,
                 TypeOfDiseaseToCure,
-                CityOfResearchStation.Name
+                CityOfResearchStation.ToString()
                 );
 
             return description;
@@ -174,8 +174,8 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + CityOfResearchStation.GetHashCode();
-            hash = hash * 31 + TypeOfDiseaseToCure.GetHashCode();
+            hash = hash * 31 + CityOfResearchStation;
+            hash = hash * 31 + TypeOfDiseaseToCure;
             hash = hash * 31 + CityCardsToDiscard.Custom_HashCode();
 
             return hash;

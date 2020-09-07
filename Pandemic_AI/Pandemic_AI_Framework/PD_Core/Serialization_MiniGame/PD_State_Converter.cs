@@ -110,7 +110,7 @@ namespace Pandemic_AI_Framework
             //////////////////////////////////
 
             // number_of_cities
-            mini_game.map___number_of_cities = game.Map.Cities.Count;
+            mini_game.map___number_of_cities = game.Map.number_of_cities;
             mini_game.map___cities = new List<int>();
             mini_game.map___name__per__city = new Dictionary<int, string>();
             mini_game.map___position__per__city = new Dictionary<int, PD_Point>();
@@ -118,37 +118,38 @@ namespace Pandemic_AI_Framework
             mini_game.map___neighbors__per__city = new Dictionary<int, List<int>>();
             mini_game.map_elements___research_station__per__city = new Dictionary<int, bool>();
             mini_game.map_elements___location__per__player = new Dictionary<int, int>();
-            for (int c = 0; c < mini_game.map___number_of_cities; c++)
+
+            foreach(int c in game.Map.cities)
             {
                 // cities
                 mini_game.map___cities.Add(c);
                 // name__per__city
                 mini_game.map___name__per__city.Add(
                     c,
-                    game.Map.Cities[c].Name
+                    game.Map.name__per__city[c]
                     );
                 // position__per__city
                 mini_game.map___position__per__city.Add(
                     c,
-                    game.Map.Cities[c].Position.GetCustomDeepCopy()
+                    game.Map.position__per__city[c].GetCustomDeepCopy()
                     );
                 // infection_type__per__city
                 mini_game.map___infection_type__per__city.Add(
                     c,
-                    game.Map.Cities[c].Type
-                    );
+                    game.Map.infection_type__per__city[c]
+                    ) ;
                 // neighbors__per__city
                 List<int> neighbors = new List<int>();
-                foreach (PD_City nei in game.Map.CityNeighbors_PerCityID[c])
+                foreach (int nei in game.Map.neighbors__per__city[c])
                 {
-                    neighbors.Add(nei.ID);
+                    neighbors.Add(nei);
                 }
                 mini_game.map___neighbors__per__city.Add(
                     c,
                     neighbors
                     );
                 // research_station__per__city
-                if (game.GQ_Is_City_ResearchStation(game.Map.Cities[c]))
+                if (game.GQ_Is_City_ResearchStation(game.Map.cities[c]))
                 {
                     mini_game.map_elements___research_station__per__city.Add(c, true);
                 }
@@ -162,7 +163,7 @@ namespace Pandemic_AI_Framework
             {
                 var game_player = game.Players[p];
                 var game_player_location = game.GQ_PlayerLocation(game_player);
-                mini_game.map_elements___location__per__player[p] = game_player_location.ID;
+                mini_game.map_elements___location__per__player[p] = game_player_location;
             }
             // infection_cubes__per__type__per__city
             mini_game.map_elements___infection_cubes__per__type__per__city =
@@ -174,12 +175,13 @@ namespace Pandemic_AI_Framework
                     new Dictionary<int, int>()
                     );
             }
-            foreach (var city in game.Map.Cities)
+            foreach (int city in game.Map.cities)
             {
                 for (int t = 0; t < 4; t++)
                 {
-                    int num_cubes__this_type__that_city = game.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count;
-                    mini_game.map_elements___infection_cubes__per__type__per__city[city.ID].Add(
+                    int num_cubes__this_type__that_city 
+                        = game.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count;
+                    mini_game.map_elements___infection_cubes__per__type__per__city[city].Add(
                         t,
                         num_cubes__this_type__that_city
                         );
@@ -285,7 +287,7 @@ namespace Pandemic_AI_Framework
                 List<int> mini_group = new List<int>();
                 foreach (var card in group)
                 {
-                    int mini_infection_card = card.City.ID;
+                    int mini_infection_card = card.City;
                     mini_group.Add(mini_infection_card);
                 }
                 mini_game.cards___divided_deck_of_infection_cards.Add(mini_group);
@@ -295,7 +297,7 @@ namespace Pandemic_AI_Framework
             mini_game.cards___active_infection_cards = new List<int>();
             foreach (var card in game.Cards.ActiveInfectionCards)
             {
-                int mini_card = card.City.ID;
+                int mini_card = card.City;
                 mini_game.cards___active_infection_cards.Add(mini_card);
             }
 
@@ -303,7 +305,7 @@ namespace Pandemic_AI_Framework
             mini_game.cards___deck_of_discarded_infection_cards = new List<int>();
             foreach (var card in game.Cards.DeckOfDiscardedInfectionCards)
             {
-                int mini_card = card.City.ID;
+                int mini_card = card.City;
                 mini_game.cards___deck_of_discarded_infection_cards.Add(mini_card);
             }
 
@@ -316,7 +318,7 @@ namespace Pandemic_AI_Framework
                 {
                     if (card is PD_CityCard cc)
                     {
-                        int mini_card = cc.City.ID;
+                        int mini_card = cc.City;
                         mini_group.Add(mini_card);
                     }
                     else if (card is PD_EpidemicCard ec)
@@ -334,7 +336,7 @@ namespace Pandemic_AI_Framework
             {
                 if (player_card is PD_CityCard cc)
                 {
-                    int mini_city_card = cc.City.ID;
+                    int mini_city_card = cc.City;
                     mini_game.cards___deck_of_discarded_player_cards.Add(mini_city_card);
                 }
                 else if (player_card is PD_EpidemicCard ec)
@@ -435,36 +437,15 @@ namespace Pandemic_AI_Framework
             /// map
             ////////////////////////////////////////////////////////////
 
-            // cities
-            List<PD_City> cities = new List<PD_City>();
-            foreach (int c in mini_game.map___cities)
-            {
-                PD_City city = new PD_City(
-                    c,
-                    mini_game.map___infection_type__per__city[c],
-                    mini_game.map___name__per__city[c],
-                    mini_game.map___position__per__city[c]
-                    );
-                cities.Add(city);
-            }
-
-            // neighbors:
-            Dictionary<int, List<PD_City>> neighbors__per__city = new Dictionary<int, List<PD_City>>();
-            foreach (int c in mini_game.map___cities)
-            {
-                List<int> mini_neighbors = mini_game.map___neighbors__per__city[c];
-                List<PD_City> neighbors = new List<PD_City>();
-                foreach (int n in mini_neighbors)
-                {
-                    neighbors.Add(cities[n]);
-                }
-                neighbors__per__city.Add(c, neighbors);
-            }
 
             // map
             PD_Map MAP = new PD_Map(
-                cities,
-                neighbors__per__city
+                mini_game.map___number_of_cities,
+                mini_game.map___cities,
+                mini_game.map___name__per__city,
+                mini_game.map___position__per__city,
+                mini_game.map___infection_type__per__city,
+                mini_game.map___neighbors__per__city
                 );
 
 
@@ -476,7 +457,7 @@ namespace Pandemic_AI_Framework
             List<PD_CityCard> city_cards = new List<PD_CityCard>();
             foreach (int c in mini_game.map___cities)
             {
-                PD_CityCard city_card = new PD_CityCard(c, cities[c]);
+                PD_CityCard city_card = new PD_CityCard(c, mini_game.map___cities[c]);
                 city_cards.Add(city_card);
             }
 
@@ -484,7 +465,7 @@ namespace Pandemic_AI_Framework
             List<PD_InfectionCard> infection_cards = new List<PD_InfectionCard>();
             foreach (int c in mini_game.map___cities)
             {
-                PD_InfectionCard infection_card = new PD_InfectionCard(c, cities[c]);
+                PD_InfectionCard infection_card = new PD_InfectionCard(c, mini_game.map___cities[c]);
                 infection_cards.Add(infection_card);
             }
 
@@ -642,23 +623,23 @@ namespace Pandemic_AI_Framework
             // infection_cubes_per_city_id
             Dictionary<int, List<PD_ME_InfectionCube>> infection_cubes_per_city_id
                 = new Dictionary<int, List<PD_ME_InfectionCube>>();
-            foreach (PD_City city in cities)
+            foreach (int city in mini_game.map___cities)
             {
-                infection_cubes_per_city_id.Add(city.ID, new List<PD_ME_InfectionCube>());
+                infection_cubes_per_city_id.Add(city, new List<PD_ME_InfectionCube>());
             }
             for (int t = 0; t < 4; t++)
             {
                 int type_counter = inactive_infection_cubes_per_type[t].Count;
-                foreach (PD_City city in cities)
+                foreach (int city in mini_game.map___cities)
                 {
                     int num_cubes_this_city_this_type =
-                        mini_game.map_elements___infection_cubes__per__type__per__city[city.ID][t];
+                        mini_game.map_elements___infection_cubes__per__type__per__city[city][t];
 
                     for (int ic = 0; ic < num_cubes_this_city_this_type; ic++)
                     {
                         int id = t * 24 + type_counter;
                         PD_ME_InfectionCube cube = all_infection_cubes_references[id];
-                        infection_cubes_per_city_id[city.ID].Add(cube);
+                        infection_cubes_per_city_id[city].Add(cube);
                         type_counter++;
                     }
                 }
@@ -676,17 +657,17 @@ namespace Pandemic_AI_Framework
             Dictionary<int, List<PD_ME_ResearchStation>> research_stations_per_city
                 = new Dictionary<int, List<PD_ME_ResearchStation>>();
             int rs_id = inactive_research_stations.Count;
-            foreach (var city in cities)
+            foreach (int city in mini_game.map___cities)
             {
-                if (mini_game.map_elements___research_station__per__city[city.ID] == true)
+                if (mini_game.map_elements___research_station__per__city[city] == true)
                 {
                     PD_ME_ResearchStation rs = research_stations.Find(x => x.ID == rs_id);
-                    research_stations_per_city.Add(city.ID, new List<PD_ME_ResearchStation>() { rs });
+                    research_stations_per_city.Add(city, new List<PD_ME_ResearchStation>() { rs });
                     rs_id++;
                 }
                 else
                 {
-                    research_stations_per_city.Add(city.ID, new List<PD_ME_ResearchStation>());
+                    research_stations_per_city.Add(city, new List<PD_ME_ResearchStation>());
                 }
             }
 
@@ -714,7 +695,7 @@ namespace Pandemic_AI_Framework
                 foreach (int mini_infection_card in mini_cards_group)
                 {
                     int id = mini_infection_card;
-                    PD_City city = cities.Find(x => x.ID == id);
+                    int city = mini_game.map___cities.Find(x => x == id);
                     cards_group.Add(
                         new PD_InfectionCard(id, city)
                         );
@@ -728,7 +709,7 @@ namespace Pandemic_AI_Framework
             foreach (int mini_card in mini_game.cards___active_infection_cards)
             {
                 int id = mini_card;
-                PD_City city = cities.Find(x => x.ID == id);
+                int city = mini_game.map___cities.Find(x => x == id);
                 active_infection_cards.Add(
                     new PD_InfectionCard(id, city)
                     );
@@ -740,7 +721,7 @@ namespace Pandemic_AI_Framework
             foreach (int mini_card in mini_game.cards___deck_of_discarded_infection_cards)
             {
                 int id = mini_card;
-                PD_City city = cities.Find(x => x.ID == id);
+                int city = mini_game.map___cities.Find(x => x == id);
                 deck_of_discarded_infection_cards.Add(
                     new PD_InfectionCard(id, city)
                     );
@@ -756,7 +737,7 @@ namespace Pandemic_AI_Framework
                 {
                     PD_PlayerCardBase card = Game_PlayerCard__FROM__MiniGame_PlayerCard(
                         mini_player_card,
-                        cities
+                        mini_game.map___cities
                         );
                     cards_group.Add(
                         card
@@ -771,7 +752,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PlayerCardBase player_card = Game_PlayerCard__FROM__MiniGame_PlayerCard(
                     mini_player_card,
-                    cities
+                    mini_game.map___cities
                     );
                 deck_of_dicarded_player_cards.Add(player_card);
             }
@@ -786,7 +767,7 @@ namespace Pandemic_AI_Framework
                 foreach (int mini_card in mini_game.cards___player_cards__per__player[mini_player])
                 {
                     player_cards_in_player_hand.Add(
-                        Game_PlayerCard__FROM__MiniGame_PlayerCard(mini_card, cities)
+                        Game_PlayerCard__FROM__MiniGame_PlayerCard(mini_card, mini_game.map___cities)
                         );
                 }
                 player_cards_per_player.Add(
@@ -852,7 +833,7 @@ namespace Pandemic_AI_Framework
         {
             if (card is PD_CityCard cc)
             {
-                return cc.City.ID;
+                return cc.City;
             }
             else if (card is PD_EpidemicCard ec)
             {
@@ -860,7 +841,7 @@ namespace Pandemic_AI_Framework
             }
             else if (card is PD_InfectionCard ic)
             {
-                return ic.City.ID;
+                return ic.City;
             }
             else
             {
@@ -870,14 +851,14 @@ namespace Pandemic_AI_Framework
 
         public static PD_PlayerCardBase Game_PlayerCard__FROM__MiniGame_PlayerCard(
             int mini_game_player_card,
-            List<PD_City> cities
+            List<int> cities
             )
         {
             // city card...
             if (mini_game_player_card < cities.Count)
             {
                 int id = mini_game_player_card;
-                PD_City city = cities.Find(x => x.ID == id);
+                int city = cities.Find(x => x == id);
                 return new PD_CityCard(id, city);
             }
             // epidemic card

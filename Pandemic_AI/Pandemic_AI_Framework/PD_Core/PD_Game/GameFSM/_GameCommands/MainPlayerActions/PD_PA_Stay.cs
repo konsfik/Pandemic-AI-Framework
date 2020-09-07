@@ -14,7 +14,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action
     {
         public PD_Player Player { get; private set; }
-        public PD_City CityToStayOn { get; private set; }
+        public int CityToStayOn { get; private set; }
 
         #region constructors
         /// <summary>
@@ -25,10 +25,10 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_Stay(
             PD_Player player,
-            PD_City cityToStayOn
+            int cityToStayOn
             )
         {
-            Player = player;
+            Player = player.GetCustomDeepCopy();
             CityToStayOn = cityToStayOn;
         }
 
@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework
             )
         {
             Player = actionToCopy.Player.GetCustomDeepCopy();
-            CityToStayOn = actionToCopy.CityToStayOn.GetCustomDeepCopy();
+            CityToStayOn = actionToCopy.CityToStayOn;
         }
         #endregion
 
@@ -73,7 +73,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: STAY on {1}",
                 Player.Name,
-                CityToStayOn.Name
+                CityToStayOn.ToString()
                 );
         }
 
@@ -123,7 +123,7 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + CityToStayOn.GetHashCode();
+            hash = hash * 31 + CityToStayOn;
 
             return hash;
         }

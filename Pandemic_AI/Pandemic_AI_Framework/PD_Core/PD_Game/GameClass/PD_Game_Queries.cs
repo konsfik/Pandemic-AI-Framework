@@ -8,6 +8,15 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_Game_Queries
     {
+
+        public static int GQ_City_InfectionType(
+            this PD_Game game,
+            int city
+            )
+        {
+            return game.Map.infection_type__per__city[city];
+        }
+
         public static bool GQ_OperationsExpertFlight_HasBeenUsedInThisTurn(
             this PD_Game game
             )
@@ -31,7 +40,7 @@ namespace Pandemic_AI_Framework
             return operationsExpertFlightHasBeenUsedInThisTurn;
         }
 
-        public static PD_City GQ_Find_Medic_Location(
+        public static int GQ_Find_Medic_Location(
             this PD_Game game
             )
         {
@@ -39,7 +48,7 @@ namespace Pandemic_AI_Framework
                 x =>
                 GQ_Find_Player_Role(game, x) == PD_Player_Roles.Medic
                 );
-            PD_City medic_location = null;
+            int medic_location = -1;
             if (medic != null)
             {
                 medic_location = game.GQ_PlayerLocation(medic);
@@ -68,25 +77,6 @@ namespace Pandemic_AI_Framework
                 }
             }
             return null;
-        }
-
-        public static List<PD_CityCard> GQ_Find_UselessCityCards(
-            this PD_Game game
-            )
-        {
-            List<PD_CityCard> cityCardsInAllPlayerHands = GQ_Find_CityCards_InAllPlayersHands(game);
-            List<int> curedDiseaseTypes = GQ_Find_Cured_or_Eradicated_DiseaseTypes(game);
-            List<PD_CityCard> uselessCards = new List<PD_CityCard>();
-            foreach (var card in cityCardsInAllPlayerHands)
-            {
-                if (
-                    curedDiseaseTypes.Contains(card.Type)
-                    )
-                {
-                    uselessCards.Add(card);
-                }
-            }
-            return uselessCards;
         }
 
         public static int GQ_RemainingPlayerActions_ThisRound(
@@ -296,7 +286,7 @@ namespace Pandemic_AI_Framework
             return game.RoleCardsPerPlayerID[player.ID].Role;
         }
 
-        public static List<PD_City> GQ_Find_CitiesWith_X_SameTypeCubes(
+        public static List<int> GQ_Find_CitiesWith_X_SameTypeCubes(
             this PD_Game game,
             int requested_numSameTypeCubes
             )
@@ -306,12 +296,12 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("number of cubes must be between 0 and 3");
             }
-            List<PD_City> allCities = game.Map.Cities;
-            List<PD_City> citiesWith_X_SameTypeCubes = new List<PD_City>();
+            List<int> allCities = game.Map.cities;
+            List<int> citiesWith_X_SameTypeCubes = new List<int>();
             foreach (var city in allCities)
             {
                 int max_NumSameTypeCubesOnCity = 0;
-                List<PD_ME_InfectionCube> allCubesOnCity = game.MapElements.InfectionCubesPerCityID[city.ID];
+                List<PD_ME_InfectionCube> allCubesOnCity = game.MapElements.InfectionCubesPerCityID[city];
                 for (int i = 0; i < 4; i++)
                 {
                     List<PD_ME_InfectionCube> cubesOfThisTypeOnCity = allCubesOnCity.FindAll(
@@ -335,10 +325,10 @@ namespace Pandemic_AI_Framework
 
         public static List<int> GQ_InfectionCubeTypes_OnCity(
             this PD_Game game,
-            PD_City city
+            int city
             )
         {
-            var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city.ID];
+            var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city];
             List<int> infectionCubeTypesOnSpecificCity = new List<int>();
             foreach (var cube in infectionCubesOnThisCity)
             {
@@ -350,11 +340,11 @@ namespace Pandemic_AI_Framework
             return infectionCubeTypesOnSpecificCity;
         }
 
-        public static Dictionary<PD_City, List<int>> GQ_InfectionCubeTypesPerInfectedCity(
+        public static Dictionary<int, List<int>> GQ_InfectionCubeTypesPerInfectedCity(
             this PD_Game game
             )
         {
-            Dictionary<PD_City, List<int>> infectionCubeTypesPerInfectedCity = new Dictionary<PD_City, List<int>>();
+            Dictionary<int, List<int>> infectionCubeTypesPerInfectedCity = new Dictionary<int, List<int>>();
 
             var allInfectedCities = GQ_InfectedCities(game);
             foreach (var city in allInfectedCities)
@@ -376,9 +366,9 @@ namespace Pandemic_AI_Framework
             var usableDiscoverCureCardGroups = new List<List<PD_CityCard>>();
             foreach (var cardGroup in discoverCureCardGroups)
             {
-                if (
-                    uncuredDiseaseTypes.Contains(cardGroup[0].Type)
-                    )
+                int city = cardGroup[0].City;
+                int disease_type = game.GQ_City_InfectionType(city);
+                if (uncuredDiseaseTypes.Contains(disease_type))
                 {
                     usableDiscoverCureCardGroups.Add(cardGroup);
                 }
@@ -407,9 +397,10 @@ namespace Pandemic_AI_Framework
             List<int> availableTypes = new List<int>();
             foreach (var cityCard in cityCardsInPlayerHand)
             {
-                if (availableTypes.Contains(cityCard.Type) == false)
+                int city_card_infection_type = game.Map.infection_type__per__city[cityCard.City];
+                if (availableTypes.Contains(city_card_infection_type) == false)
                 {
-                    availableTypes.Add(cityCard.Type);
+                    availableTypes.Add(city_card_infection_type);
                 }
             }
 
@@ -418,7 +409,7 @@ namespace Pandemic_AI_Framework
             {
                 List<PD_CityCard> cityCardsOfThisType = cityCardsInPlayerHand.FindAll(
                     x =>
-                    x.Type == type
+                    game.GQ_City_InfectionType(x.City) == type
                     ).ToList();
                 cityCardsByType.Add(cityCardsOfThisType);
             }
@@ -459,7 +450,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static PD_City GQ_CurrentPlayer_Location(
+        public static int GQ_CurrentPlayer_Location(
             this PD_Game game
             )
         {
@@ -468,7 +459,7 @@ namespace Pandemic_AI_Framework
             return GQ_Find_PlayerPawnLocation(game, currentPlayerPawn);
         }
 
-        public static PD_City GQ_PlayerLocation(
+        public static int GQ_PlayerLocation(
             this PD_Game game,
             PD_Player player
             )
@@ -477,7 +468,7 @@ namespace Pandemic_AI_Framework
             return GQ_Find_PlayerPawnLocation(game, playerPawn);
         }
 
-        public static PD_City GQ_Find_PlayerPawnLocation(
+        public static int GQ_Find_PlayerPawnLocation(
             this PD_Game game,
             PD_ME_PlayerPawn playerPawn
             )
@@ -487,25 +478,25 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("the player pawn is null");
             }
 
-            foreach (var city in game.Map.Cities)
+            foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.PlayerPawnsPerCityID[city.ID].Contains(playerPawn))
+                if (game.MapElements.PlayerPawnsPerCityID[city].Contains(playerPawn))
                 {
                     return city;
                 }
             }
 
-            return null;
+            return -1;
         }
 
-        public static PD_City GQ_Find_CityByName(
+        public static int GQ_Find_CityByName(
             this PD_Game game,
             string cityName
             )
         {
-            return game.Map.Cities.Find(
+            return game.Map.cities.Find(
                 x =>
-                x.Name == cityName
+                game.Map.name__per__city[x] == cityName
                 );
         }
 
@@ -517,12 +508,12 @@ namespace Pandemic_AI_Framework
             return game.PlayerPawnsPerPlayerID[player.ID];
         }
 
-        public static List<PD_City> GQ_ResearchStationCities(
+        public static List<int> GQ_ResearchStationCities(
             this PD_Game game
             )
         {
-            List<PD_City> researchStationCities = new List<PD_City>();
-            foreach (var city in game.Map.Cities)
+            List<int> researchStationCities = new List<int>();
+            foreach (var city in game.Map.cities)
             {
                 if (GQ_Is_City_ResearchStation(game, city))
                 {
@@ -534,20 +525,20 @@ namespace Pandemic_AI_Framework
 
         public static bool GQ_Is_City_ResearchStation(
             this PD_Game game,
-            PD_City city
+            int city
             )
         {
-            return game.MapElements.ResearchStationsPerCityID[city.ID].Count > 0;
+            return game.MapElements.ResearchStationsPerCityID[city].Count > 0;
         }
 
-        public static List<PD_City> GQ_InfectedCities(
+        public static List<int> GQ_InfectedCities(
             this PD_Game game
             )
         {
-            List<PD_City> allInfectedCities = new List<PD_City>();
-            foreach (var city in game.Map.Cities)
+            List<int> allInfectedCities = new List<int>();
+            foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.InfectionCubesPerCityID[city.ID].Count > 0)
+                if (game.MapElements.InfectionCubesPerCityID[city].Count > 0)
                 {
                     allInfectedCities.Add(city);
                 }
@@ -555,7 +546,7 @@ namespace Pandemic_AI_Framework
             return allInfectedCities;
         }
 
-        public static List<PD_City> GQ_Find_InfectionTypePerCity_MinCubes(
+        public static List<int> GQ_Find_InfectionTypePerCity_MinCubes(
             this PD_Game game,
             int minimumCubes_AnyType
             )
@@ -564,10 +555,10 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("minimum number infection cubes must be at least 1");
             }
-            List<PD_City> allInfectedCities = new List<PD_City>();
-            foreach (var city in game.Map.Cities)
+            List<int> allInfectedCities = new List<int>();
+            foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.InfectionCubesPerCityID[city.ID].Count >= minimumCubes_AnyType)
+                if (game.MapElements.InfectionCubesPerCityID[city].Count >= minimumCubes_AnyType)
                 {
                     allInfectedCities.Add(city);
                 }
@@ -639,7 +630,7 @@ namespace Pandemic_AI_Framework
 
         public static int GQ_Count_Num_InfectionCubes_OfType_OnCity(
             this PD_Game game,
-            PD_City city,
+            int city,
             int infectionCubeType
             )
         {
@@ -652,11 +643,11 @@ namespace Pandemic_AI_Framework
 
         public static List<PD_ME_InfectionCube> GQ_Find_InfectionCubes_OfType_OnCity(
             this PD_Game game,
-            PD_City city,
+            int city,
             int type
             )
         {
-            return game.MapElements.InfectionCubesPerCityID[city.ID].FindAll(
+            return game.MapElements.InfectionCubesPerCityID[city].FindAll(
                 x =>
                 x.Type == type
                 );
@@ -667,9 +658,9 @@ namespace Pandemic_AI_Framework
             )
         {
             int numCubesOnTheBoard = 0;
-            foreach (var city in game.Map.Cities)
+            foreach (var city in game.Map.cities)
             {
-                numCubesOnTheBoard += game.MapElements.InfectionCubesPerCityID[city.ID].Count;
+                numCubesOnTheBoard += game.MapElements.InfectionCubesPerCityID[city].Count;
             }
             return numCubesOnTheBoard;
         }

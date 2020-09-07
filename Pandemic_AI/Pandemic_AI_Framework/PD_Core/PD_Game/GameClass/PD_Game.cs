@@ -64,63 +64,176 @@ namespace Pandemic_AI_Framework
                 players.Add(new PD_Player(i, playerIDsNames[i]));
             }
 
-            // generate the default cities...
-            List<PD_City> cities = new List<PD_City>()
-            {
-                new PD_City(0,  0, "Atlanta"          , new PD_Point( 379,  837  )),
-                new PD_City(1,  0, "Chicago"          , new PD_Point( 330,  934  )),
-                new PD_City(2,  0, "Essen"            , new PD_Point( 942,  1026 )),
-                new PD_City(3,  0, "London"           , new PD_Point( 809,  1002 )),
-                new PD_City(4,  0, "Madrid"           , new PD_Point( 790,  872  )),
-                new PD_City(5,  0, "Milan"            , new PD_Point( 997,  963  )),
-                new PD_City(6,  0, "Montreal"         , new PD_Point( 462,  939  )),
-                new PD_City(7,  0, "New York"         , new PD_Point( 564,  924  )),
-                new PD_City(8,  0, "Paris"            , new PD_Point( 910,  938  )),
-                new PD_City(9,  0, "San Francisco"    , new PD_Point( 161,  885  )),
-                new PD_City(10, 0, "St. Petersburg"   , new PD_Point( 1089, 1054 )),
-                new PD_City(11, 0, "Washington"       , new PD_Point( 519,  844  )),
-
-                new PD_City(12, 1, "Bogota"           , new PD_Point( 452,  595  )),
-                new PD_City(13, 1, "Buenos Aires"     , new PD_Point( 561,  331  )),
-                new PD_City(14, 1, "Johannesburg"     , new PD_Point( 1055, 392  )),
-                new PD_City(15, 1, "Khartoum"         , new PD_Point( 1065, 643  )),
-                new PD_City(16, 1, "Kinshasha"        , new PD_Point( 980,  526  )),
-                new PD_City(17, 1, "Lagos"            , new PD_Point( 896,  619  )),
-                new PD_City(18, 1, "Lima"             , new PD_Point( 405,  452  )),
-                new PD_City(19, 1, "Los Angeles"      , new PD_Point( 188,  753  )),
-                new PD_City(20, 1, "Mexico City"      , new PD_Point( 311,  709  )),
-                new PD_City(21, 1, "Miami"            , new PD_Point( 463,  729  )),
-                new PD_City(22, 1, "Santiago"         , new PD_Point( 423,  305  )),
-                new PD_City(23, 1, "Sao Paolo"        , new PD_Point( 638,  432  )),
-
-                new PD_City(24, 2, "Algiers"          , new PD_Point( 938,  800  )),
-                new PD_City(25, 2, "Baghdad"          , new PD_Point( 1150, 818  )),
-                new PD_City(26, 2, "Cairo"            , new PD_Point( 1037, 773  )),
-                new PD_City(27, 2, "Chennai"          , new PD_Point( 1392, 605  )),
-                new PD_City(28, 2, "Delhi"            , new PD_Point( 1373, 812  )),
-                new PD_City(29, 2, "Istanbul"         , new PD_Point( 1056, 887  )),
-                new PD_City(30, 2, "Karachi"          , new PD_Point( 1276, 775  )),
-                new PD_City(31, 2, "Kolkata"          , new PD_Point( 1466, 780  )),
-                new PD_City(32, 2, "Moscow"           , new PD_Point( 1160, 964  )),
-                new PD_City(33, 2, "Mumbai"           , new PD_Point( 1289, 677  )),
-                new PD_City(34, 2, "Riyadh"           , new PD_Point( 1165, 699  )),
-                new PD_City(35, 2, "Tehran"           , new PD_Point( 1250, 901  )),
-
-                new PD_City(36, 3, "Bangkok"          , new PD_Point( 1486, 668  )),
-                new PD_City(37, 3, "Beijing"          , new PD_Point( 1543, 931  )),
-                new PD_City(38, 3, "Ho Chi Minh City" , new PD_Point( 1567, 574  )),
-                new PD_City(39, 3, "Hong Kong"        , new PD_Point( 1563, 727  )),
-                new PD_City(40, 3, "Jakarta"          , new PD_Point( 1486, 490  )),
-                new PD_City(41, 3, "Manila"           , new PD_Point( 1697, 582  )),
-                new PD_City(42, 3, "Osaka"            , new PD_Point( 1764, 786  )),
-                new PD_City(43, 3, "Seoul"            , new PD_Point( 1660, 938  )),
-                new PD_City(44, 3, "Shanghai"         , new PD_Point( 1551, 839  )),
-                new PD_City(45, 3, "Sydney"           , new PD_Point( 1773, 310  )),
-                new PD_City(46, 3, "Taipei"           , new PD_Point( 1668, 746  )),
-                new PD_City(47, 3, "Tokyo"            , new PD_Point( 1753, 885  )),
+            List<int> cities = new List<int>() {
+                0,   1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
+                12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47
             };
 
-            Dictionary<int, List<int>> neighbors__per__city_id = new Dictionary<int, List<int>>() {
+            Dictionary<int, string> name__per__city = new Dictionary<int, string>() {
+                {0,   "Atlanta"     },
+                {1,   "Chicago"          },
+                {2,   "Essen"            },
+                {3,   "London"           },
+                {4,   "Madrid"           },
+                {5,   "Milan"            },
+                {6,   "Montreal"         },
+                {7,   "New York"         },
+                {8,   "Paris"            },
+                {9,   "San Francisco"    },
+                {10,  "St. Petersburg"   },
+                {11,  "Washington"       },
+
+                {12,  "Bogota"           },
+                {13,  "Buenos Aires"     },
+                {14,  "Johannesburg"     },
+                {15,  "Khartoum"         },
+                {16,  "Kinshasha"        },
+                {17,  "Lagos"            },
+                {18,  "Lima"             },
+                {19,  "Los Angeles"      },
+                {20,  "Mexico City"      },
+                {21,  "Miami"            },
+                {22,  "Santiago"         },
+                {23,  "Sao Paolo"        },
+
+                {24,  "Algiers"          },
+                {25,  "Baghdad"          },
+                {26,  "Cairo"            },
+                {27,  "Chennai"          },
+                {28,  "Delhi"            },
+                {29,  "Istanbul"         },
+                {30,  "Karachi"          },
+                {31,  "Kolkata"          },
+                {32,  "Moscow"           },
+                {33,  "Mumbai"           },
+                {34,  "Riyadh"           },
+                {35,  "Tehran"           },
+
+                {36,  "Bangkok"          },
+                {37,  "Beijing"          },
+                {38,  "Ho Chi Minh City" },
+                {39,  "Hong Kong"        },
+                {40,  "Jakarta"          },
+                {41,  "Manila"           },
+                {42,  "Osaka"            },
+                {43,  "Seoul"            },
+                {44,  "Shanghai"         },
+                {45,  "Sydney"           },
+                {46,  "Taipei"           },
+                {47,  "Tokyo"            }
+            };
+
+            Dictionary<int, PD_Point> position__per__city = new Dictionary<int, PD_Point>() {
+                {0,   new PD_Point( 379,  837  )          },
+                {1,   new PD_Point( 330,  934  )          },
+                {2,   new PD_Point( 942,  1026 )          },
+                {3,   new PD_Point( 809,  1002 )          },
+                {4,   new PD_Point( 790,  872  )          },
+                {5,   new PD_Point( 997,  963  )          },
+                {6,   new PD_Point( 462,  939  )          },
+                {7,   new PD_Point( 564,  924  )          },
+                {8,   new PD_Point( 910,  938  )          },
+                {9,   new PD_Point( 161,  885  )          },
+                {10,  new PD_Point( 1089, 1054 )          },
+                {11,  new PD_Point( 519,  844  )          },
+                                
+                {12,  new PD_Point( 452,  595  )          },
+                {13,  new PD_Point( 561,  331  )          },
+                {14,  new PD_Point( 1055, 392  )          },
+                {15,  new PD_Point( 1065, 643  )          },
+                {16,  new PD_Point( 980,  526  )          },
+                {17,  new PD_Point( 896,  619  )          },
+                {18,  new PD_Point( 405,  452  )          },
+                {19,  new PD_Point( 188,  753  )          },
+                {20,  new PD_Point( 311,  709  )          },
+                {21,  new PD_Point( 463,  729  )          },
+                {22,  new PD_Point( 423,  305  )          },
+                {23,  new PD_Point( 638,  432  )          },
+                                
+                {24,  new PD_Point( 938,  800  )          },
+                {25,  new PD_Point( 1150, 818  )          },
+                {26,  new PD_Point( 1037, 773  )          },
+                {27,  new PD_Point( 1392, 605  )          },
+                {28,  new PD_Point( 1373, 812  )          },
+                {29,  new PD_Point( 1056, 887  )          },
+                {30,  new PD_Point( 1276, 775  )          },
+                {31,  new PD_Point( 1466, 780  )          },
+                {32,  new PD_Point( 1160, 964  )          },
+                {33,  new PD_Point( 1289, 677  )          },
+                {34,  new PD_Point( 1165, 699  )          },
+                {35,  new PD_Point( 1250, 901  )          },
+                                
+                {36,  new PD_Point( 1486, 668  )          },
+                {37,  new PD_Point( 1543, 931  )          },
+                {38,  new PD_Point( 1567, 574  )          },
+                {39,  new PD_Point( 1563, 727  )          },
+                {40,  new PD_Point( 1486, 490  )          },
+                {41,  new PD_Point( 1697, 582  )          },
+                {42,  new PD_Point( 1764, 786  )          },
+                {43,  new PD_Point( 1660, 938  )          },
+                {44,  new PD_Point( 1551, 839  )          },
+                {45,  new PD_Point( 1773, 310  )          },
+                {46,  new PD_Point( 1668, 746  )          },
+                {47,  new PD_Point( 1753, 885  )          }
+            };
+
+            Dictionary<int, int> infection_type__per__city = new Dictionary<int, int>() {
+                {0,   0},
+                {1,   0},
+                {2,   0},
+                {3,   0},
+                {4,   0},
+                {5,   0},
+                {6,   0},
+                {7,   0},
+                {8,   0},
+                {9,   0},
+                {10,  0},
+                {11,  0},
+
+                {12,  1},
+                {13,  1},
+                {14,  1},
+                {15,  1},
+                {16,  1},
+                {17,  1},
+                {18,  1},
+                {19,  1},
+                {20,  1},
+                {21,  1},
+                {22,  1},
+                {23,  1},
+                    
+                {24,  2},
+                {25,  2},
+                {26,  2},
+                {27,  2},
+                {28,  2},
+                {29,  2},
+                {30,  2},
+                {31,  2},
+                {32,  2},
+                {33,  2},
+                {34,  2},
+                {35,  2},
+                    
+                {36,  3},
+                {37,  3},
+                {38,  3},
+                {39,  3},
+                {40,  3},
+                {41,  3},
+                {42,  3},
+                {43,  3},
+                {44,  3},
+                {45,  3},
+                {46,  3},
+                {47,  3}
+            };
+
+            Dictionary<int, List<int>> neighbors__per__city = new Dictionary<int, List<int>>() {
                 { 0,  new List<int>(){  11, 21, 1              } },
                 { 1,  new List<int>(){  9,  0,  6              } },
                 { 2,  new List<int>(){  3,  8,  5,  10         } },
@@ -174,16 +287,6 @@ namespace Pandemic_AI_Framework
                 { 47, new List<int>(){  42, 9, 43, 44          } },
             };
 
-            Dictionary<int, List<PD_City>> neighbors__per__city = new Dictionary<int, List<PD_City>>();
-            foreach (PD_City city in cities) {
-                List<int> neighbor_ids = neighbors__per__city_id[city.ID];
-
-                List<PD_City> neighbors = new List<PD_City>();
-                foreach (int id in neighbor_ids) {
-                    neighbors.Add(cities.Find(x => x.ID == id));
-                }
-                neighbors__per__city.Add(city.ID, neighbors);
-            }
 
             List<PD_CityCard> allCityCards = new List<PD_CityCard>();
             for (int i = 0; i < 48; i++)
@@ -254,7 +357,9 @@ namespace Pandemic_AI_Framework
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    PD_ME_InfectionCube ic = new PD_ME_InfectionCube(infectionCubeID, city.Type);
+                    PD_ME_InfectionCube ic = new PD_ME_InfectionCube(
+                        infectionCubeID, 
+                        infection_type__per__city[city]);
                     infection_cubes.Add(ic);
                     infectionCubeID++;
                 }
@@ -264,6 +369,9 @@ namespace Pandemic_AI_Framework
                 game_difficulty,
                 players,
                 cities,
+                name__per__city,
+                position__per__city,
+                infection_type__per__city,
                 neighbors__per__city,
                 allCityCards,
                 all_infection_cards,
@@ -273,6 +381,8 @@ namespace Pandemic_AI_Framework
                 research_stations,
                 infection_cubes
                 );
+
+
 
             if (auto_game_setup)
             {
@@ -285,24 +395,17 @@ namespace Pandemic_AI_Framework
             return new_game;
         }
 
-        /// <summary>
-        /// NORMAL CONSTRUCTOR!
-        /// </summary>
-        /// <param name="gameDifficultyLevel"></param>
-        /// <param name="players"></param>
-        /// <param name="cities"></param>
-        /// <param name="edges"></param>
-        /// <param name="allCityCards"></param>
-        /// <param name="allInfectionCards"></param>
-        /// <param name="allEpidemicCards"></param>
-        /// <param name="allPlayerPawns"></param>
-        /// <param name="allResearchStations"></param>
-        /// <param name="allInfectionCubes"></param>
+        // normal constructor
         public PD_Game(
             int gameDifficultyLevel,
             List<PD_Player> players,
-            List<PD_City> cities,
-            Dictionary<int, List<PD_City>> neighbors_per_city,
+
+            // map - related
+            List<int> cities,
+            Dictionary<int, string> name__per__city,
+            Dictionary<int, PD_Point> position__per__city,
+            Dictionary<int, int> infection_type__per__city,
+            Dictionary<int, List<int>> neighbors_per_city,
 
             List<PD_CityCard> allCityCards,
             List<PD_InfectionCard> allInfectionCards,
@@ -333,7 +436,13 @@ namespace Pandemic_AI_Framework
 
             UpdateAvailablePlayerActions();
 
-            Map = new PD_Map(cities, neighbors_per_city);
+            Map = new PD_Map(
+                cities.Count,
+                cities, 
+                name__per__city,
+                position__per__city,
+                infection_type__per__city,
+                neighbors_per_city);
 
             // game element references
             GameElementReferences = new PD_GameElementReferences(
@@ -348,7 +457,7 @@ namespace Pandemic_AI_Framework
                 allInfectionCubes
                 );
 
-            MapElements = new PD_MapElements(Map.Cities);
+            MapElements = new PD_MapElements(cities);
             Cards = new PD_GameCards(Players, allRoleCards);
 
             PlayerPawnsPerPlayerID = new Dictionary<int, PD_ME_PlayerPawn>();
@@ -366,6 +475,7 @@ namespace Pandemic_AI_Framework
             PlayerActionsHistory = new List<PD_GameAction_Base>();
             InfectionReports = new List<PD_InfectionReport>();
 
+            UpdateAvailablePlayerActions();
         }
 
         [JsonConstructor]
@@ -475,7 +585,7 @@ namespace Pandemic_AI_Framework
             }
 
             // 1.3. place research station on atlanta
-            PD_City atlanta = this.GQ_Find_CityByName("Atlanta");
+            int atlanta = this.GQ_Find_CityByName("Atlanta");
             PD_Game_Operators.GO_PlaceResearchStationOnCity(
                 this, atlanta);
 
@@ -505,13 +615,14 @@ namespace Pandemic_AI_Framework
                 {
                     var infectionCard = Cards.DividedDeckOfInfectionCards.DrawLastElementOfLastSubList();
 
-                    PD_City city = infectionCard.City;
+                    int city = infectionCard.City;
+                    int city_type = Map.infection_type__per__city[city];
 
                     PD_InfectionReport report = new PD_InfectionReport(
                         true,
                         firstPlayer,
                         city,
-                        city.Type,
+                        city_type,
                         num_InfectionCubes_ToPlace
                         );
 
@@ -620,7 +731,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void Medic_MoveTreat(
-            PD_City city
+            int city
             )
         {
             // if player is a medic:
@@ -656,7 +767,7 @@ namespace Pandemic_AI_Framework
 
         public void Com_PA_TreatDisease_Medic(
             PD_Player player,
-            PD_City city,
+            int city,
             int treat_Type
             )
         {
@@ -671,9 +782,9 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
-                foreach (var someCity in Map.Cities)
+                foreach (int someCity in Map.cities)
                 {
-                    var cubesOfThisTypeOnSomeCity = MapElements.InfectionCubesPerCityID[someCity.ID].FindAll(
+                    var cubesOfThisTypeOnSomeCity = MapElements.InfectionCubesPerCityID[someCity].FindAll(
                         x =>
                         x.Type == treat_Type
                         );
@@ -700,7 +811,7 @@ namespace Pandemic_AI_Framework
 
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
         {
-            PD_City medicLocation = this.GQ_Find_Medic_Location();
+            int medicLocation = this.GQ_Find_Medic_Location();
             if (medicLocation != null)
             {
                 List<int> infectionCubeTypes_OnMedicLocation =

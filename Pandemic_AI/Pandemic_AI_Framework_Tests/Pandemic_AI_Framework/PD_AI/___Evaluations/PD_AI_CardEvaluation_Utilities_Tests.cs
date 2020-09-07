@@ -38,7 +38,7 @@ namespace Pandemic_AI_Framework.Tests
                     List<PD_CityCard> playerCards = game.GQ_CityCardsInPlayerHand(player);
                     List<PD_CityCard> playerCardsOfThisType = playerCards.FindAll(
                         x => 
-                        x.Type == type
+                        game.Map.infection_type__per__city[x.City] == type
                         );
 
                     Assert.IsTrue(

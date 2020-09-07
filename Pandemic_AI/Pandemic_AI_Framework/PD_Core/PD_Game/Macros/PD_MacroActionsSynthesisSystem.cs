@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         public static List<PD_MacroAction> FindAll_Macros(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities
+            List<int> researchStationCities
             )
         {
             int numAvailableActions = game.GQ_RemainingPlayerActions_ThisRound();
@@ -24,9 +24,9 @@ namespace Pandemic_AI_Framework
                 /// OTHER REUSABLE DATA
                 ////////////////////////////////////////////////////////////////
                 PD_Player currentPlayer = game.GQ_CurrentPlayer();
-                PD_City currentPlayerLocation = game.GQ_CurrentPlayer_Location();
+                int currentPlayerLocation = game.GQ_CurrentPlayer_Location();
                 PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
-                List<PD_City> allCitiesExceprCurrentLocation = game.Map.Cities.FindAll(
+                List<int> allCitiesExceprCurrentLocation = game.Map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
                     );
@@ -341,7 +341,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_MaximumLength,
@@ -407,7 +407,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -440,7 +440,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -513,7 +513,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> stayMacros_DirectFlightWalk_ExecutableNow_Filtered = new List<PD_MacroAction>();
             foreach (var macro in stayMacros_DirectFlightWalk_ExecutableNow)
             {
-                PD_City destination = macro.Find_Destination();
+                int destination = macro.Find_Destination();
                 PD_MacroAction equivalentSimpleWalkMacro = stayMacros_SimpleWalk_ExecutableNow.Find(
                     x =>
                     x.Find_Destination() == destination
@@ -527,7 +527,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> stayMacros_CharterFlightWalk_ExecutableNow_Filtered = new List<PD_MacroAction>();
             foreach (var macro in stayMacros_CharterFlightWalk_ExecutableNow)
             {
-                PD_City destination = macro.Find_Destination();
+                int destination = macro.Find_Destination();
                 PD_MacroAction equivalentSimpleWalkMacro = stayMacros_SimpleWalk_ExecutableNow.Find(
                     x =>
                     x.Find_Destination() == destination
@@ -541,7 +541,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> stayMacros_OperationsExpertFlightWalk_ExecutableNow_Filtered = new List<PD_MacroAction>();
             foreach (var macro in stayMacros_OperationsExpertFlightWalk_ExecutableNow)
             {
-                PD_City destination = macro.Find_Destination();
+                int destination = macro.Find_Destination();
                 PD_MacroAction equivalentSimpleWalkMacro = stayMacros_SimpleWalk_ExecutableNow.Find(
                     x =>
                     x.Find_Destination() == destination
@@ -565,7 +565,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -598,7 +598,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -613,7 +613,7 @@ namespace Pandemic_AI_Framework
                 int numRemainingActions = numAvailableActions - seq.Count;
 
                 PD_Player player = ((I_Player_Action)seq.GetLast()).Player;
-                PD_City destination = ((I_Movement_Action)(seq.GetLast())).TargetLocation;
+                int destination = ((I_Movement_Action)(seq.GetLast())).TargetLocation;
 
                 List<PD_GameAction_Base> completeSequence = new List<PD_GameAction_Base>();
                 completeSequence.AddRange(seq);
@@ -646,7 +646,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -726,7 +726,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -743,7 +743,7 @@ namespace Pandemic_AI_Framework
             for (int infectionType = 0; infectionType < 4; infectionType++)
             {
                 bool currentPlayerLocationIsInfectedWithThisType =
-                    game.MapElements.InfectionCubesPerCityID[currentPlayerLocation.ID].FindAll(
+                    game.MapElements.InfectionCubesPerCityID[currentPlayerLocation].FindAll(
                         x =>
                         x.Type == infectionType
                         ).Count > 0;
@@ -809,7 +809,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -828,7 +828,7 @@ namespace Pandemic_AI_Framework
                 for (int infectionType = 0; infectionType < 4; infectionType++)
                 {
                     bool destinationIsInfectedWithThisType =
-                        game.MapElements.InfectionCubesPerCityID[destination.ID].FindAll(
+                        game.MapElements.InfectionCubesPerCityID[destination].FindAll(
                             x =>
                             x.Type == infectionType
                             ).Count > 0;
@@ -903,7 +903,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -973,7 +973,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -999,7 +999,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var walkSequence in walkSequences)
             {
-                PD_City destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
+                int destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
                 foreach (var curedDiseaseType in curedDiseaseTypes)
                 {
                     int num_InfectionCubes_Of_CuredDiseaseType_On_Destination =
@@ -1028,7 +1028,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1117,7 +1117,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -1129,7 +1129,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_MacroAction>();
             }
 
-            bool currentLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+            bool currentLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
 
             if (currentLocationIsResearchStation)
             {
@@ -1197,7 +1197,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1222,7 +1222,8 @@ namespace Pandemic_AI_Framework
             {
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
-                bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination.ID].Count > 0;
+                bool destinationIsResearchStation
+                    = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
 
                 if (destinationIsResearchStation)
                 {
@@ -1231,10 +1232,11 @@ namespace Pandemic_AI_Framework
 
                 if (currentPlayerIsOperationsExpert)
                 {
-                    PD_PA_BuildResearchStation_OperationsExpert buildResearchStationAction = new PD_PA_BuildResearchStation_OperationsExpert(
-                        currentPlayer,
-                        destination
-                        );
+                    PD_PA_BuildResearchStation_OperationsExpert buildResearchStationAction
+                        = new PD_PA_BuildResearchStation_OperationsExpert(
+                            currentPlayer,
+                            destination
+                            );
 
                     List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
                     totalListOfActions.AddRange(walkSequence);
@@ -1293,7 +1295,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1373,7 +1375,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -1389,7 +1391,8 @@ namespace Pandemic_AI_Framework
 
             List<PD_MacroAction> moveResearchStationMacros = new List<PD_MacroAction>();
 
-            bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+            bool destinationIsResearchStation
+                = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
 
             if (destinationIsResearchStation)
             {
@@ -1400,7 +1403,7 @@ namespace Pandemic_AI_Framework
             {
                 if (currentPlayerLocation == cityCardToMoveResearchStation.City)
                 {
-                    List<PD_City> existingResearchStationCities = game.GQ_ResearchStationCities();
+                    List<int> existingResearchStationCities = game.GQ_ResearchStationCities();
 
                     foreach (var existing_rs_city in existingResearchStationCities)
                     {
@@ -1435,7 +1438,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1458,7 +1461,8 @@ namespace Pandemic_AI_Framework
             {
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
-                bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination.ID].Count > 0;
+                bool destinationIsResearchStation
+                    = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
 
                 if (destinationIsResearchStation)
                 {
@@ -1497,7 +1501,7 @@ namespace Pandemic_AI_Framework
                 {
                     if (destination == cityCardToMoveResearchStation.City)
                     {
-                        List<PD_City> existingResearchStationCities = game.GQ_ResearchStationCities();
+                        List<int> existingResearchStationCities = game.GQ_ResearchStationCities();
 
                         foreach (var existing_rs_city in existingResearchStationCities)
                         {
@@ -1535,7 +1539,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1624,7 +1628,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -1747,7 +1751,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1792,7 +1796,7 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction = 
+                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction =
                                 new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
                                     currentPlayer,
                                     otherPlayer,
@@ -1905,7 +1909,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -1985,7 +1989,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -2006,7 +2010,7 @@ namespace Pandemic_AI_Framework
             {
 
                 var otherPlayerRole = game.GQ_Find_Player_Role(otherPlayer);
-                PD_City otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
+                int otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                 List<PD_CityCard> cityCardsInOtherPlayerHand = game.GQ_CityCardsInPlayerHand(otherPlayer);
 
                 foreach (var cityCardToTake in cityCardsInOtherPlayerHand)
@@ -2117,7 +2121,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -2147,7 +2151,7 @@ namespace Pandemic_AI_Framework
                 foreach (var otherPlayer in otherPlayersAtDestination)
                 {
                     var otherPlayerRole = game.GQ_Find_Player_Role(otherPlayer);
-                    PD_City otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
+                    int otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                     List<PD_CityCard> cityCardsInOtherPlayerHand = game.GQ_CityCardsInPlayerHand(otherPlayer);
 
                     foreach (var cityCardToTake in cityCardsInOtherPlayerHand)
@@ -2277,7 +2281,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -2356,7 +2360,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions
             )
@@ -2370,26 +2374,27 @@ namespace Pandemic_AI_Framework
                 return new List<PD_MacroAction>();
             }
 
-            bool currentPlayerLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+            bool currentPlayerLocationIsResearchStation = game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
 
             if (currentPlayerLocationIsResearchStation == false)
             {
                 return new List<PD_MacroAction>();
             }
 
-            List<PD_City> researchStationCities = game.GQ_ResearchStationCities();
+            List<int> researchStationCities = game.GQ_ResearchStationCities();
 
             List<PD_MacroAction> discoverCureMacros = new List<PD_MacroAction>();
 
             foreach (var cardGroup in discoverCureCardGroups)
             {
+                int group_type = game.Map.infection_type__per__city[cardGroup[0].City];
                 if (currentPlayerIsScientist)
                 {
                     PD_PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PD_PA_DiscoverCure_Scientist(
                         currentPlayer,
                         currentPlayerLocation,
                         cardGroup,
-                        cardGroup[0].Type
+                        group_type
                         );
 
                     PD_MacroAction discoverCure_Scientist_Macro = new PD_MacroAction(
@@ -2407,7 +2412,7 @@ namespace Pandemic_AI_Framework
                         currentPlayer,
                         currentPlayerLocation,
                         cardGroup,
-                        cardGroup[0].Type
+                        group_type
                         );
 
                     PD_MacroAction discoverCure_Macro = new PD_MacroAction(
@@ -2428,7 +2433,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
 
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             PD_Player_Roles currentPlayerRole,
             int numAvailableActions,
 
@@ -2440,7 +2445,7 @@ namespace Pandemic_AI_Framework
 
             List<List<PD_CityCard>> discoverCureCardGroups = game.GQ_Find_UsableDiscoverCureCardGroups(currentPlayer);
 
-            List<PD_City> researchStationCities = game.GQ_ResearchStationCities();
+            List<int> researchStationCities = game.GQ_ResearchStationCities();
 
             List<PD_MacroAction> discoverCureMacros = new List<PD_MacroAction>();
 
@@ -2475,13 +2480,14 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination.ID].Count > 0;
+                    bool destinationIsResearchStation = game.MapElements.ResearchStationsPerCityID[destination].Count > 0;
                     if (destinationIsResearchStation == false)
                     {
                         continue;
                     }
                     foreach (var cardGroup in remainingDiscoverCureCardGroups)
                     {
+                        int card_group_type = game.Map.infection_type__per__city[cardGroup[0].City];
                         if (currentPlayerIsScientist)
                         {
                             List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
@@ -2492,7 +2498,7 @@ namespace Pandemic_AI_Framework
                                 currentPlayer,
                                 destination,
                                 cardGroup,
-                                cardGroup[0].Type
+                                card_group_type
                                 );
 
                             allCommands.Add(discoverCure_Scientist_Action);
@@ -2516,7 +2522,7 @@ namespace Pandemic_AI_Framework
                                 currentPlayer,
                                 destination,
                                 cardGroup,
-                                cardGroup[0].Type
+                                card_group_type
                                 );
 
                             allCommands.Add(discoverCure_Action);
@@ -2540,15 +2546,15 @@ namespace Pandemic_AI_Framework
         public static List<List<PD_GameAction_Base>> FindAll_SimpleWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation
+            int currentPlayerLocation
             )
         {
             List<List<PD_GameAction_Base>> simpleWalk_Sequences =
                 new List<List<PD_GameAction_Base>>();
 
-            foreach (var city in game.Map.Cities)
+            foreach (var city in game.Map.cities)
             {
                 if (city != currentPlayerLocation)
                 {
@@ -2585,9 +2591,9 @@ namespace Pandemic_AI_Framework
         public static List<List<PD_GameAction_Base>> FindAll_DirectFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
             )
         {
@@ -2612,7 +2618,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var cityCard in directFlight_CityCards)
             {
-                PD_City directFlightCity = cityCard.City;
+                int directFlightCity = cityCard.City;
 
                 PD_PMA_DirectFlight directFlightAction = new PD_PMA_DirectFlight(
                     currentPlayer,
@@ -2626,7 +2632,7 @@ namespace Pandemic_AI_Framework
 
                 directFlightWalk_Sequences.Add(singleActionList);
 
-                List<PD_City> citiesToWalkTo = game.Map.Cities.FindAll(
+                List<int> citiesToWalkTo = game.Map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
                     && x != directFlightCity
@@ -2656,7 +2662,7 @@ namespace Pandemic_AI_Framework
             foreach (var seq in directFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
+                int targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
@@ -2681,9 +2687,9 @@ namespace Pandemic_AI_Framework
         public static List<List<PD_GameAction_Base>> FindAll_CharterFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
             )
         {
@@ -2695,7 +2701,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var city_card in city_cards_in_player_hand)
             {
-                PD_City charterCity = city_card.City;
+                int charterCity = city_card.City;
 
                 List<PD_GameAction_Base> simpleWalkToCharterCity = Compose_SimpleWalk_CommandSequence(
                     game,
@@ -2706,7 +2712,7 @@ namespace Pandemic_AI_Framework
                     charterCity
                     );
 
-                List<PD_City> possible_Destinations = game.Map.Cities.FindAll(
+                List<int> possible_Destinations = game.Map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
                     && x != charterCity
@@ -2733,7 +2739,7 @@ namespace Pandemic_AI_Framework
             foreach (var seq in charterFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
+                int targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
@@ -2758,9 +2764,9 @@ namespace Pandemic_AI_Framework
         public static List<List<PD_GameAction_Base>> FindAll_OperationsExpertFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player currentPlayer,
-            PD_City currentPlayerLocation,
+            int currentPlayerLocation,
 
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
             )
@@ -2786,7 +2792,7 @@ namespace Pandemic_AI_Framework
             {
                 foreach (var cityCardToUse in cityCardsInCurrentPlayerHand)
                 {
-                    foreach (var finalDestination in game.Map.Cities)
+                    foreach (var finalDestination in game.Map.cities)
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
@@ -2808,7 +2814,7 @@ namespace Pandemic_AI_Framework
             }
             else
             {
-                PD_City nearest_RS_City = researchStationCities[0];
+                int nearest_RS_City = researchStationCities[0];
                 pathFinder.Find_RS_ClosestToCity(
                     game,
                     researchStationCities,
@@ -2826,7 +2832,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var cityCardToUse in cityCardsInCurrentPlayerHand)
                 {
-                    foreach (var finalDestination in game.Map.Cities)
+                    foreach (var finalDestination in game.Map.cities)
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
@@ -2852,7 +2858,7 @@ namespace Pandemic_AI_Framework
             foreach (var seq in operationsExpertFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
-                PD_City targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
+                int targetLocation = ((I_Movement_Action)seq.GetLast()).TargetLocation;
                 List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).TargetLocation == targetLocation
@@ -2877,13 +2883,13 @@ namespace Pandemic_AI_Framework
         public static List<PD_GameAction_Base> Compose_SimpleWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player current_player,
-            PD_City root,
-            PD_City destination
+            int root,
+            int destination
             )
         {
-            List<PD_City> walkPath = pathFinder.GetPrecalculatedShortestPath(
+            List<int> walkPath = pathFinder.GetPrecalculatedShortestPath(
                 game,
                 researchStationCities,
                 root,
@@ -2898,7 +2904,7 @@ namespace Pandemic_AI_Framework
             {
                 var city1 = walkPath[i];
                 var city2 = walkPath[i + 1];
-                if (game.Map.CityNeighbors_PerCityID[city1.ID].Contains(city2) == true)
+                if (game.Map.neighbors__per__city[city1].Contains(city2) == true)
                 {
                     PD_PMA_DriveFerry driveFerryCommand = new PD_PMA_DriveFerry(
                         current_player,
@@ -2931,10 +2937,10 @@ namespace Pandemic_AI_Framework
         public static List<PD_GameAction_Base> Compose_CharterWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player current_player,
-            PD_City root,
-            PD_City destination,
+            int root,
+            int destination,
             PD_CityCard charterCard
             )
         {
@@ -2964,10 +2970,10 @@ namespace Pandemic_AI_Framework
         public static List<PD_GameAction_Base> Compose_DirectFlightWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player current_player,
-            PD_City root,
-            PD_City destination,
+            int root,
+            int destination,
             PD_CityCard directFlightCard
             )
         {
@@ -3001,17 +3007,17 @@ namespace Pandemic_AI_Framework
         public static List<PD_GameAction_Base> Compose_CombinedWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<PD_City> researchStationCities,
+            List<int> researchStationCities,
             PD_Player current_player,
-            PD_City root,
-            PD_City destination,
+            int root,
+            int destination,
             PD_CityCard directFlightCard,
             PD_CityCard charterFlightCard
             )
         {
 
-            PD_City directFlightCity = directFlightCard.City;
-            PD_City charterFlightCity = charterFlightCard.City;
+            int directFlightCity = directFlightCard.City;
+            int charterFlightCity = charterFlightCard.City;
 
             // step 1: use the direct flight card to go to the direct flight city
             PD_PMA_DirectFlight directFlightCommand = new PD_PMA_DirectFlight(

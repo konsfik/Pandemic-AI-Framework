@@ -253,11 +253,11 @@ namespace Pandemic_AI_Framework
 
             int numInfCitiesWith_atLeast_X_Cubes = 0;
 
-            foreach (var city in game.Map.Cities)
+            foreach (int city in game.Map.cities)
             {
                 for (int dt = 0; dt < 4; dt++)
                 {
-                    var cubesOnCity = game.MapElements.InfectionCubesPerCityID[city.ID];
+                    var cubesOnCity = game.MapElements.InfectionCubesPerCityID[city];
                     int numCubesOfTypeOnCity = cubesOnCity.FindAll(
                         x =>
                         x.Type == dt

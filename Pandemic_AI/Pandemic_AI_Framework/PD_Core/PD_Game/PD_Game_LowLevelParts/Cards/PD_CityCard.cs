@@ -11,13 +11,10 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_CityCard>,
         ICustomDeepCopyable<PD_CityCard>
     {
-        public PD_City City { get; private set; }
-
-        public string Name { get { return City.Name; } }
-        public int Type { get { return City.Type; } }
+        public int City { get; private set; }
 
         [JsonConstructor]
-        public PD_CityCard(int id, PD_City city) : base(id)
+        public PD_CityCard(int id, int city) : base(id)
         {
             City = city;
         }
@@ -26,13 +23,13 @@ namespace Pandemic_AI_Framework
         {
             return new PD_CityCard(
                 this.ID,
-                this.City.GetCustomDeepCopy()
+                this.City
                 );
         }
 
         public override string GetDescription()
         {
-            return "." + City.Name;
+            return "." + City.ToString();
         }
 
         #region equality overrides
@@ -81,7 +78,7 @@ namespace Pandemic_AI_Framework
             int hash = 7;
 
             hash = (hash * 13) + ID;
-            hash = (hash * 13) + City.GetHashCode();
+            hash = (hash * 13) + City;
 
             return hash;
         }

@@ -17,9 +17,9 @@ namespace Pandemic_AI_Framework
     {
         public PD_Player Player { get; private set; }
 
-        public PD_City InitialLocation { get; protected set; }
+        public int InitialLocation { get; protected set; }
 
-        public PD_City TargetLocation { get; protected set; }
+        public int TargetLocation { get; protected set; }
 
         public PD_CityCard CityCardToDiscard { get; private set; }
 
@@ -36,8 +36,8 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PMA_CharterFlight(
             PD_Player player,
-            PD_City initialLocation,
-            PD_City targetLocation,
+            int initialLocation,
+            int targetLocation,
             PD_CityCard cityCardToDiscard
             )
         {
@@ -56,8 +56,8 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player.GetCustomDeepCopy();
-            this.InitialLocation = actionToCopy.InitialLocation.GetCustomDeepCopy();
-            this.TargetLocation = actionToCopy.TargetLocation.GetCustomDeepCopy();
+            this.InitialLocation = actionToCopy.InitialLocation;
+            this.TargetLocation = actionToCopy.TargetLocation;
             this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
         }
         #endregion
@@ -91,9 +91,9 @@ namespace Pandemic_AI_Framework
             string actionDescription = String.Format(
                 "{0}: CHARTER_FLIGHT | card: {1} | {2} -> {3}",
                 Player.Name,
-                CityCardToDiscard.City.Name,
-                InitialLocation.Name,
-                TargetLocation.Name
+                CityCardToDiscard.City.ToString(),
+                InitialLocation.ToString(),
+                TargetLocation.ToString()
                 );
 
             return actionDescription;
@@ -153,8 +153,8 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + InitialLocation.GetHashCode();
-            hash = hash * 31 + TargetLocation.GetHashCode();
+            hash = hash * 31 + InitialLocation;
+            hash = hash * 31 + TargetLocation;
             hash = hash * 31 + CityCardToDiscard.GetHashCode();
 
             return hash;

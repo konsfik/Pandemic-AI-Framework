@@ -11,25 +11,24 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_InfectionCard>,
         ICustomDeepCopyable<PD_InfectionCard>
     {
-        public PD_City City { get; private set; }
-        public int Type { get { return City.Type; } }
+        public int City { get; private set; }
 
         [JsonConstructor]
-        public PD_InfectionCard(int id, PD_City city) : base(id)
+        public PD_InfectionCard(int id, int city) : base(id)
         {
             City = city;
         }
 
         public override string GetDescription()
         {
-            return "_" + City.Name;
+            return "_" + City.ToString();
         }
 
         public PD_InfectionCard GetCustomDeepCopy()
         {
             return new PD_InfectionCard(
                 this.ID,
-                this.City.GetCustomDeepCopy()
+                this.City
                 );
         }
 
@@ -77,7 +76,7 @@ namespace Pandemic_AI_Framework
             int hash = 7;
 
             hash = (hash * 13) + ID;
-            hash = (hash * 13) + City.GetHashCode();
+            hash = (hash * 13) + City;
 
             return hash;
         }

@@ -103,11 +103,11 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player current_player = game.GQ_CurrentPlayer();
-            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
-            List<PD_City> neighbor_locations = game.Map.CityNeighbors_PerCityID[current_player_location.ID];
+            int current_player_location = game.GQ_CurrentPlayer_Location();
+            List<int> neighbor_locations = game.Map.neighbors__per__city[current_player_location];
 
             List<PD_PMA_DriveFerry> drive_ferry_actions = new List<PD_PMA_DriveFerry>();
-            foreach (PD_City neighbor_location in neighbor_locations)
+            foreach (int neighbor_location in neighbor_locations)
             {
                 drive_ferry_actions.Add(
                     new PD_PMA_DriveFerry(
@@ -125,7 +125,7 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player current_player = game.GQ_CurrentPlayer();
-            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
+            int current_player_location = game.GQ_CurrentPlayer_Location();
 
             List<PD_CityCard> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
@@ -152,14 +152,14 @@ namespace Pandemic_AI_Framework
             )
         {
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            PD_City current_player_location = game.GQ_CurrentPlayer_Location();
+            int current_player_location = game.GQ_CurrentPlayer_Location();
 
             var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
             var charterFlightActions = new List<PD_PMA_CharterFlight>();
 
             // if the player is standing on a location that exists in the city cards in their hand
-            var citiesOfCityCardsInPlayerHand = new List<PD_City>();
+            var citiesOfCityCardsInPlayerHand = new List<int>();
             foreach (var card in cityCardsInCurrentPlayerHand)
             {
                 citiesOfCityCardsInPlayerHand.Add(card.City);
@@ -167,7 +167,7 @@ namespace Pandemic_AI_Framework
 
             if (citiesOfCityCardsInPlayerHand.Any(x => x == current_player_location))
             {
-                var allOtherCities = game.Map.Cities.FindAll(
+                var allOtherCities = game.Map.cities.FindAll(
                     x =>
                     x != current_player_location
                     );
@@ -203,10 +203,10 @@ namespace Pandemic_AI_Framework
 
             var shuttleFlightActions = new List<PD_PMA_ShuttleFlight>();
 
-            var allLocationsWithResearchStations = new List<PD_City>();
-            foreach (var city in game.Map.Cities)
+            var allLocationsWithResearchStations = new List<int>();
+            foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.ResearchStationsPerCityID[city.ID].Count > 0)
+                if (game.MapElements.ResearchStationsPerCityID[city].Count > 0)
                 {
                     allLocationsWithResearchStations.Add(city);
                 }
@@ -244,9 +244,9 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
-            PD_City currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
+            int currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
-            List<PD_City> allResearchStationCities = game.GQ_ResearchStationCities();
+            List<int> allResearchStationCities = game.GQ_ResearchStationCities();
             bool currentPlayerLocationIsResearchStation = allResearchStationCities.Contains(currentPlayerLocation);
             if (currentPlayerLocationIsResearchStation == false)
             {
@@ -266,7 +266,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PMA_OperationsExpert_Flight>();
             }
 
-            List<PD_City> targetLocations = game.Map.Cities.FindAll(
+            List<int> targetLocations = game.Map.cities.FindAll(
                 x =>
                 x != currentPlayerLocation
                 );
@@ -299,7 +299,7 @@ namespace Pandemic_AI_Framework
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
             bool currentLocation_Is_RS =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
 
             bool inactive_RS_Available =
                 game.MapElements.InactiveResearchStations.Count > 0;
@@ -354,7 +354,7 @@ namespace Pandemic_AI_Framework
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
 
             bool currentLocation_Is_RS =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
 
             bool inactive_RS_Available =
                 game.MapElements.InactiveResearchStations.Count > 0;
@@ -602,7 +602,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var otherPlayer in otherPlayersInSameLocation)
             {
-                PD_City otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
+                int otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                 if (otherPlayerLocation == currentPlayerLocation)
                 {
                     foreach (var cityCardInCurrentPlayerHand in cityCardsInCurrentPlayerHand)
@@ -644,7 +644,7 @@ namespace Pandemic_AI_Framework
             }
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
-            PD_City researcherLocation = game.GQ_PlayerLocation(researcher);
+            int researcherLocation = game.GQ_PlayerLocation(researcher);
 
             if (researcherLocation != currentPlayerLocation)
             {
@@ -683,7 +683,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)
             {
                 return new List<PD_PA_DiscoverCure>();
@@ -700,11 +700,12 @@ namespace Pandemic_AI_Framework
             List<PD_PA_DiscoverCure> availableDiscoverCureActions = new List<PD_PA_DiscoverCure>();
             foreach (var usableDiscoverCureCardGroup in usableDiscoverCureCardGroups)
             {
+                int group_type = game.Map.infection_type__per__city[usableDiscoverCureCardGroup[0].City];
                 var action = new PD_PA_DiscoverCure(
                     currentPlayer,
                     currentPlayerLocation,
                     usableDiscoverCureCardGroup,
-                    usableDiscoverCureCardGroup[0].Type
+                    group_type
                     );
                 availableDiscoverCureActions.Add(action);
             }
@@ -726,7 +727,7 @@ namespace Pandemic_AI_Framework
 
             var currentPlayerLocation = game.GQ_CurrentPlayer_Location();
             bool currentPlayerLocationIsResearchStation =
-                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation.ID].Count > 0;
+                game.MapElements.ResearchStationsPerCityID[currentPlayerLocation].Count > 0;
             if (currentPlayerLocationIsResearchStation == false)
             {
                 return new List<PD_PA_DiscoverCure_Scientist>();
@@ -743,11 +744,12 @@ namespace Pandemic_AI_Framework
             List<PD_PA_DiscoverCure_Scientist> availableDiscoverCureActions = new List<PD_PA_DiscoverCure_Scientist>();
             foreach (var usableDiscoverCureCardGroup in usableDiscoverCureCardGroups)
             {
+                int group_type = game.Map.infection_type__per__city[usableDiscoverCureCardGroup[0].City];
                 var action = new PD_PA_DiscoverCure_Scientist(
                     currentPlayer,
                     currentPlayerLocation,
                     usableDiscoverCureCardGroup,
-                    usableDiscoverCureCardGroup[0].Type
+                    group_type
                     );
                 availableDiscoverCureActions.Add(action);
             }

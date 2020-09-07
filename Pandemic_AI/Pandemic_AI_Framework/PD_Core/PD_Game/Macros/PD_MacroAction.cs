@@ -206,9 +206,9 @@ namespace Pandemic_AI_Framework
             return Actions_All.GetLast();
         }
 
-        public PD_City Find_Destination()
+        public int Find_Destination()
         {
-            if (Actions_All == null) return null;
+            if (Actions_All == null) return -1;
 
             var lastCommand = Find_LastCommand();
 
@@ -287,7 +287,7 @@ namespace Pandemic_AI_Framework
                 }
                 else
                 {
-                    return null;
+                    return -1;
                 }
             }
             else if (MacroAction_Type == PD_MacroAction_Type.TakePositionFor_ShareKnowledge_Take_Macro)
@@ -314,7 +314,7 @@ namespace Pandemic_AI_Framework
                 }
                 else
                 {
-                    return null;
+                    return -1;
                 }
             }
 
@@ -328,7 +328,7 @@ namespace Pandemic_AI_Framework
             }
             else
             {
-                return null;
+                return -1;
             }
         }
 
@@ -375,7 +375,7 @@ namespace Pandemic_AI_Framework
                 Count_Total_Length(),
                 MacroAction_WalkType.ToString(),
                 Count_Walk_Length(),
-                Find_Destination() == null ? "none" : Find_Destination().Name
+                Find_Destination() == null ? "none" : Find_Destination().ToString()
                 );
 
             return description;

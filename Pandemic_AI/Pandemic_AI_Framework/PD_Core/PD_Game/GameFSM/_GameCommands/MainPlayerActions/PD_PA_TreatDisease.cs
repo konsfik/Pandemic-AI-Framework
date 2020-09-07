@@ -12,7 +12,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action
     {
         public PD_Player Player { get; private set; }
-        public PD_City CityToTreatDiseaseAt { get; private set; }
+        public int CityToTreatDiseaseAt { get; private set; }
         public int TypeOfDiseaseToTreat { get; private set; }
 
         #region constructors
@@ -25,11 +25,11 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_TreatDisease(
             PD_Player player,
-            PD_City cityToTreatDiseaseAt,
+            int cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
             )
         {
-            Player = player;
+            Player = player.GetCustomDeepCopy();
             CityToTreatDiseaseAt = cityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = typeOfDiseaseToTreat;
         }
@@ -43,7 +43,7 @@ namespace Pandemic_AI_Framework
             )
         {
             Player = actionToCopy.Player.GetCustomDeepCopy();
-            CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt.GetCustomDeepCopy();
+            CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = actionToCopy.TypeOfDiseaseToTreat;
         }
         #endregion
@@ -90,9 +90,9 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
-                foreach (var someCity in game.Map.Cities)
+                foreach (var someCity in game.Map.cities)
                 {
-                    var cubesOfThisTypeOnSomeCity = game.MapElements.InfectionCubesPerCityID[someCity.ID].FindAll(
+                    var cubesOfThisTypeOnSomeCity = game.MapElements.InfectionCubesPerCityID[someCity].FindAll(
                         x =>
                         x.Type == TypeOfDiseaseToTreat
                         );
@@ -126,7 +126,7 @@ namespace Pandemic_AI_Framework
                 "{0}: TREAT_DISEASE type {1} on {2}",
                 Player.Name,
                 TypeOfDiseaseToTreat,
-                CityToTreatDiseaseAt.Name
+                CityToTreatDiseaseAt.ToString()
                 );
         }
 
@@ -180,7 +180,7 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + CityToTreatDiseaseAt.GetHashCode();
+            hash = hash * 31 + CityToTreatDiseaseAt;
             hash = hash * 31 + TypeOfDiseaseToTreat;
 
             return hash;

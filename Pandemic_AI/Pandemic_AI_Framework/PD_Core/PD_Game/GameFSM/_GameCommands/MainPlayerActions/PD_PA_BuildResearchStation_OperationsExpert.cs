@@ -12,7 +12,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action
     {
         public PD_Player Player { get; private set; }
-        public PD_City Build_RS_On { get; private set; }
+        public int Build_RS_On { get; private set; }
 
         #region constructors
         /// <summary>
@@ -24,10 +24,10 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_BuildResearchStation_OperationsExpert(
             PD_Player player,
-            PD_City build_RS_On
+            int build_RS_On
             )
         {
-            this.Player = player;
+            this.Player = player.GetCustomDeepCopy();
             this.Build_RS_On = build_RS_On;
         }
 
@@ -40,7 +40,7 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player.GetCustomDeepCopy();
-            this.Build_RS_On = actionToCopy.Build_RS_On.GetCustomDeepCopy();
+            this.Build_RS_On = actionToCopy.Build_RS_On;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -80,7 +80,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: BUILD_RS_OPERATIONS_EXPERT on {1}",
                 Player.Name,
-                Build_RS_On.Name
+                Build_RS_On.ToString()
                 );
         }
 
@@ -127,7 +127,7 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + Build_RS_On.GetHashCode();
+            hash = hash * 31 + Build_RS_On;
 
             return hash;
         }

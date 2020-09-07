@@ -50,7 +50,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("wrong state!");
             }
 #endif
-            int infectionType = InfectionCardToApply.Type;
+            int infectionType = game.GQ_City_InfectionType( InfectionCardToApply.City);
             bool diseaseEradicated = game.GQ_Is_Disease_Eradicated(infectionType);
 
             if (diseaseEradicated == false)
@@ -59,7 +59,7 @@ namespace Pandemic_AI_Framework
                     false, // not game setup
                     Player,
                     InfectionCardToApply.City,
-                    InfectionCardToApply.Type,
+                    infectionType,
                     1
                     );
 
@@ -91,7 +91,7 @@ namespace Pandemic_AI_Framework
 
         public override string GetDescription()
         {
-            return Player.Name + ": INFECTION " + InfectionCardToApply.City.Name;
+            return Player.Name + ": INFECTION " + InfectionCardToApply.City.ToString();
         }
 
         #region equality overrides

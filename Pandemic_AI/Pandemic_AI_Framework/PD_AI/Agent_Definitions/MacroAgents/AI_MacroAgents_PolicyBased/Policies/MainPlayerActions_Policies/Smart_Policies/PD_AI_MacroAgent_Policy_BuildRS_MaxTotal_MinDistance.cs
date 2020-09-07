@@ -98,7 +98,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> legit_BuildRS_Macros = new List<PD_MacroAction>();
             foreach (var macro in nonHarmful_BuildRS_Macros)
             {
-                PD_City destination = macro.Find_Destination();
+                int destination = macro.Find_Destination();
                 if (cities_Legitimate_ForRS.Contains(destination))
                 {
                     legit_BuildRS_Macros.Add(macro);

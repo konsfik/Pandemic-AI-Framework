@@ -17,14 +17,14 @@ namespace Pandemic_AI_Framework
         public bool HappenedDuringGameSetup { get; private set; }
 
         public PD_Player PlayerWhoAppliesInfection { get; private set; }
-        public PD_City InitialCity { get; private set; }
+        public int InitialCity { get; private set; }
 
         public int InfectionType { get; private set; }
         public int InitialNumberOfCubes { get; private set; }
 
-        public List<PD_City> InfectedCities { get; private set; }
-        public List<PD_City> InfectionsPrevented_ByMedic { get; private set; }
-        public List<PD_City> CitiesThatHaveCausedOutbreaks { get; private set; }
+        public List<int> InfectedCities { get; private set; }
+        public List<int> InfectionsPrevented_ByMedic { get; private set; }
+        public List<int> CitiesThatHaveCausedOutbreaks { get; private set; }
 
         public int NumberOfInfectionCubesUsed { get; private set; }
         public InfectionFailureReasons FailureReason { get; private set; }
@@ -42,7 +42,7 @@ namespace Pandemic_AI_Framework
             bool happenedDuringGameSetup,
 
             PD_Player playerWhoAppliesInfection,
-            PD_City initialCity,
+            int initialCity,
 
             int infectionType,
             int initialNumberOfCubes
@@ -56,9 +56,9 @@ namespace Pandemic_AI_Framework
             InfectionType = infectionType;
             InitialNumberOfCubes = initialNumberOfCubes;
 
-            InfectedCities = new List<PD_City>();
-            InfectionsPrevented_ByMedic = new List<PD_City>();
-            CitiesThatHaveCausedOutbreaks = new List<PD_City>();
+            InfectedCities = new List<int>();
+            InfectionsPrevented_ByMedic = new List<int>();
+            CitiesThatHaveCausedOutbreaks = new List<int>();
 
             NumberOfInfectionCubesUsed = 0;
             FailureReason = InfectionFailureReasons.none;
@@ -80,14 +80,14 @@ namespace Pandemic_AI_Framework
             bool happenedDuringGameSetup,
 
             PD_Player playerWhoAppliesInfection,
-            PD_City initialCity,
+            int initialCity,
 
             int infectionType,
             int initialNumberOfCubes,
 
-            List<PD_City> infectedCities,
-            List<PD_City> infectionsPrevented_ByMedic,
-            List<PD_City> citiesThatHaveCausedOutbreaks,
+            List<int> infectedCities,
+            List<int> infectionsPrevented_ByMedic,
+            List<int> citiesThatHaveCausedOutbreaks,
 
             int numberOfInfectionCubesUsed,
             InfectionFailureReasons failureReason
@@ -96,7 +96,7 @@ namespace Pandemic_AI_Framework
             this.HappenedDuringGameSetup = happenedDuringGameSetup;
 
             this.PlayerWhoAppliesInfection = playerWhoAppliesInfection.GetCustomDeepCopy();
-            this.InitialCity = initialCity.GetCustomDeepCopy();
+            this.InitialCity = initialCity;
 
             this.InfectionType = infectionType;
             this.InitialNumberOfCubes = initialNumberOfCubes;
@@ -123,7 +123,7 @@ namespace Pandemic_AI_Framework
             this.PlayerWhoAppliesInfection =
                 reportToCopy.PlayerWhoAppliesInfection.GetCustomDeepCopy();
             this.InitialCity =
-                reportToCopy.InitialCity.GetCustomDeepCopy();
+                reportToCopy.InitialCity;
 
             this.InfectionType =
                 reportToCopy.InfectionType;
@@ -154,7 +154,7 @@ namespace Pandemic_AI_Framework
             NumberOfInfectionCubesUsed += usedCubes;
         }
 
-        public void AddInfectedCity(PD_City infectedCity)
+        public void AddInfectedCity(int infectedCity)
         {
             if (InfectedCities.Contains(infectedCity) == false)
             {
@@ -162,12 +162,12 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public void AddInfectionPreventedByMedic(PD_City infectionPrevented)
+        public void AddInfectionPreventedByMedic(int infectionPrevented)
         {
             InfectionsPrevented_ByMedic.Add(infectionPrevented);
         }
 
-        public void AddCityThatCausedOutbreak(PD_City cityThatCausedOutbreak)
+        public void AddCityThatCausedOutbreak(int cityThatCausedOutbreak)
         {
             if (CitiesThatHaveCausedOutbreaks.Contains(cityThatCausedOutbreak) == false)
             {
@@ -194,20 +194,20 @@ namespace Pandemic_AI_Framework
             {
                 description += "\n";
             }
-            description += "- Initial City: " + InitialCity.Name + "\n";
+            description += "- Initial City: " + InitialCity.ToString() + "\n";
             description += "- Infection Type: " + InfectionType + "\n";
             description += "- Initial Number of Cubes: " + InitialNumberOfCubes + "\n";
             description += "- Number of Infected Cities: " + InfectedCities.Count + "\n";
             description += "- Infected Cities: \n";
             foreach (var city in InfectedCities)
             {
-                description += "- - " + city.Name + "\n";
+                description += "- - " + city.ToString() + "\n";
             }
             description += "- Number of Outbreaks: " + CitiesThatHaveCausedOutbreaks.Count + "\n";
             description += "- Cities that caused outbreaks:\n";
             foreach (var city in CitiesThatHaveCausedOutbreaks)
             {
-                description += "- - " + city.Name + "\n";
+                description += "- - " + city.ToString() + "\n";
             }
             description += "- Infection Failure Reason: ";
             description += FailureReason.ToString() + "\n";

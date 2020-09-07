@@ -304,62 +304,6 @@ namespace Pandemic_AI_Framework.Tests
         #endregion
 
         [TestMethod()]
-        public void Deserialize_ExistingGame_Test()
-        {
-            Random randomness_provider = new Random(1001);
-
-            string saved_games_path = System.IO.Path.Combine(
-                System.IO.Directory.GetCurrentDirectory(),
-                "ParameterTuning_TestBed"
-                );
-            var game_file_paths = PD_IO_Utilities.GetFilePathsInFolder(saved_games_path);
-
-            // play the games until the end, using single actions
-            foreach (var game_file_path in game_file_paths)
-            {
-                PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
-                    game_file_path
-                    );
-
-
-                // play the game until the end...
-                while (deserialized_game.GQ_Is_Ongoing())
-                {
-                    var available_actions = deserialized_game.CurrentAvailablePlayerActions;
-                    var random_action = available_actions.GetOneRandom(randomness_provider);
-                    deserialized_game.ApplySpecificPlayerAction(
-                        randomness_provider,
-                        random_action
-                        );
-                }
-
-                Assert.IsTrue(deserialized_game.GQ_Is_Ongoing() == false);
-            }
-
-            // play the games until the end, using macro actions
-            PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
-            foreach (var game_file_path in game_file_paths)
-            {
-                PD_Game deserialized_game = PD_IO_Utilities.DeserializeFromJsonFile<PD_Game>(
-                    game_file_path
-                    );
-
-                // play the game until the end...
-                while (deserialized_game.GQ_Is_Ongoing())
-                {
-                    var available_macro_actions = deserialized_game.GetAvailableMacros(pathFinder);
-                    var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
-                    deserialized_game.ApplySpecificMacro(
-                        randomness_provider,
-                        random_macro_action
-                        );
-                }
-
-                Assert.IsTrue(deserialized_game.GQ_Is_Ongoing() == false);
-            }
-        }
-
-        [TestMethod()]
         public void Deserialize_ExistingGame_NewRepresentation_Test()
         {
             Random randomness_provider = new Random(1001);

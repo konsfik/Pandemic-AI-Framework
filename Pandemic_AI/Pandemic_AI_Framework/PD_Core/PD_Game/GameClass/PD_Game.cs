@@ -120,7 +120,7 @@ namespace Pandemic_AI_Framework
                 new PD_City(47, 3, "Tokyo"            , new PD_Point( 1753, 885  )),
             };
 
-            Dictionary<int, List<int>> neighbors__per__city = new Dictionary<int, List<int>>() {
+            Dictionary<int, List<int>> neighbors__per__city_id = new Dictionary<int, List<int>>() {
                 { 0,  new List<int>(){  11, 21, 1              } },
                 { 1,  new List<int>(){  9,  0,  6              } },
                 { 2,  new List<int>(){  3,  8,  5,  10         } },
@@ -174,17 +174,15 @@ namespace Pandemic_AI_Framework
                 { 47, new List<int>(){  42, 9, 43, 44          } },
             };
 
-            List<PD_CityEdge> city_edges = new List<PD_CityEdge>();
-            for (int c = 0; c < cities.Count; c++)
-            {
-                PD_City city = cities[c];
-                foreach (int n in neighbors__per__city[c])
-                {
-                    PD_City neighbor = cities[n];
-                    city_edges.Add(
-                        new PD_CityEdge(city, neighbor)
-                        );
+            Dictionary<int, List<PD_City>> neighbors__per__city = new Dictionary<int, List<PD_City>>();
+            foreach (PD_City city in cities) {
+                List<int> neighbor_ids = neighbors__per__city_id[city.ID];
+
+                List<PD_City> neighbors = new List<PD_City>();
+                foreach (int id in neighbor_ids) {
+                    neighbors.Add(cities.Find(x => x.ID == id));
                 }
+                neighbors__per__city.Add(city.ID, neighbors);
             }
 
             List<PD_CityCard> allCityCards = new List<PD_CityCard>();
@@ -266,7 +264,7 @@ namespace Pandemic_AI_Framework
                 game_difficulty,
                 players,
                 cities,
-                city_edges,
+                neighbors__per__city,
                 allCityCards,
                 all_infection_cards,
                 all_epidemic_cards,
@@ -304,7 +302,7 @@ namespace Pandemic_AI_Framework
             int gameDifficultyLevel,
             List<PD_Player> players,
             List<PD_City> cities,
-            List<PD_CityEdge> edges,
+            Dictionary<int, List<PD_City>> neighbors_per_city,
 
             List<PD_CityCard> allCityCards,
             List<PD_InfectionCard> allInfectionCards,
@@ -335,7 +333,7 @@ namespace Pandemic_AI_Framework
 
             UpdateAvailablePlayerActions();
 
-            Map = new PD_Map(cities, edges);
+            Map = new PD_Map(cities, neighbors_per_city);
 
             // game element references
             GameElementReferences = new PD_GameElementReferences(

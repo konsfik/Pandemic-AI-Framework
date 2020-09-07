@@ -461,24 +461,9 @@ namespace Pandemic_AI_Framework
                 neighbors__per__city.Add(c, neighbors);
             }
 
-            // edges:
-            List<PD_CityEdge> edges = new List<PD_CityEdge>();
-            foreach (PD_City city in cities)
-            {
-                List<PD_City> neighbors = neighbors__per__city[city.ID];
-                foreach (PD_City neighbor in neighbors)
-                {
-                    PD_CityEdge edge = new PD_CityEdge(city, neighbor);
-                    if (edges.Contains(edge) == false)
-                    {
-                        edges.Add(edge);
-                    }
-                }
-            }
             // map
             PD_Map MAP = new PD_Map(
                 cities,
-                edges,
                 neighbors__per__city
                 );
 

@@ -41,10 +41,7 @@ namespace Pandemic_AI_Framework
                 foreach (var type in infectionCubeTypes)
                 {
                     int numCubesOfThisTypeOnThisCity
-                        = game.MapElements.InfectionCubesPerCityID[city].FindAll(
-                            x =>
-                            x.Type == type
-                            ).Count;
+                        = game.MapElements.infections__per__type__per__city[city][type];
                     if (numCubesOfThisTypeOnThisCity > min_SameType_InfectionCubes)
                     {
                         if (infectionTypesPerCity_MinSameCubes.Keys.Contains(city))
@@ -62,46 +59,5 @@ namespace Pandemic_AI_Framework
             return infectionTypesPerCity_MinSameCubes;
         }
 
-        public static List<int> Find_InfectedCities(
-            PD_Game game,
-            int minimumNumberOfAnyTypeInfectionCubes,
-            int minimumNumberOfSameTypeInfectionCubes
-            )
-        {
-            var infectedCities = new List<int>();
-
-            foreach (var city in game.Map.cities)
-            {
-                if (
-                    game.MapElements.InfectionCubesPerCityID[city].Count > minimumNumberOfAnyTypeInfectionCubes
-                    )
-                {
-                    var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city];
-                    List<int> infectionCubeTypes = new List<int>();
-                    foreach (var ic in infectionCubesOnThisCity)
-                    {
-                        if (infectionCubeTypes.Contains(ic.Type) == false)
-                        {
-                            infectionCubeTypes.Add(ic.Type);
-                        }
-                    }
-                    List<List<PD_ME_InfectionCube>> groups = new List<List<PD_ME_InfectionCube>>();
-                    foreach (var type in infectionCubeTypes)
-                    {
-                        var cubesOfThisType = infectionCubesOnThisCity.FindAll(
-                            x =>
-                            x.Type == type
-                            );
-                        groups.Add(cubesOfThisType);
-                    }
-                    if (groups.Any(x => x.Count > minimumNumberOfSameTypeInfectionCubes))
-                    {
-                        infectedCities.Add(city);
-                    }
-                }
-            }
-
-            return infectedCities;
-        }
     }
 }

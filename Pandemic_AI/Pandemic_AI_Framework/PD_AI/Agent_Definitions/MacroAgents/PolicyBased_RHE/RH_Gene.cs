@@ -278,7 +278,7 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(
+                        gameState.Apply_Action(
                             randomness_provider,
                             action
                             );
@@ -291,7 +291,7 @@ namespace Pandemic_AI_Framework
                             );
                         if (stayAction != null)
                         {
-                            gameState.ApplySpecificPlayerAction(
+                            gameState.Apply_Action(
                                 randomness_provider,
                                 stayAction
                                 );
@@ -310,7 +310,7 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(
+                        gameState.Apply_Action(
                             randomness_provider,
                             action
                             );
@@ -318,7 +318,7 @@ namespace Pandemic_AI_Framework
                     else
                     {
                         // pick one at random!
-                        gameState.ApplySpecificPlayerAction(
+                        gameState.Apply_Action(
                             randomness_provider,
                             availableCommands.GetOneRandom(randomness_provider)
                             );
@@ -332,7 +332,7 @@ namespace Pandemic_AI_Framework
                     var availableCommands = gameState.CurrentAvailablePlayerActions;
                     if (availableCommands.Contains(action))
                     {
-                        gameState.ApplySpecificPlayerAction(
+                        gameState.Apply_Action(
                             randomness_provider,
                             action
                             );
@@ -340,7 +340,7 @@ namespace Pandemic_AI_Framework
                     else
                     {
                         // pick one at random!
-                        gameState.ApplySpecificPlayerAction(
+                        gameState.Apply_Action(
                             randomness_provider,
                             availableCommands.GetOneRandom(randomness_provider)
                             );

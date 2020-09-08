@@ -17,8 +17,10 @@ namespace Pandemic_AI_Framework
         #region properties
 
         public Dictionary<int, int> location__per__player;
-        public Dictionary<int, List<PD_ME_InfectionCube>> InactiveInfectionCubesPerType { get; private set; }
-        public Dictionary<int, List<PD_ME_InfectionCube>> InfectionCubesPerCityID { get; private set; }
+
+        public Dictionary<int, int> inactive_infection_cubes__per__type;
+
+        public Dictionary<int, Dictionary<int, int>> infections__per__type__per__city;
 
         public int inactive_research_stations;
         public Dictionary<int, bool> research_stations__per__city;
@@ -38,10 +40,16 @@ namespace Pandemic_AI_Framework
                 location__per__player.Add(player.ID, -1);
             }
 
-            InactiveInfectionCubesPerType = new Dictionary<int, List<PD_ME_InfectionCube>>();
-            InfectionCubesPerCityID = new Dictionary<int, List<PD_ME_InfectionCube>>();
-            foreach (var city in cities)
-                InfectionCubesPerCityID.Add(city, new List<PD_ME_InfectionCube>());
+            inactive_infection_cubes__per__type = new Dictionary<int, int>();
+            infections__per__type__per__city = new Dictionary<int, Dictionary<int, int>>();
+            foreach (int city in cities)
+            {
+                infections__per__type__per__city.Add(city, new Dictionary<int, int>());
+                for (int t = 0; t < 4; t++)
+                {
+                    infections__per__type__per__city[city].Add(t, 0);
+                }
+            }
 
             inactive_research_stations = 6;
             research_stations__per__city = new Dictionary<int, bool>();
@@ -55,15 +63,15 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_MapElements(
             Dictionary<int, int> location__per__player,
-            Dictionary<int, List<PD_ME_InfectionCube>> inactiveInfectionCubesPerType,
-            Dictionary<int, List<PD_ME_InfectionCube>> infectionCubesPerCityID,
+            Dictionary<int, int> inactive_infection_cubes__per__type,
+            Dictionary<int, Dictionary<int, int>> infections__per__type__per__city,
             int inactive_research_stations,
             Dictionary<int, bool> research_stations__per__city
             )
         {
             this.location__per__player = location__per__player.CustomDeepCopy();
-            this.InactiveInfectionCubesPerType = inactiveInfectionCubesPerType.CustomDeepCopy();
-            this.InfectionCubesPerCityID = infectionCubesPerCityID.CustomDeepCopy();
+            this.inactive_infection_cubes__per__type = inactive_infection_cubes__per__type.CustomDeepCopy();
+            this.infections__per__type__per__city = infections__per__type__per__city.CustomDeepCopy();
             this.inactive_research_stations = inactive_research_stations;
             this.research_stations__per__city = research_stations__per__city;
         }
@@ -82,9 +90,12 @@ namespace Pandemic_AI_Framework
             PD_MapElements mapElementsToCopy
             )
         {
-            this.location__per__player = mapElementsToCopy.location__per__player.CustomDeepCopy();
-            this.InactiveInfectionCubesPerType = mapElementsToCopy.InactiveInfectionCubesPerType.CustomDeepCopy();
-            this.InfectionCubesPerCityID = mapElementsToCopy.InfectionCubesPerCityID.CustomDeepCopy();
+            this.location__per__player 
+                = mapElementsToCopy.location__per__player.CustomDeepCopy();
+            this.inactive_infection_cubes__per__type
+                = mapElementsToCopy.inactive_infection_cubes__per__type.CustomDeepCopy();
+            this.infections__per__type__per__city
+                = mapElementsToCopy.infections__per__type__per__city.CustomDeepCopy();
             this.inactive_research_stations = mapElementsToCopy.inactive_research_stations;
             this.research_stations__per__city = mapElementsToCopy.research_stations__per__city.CustomDeepCopy();
         }
@@ -97,13 +108,13 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.InactiveInfectionCubesPerType.Dictionary_Equals(
-                other.InactiveInfectionCubesPerType) == false)
+            else if (this.inactive_infection_cubes__per__type.Dictionary_Equals(
+                other.inactive_infection_cubes__per__type) == false)
             {
                 return false;
             }
-            else if (this.InfectionCubesPerCityID.Dictionary_Equals(
-                other.InfectionCubesPerCityID) == false)
+            else if (this.infections__per__type__per__city.Dictionary_Equals(
+                other.infections__per__type__per__city) == false)
             {
                 return false;
             }
@@ -140,8 +151,8 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = (hash * 13) + location__per__player.Custom_HashCode();
-            hash = (hash * 13) + InactiveInfectionCubesPerType.Custom_HashCode();
-            hash = (hash * 13) + InfectionCubesPerCityID.Custom_HashCode();
+            hash = (hash * 13) + inactive_infection_cubes__per__type.Custom_HashCode();
+            hash = (hash * 13) + infections__per__type__per__city.Custom_HashCode();
             hash = (hash * 13) + inactive_research_stations;
             hash = (hash * 13) + research_stations__per__city.Custom_HashCode();
 

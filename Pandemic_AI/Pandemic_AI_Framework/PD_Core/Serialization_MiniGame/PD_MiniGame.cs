@@ -292,13 +292,13 @@ namespace Pandemic_AI_Framework
             else if (this.map___cities
                 .List_Equals(other.map___cities) == false) return false;
             else if (this.map___name__per__city
-                .Dictionary_Equal(other.map___name__per__city) == false) return false;
+                .Dictionary_Equals(other.map___name__per__city) == false) return false;
             else if (this.map___position__per__city
                 .Dictionary_Equals(other.map___position__per__city) == false) return false;
             else if (this.map___infection_type__per__city
                 .Dictionary_Equal_S(other.map___infection_type__per__city) == false) return false;
             else if (this.map___neighbors__per__city
-                .Dictionary_Equal(other.map___neighbors__per__city) == false) return false;
+                .Dictionary_Equals(other.map___neighbors__per__city) == false) return false;
 
             else if (this.map_elements___research_station__per__city
                 .Dictionary_Equal_S(other.map_elements___research_station__per__city) == false) return false;
@@ -351,7 +351,7 @@ namespace Pandemic_AI_Framework
             else if (this.cards___deck_of_discarded_player_cards
                 .List_Equals(other.cards___deck_of_discarded_player_cards) == false) return false;
             else if (this.cards___player_cards__per__player
-                .Dictionary_Equal(other.cards___player_cards__per__player) == false) return false;
+                .Dictionary_Equals(other.cards___player_cards__per__player) == false) return false;
 
             else return true;
         }

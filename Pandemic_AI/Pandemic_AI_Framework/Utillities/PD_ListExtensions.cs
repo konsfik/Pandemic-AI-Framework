@@ -99,29 +99,6 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        //public static bool List_Equal_S<T>(
-        //    this List<T> this_list, List<T> other_list
-        //    )
-        //    where T : struct
-        //{
-        //    // compare list sizes
-        //    if (this_list.Count != other_list.Count)
-        //    {
-        //        return false;
-        //    }
-
-        //    // compare list elements
-        //    for (int i = 0; i < this_list.Count; i++)
-        //    {
-        //        if (this_list[i].Equals(other_list[i]) == false)
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    return true;
-        //}
-
         public static bool List_Equals(
             this List<List<int>> this_list, List<List<int>> other_list
             )
@@ -146,7 +123,7 @@ namespace Pandemic_AI_Framework
 
 
 
-        public static bool Dictionary_Equal(
+        public static bool Dictionary_Equals(
             this Dictionary<int, string> this_dictionary,
             Dictionary<int, string> other_dictionary
             )
@@ -252,42 +229,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        //public static bool Dictionary_Equal(
-        //    this Dictionary<int, PD_Point> this_dictionary,
-        //    Dictionary<int, PD_Point> other_dictionary
-        //    )
-        //{
-        //    List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-        //    List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-        //    // compare keys - size
-        //    if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-        //    {
-        //        return false;
-        //    }
-
-        //    for (int k = 0; k < this_dictionary.Keys.Count; k++)
-        //    {
-        //        if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    foreach (int key in this_dictionary_keys)
-        //    {
-        //        PD_Point this_value = this_dictionary[key];
-        //        PD_Point other_value = other_dictionary[key];
-        //        if (this_value.Equals(other_value) == false)
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    return true;
-        //}
-
-        public static bool Dictionary_Equal(
+        public static bool Dictionary_Equals(
             this Dictionary<int, List<int>> this_dictionary,
             Dictionary<int, List<int>> other_dictionary
             )
@@ -314,6 +256,41 @@ namespace Pandemic_AI_Framework
                 List<int> this_value = this_dictionary[key];
                 List<int> other_value = other_dictionary[key];
                 if (this_value.List_Equals(other_value) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool Dictionary_Equals(
+            this Dictionary<int, Dictionary<int,int>> this_dictionary,
+            Dictionary<int, Dictionary<int, int>> other_dictionary
+            )
+        {
+            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
+            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
+
+            // compare keys - size
+            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
+            {
+                return false;
+            }
+
+            for (int k = 0; k < this_dictionary.Keys.Count; k++)
+            {
+                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
+                {
+                    return false;
+                }
+            }
+
+            foreach (int key in this_dictionary_keys)
+            {
+                Dictionary<int, int> this_value = this_dictionary[key];
+                Dictionary<int, int> other_value = other_dictionary[key];
+                if (this_value.Dictionary_Equals(other_value) == false)
                 {
                     return false;
                 }
@@ -523,9 +500,7 @@ namespace Pandemic_AI_Framework
 
             foreach (int key in this_dictionary_keys)
             {
-                int this_value = this_dictionary[key];
-                int other_value = other_dictionary[key];
-                if (this_value != other_value)
+                if (this_dictionary[key] != other_dictionary[key])
                 {
                     return false;
                 }

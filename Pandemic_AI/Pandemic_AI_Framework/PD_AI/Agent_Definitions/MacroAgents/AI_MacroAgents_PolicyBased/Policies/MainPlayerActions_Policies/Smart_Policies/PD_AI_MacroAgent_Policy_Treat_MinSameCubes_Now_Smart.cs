@@ -71,7 +71,7 @@ namespace Pandemic_AI_Framework
                     int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
-                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
+                        game.GQ_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );
@@ -88,7 +88,7 @@ namespace Pandemic_AI_Framework
                     int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
-                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
+                        game.GQ_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );
@@ -104,7 +104,7 @@ namespace Pandemic_AI_Framework
                     int destination = macro.Find_Destination();
                     int treatType = game.GQ_City_InfectionType(destination);
                     int numCubesThisTypeOnThatCity =
-                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
+                        game.GQ_InfectionCubes_OfType_OnCity(
                             destination,
                             treatType
                             );

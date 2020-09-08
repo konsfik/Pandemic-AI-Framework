@@ -71,7 +71,7 @@ namespace Pandemic_AI_Framework
             };
 
             Dictionary<int, string> name__per__city = new Dictionary<int, string>() {
-                {0,   "Atlanta"     },
+                {0,   "Atlanta"          },
                 {1,   "Chicago"          },
                 {2,   "Essen"            },
                 {3,   "London"           },
@@ -137,7 +137,7 @@ namespace Pandemic_AI_Framework
                 {9,   new PD_Point( 161,  885  ) },
                 {10,  new PD_Point( 1089, 1054 ) },
                 {11,  new PD_Point( 519,  844  ) },
-                                
+
                 {12,  new PD_Point( 452,  595  ) },
                 {13,  new PD_Point( 561,  331  ) },
                 {14,  new PD_Point( 1055, 392  ) },
@@ -150,7 +150,7 @@ namespace Pandemic_AI_Framework
                 {21,  new PD_Point( 463,  729  ) },
                 {22,  new PD_Point( 423,  305  ) },
                 {23,  new PD_Point( 638,  432  ) },
-                                
+
                 {24,  new PD_Point( 938,  800  ) },
                 {25,  new PD_Point( 1150, 818  ) },
                 {26,  new PD_Point( 1037, 773  ) },
@@ -163,7 +163,7 @@ namespace Pandemic_AI_Framework
                 {33,  new PD_Point( 1289, 677  ) },
                 {34,  new PD_Point( 1165, 699  ) },
                 {35,  new PD_Point( 1250, 901  ) },
-                                
+
                 {36,  new PD_Point( 1486, 668  ) },
                 {37,  new PD_Point( 1543, 931  ) },
                 {38,  new PD_Point( 1567, 574  ) },
@@ -204,7 +204,7 @@ namespace Pandemic_AI_Framework
                 {21,  1},
                 {22,  1},
                 {23,  1},
-                    
+
                 {24,  2},
                 {25,  2},
                 {26,  2},
@@ -217,7 +217,7 @@ namespace Pandemic_AI_Framework
                 {33,  2},
                 {34,  2},
                 {35,  2},
-                    
+
                 {36,  3},
                 {37,  3},
                 {38,  3},
@@ -326,20 +326,6 @@ namespace Pandemic_AI_Framework
 
             int number_of_research_stations = 6;
 
-            List<PD_ME_InfectionCube> infection_cubes = new List<PD_ME_InfectionCube>();
-            int infectionCubeID = 0;
-            foreach (var city in cities)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    PD_ME_InfectionCube ic = new PD_ME_InfectionCube(
-                        infectionCubeID, 
-                        infection_type__per__city[city]);
-                    infection_cubes.Add(ic);
-                    infectionCubeID++;
-                }
-            }
-
             PD_Game new_game = new PD_Game(
                 game_difficulty,
                 players,
@@ -352,15 +338,14 @@ namespace Pandemic_AI_Framework
                 all_infection_cards,
                 all_epidemic_cards,
                 roleCards,
-                number_of_research_stations,
-                infection_cubes
+                number_of_research_stations
                 );
 
 
 
             if (auto_game_setup)
             {
-                new_game.ApplySpecificPlayerAction(
+                new_game.Apply_Action(
                     randomness_provider,
                     new_game.CurrentAvailablePlayerActions[0]
                     );
@@ -386,8 +371,7 @@ namespace Pandemic_AI_Framework
             List<PD_EpidemicCard> allEpidemicCards,
 
             List<PD_Role_Card> allRoleCards,
-            int number_of_research_stations,
-            List<PD_ME_InfectionCube> allInfectionCubes
+            int number_of_research_stations
             )
         {
             CurrentAvailableMacros = new List<PD_MacroAction>();
@@ -411,7 +395,7 @@ namespace Pandemic_AI_Framework
 
             Map = new PD_Map(
                 cities.Count,
-                cities, 
+                cities,
                 name__per__city,
                 position__per__city,
                 infection_type__per__city,
@@ -422,13 +406,10 @@ namespace Pandemic_AI_Framework
                 allCityCards,
                 allInfectionCards,
                 allEpidemicCards,
-
-                allRoleCards,
-
-                allInfectionCubes
+                allRoleCards
                 );
 
-            MapElements = new PD_MapElements(players,cities);
+            MapElements = new PD_MapElements(players, cities);
             Cards = new PD_GameCards(Players, allRoleCards);
 
 
@@ -538,12 +519,7 @@ namespace Pandemic_AI_Framework
             // 1.2. separate the infection cubes by color (type) in their containers
             for (int i = 0; i < 4; i++)
             {
-                List<PD_ME_InfectionCube> infectionCubesByType =
-                    GameElementReferences.InfectionCubes.FindAll(
-                        x =>
-                        x.Type == i
-                    );
-                MapElements.InactiveInfectionCubesPerType.Add(i, infectionCubesByType);
+                MapElements.inactive_infection_cubes__per__type[i] = 24;
             }
 
             // 1.3. place research station on atlanta
@@ -604,7 +580,7 @@ namespace Pandemic_AI_Framework
 
             // 4. Give each player cards and a pawn
             // 4.1. Assign random roles and pawns to players
-            List<PD_Player_Roles> available_roles = new List<PD_Player_Roles>() { 
+            List<PD_Player_Roles> available_roles = new List<PD_Player_Roles>() {
                 PD_Player_Roles.Operations_Expert,
                 PD_Player_Roles.Researcher,
                 PD_Player_Roles.Medic,
@@ -741,18 +717,11 @@ namespace Pandemic_AI_Framework
                     );
 
                 // check if disease is eradicated...
-                var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
-                foreach (int someCity in Map.cities)
-                {
-                    var cubesOfThisTypeOnSomeCity = MapElements.InfectionCubesPerCityID[someCity].FindAll(
-                        x =>
-                        x.Type == treat_Type
-                        );
-                    remainingCubesOfThisType.AddRange(cubesOfThisTypeOnSomeCity);
-                }
+                int remaining_cubes_this_type
+                    = MapElements.inactive_infection_cubes__per__type[treat_Type];
 
                 // if disease eradicated -> set marker to 2
-                if (remainingCubesOfThisType.Count == 0)
+                if (remaining_cubes_this_type == 0)
                 {
                     GameStateCounter.CureMarkersStates[treat_Type] = 2;
                 }
@@ -795,7 +764,7 @@ namespace Pandemic_AI_Framework
             CurrentAvailablePlayerActions = this.FindAvailable_PlayerActions();
         }
 
-        public void ApplySpecificPlayerAction(
+        public void Apply_Action(
             Random randomness_provider,
             PD_GameAction_Base playerAction
             )
@@ -822,7 +791,7 @@ namespace Pandemic_AI_Framework
             {
                 if (CurrentAvailablePlayerActions[0] is I_Auto_Action)
                 {
-                    ApplySpecificPlayerAction(
+                    Apply_Action(
                         randomness_provider,
                         CurrentAvailablePlayerActions[0]
                         );
@@ -850,7 +819,7 @@ namespace Pandemic_AI_Framework
             return new List<PD_MacroAction>(CurrentAvailableMacros);
         }
 
-        public void ApplySpecificMacro(
+        public void Apply_Macro_Action(
             Random randomness_provider,
             PD_MacroAction macro
             )
@@ -895,7 +864,7 @@ namespace Pandemic_AI_Framework
                     {
                         if (CurrentAvailablePlayerActions.Contains(command))
                         {
-                            ApplySpecificPlayerAction(
+                            Apply_Action(
                                 randomness_provider,
                                 command
                                 );
@@ -922,7 +891,7 @@ namespace Pandemic_AI_Framework
                     if (CurrentAvailablePlayerActions.Contains(action))
                     {
                         //Console.WriteLine("applying command: " + action.GetDescription());
-                        ApplySpecificPlayerAction(
+                        Apply_Action(
                             randomness_provider,
                             action
                             );
@@ -946,7 +915,7 @@ namespace Pandemic_AI_Framework
                     if (CurrentAvailablePlayerActions.Contains(action))
                     {
                         //Console.WriteLine("applying command: " + action.GetDescription());
-                        ApplySpecificPlayerAction(
+                        Apply_Action(
                             randomness_provider,
                             action
                             );
@@ -963,7 +932,8 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public void OverrideUniqueID(long unique_id) {
+        public void OverrideUniqueID(long unique_id)
+        {
             UniqueID = unique_id;
         }
 
@@ -1009,7 +979,8 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_Game other) {
+        public bool Equals(PD_Game other)
+        {
             if (this.UniqueID != other.UniqueID)
             {
                 return false;
@@ -1079,13 +1050,15 @@ namespace Pandemic_AI_Framework
                 return true;
             }
         }
+
         public override bool Equals(object otherObject)
         {
             if (otherObject is PD_Game other_game)
             {
                 return Equals(other_game);
             }
-            else {
+            else
+            {
                 return false;
             }
         }

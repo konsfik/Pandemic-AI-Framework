@@ -11,18 +11,6 @@ namespace Pandemic_AI_Framework.Tests
     [TestClass()]
     public class PD_ListExtensionsTests
     {
-        //[TestMethod()]
-        //public void ShuffleAllSubListsElementsTest()
-        //{
-        //    List<List<int>> listOfLists = new List<List<int>>();
-        //    List<int> listOfInts1 = new List<int>() { 0, 1, 2, 3 };
-        //    List<int> listOfInts2 = new List<int>() { 4, 5, 6, 7 };
-        //    List<int> listOfInts3 = new List<int>() { 8, 9, 10, 11 };
-        //    listOfLists.Add(listOfInts1);
-        //    listOfLists.Add(listOfInts2);
-        //    listOfLists.Add(listOfInts3);
-        //    listOfLists.ShuffleAllSubListsElements();
-        //}
 
         [TestMethod()]
         public void GetNumberOfElementsOfAllSubLists_Test1()

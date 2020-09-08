@@ -12,78 +12,78 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            List<PD_GameAction_Base> currentAvailablePlayerActions = new List<PD_GameAction_Base>();
+            List<PD_GameAction_Base> action_set = new List<PD_GameAction_Base>();
 
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
             if (game.GameFSM.CurrentState.GetType() != null && game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Idle))
             {
                 PD_GA_SetupGame_Random sg = new PD_GA_SetupGame_Random();
-                currentAvailablePlayerActions.Add(sg);
+                action_set.Add(sg);
             }
             else if (game.GQ_IsInState_ApplyingMainPlayerActions())
             {
-                currentAvailablePlayerActions.AddRange(FindAvailable_Stay_Actions(game));
+                action_set.AddRange(FindAvailable_Stay_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(FindAvailable_DriveFerry_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_DirectFlight_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_CharterFlight_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShuttleFlight_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_OperationsExpertFlight_Actions(game));
+                action_set.AddRange(FindAvailable_DriveFerry_Actions(game));
+                action_set.AddRange(FindAvailable_DirectFlight_Actions(game));
+                action_set.AddRange(FindAvailable_CharterFlight_Actions(game));
+                action_set.AddRange(FindAvailable_ShuttleFlight_Actions(game));
+                action_set.AddRange(FindAvailable_OperationsExpertFlight_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(FindAvailable_BuildResearchStation_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_BuildResearchStation_OperationsExpert_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_MoveResearchStation_Actions(game));
+                action_set.AddRange(FindAvailable_BuildResearchStation_Actions(game));
+                action_set.AddRange(FindAvailable_BuildResearchStation_OperationsExpert_Actions(game));
+                action_set.AddRange(FindAvailable_MoveResearchStation_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(FindAvailable_TreatDisease_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_TreatDisease_Medic_Actions(game));
+                action_set.AddRange(FindAvailable_TreatDisease_Actions(game));
+                action_set.AddRange(FindAvailable_TreatDisease_Medic_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Give_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Take_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Give_ResearcherGives_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_ShareKnowledge_Take_FromResearcher_Actions(game));
+                action_set.AddRange(FindAvailable_ShareKnowledge_Give_Actions(game));
+                action_set.AddRange(FindAvailable_ShareKnowledge_Take_Actions(game));
+                action_set.AddRange(FindAvailable_ShareKnowledge_Give_ResearcherGives_Actions(game));
+                action_set.AddRange(FindAvailable_ShareKnowledge_Take_FromResearcher_Actions(game));
 
-                currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Actions(game));
-                currentAvailablePlayerActions.AddRange(FindAvailable_DiscoverCure_Scientist_Actions(game));
+                action_set.AddRange(FindAvailable_DiscoverCure_Actions(game));
+                action_set.AddRange(FindAvailable_DiscoverCure_Scientist_Actions(game));
             }
             else if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
-                currentAvailablePlayerActions.AddRange(
+                action_set.AddRange(
                     GAQ_FindAvailable_DiscardDuringMainPlayerActions_Actions(game)
                     );
             }
             else if (game.GQ_IsInState_DrawingNewPlayerCards())
             {
-                currentAvailablePlayerActions.Add(
+                action_set.Add(
                     new PD_DrawNewPlayerCards(currentPlayer)
                     );
             }
             else if (game.GQ_IsInState_DiscardAfterDrawing())
             {
-                currentAvailablePlayerActions.AddRange(
+                action_set.AddRange(
                     GAQ_FindAvailable_DiscardAfterDrawing_Actions(game)
                     );
             }
             else if (game.GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingEpidemicCard))
             {
-                currentAvailablePlayerActions.Add(
+                action_set.Add(
                     new PD_ApplyEpidemicCard(currentPlayer)
                     );
             }
             else if (game.GameFSM.CurrentState.GetType() == typeof(PD_GS_DrawingNewInfectionCards))
             {
-                currentAvailablePlayerActions.Add(
+                action_set.Add(
                     new PD_DrawNewInfectionCards(currentPlayer)
                     );
             }
             else if (game.GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingInfectionCards))
             {
-                currentAvailablePlayerActions.Add(
+                action_set.Add(
                     new PD_ApplyInfectionCard(currentPlayer, game.Cards.ActiveInfectionCards[0])
                     );
             }
 
-            return currentAvailablePlayerActions;
+            return action_set;
         }
 
         private static List<PD_PA_Stay> FindAvailable_Stay_Actions(

@@ -40,12 +40,7 @@ namespace Pandemic_AI_Framework
             List<bool> subLists_IncludeEpidemic = new List<bool>();
             foreach (List<PD_PlayerCardBase> subList in game.Cards.DividedDeckOfPlayerCards)
             {
-                if (
-                    subList.Any(
-                        x =>
-                        x.GetType() == typeof(PD_EpidemicCard)
-                        )
-                    )
+                if (subList.Any(x => x is PD_EpidemicCard))
                 {
                     subLists_IncludeEpidemic.Add(true);
                     subLists_Sizes.Add(subList.Count - 1);
@@ -140,7 +135,7 @@ namespace Pandemic_AI_Framework
             existingReport.AddInfectedCity(cityToInfect);
 
             int num_CubesOfType_AlreadyOnCity =
-                game.GQ_Count_Num_InfectionCubes_OfType_OnCity(
+                game.GQ_InfectionCubes_OfType_OnCity(
                     cityToInfect,
                     currentInfectionType
                     );
@@ -252,9 +247,8 @@ namespace Pandemic_AI_Framework
             int infectionCubeType
             )
         {
-            PD_ME_InfectionCube infectionCubeToAdd =
-                game.MapElements.InactiveInfectionCubesPerType[infectionCubeType].DrawLast();
-            game.MapElements.InfectionCubesPerCityID[city].Add(infectionCubeToAdd);
+            game.MapElements.inactive_infection_cubes__per__type[infectionCubeType] -= 1;
+            game.MapElements.infections__per__type__per__city[city][infectionCubeType] += 1;
         }
 
         public static void GO_PlaceResearchStationOnCity(
@@ -292,27 +286,10 @@ namespace Pandemic_AI_Framework
             int treatType
             )
         {
-            if (
-                game.MapElements.InfectionCubesPerCityID[city]
-                .Any(
-                    x =>
-                    x.Type == treatType
-                    ) == false
-                )
-            {
-                throw new System.Exception("the city does not have any cubes of this type");
-            }
-
-            var cubeToRemove = game.MapElements.InfectionCubesPerCityID[city]
-                .FindAll(
-                    x =>
-                    x.Type == treatType
-                    ).GetFirst();
-
             // remove the cube from the city
-            game.MapElements.InfectionCubesPerCityID[city].Remove(cubeToRemove);
+            game.MapElements.infections__per__type__per__city[city][treatType]--;
             // put the cubes back in the inactive container
-            game.MapElements.InactiveInfectionCubesPerType[treatType].Add(cubeToRemove);
+            game.MapElements.inactive_infection_cubes__per__type[treatType]++;
         }
 
         public static void GO_Remove_All_InfectionCubes_OfType_FromCity(
@@ -321,62 +298,14 @@ namespace Pandemic_AI_Framework
             int diseaseType
             )
         {
-            if (
-                game.MapElements.InfectionCubesPerCityID[city]
-                .Any(
-                    x =>
-                    x.Type == diseaseType
-                    ) == false
-                )
-            {
-                throw new System.Exception("the city does not have any cubes of this type");
-            }
-
-            var cubesToRemove = game.MapElements.InfectionCubesPerCityID[city]
-                .FindAll(
-                    x =>
-                    x.Type == diseaseType
-                    );
-
-            // remove the cube from the city
-            game.MapElements.InfectionCubesPerCityID[city].RemoveAll(
-                x =>
-                cubesToRemove.Contains(x)
-                );
-            // put the cubes back in the inactive container
-            game.MapElements.InactiveInfectionCubesPerType[diseaseType].AddRange(cubesToRemove);
-        }
-
-        public static void GO_Remove_InfectionCubes_FromCity(
-            this PD_Game game,
-            int city,
-            List<PD_ME_InfectionCube> cubesToRemove,
-            int treat_Type
-            )
-        {
-            if (
-                cubesToRemove.Any(x => x.Type != treat_Type)
-                )
-            {
-                throw new System.Exception("cubes do not match the selected type");
-            }
-            if (
-                game.MapElements.InfectionCubesPerCityID[city]
-                .ContainsAll(cubesToRemove)
-                == false
-                )
-            {
-                throw new System.Exception("selected cubes are not contained on the selected city!");
-            }
+            // count the cubes
+            int num_cubes = game.MapElements.infections__per__type__per__city[city][diseaseType];
 
             // remove the cubes from the city
-            game.MapElements.InfectionCubesPerCityID[city]
-                .RemoveAll(
-                    x =>
-                    cubesToRemove.Contains(x)
-                    );
+            game.MapElements.infections__per__type__per__city[city][diseaseType] -= num_cubes;
             // put the cubes back in the inactive container
-            game.MapElements.InactiveInfectionCubesPerType[treat_Type].AddRange(cubesToRemove);
+            game.MapElements.inactive_infection_cubes__per__type[diseaseType] += num_cubes;
         }
+
     }
 }

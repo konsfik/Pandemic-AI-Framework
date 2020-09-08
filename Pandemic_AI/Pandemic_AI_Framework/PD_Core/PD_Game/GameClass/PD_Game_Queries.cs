@@ -61,7 +61,7 @@ namespace Pandemic_AI_Framework
             int type
             )
         {
-            return game.MapElements.InactiveInfectionCubesPerType[type].Count;
+            return game.MapElements.inactive_infection_cubes__per__type[type];
         }
 
         public static int GQ_RemainingPlayerActions_ThisRound(
@@ -271,57 +271,22 @@ namespace Pandemic_AI_Framework
             return game.RoleCardsPerPlayerID[player.ID].Role;
         }
 
-        public static List<int> GQ_Find_CitiesWith_X_SameTypeCubes(
-            this PD_Game game,
-            int requested_numSameTypeCubes
-            )
-        {
-
-            if (requested_numSameTypeCubes < 0 || requested_numSameTypeCubes > 3)
-            {
-                throw new System.Exception("number of cubes must be between 0 and 3");
-            }
-            List<int> allCities = game.Map.cities;
-            List<int> citiesWith_X_SameTypeCubes = new List<int>();
-            foreach (var city in allCities)
-            {
-                int max_NumSameTypeCubesOnCity = 0;
-                List<PD_ME_InfectionCube> allCubesOnCity = game.MapElements.InfectionCubesPerCityID[city];
-                for (int i = 0; i < 4; i++)
-                {
-                    List<PD_ME_InfectionCube> cubesOfThisTypeOnCity = allCubesOnCity.FindAll(
-                        x =>
-                        x.Type == i
-                        );
-                    int numCubesOfThisTypeOnCity = cubesOfThisTypeOnCity.Count;
-                    if (numCubesOfThisTypeOnCity > max_NumSameTypeCubesOnCity)
-                    {
-                        max_NumSameTypeCubesOnCity = numCubesOfThisTypeOnCity;
-                    }
-                }
-                if (max_NumSameTypeCubesOnCity == requested_numSameTypeCubes)
-                {
-                    citiesWith_X_SameTypeCubes.Add(city);
-                }
-            }
-
-            return citiesWith_X_SameTypeCubes;
-        }
 
         public static List<int> GQ_InfectionCubeTypes_OnCity(
             this PD_Game game,
             int city
             )
         {
-            var infectionCubesOnThisCity = game.MapElements.InfectionCubesPerCityID[city];
             List<int> infectionCubeTypesOnSpecificCity = new List<int>();
-            foreach (var cube in infectionCubesOnThisCity)
+
+            for (int t = 0; t < 4; t++)
             {
-                if (infectionCubeTypesOnSpecificCity.Contains(cube.Type) == false)
+                if (game.MapElements.infections__per__type__per__city[city][t] > 0)
                 {
-                    infectionCubeTypesOnSpecificCity.Add(cube.Type);
+                    infectionCubeTypesOnSpecificCity.Add(t);
                 }
             }
+
             return infectionCubeTypesOnSpecificCity;
         }
 
@@ -482,7 +447,7 @@ namespace Pandemic_AI_Framework
             int city
             )
         {
-            return game.MapElements.research_stations__per__city[city]==true;
+            return game.MapElements.research_stations__per__city[city] == true;
         }
 
         public static List<int> GQ_InfectedCities(
@@ -492,9 +457,13 @@ namespace Pandemic_AI_Framework
             List<int> allInfectedCities = new List<int>();
             foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.InfectionCubesPerCityID[city].Count > 0)
+                for (int t = 0; t < 4; t++)
                 {
-                    allInfectedCities.Add(city);
+                    if (game.MapElements.infections__per__type__per__city[city][t] > 0)
+                    {
+                        allInfectedCities.Add(city);
+                        break;
+                    }
                 }
             }
             return allInfectedCities;
@@ -505,19 +474,28 @@ namespace Pandemic_AI_Framework
             int minimumCubes_AnyType
             )
         {
-            if (minimumCubes_AnyType < 1)
-            {
-                throw new System.Exception("minimum number infection cubes must be at least 1");
-            }
             List<int> allInfectedCities = new List<int>();
             foreach (var city in game.Map.cities)
             {
-                if (game.MapElements.InfectionCubesPerCityID[city].Count >= minimumCubes_AnyType)
+                if (game.Num_InfectionCubes_OnCity(city) >= minimumCubes_AnyType)
                 {
                     allInfectedCities.Add(city);
                 }
             }
             return allInfectedCities;
+        }
+
+        public static int Num_InfectionCubes_OnCity(
+            this PD_Game game,
+            int city
+            )
+        {
+            int num_cubes = 0;
+            for (int t = 0; t < 4; t++)
+            {
+                num_cubes += game.MapElements.infections__per__type__per__city[city][t];
+            }
+            return num_cubes;
         }
 
         public static List<PD_CityCard> GQ_CityCardsInCurrentPlayerHand(
@@ -560,63 +538,23 @@ namespace Pandemic_AI_Framework
             return uncuredDiseaseTypes;
         }
 
-        public static double GQ_PercentageAvailableCubes(
-            this PD_Game game
-            )
-        {
-            int numAllCubes = game.GameElementReferences.InfectionCubes.Count;
-            int numAvailableCubes = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                numAvailableCubes += game.MapElements.InactiveInfectionCubesPerType[i].Count;
-            }
-            return (double)numAvailableCubes / (double)numAllCubes;
-        }
-
-        public static double GQ_PercentageCubesOnTheBoard(
-            this PD_Game game
-            )
-        {
-            int numAllCubes = game.GameElementReferences.InfectionCubes.Count;
-            int numCubesOnTheBoard = game.GQ_Count_Num_DiseaseCubesOnTheBoard();
-            return (double)numCubesOnTheBoard / (double)numAllCubes;
-        }
-
-        public static int GQ_Count_Num_InfectionCubes_OfType_OnCity(
-            this PD_Game game,
-            int city,
-            int infectionCubeType
-            )
-        {
-            return GQ_Find_InfectionCubes_OfType_OnCity(
-                game,
-                city,
-                infectionCubeType
-                ).Count;
-        }
-
-        public static List<PD_ME_InfectionCube> GQ_Find_InfectionCubes_OfType_OnCity(
+        public static int GQ_InfectionCubes_OfType_OnCity(
             this PD_Game game,
             int city,
             int type
             )
         {
-            return game.MapElements.InfectionCubesPerCityID[city].FindAll(
-                x =>
-                x.Type == type
-                );
+            return game.MapElements.infections__per__type__per__city[city][type];
         }
 
-        public static int GQ_Count_Num_DiseaseCubesOnTheBoard(
-            this PD_Game game
+        public static int GQ_Find_InfectionCubes_OfType_OnCity(
+            this PD_Game game,
+            int city,
+            int type
             )
         {
-            int numCubesOnTheBoard = 0;
-            foreach (var city in game.Map.cities)
-            {
-                numCubesOnTheBoard += game.MapElements.InfectionCubesPerCityID[city].Count;
-            }
-            return numCubesOnTheBoard;
+
+            return game.MapElements.infections__per__type__per__city[city][type];
         }
 
         public static List<int> GQ_Find_Cured_or_Eradicated_DiseaseTypes(
@@ -650,16 +588,18 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            return game.GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions);
+            if (game.GameFSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
+            {
+                return true;
+            }
+            return false;
         }
 
         public static bool GQ_IsInState_DiscardDuringMainPlayerActions(
             this PD_Game game
             )
         {
-            if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Discarding_DuringMainPlayerActions)
-                )
+            if (game.GameFSM.CurrentState is PD_GS_Discarding_DuringMainPlayerActions)
             {
                 return true;
             }
@@ -670,9 +610,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_DrawingNewPlayerCards)
-                )
+            if (game.GameFSM.CurrentState is PD_GS_DrawingNewPlayerCards)
             {
                 return true;
             }
@@ -683,9 +621,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Discarding_AfterDrawing)
-                )
+            if (game.GameFSM.CurrentState is PD_GS_Discarding_AfterDrawing)
             {
                 return true;
             }

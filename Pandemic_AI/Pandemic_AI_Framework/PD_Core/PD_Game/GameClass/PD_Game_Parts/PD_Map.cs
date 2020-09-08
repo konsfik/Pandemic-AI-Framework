@@ -72,7 +72,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.name__per__city.Dictionary_Equal(other.name__per__city) == false)
+            else if (this.name__per__city.Dictionary_Equals(other.name__per__city) == false)
             {
                 return false;
             }
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.neighbors__per__city.Dictionary_Equal(other.neighbors__per__city) == false)
+            else if (this.neighbors__per__city.Dictionary_Equals(other.neighbors__per__city) == false)
             {
                 return false;
             }

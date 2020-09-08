@@ -180,7 +180,7 @@ namespace Pandemic_AI_Framework
                 for (int t = 0; t < 4; t++)
                 {
                     int num_cubes__this_type__that_city 
-                        = game.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count;
+                        = game.GQ_InfectionCubes_OfType_OnCity(city, t);
                     mini_game.map_elements___infection_cubes__per__type__per__city[city].Add(
                         t,
                         num_cubes__this_type__that_city
@@ -493,28 +493,12 @@ namespace Pandemic_AI_Framework
                 new PD_Role_Card(PD_MiniGame__PlayerRole.Scientist, PD_Player_Roles.Scientist)
                 );
 
-            // infection cubes
-            List<PD_ME_InfectionCube> all_infection_cubes_references = new List<PD_ME_InfectionCube>();
-            for (int t = 0; t < 4; t++)
-            {
-                for (int i = 0; i < 24; i++)
-                {
-                    int index = t * 24 + i;
-                    PD_ME_InfectionCube ic = new PD_ME_InfectionCube(
-                        index,
-                        t
-                        );
-                    all_infection_cubes_references.Add(ic);
-                }
-            }
-
             // game element references...
             PD_GameElementReferences GAME_ELEMENT_REFERENCES = new PD_GameElementReferences(
                 city_cards,
                 infection_cards,
                 epidemic_cards,
-                role_cards,
-                all_infection_cubes_references
+                role_cards
                 );
 
             Dictionary<int, PD_Role_Card> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, PD_Role_Card>();
@@ -542,46 +526,12 @@ namespace Pandemic_AI_Framework
 
 
             // inactive_infection_cubes_per_type
-            Dictionary<int, List<PD_ME_InfectionCube>> inactive_infection_cubes_per_type
-                = new Dictionary<int, List<PD_ME_InfectionCube>>();
-            for (int t = 0; t < 4; t++)
-            {
-                inactive_infection_cubes_per_type.Add(t, new List<PD_ME_InfectionCube>());
-                int num_this_type = mini_game.map_elements___available_infection_cubes__per__type[t];
-                for (int c = 0; c < num_this_type; c++)
-                {
-                    int id = t * 24 + c;
-                    PD_ME_InfectionCube cube = all_infection_cubes_references.Find(
-                        x => x.ID == id
-                    );
-                    inactive_infection_cubes_per_type[t].Add(cube.GetCustomDeepCopy());
-                }
-            }
+            Dictionary<int, int> inactive_infection_cubes_per_type 
+                = mini_game.map_elements___available_infection_cubes__per__type.CustomDeepCopy();
 
             // infection_cubes_per_city_id
-            Dictionary<int, List<PD_ME_InfectionCube>> infection_cubes_per_city_id
-                = new Dictionary<int, List<PD_ME_InfectionCube>>();
-            foreach (int city in mini_game.map___cities)
-            {
-                infection_cubes_per_city_id.Add(city, new List<PD_ME_InfectionCube>());
-            }
-            for (int t = 0; t < 4; t++)
-            {
-                int type_counter = inactive_infection_cubes_per_type[t].Count;
-                foreach (int city in mini_game.map___cities)
-                {
-                    int num_cubes_this_city_this_type =
-                        mini_game.map_elements___infection_cubes__per__type__per__city[city][t];
-
-                    for (int ic = 0; ic < num_cubes_this_city_this_type; ic++)
-                    {
-                        int id = t * 24 + type_counter;
-                        PD_ME_InfectionCube cube = all_infection_cubes_references[id];
-                        infection_cubes_per_city_id[city].Add(cube);
-                        type_counter++;
-                    }
-                }
-            }
+            Dictionary<int, Dictionary<int, int>> infections__per__type__per__city
+                = mini_game.map_elements___infection_cubes__per__type__per__city.CustomDeepCopy();
 
             // inactive_research_stations
             int inactive_research_stations = mini_game.map_elements___available_research_stations;
@@ -593,7 +543,7 @@ namespace Pandemic_AI_Framework
             PD_MapElements MAP_ELEMENTS = new PD_MapElements(
                 location__per__player,
                 inactive_infection_cubes_per_type,
-                infection_cubes_per_city_id,
+                infections__per__type__per__city,
                 inactive_research_stations,
                 research_stations_per_city
                 );

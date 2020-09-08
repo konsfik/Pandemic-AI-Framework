@@ -89,18 +89,11 @@ namespace Pandemic_AI_Framework
                     );
 
                 // check if disease is eradicated...
-                var remainingCubesOfThisType = new List<PD_ME_InfectionCube>();
-                foreach (var someCity in game.Map.cities)
-                {
-                    var cubesOfThisTypeOnSomeCity = game.MapElements.InfectionCubesPerCityID[someCity].FindAll(
-                        x =>
-                        x.Type == TypeOfDiseaseToTreat
-                        );
-                    remainingCubesOfThisType.AddRange(cubesOfThisTypeOnSomeCity);
-                }
+                int remaining_cubes_this_type
+                    = game.MapElements.inactive_infection_cubes__per__type[TypeOfDiseaseToTreat];
 
                 // if disease eradicated -> set marker to 2
-                if (remainingCubesOfThisType.Count == 0)
+                if (remaining_cubes_this_type == 0)
                 {
                     game.GameStateCounter.CureMarkersStates[TypeOfDiseaseToTreat] = 2;
                 }

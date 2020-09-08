@@ -60,7 +60,7 @@ namespace Pandemic_AI_Framework.Tests
                         final_game
                         .CurrentAvailablePlayerActions
                         .GetOneRandom(randomness_provider);
-                    final_game.ApplySpecificPlayerAction(
+                    final_game.Apply_Action(
                         randomness_provider,
                         action
                         );
@@ -69,7 +69,7 @@ namespace Pandemic_AI_Framework.Tests
                 while (initial_game.GQ_Is_Ongoing())
                 {
                     var action = initial_game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider);
-                    initial_game.ApplySpecificPlayerAction(
+                    initial_game.Apply_Action(
                         randomness_provider,
                         action);
                 }
@@ -157,11 +157,7 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.GameElementReferences.InfectionCubes.List_Equals(
-                game_2.GameElementReferences.InfectionCubes) == false)
-                return false;
-            else
-                return true;
+            return true;
         }
 
         public bool PracticalGameComparison_Cards(PD_Game game_1, PD_Game game_2)
@@ -219,9 +215,9 @@ namespace Pandemic_AI_Framework.Tests
             for (int t = 0; t < 4; t++)
             {
                 if (
-                    game_1.MapElements.InactiveInfectionCubesPerType[t].Count
+                    game_1.MapElements.inactive_infection_cubes__per__type[t]
                     !=
-                    game_2.MapElements.InactiveInfectionCubesPerType[t].Count
+                    game_2.MapElements.inactive_infection_cubes__per__type[t]
                     )
                 {
                     return false;
@@ -233,9 +229,9 @@ namespace Pandemic_AI_Framework.Tests
                 for (int t = 0; t < 4; t++)
                 {
                     if (
-                        game_1.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count
+                        game_1.GQ_InfectionCubes_OfType_OnCity(city, t)
                         !=
-                        game_2.GQ_Find_InfectionCubes_OfType_OnCity(city, t).Count
+                        game_2.GQ_InfectionCubes_OfType_OnCity(city, t)
                         )
                     {
                         return false;
@@ -275,7 +271,7 @@ namespace Pandemic_AI_Framework.Tests
             {
                 string serialized_mini_game = PD_IO_Utilities.ReadFile(game_file_path);
 
-                PD_MiniGame deserialized_mini_game = 
+                PD_MiniGame deserialized_mini_game =
                     JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
 
                 PD_Game game = deserialized_mini_game.Convert_To_Game();
@@ -285,7 +281,7 @@ namespace Pandemic_AI_Framework.Tests
                 {
                     var available_actions = game.CurrentAvailablePlayerActions;
                     var random_action = available_actions.GetOneRandom(randomness_provider);
-                    game.ApplySpecificPlayerAction(
+                    game.Apply_Action(
                         randomness_provider,
                         random_action
                         );
@@ -310,7 +306,7 @@ namespace Pandemic_AI_Framework.Tests
                 {
                     var available_macro_actions = game.GetAvailableMacros(pathFinder);
                     var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
-                    game.ApplySpecificMacro(
+                    game.Apply_Macro_Action(
                         randomness_provider,
                         random_macro_action
                         );
@@ -346,7 +342,7 @@ namespace Pandemic_AI_Framework.Tests
                                 .CurrentAvailablePlayerActions
                                 .GetOneRandom(randomness_provider);
 
-                            game.ApplySpecificPlayerAction(
+                            game.Apply_Action(
                                 randomness_provider,
                                 random_action
                                 );
@@ -384,7 +380,7 @@ namespace Pandemic_AI_Framework.Tests
             randomness_provider = new Random(1000);
             while (game_1.GQ_Is_Ongoing())
             {
-                game_1.ApplySpecificPlayerAction(
+                game_1.Apply_Action(
                     randomness_provider,
                     game_1.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider)
                     );
@@ -393,7 +389,7 @@ namespace Pandemic_AI_Framework.Tests
             randomness_provider = new Random(1000);
             while (game_2.GQ_Is_Ongoing())
             {
-                game_2.ApplySpecificPlayerAction(
+                game_2.Apply_Action(
                     randomness_provider,
                     game_2.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider)
                     );

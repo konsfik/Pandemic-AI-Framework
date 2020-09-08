@@ -742,12 +742,12 @@ namespace Pandemic_AI_Framework
 
             for (int infectionType = 0; infectionType < 4; infectionType++)
             {
-                bool currentPlayerLocationIsInfectedWithThisType =
-                    game.MapElements.InfectionCubesPerCityID[currentPlayerLocation].FindAll(
-                        x =>
-                        x.Type == infectionType
-                        ).Count > 0;
-                bool thisDiseaseTypeHasNotBeenCured = game.GQ_Is_DiseaseCured_OR_Eradicated(infectionType);
+                bool currentPlayerLocationIsInfectedWithThisType 
+                    = game.MapElements.infections__per__type__per__city
+                    [currentPlayerLocation]
+                    [infectionType] > 0;
+                bool thisDiseaseTypeHasNotBeenCured 
+                    = game.GQ_Is_DiseaseCured_OR_Eradicated(infectionType);
 
                 if (
                     currentPlayerLocationIsInfectedWithThisType
@@ -825,14 +825,12 @@ namespace Pandemic_AI_Framework
             {
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
-                for (int infectionType = 0; infectionType < 4; infectionType++)
+                for (int t = 0; t < 4; t++)
                 {
-                    bool destinationIsInfectedWithThisType =
-                        game.MapElements.InfectionCubesPerCityID[destination].FindAll(
-                            x =>
-                            x.Type == infectionType
-                            ).Count > 0;
-                    bool thisDiseaseTypeHasNotBeenCured = game.GQ_Is_DiseaseCured_OR_Eradicated(infectionType) == false;
+                    bool destinationIsInfectedWithThisType
+                        = game.MapElements.infections__per__type__per__city[destination][t] > 0;
+                    bool thisDiseaseTypeHasNotBeenCured
+                        = game.GQ_Is_DiseaseCured_OR_Eradicated(t) == false;
 
                     if (
                         destinationIsInfectedWithThisType == true
@@ -845,7 +843,7 @@ namespace Pandemic_AI_Framework
                         PD_PA_TreatDisease_Medic treatDisease_Medic_Action = new PD_PA_TreatDisease_Medic(
                             currentPlayer,
                             destination,
-                            infectionType
+                            t
                             );
 
                         List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
@@ -872,7 +870,7 @@ namespace Pandemic_AI_Framework
                         PD_PA_TreatDisease treatDiseaseAction = new PD_PA_TreatDisease(
                                 currentPlayer,
                                 destination,
-                                infectionType
+                                t
                                 );
 
                         List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
@@ -1003,7 +1001,7 @@ namespace Pandemic_AI_Framework
                 foreach (var curedDiseaseType in curedDiseaseTypes)
                 {
                     int num_InfectionCubes_Of_CuredDiseaseType_On_Destination =
-                        game.GQ_Count_Num_InfectionCubes_OfType_OnCity(destination, curedDiseaseType);
+                        game.GQ_InfectionCubes_OfType_OnCity(destination, curedDiseaseType);
 
                     if (num_InfectionCubes_Of_CuredDiseaseType_On_Destination > 0)
                     {
@@ -1393,7 +1391,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> moveResearchStationMacros = new List<PD_MacroAction>();
 
             bool destinationIsResearchStation
-                = game.MapElements.research_stations__per__city[currentPlayerLocation]==true;
+                = game.MapElements.research_stations__per__city[currentPlayerLocation] == true;
 
             if (destinationIsResearchStation)
             {
@@ -2374,7 +2372,7 @@ namespace Pandemic_AI_Framework
                 return new List<PD_MacroAction>();
             }
 
-            bool currentPlayerLocationIsResearchStation 
+            bool currentPlayerLocationIsResearchStation
                 = game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             if (currentPlayerLocationIsResearchStation == false)
@@ -2481,7 +2479,7 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    bool destinationIsResearchStation 
+                    bool destinationIsResearchStation
                         = game.GQ_Is_City_ResearchStation(destination);
                     if (destinationIsResearchStation == false)
                     {

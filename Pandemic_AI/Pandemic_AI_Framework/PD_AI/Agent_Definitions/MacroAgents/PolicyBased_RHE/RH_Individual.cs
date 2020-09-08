@@ -251,7 +251,7 @@ namespace Pandemic_AI_Framework
 
                 macroActionsPerTurn[currentTurn].Add(nextMacro);
 
-                generator_GameState.ApplySpecificMacro(
+                generator_GameState.Apply_Macro_Action(
                     randomness_provider,
                     nextMacro
                     );

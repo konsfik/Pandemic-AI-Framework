@@ -138,7 +138,8 @@ namespace Pandemic_AI_Framework
             }
 
             int maxNumAvailableCubesOfAnyType = 24;
-            int numAvailableCubesThisType = game.MapElements.InactiveInfectionCubesPerType[infectionType].Count;
+            int numAvailableCubesThisType 
+                = game.MapElements.inactive_infection_cubes__per__type[infectionType];
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
 
@@ -173,7 +174,8 @@ namespace Pandemic_AI_Framework
 
             int maxNumAvailableCubesOfAnyType = 25; // 24 + 1
 
-            int numAvailableCubesThisType = game.MapElements.InactiveInfectionCubesPerType[infectionType].Count + 1;
+            int numAvailableCubesThisType 
+                = game.MapElements.inactive_infection_cubes__per__type[infectionType] + 1;
 
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
@@ -185,7 +187,8 @@ namespace Pandemic_AI_Framework
             List<int> inactiveCubesPerType = new List<int>();
             for (int i = 0; i < 4; i++)
             {
-                int numInactiveCubesThisType = game.MapElements.InactiveInfectionCubesPerType[i].Count;
+                int numInactiveCubesThisType 
+                    = game.MapElements.inactive_infection_cubes__per__type[i];
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -199,7 +202,8 @@ namespace Pandemic_AI_Framework
             List<int> inactiveCubesPerType = new List<int>();
             for (int i = 0; i < 4; i++)
             {
-                int numInactiveCubesThisType = game.MapElements.InactiveInfectionCubesPerType[i].Count + 1;
+                int numInactiveCubesThisType 
+                    = game.MapElements.inactive_infection_cubes__per__type[i] + 1;
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -233,7 +237,8 @@ namespace Pandemic_AI_Framework
             int allInactiveCubes = 0;
             for (int i = 0; i < 4; i++)
             {
-                int numInactiveCubesThisType = game.MapElements.InactiveInfectionCubesPerType[i].Count;
+                int numInactiveCubesThisType 
+                    = game.MapElements.inactive_infection_cubes__per__type[i];
                 allInactiveCubes += numInactiveCubesThisType;
             }
             double percentage = (double)allInactiveCubes / (double)numAllCubes;
@@ -255,13 +260,10 @@ namespace Pandemic_AI_Framework
 
             foreach (int city in game.Map.cities)
             {
-                for (int dt = 0; dt < 4; dt++)
+                for (int t = 0; t < 4; t++)
                 {
-                    var cubesOnCity = game.MapElements.InfectionCubesPerCityID[city];
-                    int numCubesOfTypeOnCity = cubesOnCity.FindAll(
-                        x =>
-                        x.Type == dt
-                        ).Count;
+                    int numCubesOfTypeOnCity
+                        = game.MapElements.infections__per__type__per__city[city][t];
                     if (numCubesOfTypeOnCity >= xCubes)
                     {
                         // if a city has three cubes of two different types, then it counts as two cities!!

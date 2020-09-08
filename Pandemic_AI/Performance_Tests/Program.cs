@@ -61,7 +61,7 @@ namespace Performance_Tests
             watch.Restart();
             foreach (var game in games)
             {
-                game.ApplySpecificPlayerAction(
+                game.Apply_Action(
                     randomness_provider,
                     game.CurrentAvailablePlayerActions[0]
                     );
@@ -84,7 +84,7 @@ namespace Performance_Tests
             {
                 while (PD_Game_Queries.GQ_Is_Ongoing(game))
                 {
-                    game.ApplySpecificPlayerAction(
+                    game.Apply_Action(
                         randomness_provider,
                         game.CurrentAvailablePlayerActions.GetOneRandom(randomness_provider)
                     );
@@ -159,7 +159,7 @@ namespace Performance_Tests
                 while (PD_Game_Queries.GQ_Is_Ongoing(game))
                 {
                     var available_macros = game.GetAvailableMacros(pf);
-                    game.ApplySpecificMacro(
+                    game.Apply_Macro_Action(
                         randomness_provider,
                         available_macros.GetOneRandom(randomness_provider)
                         );
@@ -251,7 +251,7 @@ namespace Performance_Tests
                 while (PD_Game_Queries.GQ_Is_Ongoing(game))
                 {
                     var macro = agent.GetNextMacroAction(randomness_provider, game, pf);
-                    game.ApplySpecificMacro(
+                    game.Apply_Macro_Action(
                         randomness_provider,
                         macro
                         );

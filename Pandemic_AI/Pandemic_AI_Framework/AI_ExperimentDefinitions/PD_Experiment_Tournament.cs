@@ -173,7 +173,7 @@ namespace Pandemic_AI_Framework
                                     if (gameCopy.CurrentAvailablePlayerActions.Contains(playerAction))
                                     {
 
-                                        gameCopy.ApplySpecificPlayerAction(
+                                        gameCopy.Apply_Action(
                                             randomness_provider,
                                             playerAction
                                             );
@@ -206,7 +206,7 @@ namespace Pandemic_AI_Framework
                                         randomness_provider,
                                         gameCopy
                                         );
-                                gameCopy.ApplySpecificPlayerAction(
+                                gameCopy.Apply_Action(
                                     randomness_provider,
                                     nextAction
                                     );

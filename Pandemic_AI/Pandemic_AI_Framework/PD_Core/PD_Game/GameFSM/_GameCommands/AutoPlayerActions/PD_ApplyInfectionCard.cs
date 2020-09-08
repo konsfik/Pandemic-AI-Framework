@@ -14,16 +14,16 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; protected set; }
 
-        public PD_InfectionCard InfectionCardToApply { get; private set; }
+        public int InfectionCardToApply { get; private set; }
 
         [JsonConstructor]
         public PD_ApplyInfectionCard(
             int player,
-            PD_InfectionCard infectionCardToApply
+            int infectionCardToApply
             )
         {
             this.Player = player;
-            this.InfectionCardToApply = infectionCardToApply.GetCustomDeepCopy();
+            this.InfectionCardToApply = infectionCardToApply;
         }
 
         // private constructor, for custom deep copy purposes only
@@ -32,7 +32,7 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.InfectionCardToApply = actionToCopy.InfectionCardToApply.GetCustomDeepCopy();
+            this.InfectionCardToApply = actionToCopy.InfectionCardToApply;
         }
 
         public override void Execute(
@@ -50,7 +50,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("wrong state!");
             }
 #endif
-            int infectionType = game.GQ_City_InfectionType( InfectionCardToApply.City);
+            int infectionType = game.GQ_City_InfectionType(InfectionCardToApply);
             bool diseaseEradicated = game.GQ_Is_Disease_Eradicated(infectionType);
 
             if (diseaseEradicated == false)
@@ -58,14 +58,14 @@ namespace Pandemic_AI_Framework
                 PD_InfectionReport initialReport = new PD_InfectionReport(
                     false, // not game setup
                     Player,
-                    InfectionCardToApply.City,
+                    InfectionCardToApply,
                     infectionType,
                     1
                     );
 
                 PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
                     game,
-                    InfectionCardToApply.City,
+                    InfectionCardToApply,
                     1,
                     initialReport,
                     false
@@ -91,7 +91,7 @@ namespace Pandemic_AI_Framework
 
         public override string GetDescription()
         {
-            return Player.ToString() + ": INFECTION " + InfectionCardToApply.City.ToString();
+            return Player.ToString() + ": INFECTION " + InfectionCardToApply.ToString();
         }
 
         #region equality overrides

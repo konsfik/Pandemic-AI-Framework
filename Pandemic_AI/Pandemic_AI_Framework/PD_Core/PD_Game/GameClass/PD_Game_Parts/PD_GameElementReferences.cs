@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         ICustomDeepCopyable<PD_GameElementReferences>
     {
         #region properties
-        public List<PD_InfectionCard> InfectionCards { get; private set; }
+        public List<int> InfectionCards { get; private set; }
         public List<PD_CityCard> CityCards { get; private set; }
         public List<PD_EpidemicCard> EpidemicCards { get; private set; }
 
@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_GameElementReferences(
             List<PD_CityCard> cityCards,
-            List<PD_InfectionCard> infectionCards,
+            List<int> infectionCards,
             List<PD_EpidemicCard> epidemicCards,
 
             List<PD_Role_Card> roleCards

@@ -48,13 +48,6 @@ namespace Pandemic_AI_Framework
                     epidemic_card.GetCustomDeepCopy()
                     );
             }
-            else if (PlayerCardToDiscard is PD_InfectionCard infection_card)
-            {
-                return new PD_PA_Discard_DuringMainPlayerActions(
-                    Player,
-                    infection_card.GetCustomDeepCopy()
-                    );
-            }
             return null;
         }
 

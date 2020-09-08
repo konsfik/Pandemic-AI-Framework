@@ -134,25 +134,25 @@ namespace Pandemic_AI_Framework
 
             existingReport.AddInfectedCity(cityToInfect);
 
-            int num_CubesOfType_AlreadyOnCity =
+            int occupied_infection_positions =
                 game.GQ_InfectionCubes_OfType_OnCity(
                     cityToInfect,
                     currentInfectionType
                     );
 
-            int num_CubesOfType_ThatCanBePlacedOnCity =
-                3 - num_CubesOfType_AlreadyOnCity;
+            int free_infection_positions =
+                3 - occupied_infection_positions;
 
-            int num_InactiveInfectionCubes_OfType =
+            int available_cubes_of_type =
                 game.Num_InactiveInfectionCubes_OfType(
                     currentInfectionType
                     );
 
             bool enoughInactiveCubes =
-                num_InactiveInfectionCubes_OfType >= num_CubesToPlace;
+                available_cubes_of_type >= num_CubesToPlace;
 
             bool cityCausesOutbreak =
-                num_CubesOfType_ThatCanBePlacedOnCity < num_CubesToPlace;
+                free_infection_positions < num_CubesToPlace;
 
             // CASE 1: CITY DOES NOT CAUSE AN OUTBREAK
             if (cityCausesOutbreak == false)
@@ -161,7 +161,7 @@ namespace Pandemic_AI_Framework
                 if (enoughInactiveCubes == false)
                 {
                     // place the remaining inactive cubes, either way...
-                    for (int i = 0; i < num_InactiveInfectionCubes_OfType; i++)
+                    for (int i = 0; i < available_cubes_of_type; i++)
                     {
                         GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, currentInfectionType);
                     }
@@ -181,14 +181,14 @@ namespace Pandemic_AI_Framework
             }
 
             // CASE 2: CITY DOES CAUSE AN OUTBREAK!!!
-            bool enoughCubesToFillUpCity = num_InactiveInfectionCubes_OfType >= num_CubesOfType_ThatCanBePlacedOnCity;
+            bool enoughCubesToFillUpCity = available_cubes_of_type >= free_infection_positions;
 
             existingReport.AddCityThatCausedOutbreak(cityToInfect);
 
             if (enoughCubesToFillUpCity == false)
             {
                 // place the remaining inactive cubes, either way...
-                for (int i = 0; i < num_InactiveInfectionCubes_OfType; i++)
+                for (int i = 0; i < available_cubes_of_type; i++)
                 {
                     GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, currentInfectionType);
                 }
@@ -198,7 +198,7 @@ namespace Pandemic_AI_Framework
             }
 
             // fill up this city
-            for (int i = 0; i < num_CubesOfType_ThatCanBePlacedOnCity; i++)
+            for (int i = 0; i < free_infection_positions; i++)
             {
                 GO_PA_PlaceInfectionCubeOnCity(
                     game,
@@ -206,7 +206,7 @@ namespace Pandemic_AI_Framework
                     existingReport.InfectionType
                     );
             }
-            existingReport.AddUsedCubes(num_CubesOfType_ThatCanBePlacedOnCity);
+            existingReport.AddUsedCubes(free_infection_positions);
 
             game.GameStateCounter.IncreaseOutbreaksCounter();
             if (game.GQ_SS_DeadlyOutbreaks() == true)

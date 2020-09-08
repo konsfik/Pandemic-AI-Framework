@@ -54,7 +54,7 @@ namespace Pandemic_AI_Framework
                 game.GameSettings.InfectionRatesPerEpidemicsCounter[
                     game.GameStateCounter.EpidemicsCounter];
 
-            var infectionCards = new List<PD_InfectionCard>();
+            var infectionCards = new List<int>();
 
             for (int i = 0; i < numberOfInfectionCardsToDraw; i++)
             {

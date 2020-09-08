@@ -13,9 +13,9 @@ namespace Pandemic_AI_Framework
         ICustomDeepCopyable<PD_GameCards>
     {
 
-        public List<List<PD_InfectionCard>> DividedDeckOfInfectionCards { get; private set; }
-        public List<PD_InfectionCard> ActiveInfectionCards { get; private set; }
-        public List<PD_InfectionCard> DeckOfDiscardedInfectionCards { get; private set; }
+        public List<List<int>> DividedDeckOfInfectionCards { get; private set; }
+        public List<int> ActiveInfectionCards { get; private set; }
+        public List<int> DeckOfDiscardedInfectionCards { get; private set; }
         public List<List<PD_PlayerCardBase>> DividedDeckOfPlayerCards { get; private set; }
         public List<PD_PlayerCardBase> DeckOfDiscardedPlayerCards { get; private set; }
         public Dictionary<int, List<PD_PlayerCardBase>> PlayerCardsPerPlayerID { get; private set; }
@@ -28,9 +28,9 @@ namespace Pandemic_AI_Framework
             List<PD_Role_Card> allRoleCards
             )
         {
-            DividedDeckOfInfectionCards = new List<List<PD_InfectionCard>>();
-            ActiveInfectionCards = new List<PD_InfectionCard>();
-            DeckOfDiscardedInfectionCards = new List<PD_InfectionCard>();
+            DividedDeckOfInfectionCards = new List<List<int>>();
+            ActiveInfectionCards = new List<int>();
+            DeckOfDiscardedInfectionCards = new List<int>();
 
             DividedDeckOfPlayerCards = new List<List<PD_PlayerCardBase>>();
             DeckOfDiscardedPlayerCards = new List<PD_PlayerCardBase>();
@@ -43,9 +43,9 @@ namespace Pandemic_AI_Framework
         // special constructor, for use with the JSON serializer
         [JsonConstructor]
         public PD_GameCards(
-            List<List<PD_InfectionCard>> dividedDeckOfInfectionCards,
-            List<PD_InfectionCard> activeInfectionCards,
-            List<PD_InfectionCard> deckOfDiscardedInfectionCards,
+            List<List<int>> dividedDeckOfInfectionCards,
+            List<int> activeInfectionCards,
+            List<int> deckOfDiscardedInfectionCards,
             List<List<PD_PlayerCardBase>> dividedDeckOfPlayerCards,
             List<PD_PlayerCardBase> deckOfDiscardedPlayerCards,
             Dictionary<int, List<PD_PlayerCardBase>> playerCardsPerPlayerID,

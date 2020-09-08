@@ -293,10 +293,10 @@ namespace Pandemic_AI_Framework
                 allCityCards.Add(new PD_CityCard(i, cities[i]));
             }
 
-            List<PD_InfectionCard> all_infection_cards = new List<PD_InfectionCard>();
+            List<int> all_infection_cards = new List<int>();
             for (int i = 0; i < 48; i++)
             {
-                all_infection_cards.Add(new PD_InfectionCard(i, cities[i]));
+                all_infection_cards.Add(i);
             }
 
             List<PD_EpidemicCard> all_epidemic_cards = new List<PD_EpidemicCard>();
@@ -367,7 +367,7 @@ namespace Pandemic_AI_Framework
             Dictionary<int, List<int>> neighbors_per_city,
 
             List<PD_CityCard> allCityCards,
-            List<PD_InfectionCard> allInfectionCards,
+            List<int> allInfectionCards,
             List<PD_EpidemicCard> allEpidemicCards,
 
             List<PD_Role_Card> allRoleCards,
@@ -540,7 +540,7 @@ namespace Pandemic_AI_Framework
 
             // 3.2. Infect the first cities - process
             // 3.2.1. put all infection cards in the divided deck of infection cards...
-            Cards.DividedDeckOfInfectionCards.Add(new List<PD_InfectionCard>(GameElementReferences.InfectionCards));
+            Cards.DividedDeckOfInfectionCards.Add(new List<int>(GameElementReferences.InfectionCards));
 
             // 3.2.2 shuffle the infection cards deck...
             Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
@@ -553,7 +553,7 @@ namespace Pandemic_AI_Framework
                 {
                     var infectionCard = Cards.DividedDeckOfInfectionCards.DrawLastElementOfLastSubList();
 
-                    int city = infectionCard.City;
+                    int city = infectionCard;
                     int city_type = Map.infection_type__per__city[city];
 
                     PD_InfectionReport report = new PD_InfectionReport(

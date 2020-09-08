@@ -72,7 +72,7 @@ namespace Pandemic_AI_Framework
             // Discard this card to the Infection Discard Pile.
             var cardFromBottom = game.Cards.DividedDeckOfInfectionCards.DrawFirstElementOfFirstSubList();
 
-            int epidemicInfectionType = game.GQ_City_InfectionType(cardFromBottom.City);
+            int epidemicInfectionType = game.GQ_City_InfectionType(cardFromBottom);
             bool diseaseTypeEradicated = game.GQ_Is_Disease_Eradicated(epidemicInfectionType);
 
             if (diseaseTypeEradicated == false)
@@ -82,7 +82,7 @@ namespace Pandemic_AI_Framework
                 PD_InfectionReport initialReport = new PD_InfectionReport(
                     false, // not game setup...
                     Player,
-                    cardFromBottom.City,
+                    cardFromBottom,
                     epidemicInfectionType,
                     3
                     );
@@ -90,7 +90,7 @@ namespace Pandemic_AI_Framework
                 // apply infection of this city here
                 PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
                     game,
-                    cardFromBottom.City,
+                    cardFromBottom,
                     3,
                     initialReport,
                     false

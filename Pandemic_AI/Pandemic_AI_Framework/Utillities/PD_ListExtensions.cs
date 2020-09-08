@@ -705,10 +705,6 @@ namespace Pandemic_AI_Framework
                 {
                     copyList.Add(((PD_CityCard)element).GetCustomDeepCopy());
                 }
-                else if (element.GetType() == typeof(PD_InfectionCard))
-                {
-                    copyList.Add(((PD_InfectionCard)element).GetCustomDeepCopy());
-                }
                 else if (element.GetType() == typeof(PD_EpidemicCard))
                 {
                     copyList.Add(((PD_EpidemicCard)element).GetCustomDeepCopy());

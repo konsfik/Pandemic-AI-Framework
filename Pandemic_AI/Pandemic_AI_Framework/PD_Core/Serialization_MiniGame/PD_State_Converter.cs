@@ -288,7 +288,7 @@ namespace Pandemic_AI_Framework
                 List<int> mini_group = new List<int>();
                 foreach (var card in group)
                 {
-                    int mini_infection_card = card.City;
+                    int mini_infection_card = card;
                     mini_group.Add(mini_infection_card);
                 }
                 mini_game.cards___divided_deck_of_infection_cards.Add(mini_group);
@@ -298,16 +298,14 @@ namespace Pandemic_AI_Framework
             mini_game.cards___active_infection_cards = new List<int>();
             foreach (var card in game.Cards.ActiveInfectionCards)
             {
-                int mini_card = card.City;
-                mini_game.cards___active_infection_cards.Add(mini_card);
+                mini_game.cards___active_infection_cards.Add(card);
             }
 
             // deck_of_discarded_infection_cards
             mini_game.cards___deck_of_discarded_infection_cards = new List<int>();
             foreach (var card in game.Cards.DeckOfDiscardedInfectionCards)
             {
-                int mini_card = card.City;
-                mini_game.cards___deck_of_discarded_infection_cards.Add(mini_card);
+                mini_game.cards___deck_of_discarded_infection_cards.Add(card);
             }
 
             // divided_deck_of_player_cards
@@ -458,11 +456,10 @@ namespace Pandemic_AI_Framework
             }
 
             // infection cards
-            List<PD_InfectionCard> infection_cards = new List<PD_InfectionCard>();
+            List<int> infection_cards = new List<int>();
             foreach (int c in mini_game.map___cities)
             {
-                PD_InfectionCard infection_card = new PD_InfectionCard(c, mini_game.map___cities[c]);
-                infection_cards.Add(infection_card);
+                infection_cards.Add(c);
             }
 
             // epidemic cards
@@ -549,44 +546,32 @@ namespace Pandemic_AI_Framework
             ////////////////////////////////////////////////////////////
 
             // divided_deck_of_infection_cards
-            List<List<PD_InfectionCard>> divided_deck_of_infection_cards
-                = new List<List<PD_InfectionCard>>();
+            List<List<int>> divided_deck_of_infection_cards
+                = new List<List<int>>();
             foreach (List<int> mini_cards_group in mini_game.cards___divided_deck_of_infection_cards)
             {
-                List<PD_InfectionCard> cards_group = new List<PD_InfectionCard>();
+                List<int> cards_group = new List<int>();
                 foreach (int mini_infection_card in mini_cards_group)
                 {
-                    int id = mini_infection_card;
-                    int city = mini_game.map___cities.Find(x => x == id);
-                    cards_group.Add(
-                        new PD_InfectionCard(id, city)
-                        );
+                    cards_group.Add(mini_infection_card);
                 }
                 divided_deck_of_infection_cards.Add(cards_group);
             }
 
             // active_infection_cards
-            List<PD_InfectionCard> active_infection_cards
-                = new List<PD_InfectionCard>();
+            List<int> active_infection_cards
+                = new List<int>();
             foreach (int mini_card in mini_game.cards___active_infection_cards)
             {
-                int id = mini_card;
-                int city = mini_game.map___cities.Find(x => x == id);
-                active_infection_cards.Add(
-                    new PD_InfectionCard(id, city)
-                    );
+                active_infection_cards.Add(mini_card);
             }
 
             // deck_of_discarded_infection_cards
-            List<PD_InfectionCard> deck_of_discarded_infection_cards
-                = new List<PD_InfectionCard>();
+            List<int> deck_of_discarded_infection_cards
+                = new List<int>();
             foreach (int mini_card in mini_game.cards___deck_of_discarded_infection_cards)
             {
-                int id = mini_card;
-                int city = mini_game.map___cities.Find(x => x == id);
-                deck_of_discarded_infection_cards.Add(
-                    new PD_InfectionCard(id, city)
-                    );
+                deck_of_discarded_infection_cards.Add(mini_card);
             }
 
             // divided_deck_of_player_cards
@@ -698,10 +683,6 @@ namespace Pandemic_AI_Framework
             else if (card is PD_EpidemicCard ec)
             {
                 return ec.ID + 128;
-            }
-            else if (card is PD_InfectionCard ic)
-            {
-                return ic.City;
             }
             else
             {

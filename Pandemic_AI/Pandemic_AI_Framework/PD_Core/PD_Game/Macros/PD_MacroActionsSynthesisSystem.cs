@@ -742,11 +742,11 @@ namespace Pandemic_AI_Framework
 
             for (int infectionType = 0; infectionType < 4; infectionType++)
             {
-                bool currentPlayerLocationIsInfectedWithThisType 
+                bool currentPlayerLocationIsInfectedWithThisType
                     = game.MapElements.infections__per__type__per__city
                     [currentPlayerLocation]
                     [infectionType] > 0;
-                bool thisDiseaseTypeHasNotBeenCured 
+                bool thisDiseaseTypeHasNotBeenCured
                     = game.GQ_Is_DiseaseCured_OR_Eradicated(infectionType);
 
                 if (
@@ -2633,14 +2633,23 @@ namespace Pandemic_AI_Framework
 
                 directFlightWalk_Sequences.Add(singleActionList);
 
-                List<int> citiesToWalkTo = game.Map.cities.FindAll(
-                    x =>
-                    x != currentPlayerLocation
-                    && x != directFlightCity
-                    );
+                //List<int> citiesToWalkTo = game.Map.cities.FindAll(
+                //    x =>
+                //    x != currentPlayerLocation
+                //    && x != directFlightCity
+                //    );
 
-                foreach (var finalDestination in citiesToWalkTo)
+                foreach (var finalDestination in game.Map.cities)
                 {
+                    if (
+                        finalDestination == currentPlayerLocation
+                        ||
+                        finalDestination == directFlightCity
+                        )
+                    {
+                        continue;
+                    }
+
                     List<PD_GameAction_Base> actionSequence = new List<PD_GameAction_Base>();
                     actionSequence.Add(directFlightAction);
                     List<PD_GameAction_Base> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(

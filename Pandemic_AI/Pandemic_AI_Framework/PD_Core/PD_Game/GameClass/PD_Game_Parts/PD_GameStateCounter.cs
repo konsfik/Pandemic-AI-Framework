@@ -90,10 +90,6 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region various methods
-        public void Override_NumberOfPlayers(int numberOfPlayers)
-        {
-            NumberOfPlayers = numberOfPlayers;
-        }
 
         public void ResetPlayerActionIndex()
         {

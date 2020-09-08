@@ -77,7 +77,7 @@ namespace Experiment_1
 
             // experiment - settings
             int number_of_repetitions_per_game = 10;
-            bool save_initial_game_states = true;
+            bool save_initial_game_states = false;
             bool keep_game_stats_report = true;
             bool keep_trace = false;
 
@@ -125,7 +125,7 @@ namespace Experiment_1
             Random randomness_provider = new Random();
 
             // testbed - settings...
-            int number_of_games_to_generate = 10;
+            int number_of_games_to_generate = 200;
             int number_of_players = 4;
             int game_difficulty = 0; // easy
 

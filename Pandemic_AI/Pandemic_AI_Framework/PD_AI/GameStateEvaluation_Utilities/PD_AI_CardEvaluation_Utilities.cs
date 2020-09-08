@@ -37,15 +37,21 @@ namespace Pandemic_AI_Framework
                     game.GQ_CityCardsInPlayerHand(
                         player
                         );
-                for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
-                {
-                    int numCards_ThisType = cityCardsInPlayerHand.FindAll(
-                        x =>
-                        game.Map.infection_type__per__city[x.City] == typeIndex
-                        ).Count;
 
-                    numCardsTable[typeIndex, playerIndex] = numCards_ThisType;
+                foreach (PD_CityCard city_card in cityCardsInPlayerHand)
+                {
+                    int city_card_type = game.Map.infection_type__per__city[city_card.City];
+                    numCardsTable[city_card_type, playerIndex]++;
                 }
+                //for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
+                //{
+                //    int numCards_ThisType = cityCardsInPlayerHand.FindAll(
+                //        x =>
+                //        game.Map.infection_type__per__city[x.City] == typeIndex
+                //        ).Count;
+
+                //    numCardsTable[typeIndex, playerIndex] = numCards_ThisType;
+                //}
             }
 
             return numCardsTable;
@@ -65,14 +71,13 @@ namespace Pandemic_AI_Framework
 
             double[,] percent_CompleteSetsOfCards_Table = new double[numTypes, numPlayers];
 
-            for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++)
+            for (int player = 0; player < numPlayers; player++)
             {
                 for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
                 {
-                    int player = game.Players[playerIndex];
-                    bool isPlayerScientist = (int)game.GQ_Find_Player_Role(player) == (int)(PD_Player_Roles.Scientist);
+                    bool isPlayerScientist = game.GQ_Find_Player_Role(player) == PD_Player_Roles.Scientist;
 
-                    int numCards = numCardsTable[typeIndex, playerIndex];
+                    int numCards = numCardsTable[typeIndex, player];
                     int numCards_SetComplete = isPlayerScientist ? 4 : 5;
 
                     double percent_SetCompleteness = (double)numCards / (double)numCards_SetComplete;
@@ -81,7 +86,7 @@ namespace Pandemic_AI_Framework
                         percent_SetCompleteness = 1.0;
                     }
 
-                    percent_CompleteSetsOfCards_Table[typeIndex, playerIndex] = percent_SetCompleteness;
+                    percent_CompleteSetsOfCards_Table[typeIndex, player] = percent_SetCompleteness;
                 }
             }
 

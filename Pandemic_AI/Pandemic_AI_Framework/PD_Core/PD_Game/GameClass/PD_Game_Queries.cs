@@ -514,12 +514,20 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
-            var cityCardsInPlayerHand = playerHand.FindAll(
-                x =>
-                x.GetType() == typeof(PD_CityCard)
-                ).Cast<PD_CityCard>().ToList();
-            return cityCardsInPlayerHand;
+            List<PD_CityCard> city_cards_in_player_hand = new List<PD_CityCard>();
+            foreach (var card in game.Cards.PlayerCardsPerPlayerID[player]) {
+                if (card is PD_CityCard city_card) {
+                    city_cards_in_player_hand.Add(city_card);
+                }
+            }
+            return city_cards_in_player_hand;
+
+            //var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
+            //var cityCardsInPlayerHand = playerHand.FindAll(
+            //    x =>
+            //    x.GetType() == typeof(PD_CityCard)
+            //    ).Cast<PD_CityCard>().ToList();
+            //return cityCardsInPlayerHand;
         }
 
         public static List<int> GQ_UncuredDiseaseTypes(

@@ -375,7 +375,7 @@ namespace Pandemic_AI_Framework
                 Count_Total_Length(),
                 MacroAction_WalkType.ToString(),
                 Count_Walk_Length(),
-                Find_Destination() == null ? "none" : Find_Destination().ToString()
+                Find_Destination() == -1 ? "none" : Find_Destination().ToString()
                 );
 
             return description;

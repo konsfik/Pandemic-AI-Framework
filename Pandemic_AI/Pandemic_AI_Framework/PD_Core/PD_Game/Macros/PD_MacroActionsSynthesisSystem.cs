@@ -25,7 +25,7 @@ namespace Pandemic_AI_Framework
                 ////////////////////////////////////////////////////////////////
                 PD_Player currentPlayer = game.GQ_CurrentPlayer();
                 int currentPlayerLocation = game.GQ_CurrentPlayer_Location();
-                PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+                int currentPlayerRole = game.GQ_CurrentPlayer_Role();
                 List<int> allCitiesExceprCurrentLocation = game.Map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
@@ -342,7 +342,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_MaximumLength,
             List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_ActionSequences_MaximumLength,
@@ -408,7 +408,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_MaximumLength,
@@ -441,7 +441,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
@@ -566,7 +566,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -599,7 +599,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
@@ -647,7 +647,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences,
@@ -727,7 +727,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -810,7 +810,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences,
@@ -902,7 +902,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_Sequences,
@@ -972,7 +972,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences,
@@ -1027,7 +1027,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_Sequences,
@@ -1116,7 +1116,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -1197,7 +1197,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
@@ -1295,7 +1295,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
@@ -1375,7 +1375,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -1438,7 +1438,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
@@ -1538,7 +1538,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_Sequences,
@@ -1627,7 +1627,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -1750,7 +1750,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences,
@@ -1908,7 +1908,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
@@ -1988,7 +1988,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -2120,7 +2120,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
@@ -2280,7 +2280,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
@@ -2359,7 +2359,7 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder,
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions
             )
         {
@@ -2433,7 +2433,7 @@ namespace Pandemic_AI_Framework
 
             PD_Player currentPlayer,
             int currentPlayerLocation,
-            PD_Player_Roles currentPlayerRole,
+            int currentPlayerRole,
             int numAvailableActions,
 
             List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
@@ -2608,6 +2608,7 @@ namespace Pandemic_AI_Framework
                 x =>
                 x.City != currentPlayerLocation
                 );
+
             if (directFlight_CityCards.Count == 0)
             {
                 return new List<List<PD_GameAction_Base>>();

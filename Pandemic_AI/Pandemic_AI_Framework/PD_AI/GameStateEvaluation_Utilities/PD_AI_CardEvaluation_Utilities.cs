@@ -70,7 +70,7 @@ namespace Pandemic_AI_Framework
                 for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
                 {
                     PD_Player player = game.Players[playerIndex];
-                    bool isPlayerScientist = game.GQ_Find_Player_Role(player) == PD_Player_Roles.Scientist;
+                    bool isPlayerScientist = (int)game.GQ_Find_Player_Role(player) == (int)(PD_Player_Roles.Scientist);
 
                     int numCards = numCardsTable[typeIndex, playerIndex];
                     int numCards_SetComplete = isPlayerScientist ? 4 : 5;

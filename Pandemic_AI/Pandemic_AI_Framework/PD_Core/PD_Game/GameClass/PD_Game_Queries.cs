@@ -255,7 +255,7 @@ namespace Pandemic_AI_Framework
             return game.Players[game.GameStateCounter.CurrentPlayerIndex];
         }
 
-        public static PD_Player_Roles GQ_CurrentPlayer_Role(
+        public static int GQ_CurrentPlayer_Role(
             this PD_Game game
             )
         {
@@ -263,7 +263,7 @@ namespace Pandemic_AI_Framework
             return GQ_Find_Player_Role(game, currentPlayer);
         }
 
-        public static PD_Player_Roles GQ_Find_Player_Role(
+        public static int GQ_Find_Player_Role(
             this PD_Game game,
             PD_Player player
             )

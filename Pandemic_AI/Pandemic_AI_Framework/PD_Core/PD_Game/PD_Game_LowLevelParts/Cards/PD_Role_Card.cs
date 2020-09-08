@@ -11,11 +11,11 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_Role_Card>,
         ICustomDeepCopyable<PD_Role_Card>
     {
-        public PD_Player_Roles Role { get; private set; }
+        public int Role { get; private set; }
 
         public PD_Role_Card(
             int id,
-            PD_Player_Roles role
+            int role
             ) : base(
                 id
                 )
@@ -75,7 +75,7 @@ namespace Pandemic_AI_Framework
             int hash = 7;
 
             hash = (hash * 13) + ID;
-            hash = (hash * 13) + Role.GetHashCode();
+            hash = (hash * 13) + Role;
 
             return hash;
         }
@@ -87,16 +87,4 @@ namespace Pandemic_AI_Framework
         }
     }
 
-    // certain player roles are omitted...
-    public enum PD_Player_Roles
-    {
-        None,
-        //Contingency_Planner, // this one is removed, because it depends on event cards which are omitted
-        Operations_Expert,
-        //Dispatcher,
-        //Quarantine_Specialist,
-        Researcher,
-        Medic,
-        Scientist
-    }
 }

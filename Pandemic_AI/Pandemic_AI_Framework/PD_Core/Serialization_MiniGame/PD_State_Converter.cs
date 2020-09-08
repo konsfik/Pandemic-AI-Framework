@@ -60,7 +60,7 @@ namespace Pandemic_AI_Framework
             mini_game.unassigned_player_roles = new List<int>();
             foreach (var role_card in game.Cards.InactiveRoleCards)
             {
-                PD_Player_Roles role = role_card.Role;
+                int role = role_card.Role;
                 switch (role)
                 {
                     case PD_Player_Roles.None:
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
             foreach (int p in mini_game.players)
             {
                 var game_player = game.Players[p];
-                PD_Player_Roles game_player_role = game.GQ_Find_Player_Role(game_player);
+                int game_player_role = game.GQ_Find_Player_Role(game_player);
                 switch (game_player_role)
                 {
                     case PD_Player_Roles.None:
@@ -505,7 +505,7 @@ namespace Pandemic_AI_Framework
             foreach (int p in mini_game.players)
             {
                 int mini_player_role = mini_game.role__per__player[p];
-                PD_Player_Roles player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
+                int player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
 
                 PD_Role_Card role_card = role_cards.Find(x => x.Role == player_role);
                 ROLE_CARDS__PER__PLAYER_ID.Add(p, role_card);
@@ -744,14 +744,14 @@ namespace Pandemic_AI_Framework
 
         public static PD_Role_Card Game_RoleCard__FROM__MiniGame_Role(int mini_role)
         {
-            PD_Player_Roles role = PlayerRole__From__MiniGamePlayerRole(mini_role);
+            int role = PlayerRole__From__MiniGamePlayerRole(mini_role);
             int id = mini_role;
             return new PD_Role_Card(
                 id, role
                 );
         }
 
-        public static PD_Player_Roles PlayerRole__From__MiniGamePlayerRole(int mini_game__player_role)
+        public static int PlayerRole__From__MiniGamePlayerRole(int mini_game__player_role)
         {
             switch (mini_game__player_role)
             {
@@ -776,7 +776,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public static int MiniGame_PlayerRole__From__PlayerRole(PD_Player_Roles player_role)
+        public static int MiniGame_PlayerRole__From__PlayerRole(int player_role)
         {
             switch (player_role)
             {

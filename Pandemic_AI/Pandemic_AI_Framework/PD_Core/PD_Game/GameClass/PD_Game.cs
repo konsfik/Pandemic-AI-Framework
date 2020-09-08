@@ -580,7 +580,7 @@ namespace Pandemic_AI_Framework
 
             // 4. Give each player cards and a pawn
             // 4.1. Assign random roles and pawns to players
-            List<PD_Player_Roles> available_roles = new List<PD_Player_Roles>() {
+            List<int> available_roles = new List<int>() {
                 PD_Player_Roles.Operations_Expert,
                 PD_Player_Roles.Researcher,
                 PD_Player_Roles.Medic,

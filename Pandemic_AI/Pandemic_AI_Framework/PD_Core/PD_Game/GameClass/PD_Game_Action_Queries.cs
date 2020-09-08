@@ -236,7 +236,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerIsOperationsExpert = currentPlayerRole == PD_Player_Roles.Operations_Expert;
             if (currentPlayerIsOperationsExpert == false)
             {
@@ -487,7 +487,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole == PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_GiveCard>();
@@ -549,7 +549,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var otherPlayerInSameLocation in otherPlayersInSameLocation)
             {
-                PD_Player_Roles otherPlayerRole = game.GQ_Find_Player_Role(otherPlayerInSameLocation);
+                int otherPlayerRole = game.GQ_Find_Player_Role(otherPlayerInSameLocation);
                 if (otherPlayerRole == PD_Player_Roles.Researcher)
                 {
                     continue;
@@ -576,7 +576,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole != PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>();
@@ -625,7 +625,7 @@ namespace Pandemic_AI_Framework
         {
             PD_Player currentPlayer = game.GQ_CurrentPlayer();
 
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole == PD_Player_Roles.Researcher)
             {
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
@@ -672,7 +672,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerRoleIsScientist = currentPlayerRole == PD_Player_Roles.Scientist;
             if (currentPlayerRoleIsScientist)
             {
@@ -716,7 +716,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            PD_Player_Roles currentPlayerRole = game.GQ_CurrentPlayer_Role();
+            int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             bool currentPlayerRoleIsScientist = currentPlayerRole == PD_Player_Roles.Scientist;
             if (currentPlayerRoleIsScientist == false)
             {

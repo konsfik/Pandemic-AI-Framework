@@ -9,7 +9,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameSettings : 
         PD_GameParts_Base, 
-        IEquatable<PD_GameSettings>,
         ICustomDeepCopyable<PD_GameSettings>
     {
         // fixed, private settings...

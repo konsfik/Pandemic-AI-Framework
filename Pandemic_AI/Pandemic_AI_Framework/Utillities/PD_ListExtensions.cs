@@ -844,21 +844,6 @@ namespace Pandemic_AI_Framework
             return dictionaryCopy;
         }
 
-        public static Dictionary<PD_Player, List<PD_PlayerCardBase>> CustomDeepCopy(
-            this Dictionary<PD_Player, List<PD_PlayerCardBase>> originalDictionary)
-        {
-            Dictionary<PD_Player, List<PD_PlayerCardBase>> dictionaryCopy =
-                new Dictionary<PD_Player, List<PD_PlayerCardBase>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
 
         public static Dictionary<T, List<T>> CustomDeepCopy<T>(this Dictionary<T, List<T>> originalDictionary)
             where T : ICustomDeepCopyable<T>

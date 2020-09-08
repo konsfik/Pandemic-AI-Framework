@@ -14,19 +14,19 @@ namespace Pandemic_AI_Framework
         I_Player_Action,
         I_Movement_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
 
         public int InitialLocation { get; protected set; }
 
         public int TargetLocation { get; protected set; }
 
         public PD_PMA_DriveFerry(
-            PD_Player player,
+            int player,
             int initialLocation,
             int targetLocation
             )
         {
-            this.Player = player.GetCustomDeepCopy();
+            this.Player = player;
             this.InitialLocation = initialLocation;
             this.TargetLocation = targetLocation;
         }
@@ -36,7 +36,7 @@ namespace Pandemic_AI_Framework
             PD_PMA_DriveFerry actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.InitialLocation = actionToCopy.InitialLocation;
             this.TargetLocation = actionToCopy.TargetLocation;
         }
@@ -64,7 +64,7 @@ namespace Pandemic_AI_Framework
         {
             string actionDescription = String.Format(
                 "{0}: DRIVE_FERRY: {1} -> {2}",
-                Player.Name,
+                Player.ToString(),
                 InitialLocation.ToString(),
                 TargetLocation.ToString()
                 );
@@ -120,7 +120,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Player;
             hash = hash * 31 + InitialLocation;
             hash = hash * 31 + TargetLocation;
 

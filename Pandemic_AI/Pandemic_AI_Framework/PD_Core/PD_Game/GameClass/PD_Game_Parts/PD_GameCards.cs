@@ -10,7 +10,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameCards : 
         PD_GameParts_Base, 
-        IEquatable<PD_GameCards>, 
         ICustomDeepCopyable<PD_GameCards>
     {
 
@@ -25,7 +24,7 @@ namespace Pandemic_AI_Framework
         #region constructors
         // normal constructor
         public PD_GameCards(
-            List<PD_Player> players,
+            List<int> players,
             List<PD_Role_Card> allRoleCards
             )
         {
@@ -37,7 +36,7 @@ namespace Pandemic_AI_Framework
             DeckOfDiscardedPlayerCards = new List<PD_PlayerCardBase>();
             PlayerCardsPerPlayerID = new Dictionary<int, List<PD_PlayerCardBase>>();
             foreach (var player in players)
-                PlayerCardsPerPlayerID.Add(player.ID, new List<PD_PlayerCardBase>());
+                PlayerCardsPerPlayerID.Add(player, new List<PD_PlayerCardBase>());
             InactiveRoleCards = allRoleCards.CustomDeepCopy();
         }
 

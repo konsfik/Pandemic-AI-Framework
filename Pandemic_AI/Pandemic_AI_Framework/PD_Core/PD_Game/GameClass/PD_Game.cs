@@ -21,7 +21,7 @@ namespace Pandemic_AI_Framework
         public PD_GameStateCounter GameStateCounter { get; private set; }
 
         // REFERENCES
-        public List<PD_Player> Players { get; private set; }
+        public List<int> Players { get; private set; }
         public PD_Map Map { get; private set; }
         public PD_GameElementReferences GameElementReferences { get; private set; }
 
@@ -57,10 +57,10 @@ namespace Pandemic_AI_Framework
                 {3,"Player 3"}
             };
 
-            List<PD_Player> players = new List<PD_Player>();
+            List<int> players = new List<int>();
             for (int i = 0; i < number_of_players; i++)
             {
-                players.Add(new PD_Player(i, playerIDsNames[i]));
+                players.Add(i);
             }
 
             List<int> cities = new List<int>() {
@@ -357,7 +357,7 @@ namespace Pandemic_AI_Framework
         // normal constructor
         public PD_Game(
             int gameDifficultyLevel,
-            List<PD_Player> players,
+            List<int> players,
 
             // map - related
             List<int> cities,
@@ -416,7 +416,7 @@ namespace Pandemic_AI_Framework
             RoleCardsPerPlayerID = new Dictionary<int, PD_Role_Card>();
             foreach (var player in players)
             {
-                RoleCardsPerPlayerID.Add(player.ID, null);
+                RoleCardsPerPlayerID.Add(player, null);
             }
 
             PlayerActionsHistory = new List<PD_GameAction_Base>();
@@ -435,7 +435,7 @@ namespace Pandemic_AI_Framework
             PD_GameFSM gameFSM,
             PD_GameStateCounter gameStateCounter,
 
-            List<PD_Player> players,
+            List<int> players,
             PD_Map map,
 
             PD_GameElementReferences gameElementReferences,
@@ -589,7 +589,7 @@ namespace Pandemic_AI_Framework
             foreach (var player in Players)
             {
                 var roleCard = Cards.InactiveRoleCards.DrawOneRandom(randomness_provider);
-                RoleCardsPerPlayerID[player.ID] = roleCard;
+                RoleCardsPerPlayerID[player] = roleCard;
             }
 
             // 4.2. Deal cards to players: initial hands
@@ -604,7 +604,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int i = 0; i < numCardsToDealPerPlayer; i++)
                 {
-                    Cards.PlayerCardsPerPlayerID[player.ID].Add(Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
+                    Cards.PlayerCardsPerPlayerID[player].Add(Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
                 }
             }
 
@@ -702,7 +702,7 @@ namespace Pandemic_AI_Framework
         }
 
         public void Com_PA_TreatDisease_Medic(
-            PD_Player player,
+            int player,
             int city,
             int treat_Type
             )

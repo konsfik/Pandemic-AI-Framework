@@ -8,7 +8,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameElementReferences :
         PD_GameParts_Base,
-        IEquatable<PD_GameElementReferences>,
         ICustomDeepCopyable<PD_GameElementReferences>
     {
         #region properties

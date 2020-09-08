@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_TreatDisease>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public int CityToTreatDiseaseAt { get; private set; }
         public int TypeOfDiseaseToTreat { get; private set; }
 
@@ -24,12 +24,12 @@ namespace Pandemic_AI_Framework
         /// <param name="typeOfDiseaseToTreat"></param>
         [JsonConstructor]
         public PD_PA_TreatDisease(
-            PD_Player player,
+            int player,
             int cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
             )
         {
-            Player = player.GetCustomDeepCopy();
+            Player = player;
             CityToTreatDiseaseAt = cityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = typeOfDiseaseToTreat;
         }
@@ -42,7 +42,7 @@ namespace Pandemic_AI_Framework
             PD_PA_TreatDisease actionToCopy
             )
         {
-            Player = actionToCopy.Player.GetCustomDeepCopy();
+            Player = actionToCopy.Player;
             CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt;
             TypeOfDiseaseToTreat = actionToCopy.TypeOfDiseaseToTreat;
         }
@@ -117,7 +117,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0}: TREAT_DISEASE type {1} on {2}",
-                Player.Name,
+                Player.ToString(),
                 TypeOfDiseaseToTreat,
                 CityToTreatDiseaseAt.ToString()
                 );
@@ -172,7 +172,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Player;
             hash = hash * 31 + CityToTreatDiseaseAt;
             hash = hash * 31 + TypeOfDiseaseToTreat;
 

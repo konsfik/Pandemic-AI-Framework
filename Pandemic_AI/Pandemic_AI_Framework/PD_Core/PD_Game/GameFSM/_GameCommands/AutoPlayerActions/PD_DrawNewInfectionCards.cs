@@ -12,11 +12,11 @@ namespace Pandemic_AI_Framework
         I_Auto_Action, 
         I_Player_Action
     {
-        public PD_Player Player { get; protected set; }
+        public int Player { get; protected set; }
 
         [JsonConstructor]
         public PD_DrawNewInfectionCards(
-            PD_Player player
+            int player
             )
         {
             this.Player = player;
@@ -27,7 +27,7 @@ namespace Pandemic_AI_Framework
             PD_DrawNewInfectionCards actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -67,7 +67,7 @@ namespace Pandemic_AI_Framework
 
         public override string GetDescription()
         {
-            return String.Format("{0}: DRAW Infection cards", Player.Name);
+            return String.Format("{0}: DRAW Infection cards", Player.ToString());
         }
 
         #region equality overrides

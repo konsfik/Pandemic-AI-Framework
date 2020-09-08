@@ -11,7 +11,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_Map :
         PD_GameParts_Base,
-        IEquatable<PD_Map>,
         ICustomDeepCopyable<PD_Map>
     {
         public int number_of_cities;

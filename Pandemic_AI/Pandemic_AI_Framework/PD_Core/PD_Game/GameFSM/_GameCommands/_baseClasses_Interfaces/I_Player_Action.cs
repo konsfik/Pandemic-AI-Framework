@@ -6,6 +6,6 @@ namespace Pandemic_AI_Framework
 {
     public interface I_Player_Action
     {
-        PD_Player Player { get; }
+        int Player { get; }
     }
 }

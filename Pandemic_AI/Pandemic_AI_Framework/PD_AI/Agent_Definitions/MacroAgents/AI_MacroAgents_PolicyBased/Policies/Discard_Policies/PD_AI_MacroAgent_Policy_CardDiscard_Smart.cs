@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework
             }
 #endif
 
-            PD_Player playerWhoDiscards = ((I_Player_Action)allMacros[0].Actions_All[0]).Player;
+            int playerWhoDiscards = ((I_Player_Action)allMacros[0].Actions_All[0]).Player;
 
             Dictionary<PD_MacroAction, double> effectPerMacroAction = new Dictionary<PD_MacroAction, double>();
             foreach (var macro in allMacros)

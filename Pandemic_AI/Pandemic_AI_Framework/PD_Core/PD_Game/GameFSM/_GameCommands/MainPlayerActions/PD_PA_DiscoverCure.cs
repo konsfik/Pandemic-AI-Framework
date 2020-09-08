@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_DiscoverCure>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public List<PD_CityCard> CityCardsToDiscard { get; private set; }
         public int CityOfResearchStation { get; private set; }
         public int TypeOfDiseaseToCure { get; private set; }
@@ -26,15 +26,15 @@ namespace Pandemic_AI_Framework
         /// <param name="typeOfDiseaseToCure"></param>
         [JsonConstructor]
         public PD_PA_DiscoverCure(
-            PD_Player player,
+            int player,
             int cityOfResearchStation,
             List<PD_CityCard> cityCardsToDiscard,
             int typeOfDiseaseToCure
             )
         {
             this.Player = player;
-            this.CityCardsToDiscard = cityCardsToDiscard;
             this.CityOfResearchStation = cityOfResearchStation;
+            this.CityCardsToDiscard = cityCardsToDiscard.CustomDeepCopy();
             this.TypeOfDiseaseToCure = typeOfDiseaseToCure;
         }
 
@@ -46,9 +46,9 @@ namespace Pandemic_AI_Framework
             PD_PA_DiscoverCure actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
-            this.CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.CityOfResearchStation = actionToCopy.CityOfResearchStation;
+            this.CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
             this.TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
         }
         #endregion
@@ -115,7 +115,7 @@ namespace Pandemic_AI_Framework
         {
             string description = String.Format(
                 "{0}: DISCOVER_CURE of type {1} on {2}",
-                Player.Name,
+                Player.ToString(),
                 TypeOfDiseaseToCure,
                 CityOfResearchStation.ToString()
                 );

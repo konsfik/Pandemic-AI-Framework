@@ -34,7 +34,7 @@ namespace Pandemic_AI_Framework.Tests
                 {
                     int numCards = numCardsTable[type, playerIndex];
 
-                    PD_Player player = game.Players[playerIndex];
+                    int player = game.Players[playerIndex];
                     List<PD_CityCard> playerCards = game.GQ_CityCardsInPlayerHand(player);
                     List<PD_CityCard> playerCardsOfThisType = playerCards.FindAll(
                         x => 

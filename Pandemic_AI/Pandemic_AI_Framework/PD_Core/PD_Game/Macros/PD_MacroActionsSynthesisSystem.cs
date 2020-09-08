@@ -23,7 +23,7 @@ namespace Pandemic_AI_Framework
                 ////////////////////////////////////////////////////////////////
                 /// OTHER REUSABLE DATA
                 ////////////////////////////////////////////////////////////////
-                PD_Player currentPlayer = game.GQ_CurrentPlayer();
+                int currentPlayer = game.GQ_CurrentPlayer();
                 int currentPlayerLocation = game.GQ_CurrentPlayer_Location();
                 int currentPlayerRole = game.GQ_CurrentPlayer_Role();
                 List<int> allCitiesExceprCurrentLocation = game.Map.cities.FindAll(
@@ -340,7 +340,7 @@ namespace Pandemic_AI_Framework
         public static List<PD_MacroAction> FindAll_WalkMacros_ExecutableNow(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -406,7 +406,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -439,7 +439,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -564,7 +564,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -597,7 +597,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -612,7 +612,7 @@ namespace Pandemic_AI_Framework
             {
                 int numRemainingActions = numAvailableActions - seq.Count;
 
-                PD_Player player = ((I_Player_Action)seq.GetLast()).Player;
+                int player = ((I_Player_Action)seq.GetLast()).Player;
                 int destination = ((I_Movement_Action)(seq.GetLast())).TargetLocation;
 
                 List<PD_GameAction_Base> completeSequence = new List<PD_GameAction_Base>();
@@ -645,7 +645,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -725,7 +725,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -808,7 +808,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -900,7 +900,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -970,7 +970,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1025,7 +1025,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1114,7 +1114,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -1195,7 +1195,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1293,7 +1293,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1373,7 +1373,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -1436,7 +1436,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1536,7 +1536,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1625,7 +1625,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -1635,7 +1635,7 @@ namespace Pandemic_AI_Framework
 
             List<PD_MacroAction> shareKnowledge_Give_Macros = new List<PD_MacroAction>();
 
-            List<PD_Player> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.Players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -1748,7 +1748,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1760,7 +1760,7 @@ namespace Pandemic_AI_Framework
 
             List<PD_MacroAction> shareKnowledge_Give_Macros = new List<PD_MacroAction>();
 
-            List<PD_Player> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.Players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -1906,7 +1906,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -1986,13 +1986,13 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
             )
         {
-            List<PD_Player> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.Players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -2118,7 +2118,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -2127,7 +2127,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            List<PD_Player> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.Players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -2138,7 +2138,7 @@ namespace Pandemic_AI_Framework
             {
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).TargetLocation;
 
-                List<PD_Player> otherPlayersAtDestination = otherPlayers.FindAll(
+                List<int> otherPlayersAtDestination = otherPlayers.FindAll(
                     x =>
                     game.GQ_PlayerLocation(x) == destination
                     );
@@ -2278,7 +2278,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -2357,7 +2357,7 @@ namespace Pandemic_AI_Framework
         public static List<PD_MacroAction> Find_DiscoverCureMacros_Immediate_ExecutableNow(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions
@@ -2431,7 +2431,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
 
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
@@ -2547,7 +2547,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation
             )
         {
@@ -2592,7 +2592,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
             )
@@ -2689,7 +2689,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
             )
@@ -2766,7 +2766,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player currentPlayer,
+            int currentPlayer,
             int currentPlayerLocation,
 
             List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
@@ -2885,7 +2885,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player current_player,
+            int current_player,
             int root,
             int destination
             )
@@ -2939,7 +2939,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player current_player,
+            int current_player,
             int root,
             int destination,
             PD_CityCard charterCard
@@ -2972,7 +2972,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player current_player,
+            int current_player,
             int root,
             int destination,
             PD_CityCard directFlightCard
@@ -3009,7 +3009,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            PD_Player current_player,
+            int current_player,
             int root,
             int destination,
             PD_CityCard directFlightCard,

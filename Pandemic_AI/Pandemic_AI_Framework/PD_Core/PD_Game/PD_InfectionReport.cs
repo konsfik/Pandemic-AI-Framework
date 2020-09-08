@@ -16,7 +16,7 @@ namespace Pandemic_AI_Framework
         #region Properties
         public bool HappenedDuringGameSetup { get; private set; }
 
-        public PD_Player PlayerWhoAppliesInfection { get; private set; }
+        public int PlayerWhoAppliesInfection { get; private set; }
         public int InitialCity { get; private set; }
 
         public int InfectionType { get; private set; }
@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework
         public PD_InfectionReport(
             bool happenedDuringGameSetup,
 
-            PD_Player playerWhoAppliesInfection,
+            int playerWhoAppliesInfection,
             int initialCity,
 
             int infectionType,
@@ -79,7 +79,7 @@ namespace Pandemic_AI_Framework
         public PD_InfectionReport(
             bool happenedDuringGameSetup,
 
-            PD_Player playerWhoAppliesInfection,
+            int playerWhoAppliesInfection,
             int initialCity,
 
             int infectionType,
@@ -95,7 +95,7 @@ namespace Pandemic_AI_Framework
         {
             this.HappenedDuringGameSetup = happenedDuringGameSetup;
 
-            this.PlayerWhoAppliesInfection = playerWhoAppliesInfection.GetCustomDeepCopy();
+            this.PlayerWhoAppliesInfection = playerWhoAppliesInfection;
             this.InitialCity = initialCity;
 
             this.InfectionType = infectionType;
@@ -121,7 +121,7 @@ namespace Pandemic_AI_Framework
                 reportToCopy.HappenedDuringGameSetup;
 
             this.PlayerWhoAppliesInfection =
-                reportToCopy.PlayerWhoAppliesInfection.GetCustomDeepCopy();
+                reportToCopy.PlayerWhoAppliesInfection;
             this.InitialCity =
                 reportToCopy.InitialCity;
 
@@ -186,9 +186,9 @@ namespace Pandemic_AI_Framework
 
             description += "Infection Report: \n";
             description += "- Player who applied infection:";
-            if (PlayerWhoAppliesInfection != null)
+            if (PlayerWhoAppliesInfection != -1)
             {
-                description += PlayerWhoAppliesInfection.Name + "\n";
+                description += "Player_" + PlayerWhoAppliesInfection.ToString() + "\n";
             }
             else
             {

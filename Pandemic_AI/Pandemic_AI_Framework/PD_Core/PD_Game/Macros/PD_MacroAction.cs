@@ -370,7 +370,7 @@ namespace Pandemic_AI_Framework
         {
             string description = String.Format(
                 "{0}: {1} - TML:{2} | {3} - WL:{4} | {5}",
-                ((I_Player_Action)Actions_All[0]).Player.Name,
+                ((I_Player_Action)Actions_All[0]).Player.ToString(),
                 MacroAction_Type.ToString(),
                 Count_Total_Length(),
                 MacroAction_WalkType.ToString(),

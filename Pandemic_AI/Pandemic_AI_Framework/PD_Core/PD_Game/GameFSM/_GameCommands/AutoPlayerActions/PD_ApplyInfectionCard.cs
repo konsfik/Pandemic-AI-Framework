@@ -12,17 +12,17 @@ namespace Pandemic_AI_Framework
         I_Auto_Action, 
         I_Player_Action
     {
-        public PD_Player Player { get; protected set; }
+        public int Player { get; protected set; }
 
         public PD_InfectionCard InfectionCardToApply { get; private set; }
 
         [JsonConstructor]
         public PD_ApplyInfectionCard(
-            PD_Player player,
+            int player,
             PD_InfectionCard infectionCardToApply
             )
         {
-            this.Player = player.GetCustomDeepCopy();
+            this.Player = player;
             this.InfectionCardToApply = infectionCardToApply.GetCustomDeepCopy();
         }
 
@@ -31,7 +31,7 @@ namespace Pandemic_AI_Framework
             PD_ApplyInfectionCard actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.InfectionCardToApply = actionToCopy.InfectionCardToApply.GetCustomDeepCopy();
         }
 
@@ -91,7 +91,7 @@ namespace Pandemic_AI_Framework
 
         public override string GetDescription()
         {
-            return Player.Name + ": INFECTION " + InfectionCardToApply.City.ToString();
+            return Player.ToString() + ": INFECTION " + InfectionCardToApply.City.ToString();
         }
 
         #region equality overrides

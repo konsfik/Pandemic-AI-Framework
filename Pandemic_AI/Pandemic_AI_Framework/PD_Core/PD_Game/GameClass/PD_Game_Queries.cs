@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            PD_Player medic = game.Players.Find(
+            int medic = game.Players.Find(
                 x =>
                 GQ_Find_Player_Role(game, x) == PD_Player_Roles.Medic
                 );
@@ -168,7 +168,7 @@ namespace Pandemic_AI_Framework
         {
             foreach (var player in game.Players)
             {
-                var playerHand = game.Cards.PlayerCardsPerPlayerID[player.ID];
+                var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
                 if (playerHand.Count > game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer)
                 {
                     return true;
@@ -210,15 +210,15 @@ namespace Pandemic_AI_Framework
             )
         {
             var currentPlayer = GQ_CurrentPlayer(game);
-            return game.Cards.PlayerCardsPerPlayerID[currentPlayer.ID];
+            return game.Cards.PlayerCardsPerPlayerID[currentPlayer];
         }
 
         public static List<PD_PlayerCardBase> GQ_PlayerHand(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
-            return game.Cards.PlayerCardsPerPlayerID[player.ID];
+            return game.Cards.PlayerCardsPerPlayerID[player];
         }
 
         public static bool GQ_Is_DiseaseCured_OR_Eradicated(
@@ -248,7 +248,7 @@ namespace Pandemic_AI_Framework
             return game.GameStateCounter.CureMarkersStates[diseaseType] == 2;
         }
 
-        public static PD_Player GQ_CurrentPlayer(
+        public static int GQ_CurrentPlayer(
             this PD_Game game
             )
         {
@@ -265,10 +265,10 @@ namespace Pandemic_AI_Framework
 
         public static int GQ_Find_Player_Role(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
-            return game.RoleCardsPerPlayerID[player.ID].Role;
+            return game.RoleCardsPerPlayerID[player].Role;
         }
 
 
@@ -307,7 +307,7 @@ namespace Pandemic_AI_Framework
 
         public static List<List<PD_CityCard>> GQ_Find_UsableDiscoverCureCardGroups(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
             var discoverCureCardGroups = GQ_Find_DiscoverCureCardGroups(game, player);
@@ -329,10 +329,10 @@ namespace Pandemic_AI_Framework
 
         public static List<List<PD_CityCard>> GQ_Find_DiscoverCureCardGroups(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
-            bool player_Is_Scientist = game.RoleCardsPerPlayerID[player.ID].Role == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = game.RoleCardsPerPlayerID[player].Role == PD_Player_Roles.Scientist;
             var cityCardsInPlayerHand = GQ_CityCardsInPlayerHand(game, player);
 
             if (player_Is_Scientist == false && cityCardsInPlayerHand.Count < 5)
@@ -404,16 +404,16 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            PD_Player currentPlayer = GQ_CurrentPlayer(game);
-            return game.MapElements.location__per__player[currentPlayer.ID];
+            int currentPlayer = GQ_CurrentPlayer(game);
+            return game.MapElements.location__per__player[currentPlayer];
         }
 
         public static int GQ_PlayerLocation(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
-            return game.MapElements.location__per__player[player.ID];
+            return game.MapElements.location__per__player[player];
         }
 
         public static int GQ_Find_CityByName(
@@ -502,7 +502,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            PD_Player currentPlayer = game.GQ_CurrentPlayer();
+            int currentPlayer = game.GQ_CurrentPlayer();
             return GQ_CityCardsInPlayerHand(
                 game,
                 currentPlayer
@@ -511,10 +511,10 @@ namespace Pandemic_AI_Framework
 
         public static List<PD_CityCard> GQ_CityCardsInPlayerHand(
             this PD_Game game,
-            PD_Player player
+            int player
             )
         {
-            var playerHand = game.Cards.PlayerCardsPerPlayerID[player.ID];
+            var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
             var cityCardsInPlayerHand = playerHand.FindAll(
                 x =>
                 x.GetType() == typeof(PD_CityCard)

@@ -14,7 +14,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action,
         I_Discard_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public PD_PlayerCardBase PlayerCardToDiscard { get; protected set; }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Pandemic_AI_Framework
         /// <param name="playerCardToDiscard"></param>
         [JsonConstructor]
         public PD_PA_Discard_DuringMainPlayerActions(
-            PD_Player player,
+            int player,
             PD_PlayerCardBase playerCardToDiscard
             )
         {
@@ -37,21 +37,21 @@ namespace Pandemic_AI_Framework
             if (PlayerCardToDiscard is PD_CityCard city_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
-                    Player.GetCustomDeepCopy(),
+                    Player,
                     city_card.GetCustomDeepCopy()
                     );
             }
             else if (PlayerCardToDiscard is PD_EpidemicCard epidemic_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
-                    Player.GetCustomDeepCopy(),
+                    Player,
                     epidemic_card.GetCustomDeepCopy()
                     );
             }
             else if (PlayerCardToDiscard is PD_InfectionCard infection_card)
             {
                 return new PD_PA_Discard_DuringMainPlayerActions(
-                    Player.GetCustomDeepCopy(),
+                    Player,
                     infection_card.GetCustomDeepCopy()
                     );
             }
@@ -69,7 +69,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("wrong state!");
             }
             else if (
-                game.Cards.PlayerCardsPerPlayerID[Player.ID].Count
+                game.Cards.PlayerCardsPerPlayerID[Player].Count
                 <= game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer)
             {
                 throw new System.Exception("Player does not need to discard cards!");
@@ -135,7 +135,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0} discards the card: {1}",
-                this.Player.Name,
+                this.Player.ToString(),
                 this.PlayerCardToDiscard.GetDescription()
                 );
         }

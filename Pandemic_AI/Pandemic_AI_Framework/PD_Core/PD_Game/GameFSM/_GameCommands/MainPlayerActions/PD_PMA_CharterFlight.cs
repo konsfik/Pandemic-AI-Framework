@@ -15,7 +15,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action,
         I_Movement_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
 
         public int InitialLocation { get; protected set; }
 
@@ -35,7 +35,7 @@ namespace Pandemic_AI_Framework
         /// <param name="cityCardToDiscard"></param>
         [JsonConstructor]
         public PD_PMA_CharterFlight(
-            PD_Player player,
+            int player,
             int initialLocation,
             int targetLocation,
             PD_CityCard cityCardToDiscard
@@ -55,7 +55,7 @@ namespace Pandemic_AI_Framework
             PD_PMA_CharterFlight actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.InitialLocation = actionToCopy.InitialLocation;
             this.TargetLocation = actionToCopy.TargetLocation;
             this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
@@ -90,7 +90,7 @@ namespace Pandemic_AI_Framework
         {
             string actionDescription = String.Format(
                 "{0}: CHARTER_FLIGHT | card: {1} | {2} -> {3}",
-                Player.Name,
+                Player.ToString(),
                 CityCardToDiscard.City.ToString(),
                 InitialLocation.ToString(),
                 TargetLocation.ToString()
@@ -152,7 +152,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Player;
             hash = hash * 31 + InitialLocation;
             hash = hash * 31 + TargetLocation;
             hash = hash * 31 + CityCardToDiscard.GetHashCode();

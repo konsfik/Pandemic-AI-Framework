@@ -9,7 +9,6 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_GameStateCounter : 
         PD_GameParts_Base, 
-        IEquatable<PD_GameStateCounter>,
         IDescribable, 
         ICustomDeepCopyable<PD_GameStateCounter>
     {

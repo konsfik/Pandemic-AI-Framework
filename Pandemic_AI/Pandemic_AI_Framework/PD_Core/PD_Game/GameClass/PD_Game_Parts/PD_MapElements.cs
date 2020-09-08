@@ -30,14 +30,14 @@ namespace Pandemic_AI_Framework
         #region constructors
         // normal constructor
         public PD_MapElements(
-            List<PD_Player> players,
+            List<int> players,
             List<int> cities
             )
         {
             location__per__player = new Dictionary<int, int>();
             foreach (var player in players)
             {
-                location__per__player.Add(player.ID, -1);
+                location__per__player.Add(player, -1);
             }
 
             inactive_infection_cubes__per__type = new Dictionary<int, int>();

@@ -357,7 +357,7 @@ namespace Pandemic_AI_Framework
                     int mini_game__player_card = MiniGame_PlayerCard__FROM__Game_PlayerCard(card);
                     mini_game__player_hand.Add(mini_game__player_card);
                 }
-                mini_game.cards___player_cards__per__player.Add(player.ID, mini_game__player_hand);
+                mini_game.cards___player_cards__per__player.Add(player, mini_game__player_hand);
             }
 
 
@@ -427,12 +427,7 @@ namespace Pandemic_AI_Framework
             ////////////////////////////////////////////////////////////
             /// players
             ////////////////////////////////////////////////////////////
-            List<PD_Player> PLAYERS = new List<PD_Player>();
-            foreach (int p in mini_game.players)
-            {
-                PD_Player player = new PD_Player(p, "Player " + p.ToString());
-                PLAYERS.Add(player);
-            }
+            List<int> PLAYERS = mini_game.players.CustomDeepCopy();
 
             ////////////////////////////////////////////////////////////
             /// map
@@ -629,7 +624,6 @@ namespace Pandemic_AI_Framework
                 = new Dictionary<int, List<PD_PlayerCardBase>>();
             foreach (int mini_player in mini_game.players)
             {
-                PD_Player player = PLAYERS.Find(x => x.ID == mini_player);
                 List<PD_PlayerCardBase> player_cards_in_player_hand = new List<PD_PlayerCardBase>();
                 foreach (int mini_card in mini_game.cards___player_cards__per__player[mini_player])
                 {

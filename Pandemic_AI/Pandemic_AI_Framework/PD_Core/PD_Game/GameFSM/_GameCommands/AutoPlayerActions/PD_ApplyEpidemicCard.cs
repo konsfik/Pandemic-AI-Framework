@@ -13,15 +13,15 @@ namespace Pandemic_AI_Framework
         I_Auto_Action,
         I_Player_Action
     {
-        public PD_Player Player { get; protected set; }
+        public int Player { get; protected set; }
 
         #region constructors
         [JsonConstructor]
         public PD_ApplyEpidemicCard(
-            PD_Player player
+            int player
             )
         {
-            this.Player = player.GetCustomDeepCopy();
+            this.Player = player;
         }
 
         // private constructor, for custom deep copy purposes only
@@ -29,7 +29,7 @@ namespace Pandemic_AI_Framework
             PD_ApplyEpidemicCard actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -54,12 +54,12 @@ namespace Pandemic_AI_Framework
             }
 #endif
             // 0. discard the epidemic card...
-            var allCards_InPlayerHand = game.Cards.PlayerCardsPerPlayerID[Player.ID];
+            var allCards_InPlayerHand = game.Cards.PlayerCardsPerPlayerID[Player];
             var epidemicCard = allCards_InPlayerHand.Find(
                 x =>
                 x.GetType() == typeof(PD_EpidemicCard)
                 );
-            game.Cards.PlayerCardsPerPlayerID[Player.ID].Remove(epidemicCard);
+            game.Cards.PlayerCardsPerPlayerID[Player].Remove(epidemicCard);
             game.Cards.DeckOfDiscardedPlayerCards.Add(epidemicCard);
 
             // 1. move the infection rate marker by one position
@@ -117,7 +117,7 @@ namespace Pandemic_AI_Framework
 
         public override string GetDescription()
         {
-            return String.Format("{0}: EPIDEMIC.", Player.Name);
+            return String.Format("{0}: EPIDEMIC.", Player.ToString());
         }
 
         #region equality overrides

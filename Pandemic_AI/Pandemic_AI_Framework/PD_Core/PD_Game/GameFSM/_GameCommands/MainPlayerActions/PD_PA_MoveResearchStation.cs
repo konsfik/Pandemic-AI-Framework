@@ -12,7 +12,7 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_MoveResearchStation>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public PD_CityCard Used_CityCard { get; private set; }
         public int Move_RS_From { get; private set; }
         public int Move_RS_To { get; private set; }
@@ -26,13 +26,13 @@ namespace Pandemic_AI_Framework
         /// <param name="move_RS_To"></param>
         [JsonConstructor]
         public PD_PA_MoveResearchStation(
-            PD_Player player,
+            int player,
             PD_CityCard used_CityCard,
             int move_RS_From,
             int move_RS_To
             )
         {
-            this.Player = player.GetCustomDeepCopy();
+            this.Player = player;
             this.Used_CityCard = used_CityCard.GetCustomDeepCopy();
             this.Move_RS_From = move_RS_From;
             this.Move_RS_To = move_RS_To;
@@ -46,7 +46,7 @@ namespace Pandemic_AI_Framework
             PD_PA_MoveResearchStation actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
             this.Move_RS_From = actionToCopy.Move_RS_From;
             this.Move_RS_To = actionToCopy.Move_RS_To;
@@ -99,7 +99,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0}: MOVE_RESEARCH_STATION from {1} to {2}",
-                Player.Name,
+                Player.ToString(),
                 Move_RS_From.ToString(),
                 Move_RS_To.ToString()
                 );

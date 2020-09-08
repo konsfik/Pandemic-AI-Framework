@@ -11,8 +11,8 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_ShareKnowledge_TakeCard>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
-        public PD_Player OtherPlayer { get; private set; }
+        public int Player { get; private set; }
+        public int OtherPlayer { get; private set; }
         public PD_CityCard CityCardToTake { get; private set; }
 
         #region constructors
@@ -24,14 +24,14 @@ namespace Pandemic_AI_Framework
         /// <param name="cityCardToTake"></param>
         [JsonConstructor]
         public PD_PA_ShareKnowledge_TakeCard(
-            PD_Player player,
-            PD_Player otherPlayer,
+            int player,
+            int otherPlayer,
             PD_CityCard cityCardToTake
             )
         {
             Player = player;
             OtherPlayer = otherPlayer;
-            CityCardToTake = cityCardToTake;
+            CityCardToTake = cityCardToTake.GetCustomDeepCopy();
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace Pandemic_AI_Framework
             PD_PA_ShareKnowledge_TakeCard actionToCopy
             )
         {
-            Player = actionToCopy.Player.GetCustomDeepCopy();
-            OtherPlayer = actionToCopy.OtherPlayer.GetCustomDeepCopy();
+            Player = actionToCopy.Player;
+            OtherPlayer = actionToCopy.OtherPlayer;
             CityCardToTake = actionToCopy.CityCardToTake.GetCustomDeepCopy();
         }
         #endregion
@@ -75,8 +75,8 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("Player is not on the correct city");
             }
 #endif
-            game.Cards.PlayerCardsPerPlayerID[OtherPlayer.ID].Remove(CityCardToTake);
-            game.Cards.PlayerCardsPerPlayerID[game.GQ_CurrentPlayer().ID].Add(CityCardToTake);
+            game.Cards.PlayerCardsPerPlayerID[OtherPlayer].Remove(CityCardToTake);
+            game.Cards.PlayerCardsPerPlayerID[game.GQ_CurrentPlayer()].Add(CityCardToTake);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -88,9 +88,9 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0}: SHARE_KNOWLEDGE | TAKE {1} from {2}",
-                Player.Name,
+                Player.ToString(),
                 CityCardToTake.City.ToString(),
-                OtherPlayer.Name
+                OtherPlayer.ToString()
                 );
         }
 

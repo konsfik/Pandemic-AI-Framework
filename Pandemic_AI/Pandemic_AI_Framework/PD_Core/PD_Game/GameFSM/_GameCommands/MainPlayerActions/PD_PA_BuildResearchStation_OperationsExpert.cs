@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_BuildResearchStation_OperationsExpert>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public int Build_RS_On { get; private set; }
 
         #region constructors
@@ -23,11 +23,11 @@ namespace Pandemic_AI_Framework
         /// <param name="build_RS_On"></param>
         [JsonConstructor]
         public PD_PA_BuildResearchStation_OperationsExpert(
-            PD_Player player,
+            int player,
             int build_RS_On
             )
         {
-            this.Player = player.GetCustomDeepCopy();
+            this.Player = player;
             this.Build_RS_On = build_RS_On;
         }
 
@@ -39,7 +39,7 @@ namespace Pandemic_AI_Framework
             PD_PA_BuildResearchStation_OperationsExpert actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.Build_RS_On = actionToCopy.Build_RS_On;
         }
 
@@ -79,7 +79,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0}: BUILD_RS_OPERATIONS_EXPERT on {1}",
-                Player.Name,
+                Player.ToString(),
                 Build_RS_On.ToString()
                 );
         }

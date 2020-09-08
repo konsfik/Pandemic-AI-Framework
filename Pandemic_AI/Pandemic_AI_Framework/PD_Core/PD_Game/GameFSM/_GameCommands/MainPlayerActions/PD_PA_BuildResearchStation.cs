@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_PA_BuildResearchStation>,
         I_Player_Action
     {
-        public PD_Player Player { get; private set; }
+        public int Player { get; private set; }
         public PD_CityCard Used_CityCard { get; private set; }
         public int Build_RS_On { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Pandemic_AI_Framework
         /// <param name="build_RS_On"></param>
         [JsonConstructor]
         public PD_PA_BuildResearchStation(
-            PD_Player player,
+            int player,
             PD_CityCard used_CityCard,
             int build_RS_On
             )
@@ -42,7 +42,7 @@ namespace Pandemic_AI_Framework
             PD_PA_BuildResearchStation actionToCopy
             )
         {
-            this.Player = actionToCopy.Player.GetCustomDeepCopy();
+            this.Player = actionToCopy.Player;
             this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
             this.Build_RS_On = actionToCopy.Build_RS_On;
         }
@@ -94,7 +94,7 @@ namespace Pandemic_AI_Framework
         {
             return String.Format(
                 "{0}: BUILD_RS on {1}",
-                Player.Name,
+                Player.ToString(),
                 Build_RS_On.ToString()
                 );
         }

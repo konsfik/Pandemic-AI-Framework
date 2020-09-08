@@ -31,20 +31,20 @@ namespace Pandemic_AI_Framework
             NumPlayers = game.GameStateCounter.NumberOfPlayers;
             GameDifficulty = game.GameSettings.GameDifficultyLevel;
 
-            Player1_Role = game.RoleCardsPerPlayerID[game.Players[0]].ToString();
-            Player2_Role = game.RoleCardsPerPlayerID[game.Players[1]].ToString();
+            Player1_Role = game.role__per__player[game.players[0]].ToString();
+            Player2_Role = game.role__per__player[game.players[1]].ToString();
 
-            if (game.Players.Count >= 3)
+            if (game.players.Count >= 3)
             {
-                Player3_Role = game.RoleCardsPerPlayerID[game.Players[2]].ToString();
+                Player3_Role = game.role__per__player[game.players[2]].ToString();
             }
             else {
                 Player3_Role = "";
             }
 
-            if (game.Players.Count >= 4)
+            if (game.players.Count >= 4)
             {
-                Player4_Role = game.RoleCardsPerPlayerID[game.Players[3]].ToString();
+                Player4_Role = game.role__per__player[game.players[3]].ToString();
             }
             else
             {

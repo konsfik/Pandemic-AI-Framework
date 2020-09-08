@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            int medic = game.Players.Find(
+            int medic = game.players.Find(
                 x =>
                 GQ_Find_Player_Role(game, x) == PD_Player_Roles.Medic
                 );
@@ -76,7 +76,7 @@ namespace Pandemic_AI_Framework
             )
         {
             List<PD_CityCard> allCityCardsInAllPlayersHands = new List<PD_CityCard>();
-            foreach (var player in game.Players)
+            foreach (var player in game.players)
             {
                 allCityCardsInAllPlayersHands.AddRange(
                     GQ_CityCardsInPlayerHand(game, player)
@@ -166,7 +166,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            foreach (var player in game.Players)
+            foreach (var player in game.players)
             {
                 var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
                 if (playerHand.Count > game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer)
@@ -252,7 +252,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            return game.Players[game.GameStateCounter.CurrentPlayerIndex];
+            return game.players[game.GameStateCounter.CurrentPlayerIndex];
         }
 
         public static int GQ_CurrentPlayer_Role(
@@ -268,7 +268,7 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            return game.RoleCardsPerPlayerID[player];
+            return game.role__per__player[player];
         }
 
 
@@ -332,7 +332,7 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            bool player_Is_Scientist = game.RoleCardsPerPlayerID[player] == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = game.role__per__player[player] == PD_Player_Roles.Scientist;
             var cityCardsInPlayerHand = GQ_CityCardsInPlayerHand(game, player);
 
             if (player_Is_Scientist == false && cityCardsInPlayerHand.Count < 5)

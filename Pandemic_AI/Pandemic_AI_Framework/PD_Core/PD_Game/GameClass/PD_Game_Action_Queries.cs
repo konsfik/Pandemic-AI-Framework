@@ -508,7 +508,7 @@ namespace Pandemic_AI_Framework
 
             if (cityCardsInCurrentPlayerHand.Contains(cityCardToGive))
             {
-                var otherPlayersInSameLocation = game.Players.FindAll(
+                var otherPlayersInSameLocation = game.players.FindAll(
                     x =>
                     x != currentPlayer
                     && game.GQ_PlayerLocation(x) == currentPlayerLocation
@@ -541,7 +541,7 @@ namespace Pandemic_AI_Framework
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             var cityCardToTake = game.GameElementReferences.CityCards.Find(x => x.City == currentPlayerLocation);
 
-            var otherPlayersInSameLocation = game.Players.FindAll(
+            var otherPlayersInSameLocation = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 && currentPlayerLocation == game.GQ_PlayerLocation(x)
@@ -584,7 +584,7 @@ namespace Pandemic_AI_Framework
 
             int currentPlayer = game.GQ_CurrentPlayer();
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
-            var otherPlayers = game.Players.FindAll(
+            var otherPlayers = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -631,14 +631,14 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
-            if (game.Players.Any(
+            if (game.players.Any(
                 x => game.GQ_Find_Player_Role(x) == PD_Player_Roles.Researcher
                 ) == false)
             {
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
-            var researcher = game.Players.Find(
+            var researcher = game.players.Find(
                 x =>
                 game.GQ_Find_Player_Role(x) == PD_Player_Roles.Researcher
                 );
@@ -767,7 +767,7 @@ namespace Pandemic_AI_Framework
 
             if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
-                foreach (var player in game.Players)
+                foreach (var player in game.players)
                 {
                     var cityCardsInPlayerHand = game.GQ_CityCardsInPlayerHand(player);
                     if (cityCardsInPlayerHand.Count > 7)

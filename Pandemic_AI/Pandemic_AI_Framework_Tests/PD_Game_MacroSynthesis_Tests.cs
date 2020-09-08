@@ -27,19 +27,19 @@ namespace Pandemic_AI_Framework.Tests
             List<int> allRoleCards = game.GameElementReferences.RoleCards;
 
             // fix player roles
-            game.RoleCardsPerPlayerID[0] = allRoleCards.Find(
+            game.role__per__player[0] = allRoleCards.Find(
                 x =>
                 x == PD_Player_Roles.Operations_Expert
                 );
-            game.RoleCardsPerPlayerID[1] = allRoleCards.Find(
+            game.role__per__player[1] = allRoleCards.Find(
                 x =>
                 x == PD_Player_Roles.Medic
                 );
-            game.RoleCardsPerPlayerID[2] = allRoleCards.Find(
+            game.role__per__player[2] = allRoleCards.Find(
                 x =>
                 x == PD_Player_Roles.Researcher
                 );
-            game.RoleCardsPerPlayerID[3] = allRoleCards.Find(
+            game.role__per__player[3] = allRoleCards.Find(
                 x =>
                 x == PD_Player_Roles.Scientist
                 );
@@ -84,17 +84,17 @@ namespace Pandemic_AI_Framework.Tests
                 );
 
             game.GO_MovePawnFromCityToCity(
-                game.Players[1],
+                game.players[1],
                 Atlanta,
                 Milan
                 );
             game.GO_MovePawnFromCityToCity(
-                game.Players[2],
+                game.players[2],
                 Atlanta,
                 Milan
                 );
             game.GO_MovePawnFromCityToCity(
-                game.Players[3],
+                game.players[3],
                 Atlanta,
                 Milan
                 );

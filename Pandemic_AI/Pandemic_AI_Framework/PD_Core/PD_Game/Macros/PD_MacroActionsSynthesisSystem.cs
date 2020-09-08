@@ -1635,7 +1635,7 @@ namespace Pandemic_AI_Framework
 
             List<PD_MacroAction> shareKnowledge_Give_Macros = new List<PD_MacroAction>();
 
-            List<int> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -1760,7 +1760,7 @@ namespace Pandemic_AI_Framework
 
             List<PD_MacroAction> shareKnowledge_Give_Macros = new List<PD_MacroAction>();
 
-            List<int> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -1992,7 +1992,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            List<int> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 );
@@ -2127,7 +2127,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            List<int> otherPlayers = game.Players.FindAll(
+            List<int> otherPlayers = game.players.FindAll(
                 x =>
                 x != currentPlayer
                 );

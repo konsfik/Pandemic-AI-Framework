@@ -66,7 +66,7 @@ namespace Pandemic_AI_Framework
             mini_game.role__per__player = new int[mini_game.settings___number_of_players];
             foreach (int p in mini_game.players)
             {
-                var game_player = game.Players[p];
+                var game_player = game.players[p];
                 int game_player_role = game.GQ_Find_Player_Role(game_player);
                 switch (game_player_role)
                 {
@@ -144,7 +144,7 @@ namespace Pandemic_AI_Framework
             // location__per__player
             foreach (int p in mini_game.players)
             {
-                var game_player = game.Players[p];
+                var game_player = game.players[p];
                 var game_player_location = game.GQ_PlayerLocation(game_player);
                 mini_game.map_elements___location__per__player[p] = game_player_location;
             }
@@ -329,7 +329,7 @@ namespace Pandemic_AI_Framework
             }
 
             mini_game.cards___player_cards__per__player = new Dictionary<int, List<int>>();
-            foreach (var player in game.Players)
+            foreach (var player in game.players)
             {
                 List<PD_PlayerCardBase> game__player_hand = game.GQ_PlayerHand(player);
                 List<int> mini_game__player_hand = new List<int>();

@@ -97,7 +97,7 @@ namespace Pandemic_AI_Framework.Tests
             {
                 return false;
             }
-            else if (game_1.Players.List_Equals(game_2.Players) == false)
+            else if (game_1.players.List_Equals(game_2.players) == false)
             {
                 return false;
             }
@@ -454,7 +454,7 @@ namespace Pandemic_AI_Framework.Tests
                 );
 
             Assert.IsTrue(
-                game.Players.SequenceEqual(gameCopy.Players)
+                game.players.SequenceEqual(gameCopy.players)
                 );
 
         }

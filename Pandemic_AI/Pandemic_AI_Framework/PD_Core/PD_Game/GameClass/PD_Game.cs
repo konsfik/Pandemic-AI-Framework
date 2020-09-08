@@ -20,8 +20,8 @@ namespace Pandemic_AI_Framework
         // STATE - RELATED
         public PD_GameStateCounter GameStateCounter { get; private set; }
 
-        public List<int> Players { get; private set; }
-        public Dictionary<int, int> RoleCardsPerPlayerID { get; private set; }
+        public List<int> players;
+        public Dictionary<int, int> role__per__player;
 
         public PD_Map Map { get; private set; }
 
@@ -51,12 +51,6 @@ namespace Pandemic_AI_Framework
             bool auto_game_setup
             )
         {
-            Dictionary<int, string> playerIDsNames = new Dictionary<int, string>() {
-                {0,"Player 0"},
-                {1,"Player 1"},
-                {2,"Player 2"},
-                {3,"Player 3"}
-            };
 
             List<int> players = new List<int>();
             for (int i = 0; i < number_of_players; i++)
@@ -378,7 +372,7 @@ namespace Pandemic_AI_Framework
 
             GameFSM = new PD_GameFSM(this);
 
-            Players = players;
+            this.players = players;
 
             UpdateAvailablePlayerActions();
 
@@ -399,13 +393,13 @@ namespace Pandemic_AI_Framework
                 );
 
             MapElements = new PD_MapElements(players, cities);
-            Cards = new PD_GameCards(Players, allRoleCards);
+            Cards = new PD_GameCards(this.players, allRoleCards);
 
 
-            RoleCardsPerPlayerID = new Dictionary<int, int>();
+            role__per__player = new Dictionary<int, int>();
             foreach (var player in players)
             {
-                RoleCardsPerPlayerID.Add(player, PD_Player_Roles.None);
+                role__per__player.Add(player, PD_Player_Roles.None);
             }
 
             PlayerActionsHistory = new List<PD_GameAction_Base>();
@@ -448,14 +442,14 @@ namespace Pandemic_AI_Framework
             GameFSM = gameFSM.GetCustomDeepCopy();
             GameStateCounter = gameStateCounter.GetCustomDeepCopy();
 
-            Players = players.CustomDeepCopy();
+            this.players = players.CustomDeepCopy();
             Map = map.GetCustomDeepCopy();
 
             GameElementReferences = gameElementReferences.GetCustomDeepCopy();
             MapElements = mapElements.GetCustomDeepCopy();
             Cards = cards.GetCustomDeepCopy();
 
-            RoleCardsPerPlayerID = roleCardsPerPlayerID.CustomDeepCopy();
+            role__per__player = roleCardsPerPlayerID.CustomDeepCopy();
 
             PlayerActionsHistory = playerActionsHistory.CustomDeepCopy();
             InfectionReports = infectionReports.CustomDeepCopy();
@@ -480,14 +474,14 @@ namespace Pandemic_AI_Framework
             GameFSM = gameToCopy.GameFSM.GetCustomDeepCopy();
             GameStateCounter = gameToCopy.GameStateCounter.GetCustomDeepCopy();
 
-            Players = gameToCopy.Players.CustomDeepCopy();
+            players = gameToCopy.players.CustomDeepCopy();
             Map = gameToCopy.Map.GetCustomDeepCopy();
 
             GameElementReferences = gameToCopy.GameElementReferences.GetCustomDeepCopy();
             MapElements = gameToCopy.MapElements.GetCustomDeepCopy();
             Cards = gameToCopy.Cards.GetCustomDeepCopy();
 
-            RoleCardsPerPlayerID = gameToCopy.RoleCardsPerPlayerID.CustomDeepCopy();
+            role__per__player = gameToCopy.role__per__player.CustomDeepCopy();
 
             PlayerActionsHistory = gameToCopy.PlayerActionsHistory.CustomDeepCopy();
             InfectionReports = gameToCopy.InfectionReports.CustomDeepCopy();
@@ -535,7 +529,7 @@ namespace Pandemic_AI_Framework
             Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
 
             // 3.2.3 actually infect the cities.. 
-            var firstPlayer = Players[0];
+            var firstPlayer = players[0];
             for (int num_InfectionCubes_ToPlace = 3; num_InfectionCubes_ToPlace > 0; num_InfectionCubes_ToPlace--)
             {
                 for (int city_Counter = 0; city_Counter < 3; city_Counter++)
@@ -575,10 +569,10 @@ namespace Pandemic_AI_Framework
                 PD_Player_Roles.Medic,
                 PD_Player_Roles.Scientist
             };
-            foreach (var player in Players)
+            foreach (var player in players)
             {
                 var roleCard = Cards.InactiveRoleCards.DrawOneRandom(randomness_provider);
-                RoleCardsPerPlayerID[player] = roleCard;
+                role__per__player[player] = roleCard;
             }
 
             // 4.2. Deal cards to players: initial hands
@@ -587,9 +581,9 @@ namespace Pandemic_AI_Framework
             Cards.DividedDeckOfPlayerCards.Add(playerCardsTempList);
             Cards.DividedDeckOfPlayerCards.ShuffleAllSubListsElements(randomness_provider);
 
-            int numPlayers = Players.Count;
+            int numPlayers = players.Count;
             int numCardsToDealPerPlayer = GameSettings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
-            foreach (var player in Players)
+            foreach (var player in players)
             {
                 for (int i = 0; i < numCardsToDealPerPlayer; i++)
                 {
@@ -994,7 +988,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.Players.List_Equals(other.Players) == false)
+            else if (this.players.List_Equals(other.players) == false)
             {
                 return false;
             }
@@ -1014,7 +1008,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.RoleCardsPerPlayerID.Dictionary_Equals(other.RoleCardsPerPlayerID) == false)
+            else if (this.role__per__player.Dictionary_Equals(other.role__per__player) == false)
             {
                 return false;
             }
@@ -1065,14 +1059,14 @@ namespace Pandemic_AI_Framework
 
             hash = hash * 31 + GameStateCounter.GetHashCode();
 
-            hash = hash * 31 + Players.Custom_HashCode();
+            hash = hash * 31 + players.Custom_HashCode();
             hash = hash * 31 + Map.GetHashCode();
             hash = hash * 31 + GameElementReferences.GetHashCode();
 
             hash = hash * 31 + Cards.GetHashCode();
             hash = hash * 31 + MapElements.GetHashCode();
 
-            hash = hash * 31 + RoleCardsPerPlayerID.Custom_HashCode();
+            hash = hash * 31 + role__per__player.Custom_HashCode();
 
             hash = hash * 31 + PlayerActionsHistory.Custom_HashCode();
             hash = hash * 31 + InfectionReports.Custom_HashCode();

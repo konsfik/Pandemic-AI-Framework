@@ -88,7 +88,7 @@ namespace Pandemic_AI_Framework
             )
         {
             int atlanta = game.GQ_Find_CityByName("Atlanta");
-            foreach (var player in game.Players)
+            foreach (var player in game.players)
             {
                 game.MapElements.location__per__player[player] = atlanta;
             }

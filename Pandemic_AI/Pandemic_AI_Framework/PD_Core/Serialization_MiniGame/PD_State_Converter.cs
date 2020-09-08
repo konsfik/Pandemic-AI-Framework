@@ -60,25 +60,8 @@ namespace Pandemic_AI_Framework
             mini_game.unassigned_player_roles = new List<int>();
             foreach (var role_card in game.Cards.InactiveRoleCards)
             {
-                int role = role_card.Role;
-                switch (role)
-                {
-                    case PD_Player_Roles.None:
-                        mini_game.unassigned_player_roles.Add(PD_MiniGame__PlayerRole.UNDEFINED);
-                        break;
-                    case PD_Player_Roles.Medic:
-                        mini_game.unassigned_player_roles.Add(PD_MiniGame__PlayerRole.Medic);
-                        break;
-                    case PD_Player_Roles.Operations_Expert:
-                        mini_game.unassigned_player_roles.Add(PD_MiniGame__PlayerRole.Operations_Expert);
-                        break;
-                    case PD_Player_Roles.Researcher:
-                        mini_game.unassigned_player_roles.Add(PD_MiniGame__PlayerRole.Researcher);
-                        break;
-                    case PD_Player_Roles.Scientist:
-                        mini_game.unassigned_player_roles.Add(PD_MiniGame__PlayerRole.Scientist);
-                        break;
-                }
+                int mini_role = MiniGame_PlayerRole__From__PlayerRole(role_card);
+                mini_game.unassigned_player_roles.Add(mini_role);
             }
             mini_game.role__per__player = new int[mini_game.settings___number_of_players];
             foreach (int p in mini_game.players)
@@ -471,19 +454,11 @@ namespace Pandemic_AI_Framework
             }
 
             // role cards
-            List<PD_Role_Card> role_cards = new List<PD_Role_Card>();
-            role_cards.Add(
-                new PD_Role_Card(PD_MiniGame__PlayerRole.Operations_Expert, PD_Player_Roles.Operations_Expert)
-                );
-            role_cards.Add(
-                new PD_Role_Card(PD_MiniGame__PlayerRole.Researcher, PD_Player_Roles.Researcher)
-                );
-            role_cards.Add(
-                new PD_Role_Card(PD_MiniGame__PlayerRole.Medic, PD_Player_Roles.Medic)
-                );
-            role_cards.Add(
-                new PD_Role_Card(PD_MiniGame__PlayerRole.Scientist, PD_Player_Roles.Scientist)
-                );
+            List<int> role_cards = new List<int>();
+            role_cards.Add(PD_Player_Roles.Operations_Expert);
+            role_cards.Add(PD_Player_Roles.Researcher);
+            role_cards.Add(PD_Player_Roles.Medic);
+            role_cards.Add(PD_Player_Roles.Scientist);
 
             // game element references...
             PD_GameElementReferences GAME_ELEMENT_REFERENCES = new PD_GameElementReferences(
@@ -493,14 +468,13 @@ namespace Pandemic_AI_Framework
                 role_cards
                 );
 
-            Dictionary<int, PD_Role_Card> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, PD_Role_Card>();
+            Dictionary<int, int> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, int>();
             foreach (int p in mini_game.players)
             {
                 int mini_player_role = mini_game.role__per__player[p];
                 int player_role = PlayerRole__From__MiniGamePlayerRole(mini_player_role);
 
-                PD_Role_Card role_card = role_cards.Find(x => x.Role == player_role);
-                ROLE_CARDS__PER__PLAYER_ID.Add(p, role_card);
+                ROLE_CARDS__PER__PLAYER_ID.Add(p, player_role);
             }
 
 
@@ -622,19 +596,19 @@ namespace Pandemic_AI_Framework
             }
 
 
-            List<PD_Role_Card> all_role_cards = new List<PD_Role_Card>() {
-                new PD_Role_Card(0,PD_Player_Roles.Operations_Expert),
-                new PD_Role_Card(1,PD_Player_Roles.Researcher),
-                new PD_Role_Card(2,PD_Player_Roles.Medic),
-                new PD_Role_Card(3,PD_Player_Roles.Scientist)
+            List<int> all_role_cards = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
             };
 
-            List<PD_Role_Card> inactive_role_cards = all_role_cards.CustomDeepCopy();
+            List<int> inactive_role_cards = all_role_cards.CustomDeepCopy();
             foreach (int player in mini_game.players)
             {
                 int mini_role = mini_game.role__per__player[player];
-                PD_Role_Card role_card = Game_RoleCard__FROM__MiniGame_Role(mini_role);
-                inactive_role_cards.RemoveAll(x => x.Role == role_card.Role);
+                int game_role = PlayerRole__From__MiniGamePlayerRole(mini_role);
+                inactive_role_cards.Remove(game_role);
             }
 
             PD_GameCards CARDS = new PD_GameCards(
@@ -715,15 +689,6 @@ namespace Pandemic_AI_Framework
             {
                 return null;
             }
-        }
-
-        public static PD_Role_Card Game_RoleCard__FROM__MiniGame_Role(int mini_role)
-        {
-            int role = PlayerRole__From__MiniGamePlayerRole(mini_role);
-            int id = mini_role;
-            return new PD_Role_Card(
-                id, role
-                );
         }
 
         public static int PlayerRole__From__MiniGamePlayerRole(int mini_game__player_role)

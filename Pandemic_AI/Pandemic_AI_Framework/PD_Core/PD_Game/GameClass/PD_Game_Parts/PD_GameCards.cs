@@ -19,13 +19,13 @@ namespace Pandemic_AI_Framework
         public List<List<PD_PlayerCardBase>> DividedDeckOfPlayerCards { get; private set; }
         public List<PD_PlayerCardBase> DeckOfDiscardedPlayerCards { get; private set; }
         public Dictionary<int, List<PD_PlayerCardBase>> PlayerCardsPerPlayerID { get; private set; }
-        public List<PD_Role_Card> InactiveRoleCards { get; private set; }
+        public List<int> InactiveRoleCards { get; private set; }
 
         #region constructors
         // normal constructor
         public PD_GameCards(
             List<int> players,
-            List<PD_Role_Card> allRoleCards
+            List<int> allRoleCards
             )
         {
             DividedDeckOfInfectionCards = new List<List<int>>();
@@ -49,7 +49,7 @@ namespace Pandemic_AI_Framework
             List<List<PD_PlayerCardBase>> dividedDeckOfPlayerCards,
             List<PD_PlayerCardBase> deckOfDiscardedPlayerCards,
             Dictionary<int, List<PD_PlayerCardBase>> playerCardsPerPlayerID,
-            List<PD_Role_Card> inactiveRoleCards
+            List<int> inactiveRoleCards
             )
         {
             DividedDeckOfInfectionCards = dividedDeckOfInfectionCards.CustomDeepCopy();

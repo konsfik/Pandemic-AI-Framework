@@ -631,15 +631,17 @@ namespace Pandemic_AI_Framework
                 return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
+            if (game.Players.Any(
+                x => game.GQ_Find_Player_Role(x) == PD_Player_Roles.Researcher
+                ) == false)
+            {
+                return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
+            }
+
             var researcher = game.Players.Find(
                 x =>
                 game.GQ_Find_Player_Role(x) == PD_Player_Roles.Researcher
                 );
-
-            if (researcher == null)
-            {
-                return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
-            }
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             int researcherLocation = game.GQ_PlayerLocation(researcher);

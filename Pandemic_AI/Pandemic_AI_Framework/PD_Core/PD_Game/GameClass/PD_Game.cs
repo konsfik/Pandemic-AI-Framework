@@ -20,17 +20,18 @@ namespace Pandemic_AI_Framework
         // STATE - RELATED
         public PD_GameStateCounter GameStateCounter { get; private set; }
 
-        // REFERENCES
         public List<int> Players { get; private set; }
+        public Dictionary<int, int> RoleCardsPerPlayerID { get; private set; }
+
         public PD_Map Map { get; private set; }
+
+
+        // REFERENCES
         public PD_GameElementReferences GameElementReferences { get; private set; }
 
         // CONTAINERS
         public PD_GameCards Cards { get; private set; }
         public PD_MapElements MapElements { get; private set; }
-
-        // OWNERSHIPS
-        public Dictionary<int, PD_Role_Card> RoleCardsPerPlayerID { get; private set; }
 
         // GAME HISTORY
         public List<PD_GameAction_Base> PlayerActionsHistory { get; private set; }
@@ -305,23 +306,11 @@ namespace Pandemic_AI_Framework
                 all_epidemic_cards.Add(new PD_EpidemicCard(i));
             }
 
-            List<PD_Role_Card> roleCards = new List<PD_Role_Card>() {
-                new PD_Role_Card(
-                    2,
-                    PD_Player_Roles.Operations_Expert
-                    ),
-                new PD_Role_Card(
-                    4,
-                    PD_Player_Roles.Researcher
-                    ),
-                new PD_Role_Card(
-                    5,
-                    PD_Player_Roles.Medic
-                    ),
-                new PD_Role_Card(
-                    6,
-                    PD_Player_Roles.Scientist
-                    ),
+            List<int> roleCards = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
             };
 
             int number_of_research_stations = 6;
@@ -370,7 +359,7 @@ namespace Pandemic_AI_Framework
             List<int> allInfectionCards,
             List<PD_EpidemicCard> allEpidemicCards,
 
-            List<PD_Role_Card> allRoleCards,
+            List<int> allRoleCards,
             int number_of_research_stations
             )
         {
@@ -413,10 +402,10 @@ namespace Pandemic_AI_Framework
             Cards = new PD_GameCards(Players, allRoleCards);
 
 
-            RoleCardsPerPlayerID = new Dictionary<int, PD_Role_Card>();
+            RoleCardsPerPlayerID = new Dictionary<int, int>();
             foreach (var player in players)
             {
-                RoleCardsPerPlayerID.Add(player, null);
+                RoleCardsPerPlayerID.Add(player, PD_Player_Roles.None);
             }
 
             PlayerActionsHistory = new List<PD_GameAction_Base>();
@@ -442,7 +431,7 @@ namespace Pandemic_AI_Framework
             PD_MapElements mapElements,
             PD_GameCards cards,
 
-            Dictionary<int, PD_Role_Card> roleCardsPerPlayerID,
+            Dictionary<int, int> roleCardsPerPlayerID,
 
             List<PD_GameAction_Base> playerActionsHistory,
             List<PD_InfectionReport> infectionReports,
@@ -540,7 +529,7 @@ namespace Pandemic_AI_Framework
 
             // 3.2. Infect the first cities - process
             // 3.2.1. put all infection cards in the divided deck of infection cards...
-            Cards.DividedDeckOfInfectionCards.Add(new List<int>(GameElementReferences.InfectionCards));
+            Cards.DividedDeckOfInfectionCards.Add(GameElementReferences.InfectionCards.CustomDeepCopy());
 
             // 3.2.2 shuffle the infection cards deck...
             Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);

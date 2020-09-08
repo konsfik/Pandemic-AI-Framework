@@ -268,7 +268,7 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            return game.RoleCardsPerPlayerID[player].Role;
+            return game.RoleCardsPerPlayerID[player];
         }
 
 
@@ -332,7 +332,7 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            bool player_Is_Scientist = game.RoleCardsPerPlayerID[player].Role == PD_Player_Roles.Scientist;
+            bool player_Is_Scientist = game.RoleCardsPerPlayerID[player] == PD_Player_Roles.Scientist;
             var cityCardsInPlayerHand = GQ_CityCardsInPlayerHand(game, player);
 
             if (player_Is_Scientist == false && cityCardsInPlayerHand.Count < 5)

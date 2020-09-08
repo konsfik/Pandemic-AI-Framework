@@ -63,7 +63,7 @@ namespace Experiment_1
             Random randomness_provider = new Random();
 
             // testbed - settings...
-            int number_of_games_to_generate = 10;
+            int number_of_games_to_generate = 1000;
             int number_of_players = 4;
             int game_difficulty = 0; // easy
 
@@ -82,7 +82,7 @@ namespace Experiment_1
             bool keep_trace = false;
 
             // debugging settings
-            bool display_actions = true;
+            bool display_actions = false;
             bool display_end_state = true;
 
             // define the agent and the dictionary for the experiment runner

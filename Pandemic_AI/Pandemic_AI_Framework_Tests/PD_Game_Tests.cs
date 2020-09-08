@@ -150,8 +150,8 @@ namespace Pandemic_AI_Framework.Tests
             }
             for (int pp = 0; pp < game_1.GameElementReferences.RoleCards.Count; pp++)
             {
-                if (game_1.GameElementReferences.RoleCards[pp].Role
-                    != game_2.GameElementReferences.RoleCards[pp].Role)
+                if (game_1.GameElementReferences.RoleCards[pp]
+                    != game_2.GameElementReferences.RoleCards[pp])
                 {
                     return false;
                 }

@@ -18,30 +18,30 @@ namespace Pandemic_AI_Framework.Tests
 
             PD_Game game = PD_Game.Create(
                 randomness_provider,
-                4, 
-                0, 
+                4,
+                0,
                 true
                 );
             PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
-            List<PD_Role_Card> allRoleCards = game.GameElementReferences.RoleCards;
+            List<int> allRoleCards = game.GameElementReferences.RoleCards;
 
             // fix player roles
             game.RoleCardsPerPlayerID[0] = allRoleCards.Find(
                 x =>
-                x.Role == PD_Player_Roles.Operations_Expert
+                x == PD_Player_Roles.Operations_Expert
                 );
             game.RoleCardsPerPlayerID[1] = allRoleCards.Find(
                 x =>
-                x.Role == PD_Player_Roles.Medic
+                x == PD_Player_Roles.Medic
                 );
             game.RoleCardsPerPlayerID[2] = allRoleCards.Find(
                 x =>
-                x.Role == PD_Player_Roles.Researcher
+                x == PD_Player_Roles.Researcher
                 );
             game.RoleCardsPerPlayerID[3] = allRoleCards.Find(
                 x =>
-                x.Role == PD_Player_Roles.Scientist
+                x == PD_Player_Roles.Scientist
                 );
 
             game.Cards.PlayerCardsPerPlayerID[0].Clear();

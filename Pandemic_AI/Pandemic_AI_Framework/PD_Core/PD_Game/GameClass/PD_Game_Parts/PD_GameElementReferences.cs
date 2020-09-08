@@ -15,7 +15,7 @@ namespace Pandemic_AI_Framework
         public List<PD_CityCard> CityCards { get; private set; }
         public List<PD_EpidemicCard> EpidemicCards { get; private set; }
 
-        public List<PD_Role_Card> RoleCards { get; private set; }
+        public List<int> RoleCards { get; private set; }
         #endregion
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Pandemic_AI_Framework
             List<int> infectionCards,
             List<PD_EpidemicCard> epidemicCards,
 
-            List<PD_Role_Card> roleCards
+            List<int> roleCards
             )
         {
             CityCards = cityCards.CustomDeepCopy();

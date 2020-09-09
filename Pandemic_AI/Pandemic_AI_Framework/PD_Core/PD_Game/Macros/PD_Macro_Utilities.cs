@@ -183,33 +183,33 @@ namespace Pandemic_AI_Framework
             return description;
         }
 
-        public static List<PD_CityCard> Find_CityCardsUsedForWalking_In_MacroAction(
+        public static List<int> Find_CityCardsUsedForWalking_In_MacroAction(
             PD_MacroAction macroAction
             )
         {
             return Find_CityCardsUsedForWalking_In_ActionList(macroAction.Actions_All);
         }
 
-        public static List<PD_CityCard> Find_CityCardsUsedForWalking_In_ActionList(
+        public static List<int> Find_CityCardsUsedForWalking_In_ActionList(
             List<PD_GameAction_Base> actionList
             )
         {
-            List<PD_CityCard> cityCardsUsedForWalking = new List<PD_CityCard>();
+            List<int> cityCardsUsedForWalking = new List<int>();
             foreach (var action in actionList)
             {
                 if (action.GetType() == typeof(PD_PMA_DirectFlight))
                 {
-                    PD_CityCard cityCardUsedForWalking = ((PD_PMA_DirectFlight)action).CityCardToDiscard;
+                    int cityCardUsedForWalking = ((PD_PMA_DirectFlight)action).UsedCard;
                     cityCardsUsedForWalking.Add(cityCardUsedForWalking);
                 }
                 else if (action.GetType() == typeof(PD_PMA_CharterFlight))
                 {
-                    PD_CityCard cityCardUsedForWalking = ((PD_PMA_CharterFlight)action).CityCardToDiscard;
+                    int cityCardUsedForWalking = ((PD_PMA_CharterFlight)action).UsedCard;
                     cityCardsUsedForWalking.Add(cityCardUsedForWalking);
                 }
                 else if (action.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
                 {
-                    PD_CityCard cityCardUsedForWalking = ((PD_PMA_OperationsExpert_Flight)action).CityCardToDiscard;
+                    int cityCardUsedForWalking = ((PD_PMA_OperationsExpert_Flight)action).UsedCard;
                     cityCardsUsedForWalking.Add(cityCardUsedForWalking);
                 }
             }

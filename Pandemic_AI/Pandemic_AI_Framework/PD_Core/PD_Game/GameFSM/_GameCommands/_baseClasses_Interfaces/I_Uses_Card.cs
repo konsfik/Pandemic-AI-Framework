@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Pandemic_AI_Framework
 {
-    public interface I_Movement_Action
+    public interface I_Uses_Card
     {
-        int FromCity { get; }
-        int ToCity { get; }
+        int UsedCard { get; }
     }
 }

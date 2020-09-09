@@ -16,9 +16,9 @@ namespace Pandemic_AI_Framework
         public List<List<int>> DividedDeckOfInfectionCards { get; private set; }
         public List<int> ActiveInfectionCards { get; private set; }
         public List<int> DeckOfDiscardedInfectionCards { get; private set; }
-        public List<List<PD_PlayerCardBase>> DividedDeckOfPlayerCards { get; private set; }
-        public List<PD_PlayerCardBase> DeckOfDiscardedPlayerCards { get; private set; }
-        public Dictionary<int, List<PD_PlayerCardBase>> PlayerCardsPerPlayerID { get; private set; }
+        public List<List<int>> DividedDeckOfPlayerCards { get; private set; }
+        public List<int> DeckOfDiscardedPlayerCards { get; private set; }
+        public Dictionary<int, List<int>> PlayerCardsPerPlayerID { get; private set; }
         public List<int> InactiveRoleCards { get; private set; }
 
         #region constructors
@@ -32,11 +32,11 @@ namespace Pandemic_AI_Framework
             ActiveInfectionCards = new List<int>();
             DeckOfDiscardedInfectionCards = new List<int>();
 
-            DividedDeckOfPlayerCards = new List<List<PD_PlayerCardBase>>();
-            DeckOfDiscardedPlayerCards = new List<PD_PlayerCardBase>();
-            PlayerCardsPerPlayerID = new Dictionary<int, List<PD_PlayerCardBase>>();
+            DividedDeckOfPlayerCards = new List<List<int>>();
+            DeckOfDiscardedPlayerCards = new List<int>();
+            PlayerCardsPerPlayerID = new Dictionary<int, List<int>>();
             foreach (var player in players)
-                PlayerCardsPerPlayerID.Add(player, new List<PD_PlayerCardBase>());
+                PlayerCardsPerPlayerID.Add(player, new List<int>());
             InactiveRoleCards = allRoleCards.CustomDeepCopy();
         }
 
@@ -46,9 +46,9 @@ namespace Pandemic_AI_Framework
             List<List<int>> dividedDeckOfInfectionCards,
             List<int> activeInfectionCards,
             List<int> deckOfDiscardedInfectionCards,
-            List<List<PD_PlayerCardBase>> dividedDeckOfPlayerCards,
-            List<PD_PlayerCardBase> deckOfDiscardedPlayerCards,
-            Dictionary<int, List<PD_PlayerCardBase>> playerCardsPerPlayerID,
+            List<List<int>> dividedDeckOfPlayerCards,
+            List<int> deckOfDiscardedPlayerCards,
+            Dictionary<int, List<int>> playerCardsPerPlayerID,
             List<int> inactiveRoleCards
             )
         {
@@ -108,7 +108,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (PlayerCardsPerPlayerID.Dictionary_Equal(other.PlayerCardsPerPlayerID) == false)
+            else if (PlayerCardsPerPlayerID.Dictionary_Equals(other.PlayerCardsPerPlayerID) == false)
             {
                 return false;
             }

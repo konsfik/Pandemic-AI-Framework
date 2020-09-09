@@ -51,7 +51,7 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            int numDiseasesCured = game.GQ_Num_DiseasesCured();
+            int numDiseasesCured = game.GQ_Num_Cured_or_Eradicated_DiseaseTypes();
             double percentageDiseasesCured = (double)numDiseasesCured / 4;
             return percentageDiseasesCured;
         }

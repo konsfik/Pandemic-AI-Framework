@@ -6,6 +6,6 @@ namespace Pandemic_AI_Framework
 {
     public interface I_Discard_Action
     {
-        PD_PlayerCardBase PlayerCardToDiscard { get; }
+        int PlayerCardToDiscard { get; }
     }
 }

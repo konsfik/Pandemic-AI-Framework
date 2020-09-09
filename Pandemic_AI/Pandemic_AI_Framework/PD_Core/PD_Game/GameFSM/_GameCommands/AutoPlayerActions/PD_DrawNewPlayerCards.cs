@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework
             )
         {
             // draw new player cards...
-            var newPlayerCards = new List<PD_PlayerCardBase>();
+            var newPlayerCards = new List<int>();
 
             for (int i = 0; i < 2; i++)
             {

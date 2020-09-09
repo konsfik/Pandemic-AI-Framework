@@ -16,7 +16,7 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public PD_PlayerCardBase PlayerCardToDiscard { get; protected set; }
+        public int PlayerCardToDiscard { get; protected set; }
 
         /// <summary>
         /// normal && json constructor
@@ -26,7 +26,7 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_Discard_AfterDrawing(
             int player,
-            PD_PlayerCardBase playerCardToDiscard
+            int playerCardToDiscard
             )
         {
             this.Player = player;
@@ -35,18 +35,18 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            if (PlayerCardToDiscard is PD_CityCard city_card)
+            if (PlayerCardToDiscard < 48)
             {
                 return new PD_PA_Discard_AfterDrawing(
                     Player,
-                    city_card.GetCustomDeepCopy()
+                    PlayerCardToDiscard
                     );
             }
-            else if (PlayerCardToDiscard is PD_EpidemicCard epidemic_card)
+            else if (PlayerCardToDiscard >= 128)
             {
                 return new PD_PA_Discard_AfterDrawing(
                     Player,
-                    epidemic_card.GetCustomDeepCopy()
+                    PlayerCardToDiscard
                     );
             }
             return null;
@@ -120,8 +120,8 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + PlayerCardToDiscard.GetHashCode();
+            hash = hash * 31 + Player;
+            hash = hash * 31 + PlayerCardToDiscard;
 
             return hash;
         }
@@ -132,7 +132,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0} discards the card: {1}",
                 this.Player.ToString(),
-                this.PlayerCardToDiscard.GetDescription()
+                this.PlayerCardToDiscard.ToString()
                 );
         }
     }

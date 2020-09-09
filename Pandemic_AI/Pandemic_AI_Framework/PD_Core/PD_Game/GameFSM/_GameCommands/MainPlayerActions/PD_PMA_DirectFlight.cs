@@ -13,29 +13,30 @@ namespace Pandemic_AI_Framework
         PD_GameAction_Base,
         IEquatable<PD_PMA_DirectFlight>,
         I_Player_Action,
-        I_Movement_Action
+        I_Movement_Action,
+        I_Uses_Card
     {
         public int Player { get; private set; }
 
-        public int InitialLocation { get; protected set; }
+        public int FromCity { get; protected set; }
 
-        public int TargetLocation { get; protected set; }
+        public int ToCity { get; protected set; }
 
-        public PD_CityCard CityCardToDiscard { get; private set; }
+        public int UsedCard { get; private set; }
 
 
         [JsonConstructor]
         public PD_PMA_DirectFlight(
             int player,
-            int initialLocation,
-            int targetLocation,
-            PD_CityCard cityCardToDiscard
+            int fromCity,
+            int toCity,
+            int usedCard
             )
         {
             this.Player = player;
-            this.InitialLocation = initialLocation;
-            this.TargetLocation = targetLocation;
-            this.CityCardToDiscard = cityCardToDiscard.GetCustomDeepCopy();
+            this.FromCity = fromCity;
+            this.ToCity = toCity;
+            this.UsedCard = usedCard;
         }
 
         // private constructor, for custom deep copy purposes only
@@ -44,9 +45,9 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.InitialLocation = actionToCopy.InitialLocation;
-            this.TargetLocation = actionToCopy.TargetLocation;
-            this.CityCardToDiscard = actionToCopy.CityCardToDiscard.GetCustomDeepCopy();
+            this.FromCity = actionToCopy.FromCity;
+            this.ToCity = actionToCopy.ToCity;
+            this.UsedCard = actionToCopy.UsedCard;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -61,16 +62,16 @@ namespace Pandemic_AI_Framework
         {
             game.GO_PlayerDiscardsPlayerCard(
                 Player,
-                CityCardToDiscard
+                UsedCard
                 );
 
             game.GO_MovePawnFromCityToCity(
                 Player,
-                InitialLocation,
-                TargetLocation
+                FromCity,
+                ToCity
                 );
 
-            game.Medic_MoveTreat(TargetLocation);
+            game.Medic_MoveTreat(ToCity);
         }
 
         public override string GetDescription()
@@ -78,9 +79,9 @@ namespace Pandemic_AI_Framework
             string actionDescription = String.Format(
                 "{0}: DIRECT_FLIGHT | card: {1} | {2} -> {3}",
                 Player.ToString(),
-                CityCardToDiscard.City.ToString(),
-                InitialLocation.ToString(),
-                TargetLocation.ToString()
+                UsedCard.ToString(),
+                FromCity.ToString(),
+                ToCity.ToString()
                 );
 
             return actionDescription;
@@ -93,15 +94,15 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.InitialLocation != other.InitialLocation)
+            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
-            else if (this.TargetLocation != other.TargetLocation)
+            else if (this.ToCity != other.ToCity)
             {
                 return false;
             }
-            else if (this.CityCardToDiscard != other.CityCardToDiscard)
+            else if (this.UsedCard != other.UsedCard)
             {
                 return false;
             }
@@ -140,9 +141,9 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + InitialLocation;
-            hash = hash * 31 + TargetLocation;
-            hash = hash * 31 + CityCardToDiscard.GetHashCode();
+            hash = hash * 31 + FromCity;
+            hash = hash * 31 + ToCity;
+            hash = hash * 31 + UsedCard;
 
             return hash;
         }

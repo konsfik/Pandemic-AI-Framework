@@ -16,9 +16,9 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public int InitialLocation { get; protected set; }
+        public int FromCity { get; protected set; }
 
-        public int TargetLocation { get; protected set; }
+        public int ToCity { get; protected set; }
 
         public PD_PMA_DriveFerry(
             int player,
@@ -27,8 +27,8 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = player;
-            this.InitialLocation = initialLocation;
-            this.TargetLocation = targetLocation;
+            this.FromCity = initialLocation;
+            this.ToCity = targetLocation;
         }
 
         // private constructor, for custom deep copy purposes only
@@ -37,8 +37,8 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.InitialLocation = actionToCopy.InitialLocation;
-            this.TargetLocation = actionToCopy.TargetLocation;
+            this.FromCity = actionToCopy.FromCity;
+            this.ToCity = actionToCopy.ToCity;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
@@ -53,11 +53,11 @@ namespace Pandemic_AI_Framework
         {
             game.GO_MovePawnFromCityToCity(
                 Player,
-                InitialLocation,
-                TargetLocation
+                FromCity,
+                ToCity
                 );
 
-            game.Medic_MoveTreat(TargetLocation);
+            game.Medic_MoveTreat(ToCity);
         }
 
         public override string GetDescription()
@@ -65,8 +65,8 @@ namespace Pandemic_AI_Framework
             string actionDescription = String.Format(
                 "{0}: DRIVE_FERRY: {1} -> {2}",
                 Player.ToString(),
-                InitialLocation.ToString(),
-                TargetLocation.ToString()
+                FromCity.ToString(),
+                ToCity.ToString()
                 );
 
             return actionDescription;
@@ -79,11 +79,11 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.InitialLocation != other.InitialLocation)
+            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
-            else if (this.TargetLocation != other.TargetLocation)
+            else if (this.ToCity != other.ToCity)
             {
                 return false;
             }
@@ -121,8 +121,8 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + InitialLocation;
-            hash = hash * 31 + TargetLocation;
+            hash = hash * 31 + FromCity;
+            hash = hash * 31 + ToCity;
 
             return hash;
         }

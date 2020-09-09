@@ -305,7 +305,7 @@ namespace Pandemic_AI_Framework
             else if (this.map_elements___location__per__player
                 .Dictionary_Equal_S(other.map_elements___location__per__player) == false) return false;
             else if (this.map_elements___infection_cubes__per__type__per__city
-                .Dictionary_Equal(other.map_elements___infection_cubes__per__type__per__city) == false) return false;
+                .Dictionary_Equals(other.map_elements___infection_cubes__per__type__per__city) == false) return false;
 
             // game elements
             else if (this.map_elements___available_research_stations

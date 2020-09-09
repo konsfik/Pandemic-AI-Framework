@@ -13,7 +13,7 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
         public int OtherPlayer { get; private set; }
-        public PD_CityCard CityCardToGive { get; private set; }
+        public int CityCardToGive { get; private set; }
 
         #region constructors
         /// <summary>
@@ -26,7 +26,7 @@ namespace Pandemic_AI_Framework
         public PD_PA_ShareKnowledge_GiveCard(
             int player,
             int otherPlayer,
-            PD_CityCard cityCardToGive
+            int cityCardToGive
             )
         {
             Player = player;
@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
         {
             Player = actionToCopy.Player;
             OtherPlayer = actionToCopy.OtherPlayer;
-            CityCardToGive = actionToCopy.CityCardToGive.GetCustomDeepCopy();
+            CityCardToGive = actionToCopy.CityCardToGive;
         }
         #endregion
 
@@ -70,7 +70,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("Players do not share the same location");
             }
-            else if (game.GQ_PlayerLocation(Player) != CityCardToGive.City)
+            else if (game.GQ_PlayerLocation(Player) != CityCardToGive)
             {
                 throw new System.Exception("Player is not on the correct city");
             }
@@ -89,7 +89,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: SHARE_KNOWLEDGE | GIVE {1} to {2}",
                 Player.ToString(),
-                CityCardToGive.City.ToString(),
+                CityCardToGive.ToString(),
                 OtherPlayer.ToString()
                 );
         }
@@ -144,7 +144,7 @@ namespace Pandemic_AI_Framework
 
             hash = hash * 31 + Player;
             hash = hash * 31 + OtherPlayer;
-            hash = hash * 31 + CityCardToGive.GetHashCode();
+            hash = hash * 31 + CityCardToGive;
 
             return hash;
         }

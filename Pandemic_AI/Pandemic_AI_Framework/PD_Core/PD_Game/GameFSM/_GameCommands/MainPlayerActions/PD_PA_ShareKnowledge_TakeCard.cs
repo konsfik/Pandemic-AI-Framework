@@ -13,7 +13,7 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
         public int OtherPlayer { get; private set; }
-        public PD_CityCard CityCardToTake { get; private set; }
+        public int CityCardToTake { get; private set; }
 
         #region constructors
         /// <summary>
@@ -26,12 +26,12 @@ namespace Pandemic_AI_Framework
         public PD_PA_ShareKnowledge_TakeCard(
             int player,
             int otherPlayer,
-            PD_CityCard cityCardToTake
+            int cityCardToTake
             )
         {
             Player = player;
             OtherPlayer = otherPlayer;
-            CityCardToTake = cityCardToTake.GetCustomDeepCopy();
+            CityCardToTake = cityCardToTake;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
         {
             Player = actionToCopy.Player;
             OtherPlayer = actionToCopy.OtherPlayer;
-            CityCardToTake = actionToCopy.CityCardToTake.GetCustomDeepCopy();
+            CityCardToTake = actionToCopy.CityCardToTake;
         }
         #endregion
 
@@ -70,7 +70,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("Players do not share the same location");
             }
-            else if (game.GQ_PlayerLocation(Player) != CityCardToTake.City)
+            else if (game.GQ_PlayerLocation(Player) != CityCardToTake)
             {
                 throw new System.Exception("Player is not on the correct city");
             }
@@ -89,7 +89,7 @@ namespace Pandemic_AI_Framework
             return String.Format(
                 "{0}: SHARE_KNOWLEDGE | TAKE {1} from {2}",
                 Player.ToString(),
-                CityCardToTake.City.ToString(),
+                CityCardToTake.ToString(),
                 OtherPlayer.ToString()
                 );
         }
@@ -142,9 +142,9 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + OtherPlayer.GetHashCode();
-            hash = hash * 31 + CityCardToTake.GetHashCode();
+            hash = hash * 31 + Player;
+            hash = hash * 31 + OtherPlayer;
+            hash = hash * 31 + CityCardToTake;
 
             return hash;
         }

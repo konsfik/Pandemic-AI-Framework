@@ -282,10 +282,10 @@ namespace Pandemic_AI_Framework
             };
 
 
-            List<PD_CityCard> allCityCards = new List<PD_CityCard>();
-            for (int i = 0; i < 48; i++)
+            List<int> allCityCards = new List<int>();
+            for (int cc = 0; cc < 48; cc++)
             {
-                allCityCards.Add(new PD_CityCard(i, cities[i]));
+                allCityCards.Add(cc);
             }
 
             List<int> all_infection_cards = new List<int>();
@@ -294,10 +294,10 @@ namespace Pandemic_AI_Framework
                 all_infection_cards.Add(i);
             }
 
-            List<PD_EpidemicCard> all_epidemic_cards = new List<PD_EpidemicCard>();
-            for (int i = 0; i < 6; i++)
+            List<int> all_epidemic_cards = new List<int>();
+            for (int ec = 0; ec < 6; ec++)
             {
-                all_epidemic_cards.Add(new PD_EpidemicCard(i));
+                all_epidemic_cards.Add(128 + ec);
             }
 
             List<int> roleCards = new List<int>() {
@@ -349,9 +349,9 @@ namespace Pandemic_AI_Framework
             Dictionary<int, int> infection_type__per__city,
             Dictionary<int, List<int>> neighbors_per_city,
 
-            List<PD_CityCard> allCityCards,
+            List<int> allCityCards,
             List<int> allInfectionCards,
-            List<PD_EpidemicCard> allEpidemicCards,
+            List<int> allEpidemicCards,
 
             List<int> allRoleCards,
             int number_of_research_stations
@@ -576,8 +576,8 @@ namespace Pandemic_AI_Framework
             }
 
             // 4.2. Deal cards to players: initial hands
-            var playerCardsTempList = new List<PD_PlayerCardBase>();
-            playerCardsTempList.AddRange(GameElementReferences.CityCards.Cast<PD_PlayerCardBase>().ToList());
+            var playerCardsTempList = new List<int>();
+            playerCardsTempList.AddRange(GameElementReferences.CityCards.Cast<int>().ToList());
             Cards.DividedDeckOfPlayerCards.Add(playerCardsTempList);
             Cards.DividedDeckOfPlayerCards.ShuffleAllSubListsElements(randomness_provider);
 
@@ -595,7 +595,7 @@ namespace Pandemic_AI_Framework
             // 5.1. get the necessary number of epidemic cards
             int numEpidemicCards = GameSettings.GetNumberOfEpidemicCardsToUseInGame();
 
-            var epidemicCardsTempList = new List<PD_EpidemicCard>(GameElementReferences.EpidemicCards);
+            var epidemicCardsTempList = new List<int>(GameElementReferences.EpidemicCards);
             while (epidemicCardsTempList.Count > numEpidemicCards)
             {
                 epidemicCardsTempList.DrawOneRandom(randomness_provider);
@@ -611,10 +611,10 @@ namespace Pandemic_AI_Framework
             int remainingCardsNumber = numCards % numSubDecks;
 
             // create the sub decks
-            List<List<PD_PlayerCardBase>> temporaryDividedList = new List<List<PD_PlayerCardBase>>();
+            List<List<int>> temporaryDividedList = new List<List<int>>();
             for (int i = 0; i < numEpidemicCards; i++)
             {
-                var subDeck = new List<PD_PlayerCardBase>();
+                var subDeck = new List<int>();
                 for (int j = 0; j < numCardsPerSubDeck; j++)
                 {
                     subDeck.Add(allPlayerCardsList.DrawOneRandom(randomness_provider));

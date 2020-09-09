@@ -147,9 +147,7 @@ namespace Pandemic_AI_Framework
 
             foreach (int key in this_dictionary_keys)
             {
-                string this_value = this_dictionary[key];
-                string other_value = other_dictionary[key];
-                if (this_value.Equals(other_value) == false)
+                if (this_dictionary[key] != other_dictionary[key])
                 {
                     return false;
                 }
@@ -299,76 +297,6 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static bool Dictionary_Equals<T>(
-            this Dictionary<int, List<T>> this_dictionary,
-            Dictionary<int, List<T>> other_dictionary
-            )
-            where T : IEquatable<T>
-        {
-            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-            // compare keys - size
-            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-            {
-                return false;
-            }
-
-            for (int k = 0; k < this_dictionary.Keys.Count; k++)
-            {
-                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
-                {
-                    return false;
-                }
-            }
-
-            foreach (int key in this_dictionary_keys)
-            {
-                if (this_dictionary[key].List_Equals(other_dictionary[key]) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        //Dictionary<int, List<PD_PlayerCardBase>>
-        public static bool Dictionary_Equal(
-            this Dictionary<int, List<PD_PlayerCardBase>> this_dictionary,
-            Dictionary<int, List<PD_PlayerCardBase>> other_dictionary
-            )
-        {
-            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-            // compare keys - size
-            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-            {
-                return false;
-            }
-
-            for (int k = 0; k < this_dictionary.Keys.Count; k++)
-            {
-                if (this_dictionary_keys[k].Equals(other_dictionary_keys[k]) == false)
-                {
-                    return false;
-                }
-            }
-
-            foreach (int key in this_dictionary_keys)
-            {
-                List<PD_PlayerCardBase> this_value = this_dictionary[key];
-                List<PD_PlayerCardBase> other_value = other_dictionary[key];
-                if (this_value.List_Equals(other_value) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public static bool Dictionary_Equal_S<K, V>(
             this Dictionary<K, V> this_dictionary,
             Dictionary<K, V> other_dictionary
@@ -398,76 +326,6 @@ namespace Pandemic_AI_Framework
                 V this_value = this_dictionary[key];
                 V other_value = other_dictionary[key];
                 if (this_value.Equals(other_value) == false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        //public static bool Dictionary_Equal(
-        //    this Dictionary<int, List<int>> this_dictionary,
-        //    Dictionary<int, List<int>> other_dictionary
-        //    )
-        //{
-        //    List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-        //    List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-        //    // compare keys - size
-        //    if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-        //    {
-        //        return false;
-        //    }
-
-        //    for (int k = 0; k < this_dictionary.Keys.Count; k++)
-        //    {
-        //        if (this_dictionary_keys[k] != other_dictionary_keys[k])
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    foreach (int key in this_dictionary_keys)
-        //    {
-        //        List<int> this_value = this_dictionary[key];
-        //        List<int> other_value = other_dictionary[key];
-        //        if (this_value.SequenceEqual(other_value) == false)
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    return true;
-        //}
-
-        public static bool Dictionary_Equal(
-            this Dictionary<int, Dictionary<int, int>> this_dictionary,
-            Dictionary<int, Dictionary<int, int>> other_dictionary
-            )
-        {
-            List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
-            List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
-
-            // compare keys - size
-            if (this_dictionary_keys.Count != other_dictionary_keys.Count)
-            {
-                return false;
-            }
-
-            for (int k = 0; k < this_dictionary.Keys.Count; k++)
-            {
-                if (this_dictionary_keys[k] != other_dictionary_keys[k])
-                {
-                    return false;
-                }
-            }
-
-            foreach (int key in this_dictionary_keys)
-            {
-                Dictionary<int, int> this_value = this_dictionary[key];
-                Dictionary<int, int> other_value = other_dictionary[key];
-                if (this_value.SequenceEqual(other_value) == false)
                 {
                     return false;
                 }
@@ -695,25 +553,6 @@ namespace Pandemic_AI_Framework
             return copyList;
         }
 
-        public static List<PD_PlayerCardBase> CustomDeepCopy(this List<PD_PlayerCardBase> originalList)
-        {
-            List<PD_PlayerCardBase> copyList = new List<PD_PlayerCardBase>();
-
-            foreach (var element in originalList)
-            {
-                if (element.GetType() == typeof(PD_CityCard))
-                {
-                    copyList.Add(((PD_CityCard)element).GetCustomDeepCopy());
-                }
-                else if (element.GetType() == typeof(PD_EpidemicCard))
-                {
-                    copyList.Add(((PD_EpidemicCard)element).GetCustomDeepCopy());
-                }
-
-            }
-
-            return copyList;
-        }
 
         public static List<List<int>> CustomDeepCopy(this List<List<int>> originalListOfLists)
         {
@@ -727,17 +566,6 @@ namespace Pandemic_AI_Framework
             return copyListOfLists;
         }
 
-        public static List<List<PD_PlayerCardBase>> CustomDeepCopy(this List<List<PD_PlayerCardBase>> originalListOfLists)
-        {
-            List<List<PD_PlayerCardBase>> copyListOfLists = new List<List<PD_PlayerCardBase>>();
-
-            foreach (var subList in originalListOfLists)
-            {
-                copyListOfLists.Add(subList.CustomDeepCopy());
-            }
-
-            return copyListOfLists;
-        }
 
         public static Dictionary<int, int> CustomDeepCopy(
             this Dictionary<int, int> originalDictionary
@@ -819,22 +647,6 @@ namespace Pandemic_AI_Framework
             foreach (var kvp in originalDictionary)
             {
                 dictionaryCopy.Add(kvp.Key, kvp.Value.GetCustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<int, List<PD_PlayerCardBase>> CustomDeepCopy(
-            this Dictionary<int, List<PD_PlayerCardBase>> originalDictionary)
-        {
-            Dictionary<int, List<PD_PlayerCardBase>> dictionaryCopy =
-                new Dictionary<int, List<PD_PlayerCardBase>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                int key = kvp.Key;
-                List<PD_PlayerCardBase> value = kvp.Value;
-                dictionaryCopy.Add(key, value.CustomDeepCopy());
             }
 
             return dictionaryCopy;

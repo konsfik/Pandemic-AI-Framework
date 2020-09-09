@@ -127,12 +127,12 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("trying to cure a cured disease");
             }
-            CureMarkersStates[diseaseTypeToCure] = 1;
+            CureMarkersStates[diseaseTypeToCure] = PD_DiseaseStates.Cured;
         }
 
         public void EradicateDisease(int diseaseTypeToEradicate)
         {
-            CureMarkersStates[diseaseTypeToEradicate] = 2;
+            CureMarkersStates[diseaseTypeToEradicate] = PD_DiseaseStates.Eradicated;
         }
 
         public void ResetOutbreaksCounter()

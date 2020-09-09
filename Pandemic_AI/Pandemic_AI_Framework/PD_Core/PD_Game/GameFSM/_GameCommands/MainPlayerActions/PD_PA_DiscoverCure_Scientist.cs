@@ -12,7 +12,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action
     {
         public int Player { get; private set; }
-        public List<PD_CityCard> CityCardsToDiscard { get; private set; }
+        public List<int> CityCardsToDiscard { get; private set; }
         public int CityOfResearchStation { get; private set; }
         public int TypeOfDiseaseToCure { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Pandemic_AI_Framework
         public PD_PA_DiscoverCure_Scientist(
             int player,
             int cityOfResearchStation,
-            List<PD_CityCard> cityCardsToDiscard,
+            List<int> cityCardsToDiscard,
             int typeOfDiseaseToCure
             )
         {
@@ -86,7 +86,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("selected city is not the player's location");
             }
-            List<PD_CityCard> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
+            List<int> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
             foreach (var city_card in CityCardsToDiscard)
             {
                 if (city_cards_in_player_hand.Contains(city_card) == false)
@@ -173,7 +173,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Player;
             hash = hash * 31 + CityOfResearchStation;
             hash = hash * 31 + TypeOfDiseaseToCure;
             hash = hash * 31 + CityCardsToDiscard.Custom_HashCode();

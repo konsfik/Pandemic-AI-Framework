@@ -38,9 +38,9 @@ namespace Pandemic_AI_Framework
             int num_SubLists = game.Cards.DividedDeckOfPlayerCards.Count;
             List<int> subLists_Sizes = new List<int>();
             List<bool> subLists_IncludeEpidemic = new List<bool>();
-            foreach (List<PD_PlayerCardBase> subList in game.Cards.DividedDeckOfPlayerCards)
+            foreach (List<int> subList in game.Cards.DividedDeckOfPlayerCards)
             {
-                if (subList.Any(x => x is PD_EpidemicCard))
+                if (subList.Any(x => x >= 128))
                 {
                     subLists_IncludeEpidemic.Add(true);
                     subLists_Sizes.Add(subList.Count - 1);
@@ -56,11 +56,11 @@ namespace Pandemic_AI_Framework
             var allPlayerCards_IncludingEpidemics = game.Cards.DividedDeckOfPlayerCards.DrawAllElementsOfAllSubListsAsOneList();
             var playerCityCards = allPlayerCards_IncludingEpidemics.FindAll(
                 x =>
-                x.GetType() == typeof(PD_CityCard)
+                x < game.Map.number_of_cities
                 );
             var epidemicCards = allPlayerCards_IncludingEpidemics.FindAll(
                 x =>
-                x.GetType() == typeof(PD_EpidemicCard)
+                x >= 128
                 );
 
             // compose the new randomized list of lists
@@ -69,7 +69,7 @@ namespace Pandemic_AI_Framework
             {
                 int sublist_Size = subLists_Sizes[subList_Index];
                 bool subList_IncludesEpidemic = subLists_IncludeEpidemic[subList_Index];
-                List<PD_PlayerCardBase> newSubList = new List<PD_PlayerCardBase>();
+                List<int> newSubList = new List<int>();
                 for (int item_Index = 0; item_Index < sublist_Size; item_Index++)
                 {
                     newSubList.Add(playerCityCards.DrawOneRandom(randomness_provider));
@@ -273,7 +273,7 @@ namespace Pandemic_AI_Framework
         public static void GO_PlayerDiscardsPlayerCard(
             this PD_Game game,
             int player,
-            PD_PlayerCardBase playerCardToDiscard
+            int playerCardToDiscard
             )
         {
             game.Cards.PlayerCardsPerPlayerID[player].Remove(playerCardToDiscard);

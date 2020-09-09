@@ -38,9 +38,9 @@ namespace Pandemic_AI_Framework
                         player
                         );
 
-                foreach (PD_CityCard city_card in cityCardsInPlayerHand)
+                foreach (int city_card in cityCardsInPlayerHand)
                 {
-                    int city_card_type = game.Map.infection_type__per__city[city_card.City];
+                    int city_card_type = game.Map.infection_type__per__city[city_card];
                     numCardsTable[city_card_type, playerIndex]++;
                 }
                 //for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
@@ -229,7 +229,7 @@ namespace Pandemic_AI_Framework
             if (action.GetType() == typeof(PD_PA_ShareKnowledge_GiveCard))
             {
                 PD_PA_ShareKnowledge_GiveCard shareKnowledge_Give_Action = (PD_PA_ShareKnowledge_GiveCard)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive.City);
+                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive);
                 int giver_Index = game.players.IndexOf(shareKnowledge_Give_Action.Player);
                 int taker_Index = game.players.IndexOf(shareKnowledge_Give_Action.OtherPlayer);
 
@@ -242,7 +242,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledge_Give_Action =
                     (PD_PA_ShareKnowledge_GiveCard_ResearcherGives)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive.City);
+                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive);
                 int giver_Index = game.players.IndexOf(shareKnowledge_Give_Action.Player);
                 int taker_Index = game.players.IndexOf(shareKnowledge_Give_Action.OtherPlayer);
 
@@ -254,7 +254,7 @@ namespace Pandemic_AI_Framework
             else if (action.GetType() == typeof(PD_PA_ShareKnowledge_TakeCard))
             {
                 PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = (PD_PA_ShareKnowledge_TakeCard)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake.City);
+                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake);
                 int taker_Index = game.players.IndexOf(shareKnowledge_Take_Action.Player);
                 int giver_Index = game.players.IndexOf(shareKnowledge_Take_Action.OtherPlayer);
 
@@ -267,7 +267,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_Action =
                     (PD_PA_ShareKnowledge_TakeCard_FromResearcher)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake.City);
+                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake);
                 int taker_Index = game.players.IndexOf(shareKnowledge_Take_Action.Player);
                 int giver_Index = game.players.IndexOf(shareKnowledge_Take_Action.OtherPlayer);
 
@@ -280,7 +280,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PMA_DirectFlight directFlightAction =
                     (PD_PMA_DirectFlight)action;
-                int cardType = game.GQ_City_InfectionType(directFlightAction.CityCardToDiscard.City);
+                int cardType = game.GQ_City_InfectionType(directFlightAction.UsedCard);
                 int playerIndex = game.players.IndexOf(directFlightAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -290,7 +290,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PMA_CharterFlight charterFlightAction =
                     (PD_PMA_CharterFlight)action;
-                int cardType = game.GQ_City_InfectionType(charterFlightAction.CityCardToDiscard.City);
+                int cardType = game.GQ_City_InfectionType(charterFlightAction.UsedCard);
                 int playerIndex = game.players.IndexOf(charterFlightAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -300,7 +300,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PMA_OperationsExpert_Flight operationsExpertFlightAction =
                     (PD_PMA_OperationsExpert_Flight)action;
-                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.CityCardToDiscard.City);
+                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.UsedCard);
                 int playerIndex = game.players.IndexOf(operationsExpertFlightAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -310,7 +310,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PMA_OperationsExpert_Flight operationsExpertFlightAction =
                     (PD_PMA_OperationsExpert_Flight)action;
-                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.CityCardToDiscard.City);
+                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.UsedCard);
                 int playerIndex = game.players.IndexOf(operationsExpertFlightAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -320,7 +320,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_BuildResearchStation buildResearchStationAction =
                     (PD_PA_BuildResearchStation)action;
-                int cardType = game.GQ_City_InfectionType(buildResearchStationAction.Used_CityCard.City);
+                int cardType = game.GQ_City_InfectionType(buildResearchStationAction.UsedCard);
                 int playerIndex = game.players.IndexOf(buildResearchStationAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -330,7 +330,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_MoveResearchStation moveResearchStationAction =
                     (PD_PA_MoveResearchStation)action;
-                int cardType = game.GQ_City_InfectionType(moveResearchStationAction.Used_CityCard.City);
+                int cardType = game.GQ_City_InfectionType(moveResearchStationAction.Used_CityCard);
                 int playerIndex = game.players.IndexOf(moveResearchStationAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -340,7 +340,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_Discard_DuringMainPlayerActions discardAction =
                     (PD_PA_Discard_DuringMainPlayerActions)action;
-                int cardType = game.GQ_City_InfectionType(((PD_CityCard)discardAction.PlayerCardToDiscard).City);
+                int cardType = game.GQ_City_InfectionType(discardAction.PlayerCardToDiscard);
                 int playerIndex = game.players.IndexOf(discardAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
@@ -350,7 +350,7 @@ namespace Pandemic_AI_Framework
             {
                 PD_PA_Discard_AfterDrawing discardAction =
                     (PD_PA_Discard_AfterDrawing)action;
-                int cardType = game.GQ_City_InfectionType(((PD_CityCard)discardAction.PlayerCardToDiscard).City);
+                int cardType = game.GQ_City_InfectionType(discardAction.PlayerCardToDiscard);
                 int playerIndex = game.players.IndexOf(discardAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 

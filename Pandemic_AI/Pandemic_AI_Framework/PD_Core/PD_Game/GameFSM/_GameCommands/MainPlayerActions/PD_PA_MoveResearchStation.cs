@@ -13,7 +13,7 @@ namespace Pandemic_AI_Framework
         I_Player_Action
     {
         public int Player { get; private set; }
-        public PD_CityCard Used_CityCard { get; private set; }
+        public int Used_CityCard { get; private set; }
         public int Move_RS_From { get; private set; }
         public int Move_RS_To { get; private set; }
         #region constructors
@@ -27,13 +27,13 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PD_PA_MoveResearchStation(
             int player,
-            PD_CityCard used_CityCard,
+            int used_CityCard,
             int move_RS_From,
             int move_RS_To
             )
         {
             this.Player = player;
-            this.Used_CityCard = used_CityCard.GetCustomDeepCopy();
+            this.Used_CityCard = used_CityCard;
             this.Move_RS_From = move_RS_From;
             this.Move_RS_To = move_RS_To;
         }
@@ -47,7 +47,7 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
+            this.Used_CityCard = actionToCopy.Used_CityCard;
             this.Move_RS_From = actionToCopy.Move_RS_From;
             this.Move_RS_To = actionToCopy.Move_RS_To;
         }
@@ -71,7 +71,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (Used_CityCard.City != game.GQ_CurrentPlayer_Location())
+            else if (Used_CityCard != game.GQ_CurrentPlayer_Location())
             {
                 throw new System.Exception("city card does not match current player position");
             }
@@ -157,8 +157,8 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + Used_CityCard.GetHashCode();
+            hash = hash * 31 + Player;
+            hash = hash * 31 + Used_CityCard;
             hash = hash * 31 + Move_RS_From;
             hash = hash * 31 + Move_RS_To;
 

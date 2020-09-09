@@ -192,7 +192,7 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_GiveCard action =
                                 (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
-                            int destination = action.CityCardToGive.City;
+                            int destination = action.CityCardToGive;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
@@ -215,7 +215,7 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_TakeCard action =
                                 (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
-                            int destination = action.CityCardToTake.City;
+                            int destination = action.CityCardToTake;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
@@ -360,7 +360,7 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_GiveCard action =
                                 (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
-                            int destination = action.CityCardToGive.City;
+                            int destination = action.CityCardToGive;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);
@@ -383,7 +383,7 @@ namespace Pandemic_AI_Framework
                         {
                             PD_PA_ShareKnowledge_TakeCard action =
                                 (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
-                            int destination = action.CityCardToTake.City;
+                            int destination = action.CityCardToTake;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
                                 game.GQ_PlayerLocation(otherPlayer);

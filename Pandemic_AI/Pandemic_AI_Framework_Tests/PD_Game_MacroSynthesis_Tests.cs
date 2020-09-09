@@ -102,13 +102,13 @@ namespace Pandemic_AI_Framework.Tests
             game.Cards.PlayerCardsPerPlayerID[0].Add(
                 game.GameElementReferences.CityCards.Find(
                     x =>
-                    game.Map.name__per__city[x.City] == "Milan"
+                    game.Map.name__per__city[x] == "Milan"
                     )
                 );
             game.Cards.PlayerCardsPerPlayerID[0].Add(
                 game.GameElementReferences.CityCards.Find(
                     x =>
-                    game.Map.name__per__city[x.City] == "Chicago"
+                    game.Map.name__per__city[x] == "Chicago"
                     )
                 );
 

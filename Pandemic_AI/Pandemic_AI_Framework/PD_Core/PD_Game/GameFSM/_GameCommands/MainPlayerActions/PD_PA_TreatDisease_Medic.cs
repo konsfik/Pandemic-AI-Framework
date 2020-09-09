@@ -144,7 +144,7 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
+            hash = hash * 31 + Player;
             hash = hash * 31 + CityToTreatDiseaseAt;
             hash = hash * 31 + TypeOfDiseaseToTreat;
 

@@ -12,8 +12,8 @@ namespace Pandemic_AI_Framework
     {
         #region properties
         public List<int> InfectionCards { get; private set; }
-        public List<PD_CityCard> CityCards { get; private set; }
-        public List<PD_EpidemicCard> EpidemicCards { get; private set; }
+        public List<int> CityCards { get; private set; }
+        public List<int> EpidemicCards { get; private set; }
 
         public List<int> RoleCards { get; private set; }
         #endregion
@@ -30,9 +30,9 @@ namespace Pandemic_AI_Framework
         /// <param name="infectionCubes"></param>
         [JsonConstructor]
         public PD_GameElementReferences(
-            List<PD_CityCard> cityCards,
+            List<int> cityCards,
             List<int> infectionCards,
-            List<PD_EpidemicCard> epidemicCards,
+            List<int> epidemicCards,
 
             List<int> roleCards
             )

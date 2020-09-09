@@ -8,7 +8,7 @@ namespace Pandemic_AI_Framework
     {
         public override double CalculateScore(PD_Game gameState)
         {
-            int numDiseasesCured = gameState.GQ_Num_DiseasesCured();
+            int numDiseasesCured = gameState.GQ_Num_Cured_or_Eradicated_DiseaseTypes();
             double percentCuredDiseases = (double)numDiseasesCured / 4;
             return percentCuredDiseases;
         }

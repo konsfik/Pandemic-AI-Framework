@@ -57,7 +57,7 @@ namespace Pandemic_AI_Framework
             var allCards_InPlayerHand = game.Cards.PlayerCardsPerPlayerID[Player];
             var epidemicCard = allCards_InPlayerHand.Find(
                 x =>
-                x.GetType() == typeof(PD_EpidemicCard)
+                x >= 128
                 );
             game.Cards.PlayerCardsPerPlayerID[Player].Remove(epidemicCard);
             game.Cards.DeckOfDiscardedPlayerCards.Add(epidemicCard);

@@ -192,7 +192,7 @@ namespace Pandemic_AI_Framework.Tests
             {
                 return false;
             }
-            else if (game_1.Cards.PlayerCardsPerPlayerID.Dictionary_Equal(
+            else if (game_1.Cards.PlayerCardsPerPlayerID.Dictionary_Equals(
                 game_2.Cards.PlayerCardsPerPlayerID) == false)
             {
                 return false;

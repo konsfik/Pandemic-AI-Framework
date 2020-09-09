@@ -71,11 +71,11 @@ namespace Pandemic_AI_Framework
             return 4 - game.GameStateCounter.CurrentPlayerActionIndex;
         }
 
-        public static List<PD_CityCard> GQ_Find_CityCards_InAllPlayersHands(
+        public static List<int> GQ_Find_CityCards_InAllPlayersHands(
             this PD_Game game
             )
         {
-            List<PD_CityCard> allCityCardsInAllPlayersHands = new List<PD_CityCard>();
+            List<int> allCityCardsInAllPlayersHands = new List<int>();
             foreach (var player in game.players)
             {
                 allCityCardsInAllPlayersHands.AddRange(
@@ -107,10 +107,10 @@ namespace Pandemic_AI_Framework
         {
             for (int i = 0; i < 4; i++)
             {
-                bool diseaseCuredOrEradicated =
-                    GQ_Is_DiseaseCured_OR_Eradicated(game, i);
-                if (diseaseCuredOrEradicated == false)
+                if (GQ_Is_DiseaseCured_OR_Eradicated(game, i) == false)
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -154,7 +154,7 @@ namespace Pandemic_AI_Framework
         {
             foreach (var card in GQ_CurrentPlayerHand(game))
             {
-                if (card.GetType() == typeof(PD_EpidemicCard))
+                if (card >= 128)
                 {
                     return true;
                 }
@@ -205,7 +205,7 @@ namespace Pandemic_AI_Framework
             return GQ_Is_Won(game) || GQ_Is_Lost(game);
         }
 
-        public static List<PD_PlayerCardBase> GQ_CurrentPlayerHand(
+        public static List<int> GQ_CurrentPlayerHand(
             this PD_Game game
             )
         {
@@ -213,7 +213,7 @@ namespace Pandemic_AI_Framework
             return game.Cards.PlayerCardsPerPlayerID[currentPlayer];
         }
 
-        public static List<PD_PlayerCardBase> GQ_PlayerHand(
+        public static List<int> GQ_PlayerHand(
             this PD_Game game,
             int player
             )
@@ -227,9 +227,9 @@ namespace Pandemic_AI_Framework
             )
         {
             return
-                game.GameStateCounter.CureMarkersStates[diseaseType] == 1
+                game.GameStateCounter.CureMarkersStates[diseaseType] == PD_DiseaseStates.Cured
                 ||
-                game.GameStateCounter.CureMarkersStates[diseaseType] == 2;
+                game.GameStateCounter.CureMarkersStates[diseaseType] == PD_DiseaseStates.Eradicated;
         }
 
         public static bool GQ_Is_DiseaseCured_AND_NOT_Eradicated(
@@ -237,7 +237,7 @@ namespace Pandemic_AI_Framework
             int diseaseType
             )
         {
-            return game.GameStateCounter.CureMarkersStates[diseaseType] == 1;
+            return game.GameStateCounter.CureMarkersStates[diseaseType] == PD_DiseaseStates.Cured;
         }
 
         public static bool GQ_Is_Disease_Eradicated(
@@ -245,7 +245,7 @@ namespace Pandemic_AI_Framework
             int diseaseType
             )
         {
-            return game.GameStateCounter.CureMarkersStates[diseaseType] == 2;
+            return game.GameStateCounter.CureMarkersStates[diseaseType] == PD_DiseaseStates.Eradicated;
         }
 
         public static int GQ_CurrentPlayer(
@@ -305,7 +305,7 @@ namespace Pandemic_AI_Framework
             return infectionCubeTypesPerInfectedCity;
         }
 
-        public static List<List<PD_CityCard>> GQ_Find_UsableDiscoverCureCardGroups(
+        public static List<List<int>> GQ_Find_UsableDiscoverCureCardGroups(
             this PD_Game game,
             int player
             )
@@ -313,10 +313,10 @@ namespace Pandemic_AI_Framework
             var discoverCureCardGroups = GQ_Find_DiscoverCureCardGroups(game, player);
             var uncuredDiseaseTypes = GQ_UncuredDiseaseTypes(game);
 
-            var usableDiscoverCureCardGroups = new List<List<PD_CityCard>>();
+            var usableDiscoverCureCardGroups = new List<List<int>>();
             foreach (var cardGroup in discoverCureCardGroups)
             {
-                int city = cardGroup[0].City;
+                int city = cardGroup[0];
                 int disease_type = game.GQ_City_InfectionType(city);
                 if (uncuredDiseaseTypes.Contains(disease_type))
                 {
@@ -327,7 +327,7 @@ namespace Pandemic_AI_Framework
             return usableDiscoverCureCardGroups;
         }
 
-        public static List<List<PD_CityCard>> GQ_Find_DiscoverCureCardGroups(
+        public static List<List<int>> GQ_Find_DiscoverCureCardGroups(
             this PD_Game game,
             int player
             )
@@ -337,36 +337,36 @@ namespace Pandemic_AI_Framework
 
             if (player_Is_Scientist == false && cityCardsInPlayerHand.Count < 5)
             {
-                return new List<List<PD_CityCard>>();
+                return new List<List<int>>();
             }
             else if (player_Is_Scientist && cityCardsInPlayerHand.Count < 4)
             {
-                return new List<List<PD_CityCard>>();
+                return new List<List<int>>();
             }
 
             List<int> availableTypes = new List<int>();
             foreach (var cityCard in cityCardsInPlayerHand)
             {
-                int city_card_infection_type = game.Map.infection_type__per__city[cityCard.City];
+                int city_card_infection_type = game.Map.infection_type__per__city[cityCard];
                 if (availableTypes.Contains(city_card_infection_type) == false)
                 {
                     availableTypes.Add(city_card_infection_type);
                 }
             }
 
-            List<List<PD_CityCard>> cityCardsByType = new List<List<PD_CityCard>>();
+            List<List<int>> cityCardsByType = new List<List<int>>();
             foreach (var type in availableTypes)
             {
-                List<PD_CityCard> cityCardsOfThisType = cityCardsInPlayerHand.FindAll(
+                List<int> cityCardsOfThisType = cityCardsInPlayerHand.FindAll(
                     x =>
-                    game.GQ_City_InfectionType(x.City) == type
+                    game.GQ_City_InfectionType(x) == type
                     ).ToList();
                 cityCardsByType.Add(cityCardsOfThisType);
             }
 
             if (player_Is_Scientist == false)
             {
-                List<List<PD_CityCard>> discoverCureCardGroups = new List<List<PD_CityCard>>();
+                List<List<int>> discoverCureCardGroups = new List<List<int>>();
 
                 var groups_OfFive_OrMore = cityCardsByType.FindAll(
                     x =>
@@ -383,7 +383,7 @@ namespace Pandemic_AI_Framework
             }
             else
             {
-                List<List<PD_CityCard>> discoverCureCardGroups = new List<List<PD_CityCard>>();
+                List<List<int>> discoverCureCardGroups = new List<List<int>>();
 
                 var groups_OfFour_OrMore = cityCardsByType.FindAll(
                     x =>
@@ -498,7 +498,7 @@ namespace Pandemic_AI_Framework
             return num_cubes;
         }
 
-        public static List<PD_CityCard> GQ_CityCardsInCurrentPlayerHand(
+        public static List<int> GQ_CityCardsInCurrentPlayerHand(
             this PD_Game game
             )
         {
@@ -509,15 +509,17 @@ namespace Pandemic_AI_Framework
                 );
         }
 
-        public static List<PD_CityCard> GQ_CityCardsInPlayerHand(
+        public static List<int> GQ_CityCardsInPlayerHand(
             this PD_Game game,
             int player
             )
         {
-            List<PD_CityCard> city_cards_in_player_hand = new List<PD_CityCard>();
-            foreach (var card in game.Cards.PlayerCardsPerPlayerID[player]) {
-                if (card is PD_CityCard city_card) {
-                    city_cards_in_player_hand.Add(city_card);
+            List<int> city_cards_in_player_hand = new List<int>();
+            foreach (var card in game.Cards.PlayerCardsPerPlayerID[player])
+            {
+                if (card < game.Map.number_of_cities)
+                {
+                    city_cards_in_player_hand.Add(card);
                 }
             }
             return city_cards_in_player_hand;
@@ -538,7 +540,7 @@ namespace Pandemic_AI_Framework
             var allDiseaseTypes = game.GameStateCounter.CureMarkersStates.Keys.ToList();
             foreach (var dt in allDiseaseTypes)
             {
-                if (game.GameStateCounter.CureMarkersStates[dt] == 0)
+                if (game.GameStateCounter.CureMarkersStates[dt] == PD_DiseaseStates.Active)
                 {
                     uncuredDiseaseTypes.Add(dt);
                 }
@@ -565,28 +567,40 @@ namespace Pandemic_AI_Framework
             return game.MapElements.infections__per__type__per__city[city][type];
         }
 
-        public static List<int> GQ_Find_Cured_or_Eradicated_DiseaseTypes(
+        public static List<int> GQ_Cured_or_Eradicated_DiseaseTypes(
             this PD_Game game
             )
         {
-            List<int> curedOrEradicatedDiseaseTypes = new List<int>();
+            List<int> cured_or_eradicated_disease_types = new List<int>();
             for (int i = 0; i < 4; i++)
             {
-                if (game.GameStateCounter.CureMarkersStates[i] > 0)
-                    curedOrEradicatedDiseaseTypes.Add(i);
+                if (
+                    game.GameStateCounter.CureMarkersStates[i] == PD_DiseaseStates.Cured
+                    ||
+                    game.GameStateCounter.CureMarkersStates[i] == PD_DiseaseStates.Eradicated
+                    )
+                {
+                    cured_or_eradicated_disease_types.Add(i);
+                }
             }
-            return curedOrEradicatedDiseaseTypes;
+            return cured_or_eradicated_disease_types;
         }
 
-        public static int GQ_Num_DiseasesCured(
+        public static int GQ_Num_Cured_or_Eradicated_DiseaseTypes(
             this PD_Game game
             )
         {
             int numDiseasesCured = 0;
             for (int i = 0; i < 4; i++)
             {
-                if (game.GameStateCounter.CureMarkersStates[i] > 0)
+                if (
+                    game.GameStateCounter.CureMarkersStates[i] == PD_DiseaseStates.Cured
+                    ||
+                    game.GameStateCounter.CureMarkersStates[i] == PD_DiseaseStates.Eradicated
+                    )
+                {
                     numDiseasesCured++;
+                }
             }
             return numDiseasesCured;
         }

@@ -9,10 +9,11 @@ namespace Pandemic_AI_Framework
     public class PD_PA_BuildResearchStation :
         PD_GameAction_Base,
         IEquatable<PD_PA_BuildResearchStation>,
-        I_Player_Action
+        I_Player_Action,
+        I_Uses_Card
     {
         public int Player { get; private set; }
-        public PD_CityCard Used_CityCard { get; private set; }
+        public int UsedCard { get; private set; }
         public int Build_RS_On { get; private set; }
 
         #region constructors
@@ -20,17 +21,17 @@ namespace Pandemic_AI_Framework
         /// Normal & Json constructor
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="used_CityCard"></param>
+        /// <param name="usedCard"></param>
         /// <param name="build_RS_On"></param>
         [JsonConstructor]
         public PD_PA_BuildResearchStation(
             int player,
-            PD_CityCard used_CityCard,
+            int usedCard,
             int build_RS_On
             )
         {
             this.Player = player;
-            this.Used_CityCard = used_CityCard;
+            this.UsedCard = usedCard;
             this.Build_RS_On = build_RS_On;
         }
 
@@ -43,7 +44,7 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.Used_CityCard = actionToCopy.Used_CityCard.GetCustomDeepCopy();
+            this.UsedCard = actionToCopy.UsedCard;
             this.Build_RS_On = actionToCopy.Build_RS_On;
         }
         #endregion
@@ -62,7 +63,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player...");
             }
-            else if (Used_CityCard.City != game.GQ_CurrentPlayer_Location())
+            else if (UsedCard != game.GQ_CurrentPlayer_Location())
             {
                 throw new System.Exception("city card does not match current player position");
             }
@@ -77,7 +78,7 @@ namespace Pandemic_AI_Framework
 #endif
             game.GO_PlayerDiscardsPlayerCard(
                 Player,
-                Used_CityCard
+                UsedCard
                 );
 
             game.GO_PlaceResearchStationOnCity(
@@ -106,7 +107,7 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            if (this.Used_CityCard != other.Used_CityCard)
+            if (this.UsedCard != other.UsedCard)
             {
                 return false;
             }
@@ -148,8 +149,8 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + Player.GetHashCode();
-            hash = hash * 31 + Used_CityCard.GetHashCode();
+            hash = hash * 31 + Player;
+            hash = hash * 31 + UsedCard;
             hash = hash * 31 + Build_RS_On;
 
             return hash;

@@ -45,7 +45,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if ((game.GameFSM.CurrentState is PD_GS_ApplyingInfectionCards) == false)
+            else if ((game.game_FSM.CurrentState is PD_GS_ApplyingInfectionCards) == false)
             {
                 throw new System.Exception("wrong state!");
             }
@@ -75,13 +75,13 @@ namespace Pandemic_AI_Framework
 
                 if (finalReport.FailureReason == InfectionFailureReasons.notEnoughDiseaseCubes)
                 {
-                    game.GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection = true;
+                    game.game_state_counter.insufficient_disease_cubes_for_infection = true;
                 }
             }
 
             // remove the infection card from the active infection cards pile
-            game.Cards.ActiveInfectionCards.Remove(InfectionCardToApply);
-            game.Cards.DeckOfDiscardedInfectionCards.Add(InfectionCardToApply);
+            game.cards.active_infection_cards.Remove(InfectionCardToApply);
+            game.cards.deck_of_discarded_infection_cards.Add(InfectionCardToApply);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

@@ -64,7 +64,7 @@ namespace Pandemic_AI_Framework
             {
                 foreach (var game in AllGames)
                 {
-                    string gameFileName = "game_" + game.UniqueID.ToString() + ".json";
+                    string gameFileName = "game_" + game.unique_id.ToString() + ".json";
                     string gameFilePath = Path.Combine(ThisExperiment_FolderPath, gameFileName);
 
                     PD_IO_Utilities.SerializeGameToJsonAndSave(

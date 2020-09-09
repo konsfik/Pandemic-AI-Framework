@@ -85,8 +85,8 @@ namespace Pandemic_AI_Framework
                 Used_CityCard
                 );
 
-            game.MapElements.research_stations__per__city[Move_RS_From] = false;
-            game.MapElements.research_stations__per__city[Move_RS_To] = true;
+            game.map_elements.research_stations__per__city[Move_RS_From] = false;
+            game.map_elements.research_stations__per__city[Move_RS_To] = true;
 
         }
 

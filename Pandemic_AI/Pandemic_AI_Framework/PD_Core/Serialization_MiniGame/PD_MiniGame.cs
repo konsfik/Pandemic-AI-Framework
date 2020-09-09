@@ -44,7 +44,6 @@ namespace Pandemic_AI_Framework
         public List<int> players;
 
         // player - roles
-        public List<int> unassigned_player_roles;
         public int[] role__per__player;
 
         // map - data
@@ -79,15 +78,13 @@ namespace Pandemic_AI_Framework
         public bool flag___insufficient_player_cards_to_draw;
         public bool flag___operations_expert_flight_used_this_turn;
 
-        // initial card - containers:
+        // card - containers:
         public List<List<int>> cards___divided_deck_of_infection_cards;
         public List<int> cards___active_infection_cards;
         public List<int> cards___deck_of_discarded_infection_cards;
         public List<List<int>> cards___divided_deck_of_player_cards;
         public List<int> cards___deck_of_discarded_player_cards;
         public Dictionary<int, List<int>> cards___player_cards__per__player;
-
-
 
         #endregion
 
@@ -108,7 +105,6 @@ namespace Pandemic_AI_Framework
             List<int> players,
 
             // player - roles
-            List<int> unassigned_player_roles,
             int[] role__per__player,
 
             // map
@@ -170,7 +166,6 @@ namespace Pandemic_AI_Framework
             this.players = players.CustomDeepCopy();
 
             // player - roles
-            this.unassigned_player_roles = unassigned_player_roles.CustomDeepCopy();
             this.role__per__player = role__per__player.CustomDeepCopy();
 
             // map - data
@@ -281,8 +276,6 @@ namespace Pandemic_AI_Framework
                 .List_Equals(other.players) == false) return false;
 
             // player - roles
-            else if (this.unassigned_player_roles
-                .List_Equals(other.unassigned_player_roles) == false) return false;
             else if (this.role__per__player
                 .Array_Equal_S(other.role__per__player) == false) return false;
 
@@ -385,7 +378,6 @@ namespace Pandemic_AI_Framework
 
             hash = (hash * 13) + players.Custom_HashCode();
 
-            hash = (hash * 13) + unassigned_player_roles.Custom_HashCode();
             hash = (hash * 13) + role__per__player.Custom_HashCode();
 
             // map - data

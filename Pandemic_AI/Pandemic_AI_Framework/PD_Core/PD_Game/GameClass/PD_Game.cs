@@ -10,35 +10,32 @@ namespace Pandemic_AI_Framework
     public class PD_Game : ICustomDeepCopyable<PD_Game>
     {
         #region properties
-        public long UniqueID { get; private set; }
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
+        public long unique_id;
+        public DateTime start_time;
+        public DateTime end_time;
 
-        public PD_GameSettings GameSettings { get; private set; }
-        public PD_GameFSM GameFSM { get; private set; }
+        public PD_GameSettings game_settings;
+        public PD_GameFSM game_FSM;
 
         // STATE - RELATED
-        public PD_GameStateCounter GameStateCounter { get; private set; }
+        public PD_GameStateCounter game_state_counter;
 
         public List<int> players;
         public Dictionary<int, int> role__per__player;
 
-        public PD_Map Map { get; private set; }
+        public PD_Map map;
 
-
-        // REFERENCES
-        public PD_GameElementReferences GameElementReferences { get; private set; }
 
         // CONTAINERS
-        public PD_GameCards Cards { get; private set; }
-        public PD_MapElements MapElements { get; private set; }
+        public PD_GameCards cards;
+        public PD_MapElements map_elements;
 
         // GAME HISTORY
-        public List<PD_GameAction_Base> PlayerActionsHistory { get; private set; }
-        public List<PD_InfectionReport> InfectionReports { get; private set; }
+        public List<PD_GameAction_Base> PlayerActionsHistory;
+        public List<PD_InfectionReport> InfectionReports;
 
-        public List<PD_GameAction_Base> CurrentAvailablePlayerActions { get; private set; }
-        public List<PD_MacroAction> CurrentAvailableMacros { get; private set; }
+        public List<PD_GameAction_Base> CurrentAvailablePlayerActions;
+        public List<PD_MacroAction> CurrentAvailableMacros;
 
         #endregion
 
@@ -359,24 +356,24 @@ namespace Pandemic_AI_Framework
         {
             CurrentAvailableMacros = new List<PD_MacroAction>();
 
-            StartTime = DateTime.UtcNow;
-            UniqueID = DateTime.UtcNow.Ticks;
+            start_time = DateTime.UtcNow;
+            unique_id = DateTime.UtcNow.Ticks;
 
-            GameSettings = new PD_GameSettings(gameDifficultyLevel);
+            game_settings = new PD_GameSettings(gameDifficultyLevel);
 
-            GameStateCounter = new PD_GameStateCounter(
+            game_state_counter = new PD_GameStateCounter(
                 players.Count,
                 0,
                 0
                 );
 
-            GameFSM = new PD_GameFSM(this);
+            game_FSM = new PD_GameFSM(this);
 
             this.players = players;
 
             UpdateAvailablePlayerActions();
 
-            Map = new PD_Map(
+            map = new PD_Map(
                 cities.Count,
                 cities,
                 name__per__city,
@@ -384,16 +381,8 @@ namespace Pandemic_AI_Framework
                 infection_type__per__city,
                 neighbors_per_city);
 
-            // game element references
-            GameElementReferences = new PD_GameElementReferences(
-                allCityCards,
-                allInfectionCards,
-                allEpidemicCards,
-                allRoleCards
-                );
-
-            MapElements = new PD_MapElements(players, cities);
-            Cards = new PD_GameCards(this.players, allRoleCards);
+            map_elements = new PD_MapElements(players, cities);
+            cards = new PD_GameCards(this.players);
 
 
             role__per__player = new Dictionary<int, int>();
@@ -410,22 +399,21 @@ namespace Pandemic_AI_Framework
 
         [JsonConstructor]
         public PD_Game(
-            long uniqueID,
-            DateTime startTime,
-            DateTime endTime,
+            long unique_id,
+            DateTime start_time,
+            DateTime end_time,
 
-            PD_GameSettings gameSettings,
-            PD_GameFSM gameFSM,
-            PD_GameStateCounter gameStateCounter,
+            PD_GameSettings game_settings,
+            PD_GameFSM game_FSM,
+            PD_GameStateCounter game_state_counter,
 
             List<int> players,
             PD_Map map,
 
-            PD_GameElementReferences gameElementReferences,
-            PD_MapElements mapElements,
+            PD_MapElements map_elements,
             PD_GameCards cards,
 
-            Dictionary<int, int> roleCardsPerPlayerID,
+            Dictionary<int, int> role__per__player,
 
             List<PD_GameAction_Base> playerActionsHistory,
             List<PD_InfectionReport> infectionReports,
@@ -434,28 +422,27 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> currentAvailableMacros
             )
         {
-            UniqueID = uniqueID;
-            StartTime = startTime;
-            EndTime = endTime;
+            this.unique_id = unique_id;
+            this.start_time = start_time;
+            this.end_time = end_time;
 
-            GameSettings = gameSettings.GetCustomDeepCopy();
-            GameFSM = gameFSM.GetCustomDeepCopy();
-            GameStateCounter = gameStateCounter.GetCustomDeepCopy();
+            this.game_settings = game_settings.GetCustomDeepCopy();
+            this.game_FSM = game_FSM.GetCustomDeepCopy();
+            this.game_state_counter = game_state_counter.GetCustomDeepCopy();
 
             this.players = players.CustomDeepCopy();
-            Map = map.GetCustomDeepCopy();
+            this.map = map.GetCustomDeepCopy();
 
-            GameElementReferences = gameElementReferences.GetCustomDeepCopy();
-            MapElements = mapElements.GetCustomDeepCopy();
-            Cards = cards.GetCustomDeepCopy();
+            this.map_elements = map_elements.GetCustomDeepCopy();
+            this.cards = cards.GetCustomDeepCopy();
 
-            role__per__player = roleCardsPerPlayerID.CustomDeepCopy();
+            this.role__per__player = role__per__player.CustomDeepCopy();
 
-            PlayerActionsHistory = playerActionsHistory.CustomDeepCopy();
-            InfectionReports = infectionReports.CustomDeepCopy();
+            this.PlayerActionsHistory = playerActionsHistory.CustomDeepCopy();
+            this.InfectionReports = infectionReports.CustomDeepCopy();
 
-            CurrentAvailablePlayerActions = currentAvailablePlayerActions.CustomDeepCopy();
-            CurrentAvailableMacros = currentAvailableMacros.CustomDeepCopy();
+            this.CurrentAvailablePlayerActions = currentAvailablePlayerActions.CustomDeepCopy();
+            this.CurrentAvailableMacros = currentAvailableMacros.CustomDeepCopy();
         }
 
         /// <summary>
@@ -466,20 +453,19 @@ namespace Pandemic_AI_Framework
             PD_Game gameToCopy
             )
         {
-            UniqueID = gameToCopy.UniqueID;
-            StartTime = gameToCopy.StartTime;
-            EndTime = gameToCopy.EndTime;
+            unique_id = gameToCopy.unique_id;
+            start_time = gameToCopy.start_time;
+            end_time = gameToCopy.end_time;
 
-            GameSettings = gameToCopy.GameSettings.GetCustomDeepCopy();
-            GameFSM = gameToCopy.GameFSM.GetCustomDeepCopy();
-            GameStateCounter = gameToCopy.GameStateCounter.GetCustomDeepCopy();
+            game_settings = gameToCopy.game_settings.GetCustomDeepCopy();
+            game_FSM = gameToCopy.game_FSM.GetCustomDeepCopy();
+            game_state_counter = gameToCopy.game_state_counter.GetCustomDeepCopy();
 
             players = gameToCopy.players.CustomDeepCopy();
-            Map = gameToCopy.Map.GetCustomDeepCopy();
+            map = gameToCopy.map.GetCustomDeepCopy();
 
-            GameElementReferences = gameToCopy.GameElementReferences.GetCustomDeepCopy();
-            MapElements = gameToCopy.MapElements.GetCustomDeepCopy();
-            Cards = gameToCopy.Cards.GetCustomDeepCopy();
+            map_elements = gameToCopy.map_elements.GetCustomDeepCopy();
+            cards = gameToCopy.cards.GetCustomDeepCopy();
 
             role__per__player = gameToCopy.role__per__player.CustomDeepCopy();
 
@@ -495,14 +481,26 @@ namespace Pandemic_AI_Framework
         #region command methods
         public void Com_SetupGame_Random(Random randomness_provider)
         {
+            List<int> initial_container__city_cards = new List<int>();
+            List<int> initial_container__infection_cards = new List<int>();
+            foreach (int city in map.cities) {
+                initial_container__city_cards.Add(city);
+                initial_container__infection_cards.Add(city);
+            }
+            List<int> initial_container__epidemic_cards = new List<int>();
+            for (int i = 0; i < 6; i++) {
+                initial_container__epidemic_cards.Add(128 + i);
+            }
+
+
             // 1. Set out board and pieces
             // 1.1. put research stations in research stations container
-            MapElements.inactive_research_stations = 6;
+            map_elements.inactive_research_stations = 6;
 
             // 1.2. separate the infection cubes by color (type) in their containers
             for (int i = 0; i < 4; i++)
             {
-                MapElements.inactive_infection_cubes__per__type[i] = 24;
+                map_elements.inactive_infection_cubes__per__type[i] = 24;
             }
 
             // 1.3. place research station on atlanta
@@ -512,21 +510,21 @@ namespace Pandemic_AI_Framework
 
             // 2. Place outbreaks and cure markers
             // put outbreaks counter to position zero
-            GameStateCounter.ResetOutbreaksCounter();
+            game_state_counter.ResetOutbreaksCounter();
 
             // place cure markers vial side up
-            GameStateCounter.InitializeCureMarkerStates();
+            game_state_counter.InitializeCureMarkerStates();
 
             // 3. place infection marker and infect 9 cities
             // 3.1. place the infection marker (epidemics counter) on the lowest position
-            GameStateCounter.ResetEpidemicsCounter();
+            game_state_counter.ResetEpidemicsCounter();
 
             // 3.2. Infect the first cities - process
             // 3.2.1. put all infection cards in the divided deck of infection cards...
-            Cards.DividedDeckOfInfectionCards.Add(GameElementReferences.InfectionCards.CustomDeepCopy());
+            cards.divided_deck_of_infection_cards.Add(initial_container__infection_cards.DrawAll());
 
             // 3.2.2 shuffle the infection cards deck...
-            Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
+            cards.divided_deck_of_infection_cards.ShuffleAllSubListsElements(randomness_provider);
 
             // 3.2.3 actually infect the cities.. 
             var firstPlayer = players[0];
@@ -534,10 +532,10 @@ namespace Pandemic_AI_Framework
             {
                 for (int city_Counter = 0; city_Counter < 3; city_Counter++)
                 {
-                    var infectionCard = Cards.DividedDeckOfInfectionCards.DrawLastElementOfLastSubList();
+                    var infectionCard = cards.divided_deck_of_infection_cards.DrawLastElementOfLastSubList();
 
                     int city = infectionCard;
-                    int city_type = Map.infection_type__per__city[city];
+                    int city_type = map.infection_type__per__city[city];
 
                     PD_InfectionReport report = new PD_InfectionReport(
                         true,
@@ -557,7 +555,7 @@ namespace Pandemic_AI_Framework
 
                     InfectionReports.Add(finalReport);
 
-                    Cards.DeckOfDiscardedInfectionCards.Add(infectionCard);
+                    cards.deck_of_discarded_infection_cards.Add(infectionCard);
                 }
             }
 
@@ -569,40 +567,32 @@ namespace Pandemic_AI_Framework
                 PD_Player_Roles.Medic,
                 PD_Player_Roles.Scientist
             };
-            foreach (var player in players)
+            foreach (int player in players)
             {
-                var roleCard = Cards.InactiveRoleCards.DrawOneRandom(randomness_provider);
+                int roleCard = available_roles.DrawOneRandom(randomness_provider);
                 role__per__player[player] = roleCard;
             }
 
             // 4.2. Deal cards to players: initial hands
-            var playerCardsTempList = new List<int>();
-            playerCardsTempList.AddRange(GameElementReferences.CityCards.Cast<int>().ToList());
-            Cards.DividedDeckOfPlayerCards.Add(playerCardsTempList);
-            Cards.DividedDeckOfPlayerCards.ShuffleAllSubListsElements(randomness_provider);
+            cards.divided_deck_of_player_cards.Add(initial_container__city_cards.DrawAll());
+            cards.divided_deck_of_player_cards.ShuffleAllSubListsElements(randomness_provider);
 
             int numPlayers = players.Count;
-            int numCardsToDealPerPlayer = GameSettings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
+            int numCardsToDealPerPlayer = game_settings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
             foreach (var player in players)
             {
                 for (int i = 0; i < numCardsToDealPerPlayer; i++)
                 {
-                    Cards.PlayerCardsPerPlayerID[player].Add(Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
+                    cards.player_hand__per__player[player].Add(cards.divided_deck_of_player_cards.DrawLastElementOfLastSubList());
                 }
             }
 
             // 5. Prepare the player deck
             // 5.1. get the necessary number of epidemic cards
-            int numEpidemicCards = GameSettings.GetNumberOfEpidemicCardsToUseInGame();
-
-            var epidemicCardsTempList = new List<int>(GameElementReferences.EpidemicCards);
-            while (epidemicCardsTempList.Count > numEpidemicCards)
-            {
-                epidemicCardsTempList.DrawOneRandom(randomness_provider);
-            }
+            int numEpidemicCards = game_settings.GetNumberOfEpidemicCardsToUseInGame();
 
             // divide the player cards deck in as many sub decks as necessary
-            var allPlayerCardsList = Cards.DividedDeckOfPlayerCards.DrawAllElementsOfAllSubListsAsOneList();
+            var allPlayerCardsList = cards.divided_deck_of_player_cards.DrawAllElementsOfAllSubListsAsOneList();
             //int numberOfPlayerCardsPerSubDeck = allPlayerCardsList.Count / numEpidemicCards;
 
             int numCards = allPlayerCardsList.Count;
@@ -628,19 +618,20 @@ namespace Pandemic_AI_Framework
                 temporaryDividedList[deckIndex].Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
             }
             // insert the epidemic cards
-            foreach (var subList in temporaryDividedList)
+            foreach (List<int> subList in temporaryDividedList)
             {
-                subList.Add(epidemicCardsTempList.DrawOneRandom(randomness_provider));
+                int epidemic_card = initial_container__epidemic_cards.DrawFirst();
+                subList.Add(epidemic_card);
             }
 
             // shuffle all the sublists!
             temporaryDividedList.ShuffleAllSubListsElements(randomness_provider);
 
             // set the player cards deck as necessary
-            Cards.DividedDeckOfPlayerCards.Clear();
+            cards.divided_deck_of_player_cards.Clear();
             foreach (var sublist in temporaryDividedList)
             {
-                Cards.DividedDeckOfPlayerCards.Add(sublist);
+                cards.divided_deck_of_player_cards.Add(sublist);
             }
 
             //// place all pawns on atlanta
@@ -701,12 +692,12 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 int remaining_cubes_this_type
-                    = MapElements.inactive_infection_cubes__per__type[treat_Type];
+                    = map_elements.inactive_infection_cubes__per__type[treat_Type];
 
                 // if disease eradicated -> set marker to 2
                 if (remaining_cubes_this_type == 0)
                 {
-                    GameStateCounter.CureMarkersStates[treat_Type] = 2;
+                    game_state_counter.disease_states[treat_Type] = 2;
                 }
             }
             else
@@ -723,7 +714,7 @@ namespace Pandemic_AI_Framework
 
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
         {
-            int medicLocation = this.GQ_Find_Medic_Location();
+            int medicLocation = this.GQ_Medic_Location();
             if (medicLocation != -1)
             {
                 List<int> infectionCubeTypes_OnMedicLocation =
@@ -761,7 +752,7 @@ namespace Pandemic_AI_Framework
 
             PlayerActionsHistory.Add(playerAction);
 
-            GameFSM.OnCommand(randomness_provider, this, playerAction);
+            game_FSM.OnCommand(randomness_provider, this, playerAction);
 
             UpdateAvailablePlayerActions();
 
@@ -807,7 +798,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction macro
             )
         {
-            if (GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions))
+            if (game_FSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions))
             {
                 if (
                     macro.MacroAction_Type == PD_MacroAction_Type.Walk_Macro
@@ -834,7 +825,7 @@ namespace Pandemic_AI_Framework
                     )
                 {
                     var executablePart = new List<PD_GameAction_Base>();
-                    int numRemainingActionsThisRound = 4 - GameStateCounter.CurrentPlayerActionIndex;
+                    int numRemainingActionsThisRound = 4 - game_state_counter.player_action_index;
                     for (int i = 0; i < numRemainingActionsThisRound; i++)
                     {
                         if (i < macro.Count_Total_Length())
@@ -917,17 +908,17 @@ namespace Pandemic_AI_Framework
 
         public void OverrideUniqueID(long unique_id)
         {
-            UniqueID = unique_id;
+            this.unique_id = unique_id;
         }
 
         public void OverrideStartTime()
         {
-            StartTime = DateTime.UtcNow;
+            start_time = DateTime.UtcNow;
         }
 
         public void OverrideStartTime(DateTime date_time)
         {
-            StartTime = date_time;
+            start_time = date_time;
         }
 
         /// <summary>
@@ -935,12 +926,12 @@ namespace Pandemic_AI_Framework
         /// </summary>
         public void OverrideEndTime()
         {
-            EndTime = DateTime.UtcNow;
+            end_time = DateTime.UtcNow;
         }
 
         public void OverrideEndTime(DateTime date_time)
         {
-            EndTime = date_time;
+            end_time = date_time;
         }
 
         public PD_Game Request_Fair_ForwardModel(Random randomness_provider)
@@ -964,27 +955,27 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public bool Equals(PD_Game other)
         {
-            if (this.UniqueID != other.UniqueID)
+            if (this.unique_id != other.unique_id)
             {
                 return false;
             }
-            else if (this.StartTime != other.StartTime)
+            else if (this.start_time != other.start_time)
             {
                 return false;
             }
-            else if (this.EndTime != other.EndTime)
+            else if (this.end_time != other.end_time)
             {
                 return false;
             }
-            else if (this.GameSettings.Equals(other.GameSettings) == false)
+            else if (this.game_settings.Equals(other.game_settings) == false)
             {
                 return false;
             }
-            else if (this.GameFSM.Equals(other.GameFSM) == false)
+            else if (this.game_FSM.Equals(other.game_FSM) == false)
             {
                 return false;
             }
-            else if (this.GameStateCounter.Equals(other.GameStateCounter) == false)
+            else if (this.game_state_counter.Equals(other.game_state_counter) == false)
             {
                 return false;
             }
@@ -992,19 +983,15 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.Map.Equals(other.Map) == false)
+            else if (this.map.Equals(other.map) == false)
             {
                 return false;
             }
-            else if (this.GameElementReferences.Equals(other.GameElementReferences) == false)
+            else if (this.cards.Equals(other.cards) == false)
             {
                 return false;
             }
-            else if (this.Cards.Equals(other.Cards) == false)
-            {
-                return false;
-            }
-            else if (this.MapElements.Equals(other.MapElements) == false)
+            else if (this.map_elements.Equals(other.map_elements) == false)
             {
                 return false;
             }
@@ -1050,21 +1037,20 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + UniqueID.GetHashCode();
-            hash = hash * 31 + StartTime.GetHashCode();
-            hash = hash * 31 + EndTime.GetHashCode();
+            hash = hash * 31 + unique_id.GetHashCode();
+            hash = hash * 31 + start_time.GetHashCode();
+            hash = hash * 31 + end_time.GetHashCode();
 
-            hash = hash * 31 + GameSettings.GetHashCode();
-            hash = hash * 31 + GameFSM.GetHashCode();
+            hash = hash * 31 + game_settings.GetHashCode();
+            hash = hash * 31 + game_FSM.GetHashCode();
 
-            hash = hash * 31 + GameStateCounter.GetHashCode();
+            hash = hash * 31 + game_state_counter.GetHashCode();
 
             hash = hash * 31 + players.Custom_HashCode();
-            hash = hash * 31 + Map.GetHashCode();
-            hash = hash * 31 + GameElementReferences.GetHashCode();
+            hash = hash * 31 + map.GetHashCode();
 
-            hash = hash * 31 + Cards.GetHashCode();
-            hash = hash * 31 + MapElements.GetHashCode();
+            hash = hash * 31 + cards.GetHashCode();
+            hash = hash * 31 + map_elements.GetHashCode();
 
             hash = hash * 31 + role__per__player.Custom_HashCode();
 

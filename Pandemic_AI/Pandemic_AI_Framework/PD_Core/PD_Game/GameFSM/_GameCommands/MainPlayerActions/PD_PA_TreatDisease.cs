@@ -62,7 +62,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (game.GQ_Find_Player_Role(Player) == PD_Player_Roles.Medic)
+            else if (game.GQ_Player_Role(Player) == PD_Player_Roles.Medic)
             {
                 throw new System.Exception("wrong player role!");
             }
@@ -90,12 +90,12 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 int remaining_cubes_this_type
-                    = game.MapElements.inactive_infection_cubes__per__type[TypeOfDiseaseToTreat];
+                    = game.map_elements.inactive_infection_cubes__per__type[TypeOfDiseaseToTreat];
 
                 // if disease eradicated -> set marker to 2
                 if (remaining_cubes_this_type == 0)
                 {
-                    game.GameStateCounter.CureMarkersStates[TypeOfDiseaseToTreat] = 2;
+                    game.game_state_counter.disease_states[TypeOfDiseaseToTreat] = 2;
                 }
             }
             else

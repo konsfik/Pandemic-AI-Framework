@@ -32,7 +32,7 @@ namespace Pandemic_AI_Framework
                 );
 
 
-            ComputeShortestPaths(dummy_game.Map);
+            ComputeShortestPaths(dummy_game.map);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Pandemic_AI_Framework
             //    throw new System.Exception("range must be greater than zero!");
             //}
             List<int> citiesWithinSpecificRange = new List<int>();
-            foreach (int city in game.Map.cities)
+            foreach (int city in game.map.cities)
             {
                 if (city != referenceCity)
                 {
@@ -347,7 +347,7 @@ namespace Pandemic_AI_Framework
             //    throw new System.Exception("distance must be 1 or greater");
             //}
             List<int> citiesOfSpecifiedDistanceFromReferenceCity = new List<int>();
-            foreach (int city in game.Map.cities)
+            foreach (int city in game.map.cities)
             {
                 if (city != referenceCity)
                 {
@@ -383,7 +383,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("minimum allowed distance should be at least 1");
             }
             var researchStationCities = game.GQ_ResearchStationCities();
-            var allCities = game.Map.cities;
+            var allCities = game.map.cities;
             var nonResearhcStationCities = allCities.FindAll(
                 x =>
                 researchStationCities.Contains(x) == false

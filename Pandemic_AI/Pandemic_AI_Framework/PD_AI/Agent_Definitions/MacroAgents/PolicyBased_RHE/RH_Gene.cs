@@ -200,7 +200,7 @@ namespace Pandemic_AI_Framework
                 RH_State_Type state_Type = Calculate_State_Type(gameStateToApplySelfOn);
                 RH_Macro_Type macro_Type = Calculate_Macro_Type(currentMacro);
 
-                int currentGameState_TurnIndex = gameStateToApplySelfOn.GameStateCounter.CurrentTurnIndex;
+                int currentGameState_TurnIndex = gameStateToApplySelfOn.game_state_counter.turn_index;
 
                 RH_Macro_Apply_Type macroApplicationType = Calculate_Macro_Application_Type(
                     state_Type,
@@ -440,7 +440,7 @@ namespace Pandemic_AI_Framework
             )
         {
             if (
-                game.GameStateCounter.CurrentTurnIndex > Gene_TurnIndex
+                game.game_state_counter.turn_index > Gene_TurnIndex
                 || game.GQ_Is_Lost()
                 || game.GQ_Is_Won()
                 )
@@ -448,19 +448,19 @@ namespace Pandemic_AI_Framework
                 return RH_State_Type.NextTurn;
             }
             else if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions)
+                game.game_FSM.CurrentState.GetType() == typeof(PD_GS_ApplyingMainPlayerActions)
                 )
             {
                 return RH_State_Type.MainPlayerActions;
             }
             else if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Discarding_DuringMainPlayerActions)
+                game.game_FSM.CurrentState.GetType() == typeof(PD_GS_Discarding_DuringMainPlayerActions)
                 )
             {
                 return RH_State_Type.Discarding_During;
             }
             else if (
-                game.GameFSM.CurrentState.GetType() == typeof(PD_GS_Discarding_AfterDrawing)
+                game.game_FSM.CurrentState.GetType() == typeof(PD_GS_Discarding_AfterDrawing)
                 )
             {
                 return RH_State_Type.Discarding_After;
@@ -527,7 +527,7 @@ namespace Pandemic_AI_Framework
             PD_Game gameState
             )
         {
-            bool correctTurn = gameState.GameStateCounter.CurrentTurnIndex == Gene_TurnIndex;
+            bool correctTurn = gameState.game_state_counter.turn_index == Gene_TurnIndex;
             bool ongoing = gameState.GQ_Is_Ongoing();
             return correctTurn && ongoing;
         }

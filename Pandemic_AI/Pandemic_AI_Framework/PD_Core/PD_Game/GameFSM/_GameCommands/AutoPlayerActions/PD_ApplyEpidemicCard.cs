@@ -48,29 +48,29 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if ((game.GameFSM.CurrentState is PD_GS_ApplyingEpidemicCard) == false)
+            else if ((game.game_FSM.CurrentState is PD_GS_ApplyingEpidemicCard) == false)
             {
                 throw new System.Exception("wrong state!");
             }
 #endif
             // 0. discard the epidemic card...
-            var allCards_InPlayerHand = game.Cards.PlayerCardsPerPlayerID[Player];
+            var allCards_InPlayerHand = game.cards.player_hand__per__player[Player];
             var epidemicCard = allCards_InPlayerHand.Find(
                 x =>
                 x >= 128
                 );
-            game.Cards.PlayerCardsPerPlayerID[Player].Remove(epidemicCard);
-            game.Cards.DeckOfDiscardedPlayerCards.Add(epidemicCard);
+            game.cards.player_hand__per__player[Player].Remove(epidemicCard);
+            game.cards.deck_of_discarded_player_cards.Add(epidemicCard);
 
             // 1. move the infection rate marker by one position
-            game.GameStateCounter.IncreaseEpidemicsCounter();
+            game.game_state_counter.IncreaseEpidemicsCounter();
 
             // 2. Infect: Draw the bottom card from the Infection Deck. 
             // Unless its disease color has been eradicated, put 3 disease cubes of that color on the named city.
             // If the city already has cubes of this color, do not add 3 cubes to it.
             // Instead, add just enough cubes so that it has 3 cubes of this color and then an outbreak of this disease occurs in the city(see Outbreaks below). 
             // Discard this card to the Infection Discard Pile.
-            var cardFromBottom = game.Cards.DividedDeckOfInfectionCards.DrawFirstElementOfFirstSubList();
+            var cardFromBottom = game.cards.divided_deck_of_infection_cards.DrawFirstElementOfFirstSubList();
 
             int epidemicInfectionType = game.GQ_City_InfectionType(cardFromBottom);
             bool diseaseTypeEradicated = game.GQ_Is_Disease_Eradicated(epidemicInfectionType);
@@ -100,18 +100,18 @@ namespace Pandemic_AI_Framework
 
                 if (finalReport.FailureReason == InfectionFailureReasons.notEnoughDiseaseCubes)
                 {
-                    game.GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection = true;
+                    game.game_state_counter.insufficient_disease_cubes_for_infection = true;
                 }
             }
 
             // put card in discarded infection cards pile
-            game.Cards.DeckOfDiscardedInfectionCards.Add(cardFromBottom);
+            game.cards.deck_of_discarded_infection_cards.Add(cardFromBottom);
 
             // 3. intensify: Reshuffle just the cards in the Infection Discard Pile 
             // and place them on top of the Infection Deck.
-            game.Cards.DeckOfDiscardedInfectionCards.Shuffle(randomness_provider);
-            game.Cards.DividedDeckOfInfectionCards.Add(
-                game.Cards.DeckOfDiscardedInfectionCards.DrawAll()
+            game.cards.deck_of_discarded_infection_cards.Shuffle(randomness_provider);
+            game.cards.divided_deck_of_infection_cards.Add(
+                game.cards.deck_of_discarded_infection_cards.DrawAll()
                 );
         }
 

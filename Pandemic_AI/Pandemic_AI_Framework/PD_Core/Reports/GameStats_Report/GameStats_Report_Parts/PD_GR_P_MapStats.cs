@@ -55,7 +55,7 @@ namespace Pandemic_AI_Framework
             NumDiseaseCubesOnMap_Type1 = 0;
             NumDiseaseCubesOnMap_Type2 = 0;
             NumDiseaseCubesOnMap_Type3 = 0;
-            foreach (var city in game.Map.cities)
+            foreach (var city in game.map.cities)
             {
                 var diseaseCubesOfType_0_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,0);
                 var diseaseCubesOfType_1_onCity = game.GQ_Find_InfectionCubes_OfType_OnCity(city,1);
@@ -97,7 +97,7 @@ namespace Pandemic_AI_Framework
             NumCitiesWithThreeSameTypeCubes_Type2 = 0;
             NumCitiesWithThreeSameTypeCubes_Type3 = 0;
 
-            foreach (var city in game.Map.cities)
+            foreach (var city in game.map.cities)
             {
                 // type 0 cubes on that city?
                 int numCubes_Type0 = game.GQ_InfectionCubes_OfType_OnCity(
@@ -198,7 +198,7 @@ namespace Pandemic_AI_Framework
             
             // count number of research stations on the map
             NumResearchStationsOnMap = 0;
-            foreach (var city in game.Map.cities)
+            foreach (var city in game.map.cities)
             {
                 if(game.GQ_Is_City_ResearchStation(city))
                     NumResearchStationsOnMap++;

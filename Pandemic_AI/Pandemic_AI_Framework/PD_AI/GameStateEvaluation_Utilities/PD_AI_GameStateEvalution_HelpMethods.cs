@@ -82,17 +82,17 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            int numAllCityCardsInGame = game.GameElementReferences.CityCards.Count;
-            int numAllEpidemicCardsInGame = game.GameSettings.GetNumberOfEpidemicCardsToUseInGame();
+            int numAllCityCardsInGame = game.map.number_of_cities;
+            int numAllEpidemicCardsInGame = game.game_settings.GetNumberOfEpidemicCardsToUseInGame();
             int numAllCardsInGame = numAllCityCardsInGame + numAllEpidemicCardsInGame;
 
-            int numPlayers = game.GameStateCounter.NumberOfPlayers;
-            int initialNumberOfCardsPerPlayer = game.GameSettings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
+            int numPlayers = game.game_state_counter.number_of_players;
+            int initialNumberOfCardsPerPlayer = game.game_settings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
             int initiallyDealtCards = numPlayers * initialNumberOfCardsPerPlayer;
 
             int initialCardsInDeck = numAllCardsInGame - initiallyDealtCards;
 
-            int currentCardsInDeck = game.Cards.DividedDeckOfPlayerCards.GetNumberOfElementsOfAllSubLists();
+            int currentCardsInDeck = game.cards.divided_deck_of_player_cards.GetNumberOfElementsOfAllSubLists();
 
             double percentage = (double)currentCardsInDeck / (double)initialCardsInDeck;
             return percentage;
@@ -102,10 +102,10 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            int currentNumOutbreaks = game.GameStateCounter.OutbreaksCounter;
+            int currentNumOutbreaks = game.game_state_counter.outbreaks_counter;
 
             // the + 1 is important! It ensures that no negative values can be returned from this score.
-            int maxNumOutbreaks = game.GameSettings.MaximumViableOutbreaks + 1;
+            int maxNumOutbreaks = game.game_settings.maximum_viable_outbreaks + 1;
 
             int remainingOutbreaks = maxNumOutbreaks - currentNumOutbreaks;
 
@@ -139,7 +139,7 @@ namespace Pandemic_AI_Framework
 
             int maxNumAvailableCubesOfAnyType = 24;
             int numAvailableCubesThisType 
-                = game.MapElements.inactive_infection_cubes__per__type[infectionType];
+                = game.map_elements.inactive_infection_cubes__per__type[infectionType];
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
 
@@ -175,7 +175,7 @@ namespace Pandemic_AI_Framework
             int maxNumAvailableCubesOfAnyType = 25; // 24 + 1
 
             int numAvailableCubesThisType 
-                = game.MapElements.inactive_infection_cubes__per__type[infectionType] + 1;
+                = game.map_elements.inactive_infection_cubes__per__type[infectionType] + 1;
 
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
@@ -188,7 +188,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.MapElements.inactive_infection_cubes__per__type[i];
+                    = game.map_elements.inactive_infection_cubes__per__type[i];
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -203,7 +203,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.MapElements.inactive_infection_cubes__per__type[i] + 1;
+                    = game.map_elements.inactive_infection_cubes__per__type[i] + 1;
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -238,7 +238,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.MapElements.inactive_infection_cubes__per__type[i];
+                    = game.map_elements.inactive_infection_cubes__per__type[i];
                 allInactiveCubes += numInactiveCubesThisType;
             }
             double percentage = (double)allInactiveCubes / (double)numAllCubes;
@@ -258,12 +258,12 @@ namespace Pandemic_AI_Framework
 
             int numInfCitiesWith_atLeast_X_Cubes = 0;
 
-            foreach (int city in game.Map.cities)
+            foreach (int city in game.map.cities)
             {
                 for (int t = 0; t < 4; t++)
                 {
                     int numCubesOfTypeOnCity
-                        = game.MapElements.infections__per__type__per__city[city][t];
+                        = game.map_elements.infections__per__type__per__city[city][t];
                     if (numCubesOfTypeOnCity >= xCubes)
                     {
                         // if a city has three cubes of two different types, then it counts as two cities!!

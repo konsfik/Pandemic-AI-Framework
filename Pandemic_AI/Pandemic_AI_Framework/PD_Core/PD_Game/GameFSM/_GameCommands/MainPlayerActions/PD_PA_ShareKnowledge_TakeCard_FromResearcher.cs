@@ -62,7 +62,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (game.GQ_Find_Player_Role(OtherPlayer) != PD_Player_Roles.Researcher)
+            else if (game.GQ_Player_Role(OtherPlayer) != PD_Player_Roles.Researcher)
             {
                 throw new System.Exception("the other player must be researcher!");
             }
@@ -71,8 +71,8 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("Players do not share the same location");
             }
 #endif
-            game.Cards.PlayerCardsPerPlayerID[OtherPlayer].Remove(CityCardToTake);
-            game.Cards.PlayerCardsPerPlayerID[Player].Add(CityCardToTake);
+            game.cards.player_hand__per__player[OtherPlayer].Remove(CityCardToTake);
+            game.cards.player_hand__per__player[Player].Add(CityCardToTake);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()

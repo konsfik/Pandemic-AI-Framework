@@ -40,7 +40,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (int city_card in cityCardsInPlayerHand)
                 {
-                    int city_card_type = game.Map.infection_type__per__city[city_card];
+                    int city_card_type = game.map.infection_type__per__city[city_card];
                     numCardsTable[city_card_type, playerIndex]++;
                 }
                 //for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
@@ -75,7 +75,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
                 {
-                    bool isPlayerScientist = game.GQ_Find_Player_Role(player) == PD_Player_Roles.Scientist;
+                    bool isPlayerScientist = game.GQ_Player_Role(player) == PD_Player_Roles.Scientist;
 
                     int numCards = numCardsTable[typeIndex, player];
                     int numCards_SetComplete = isPlayerScientist ? 4 : 5;

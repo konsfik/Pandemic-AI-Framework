@@ -26,7 +26,7 @@ namespace Pandemic_AI_Framework
                 int currentPlayer = game.GQ_CurrentPlayer();
                 int currentPlayerLocation = game.GQ_CurrentPlayer_Location();
                 int currentPlayerRole = game.GQ_CurrentPlayer_Role();
-                List<int> allCitiesExceprCurrentLocation = game.Map.cities.FindAll(
+                List<int> allCitiesExceprCurrentLocation = game.map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
                     );
@@ -415,7 +415,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numRemainingActions = 4 - game.GameStateCounter.CurrentPlayerActionIndex;
+            int numRemainingActions = 4 - game.game_state_counter.player_action_index;
 
             List<PD_MacroAction> walkMacros_SimpleWalk_ExecutableNow = new List<PD_MacroAction>();
 
@@ -743,7 +743,7 @@ namespace Pandemic_AI_Framework
             for (int infectionType = 0; infectionType < 4; infectionType++)
             {
                 bool currentPlayerLocationIsInfectedWithThisType
-                    = game.MapElements.infections__per__type__per__city
+                    = game.map_elements.infections__per__type__per__city
                     [currentPlayerLocation]
                     [infectionType] > 0;
                 bool thisDiseaseTypeHasNotBeenCured
@@ -828,7 +828,7 @@ namespace Pandemic_AI_Framework
                 for (int t = 0; t < 4; t++)
                 {
                     bool destinationIsInfectedWithThisType
-                        = game.MapElements.infections__per__type__per__city[destination][t] > 0;
+                        = game.map_elements.infections__per__type__per__city[destination][t] > 0;
                     bool thisDiseaseTypeHasNotBeenCured
                         = game.GQ_Is_DiseaseCured_OR_Eradicated(t) == false;
 
@@ -1120,7 +1120,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
@@ -1128,7 +1128,7 @@ namespace Pandemic_AI_Framework
             }
 
             bool currentLocationIsResearchStation
-                = game.MapElements.research_stations__per__city[currentPlayerLocation] == true;
+                = game.map_elements.research_stations__per__city[currentPlayerLocation] == true;
 
             if (currentLocationIsResearchStation)
             {
@@ -1204,7 +1204,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
@@ -1222,7 +1222,7 @@ namespace Pandemic_AI_Framework
                 var destination = ((I_Movement_Action)walkSequence.GetLast()).ToCity;
 
                 bool destinationIsResearchStation
-                    = game.MapElements.research_stations__per__city[destination] == true;
+                    = game.map_elements.research_stations__per__city[destination] == true;
 
                 if (destinationIsResearchStation)
                 {
@@ -1379,7 +1379,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
 
             if (numInactiveResearchStations > 0)
             {
@@ -1391,7 +1391,7 @@ namespace Pandemic_AI_Framework
             List<PD_MacroAction> moveResearchStationMacros = new List<PD_MacroAction>();
 
             bool destinationIsResearchStation
-                = game.MapElements.research_stations__per__city[currentPlayerLocation] == true;
+                = game.map_elements.research_stations__per__city[currentPlayerLocation] == true;
 
             if (destinationIsResearchStation)
             {
@@ -1445,7 +1445,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.MapElements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
 
             if (numInactiveResearchStations > 0)
             {
@@ -2007,7 +2007,7 @@ namespace Pandemic_AI_Framework
             foreach (var otherPlayer in otherPlayers)
             {
 
-                var otherPlayerRole = game.GQ_Find_Player_Role(otherPlayer);
+                var otherPlayerRole = game.GQ_Player_Role(otherPlayer);
                 int otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                 List<int> cityCardsInOtherPlayerHand = game.GQ_CityCardsInPlayerHand(otherPlayer);
 
@@ -2148,7 +2148,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var otherPlayer in otherPlayersAtDestination)
                 {
-                    var otherPlayerRole = game.GQ_Find_Player_Role(otherPlayer);
+                    var otherPlayerRole = game.GQ_Player_Role(otherPlayer);
                     int otherPlayerLocation = game.GQ_PlayerLocation(otherPlayer);
                     List<int> cityCardsInOtherPlayerHand = game.GQ_CityCardsInPlayerHand(otherPlayer);
 
@@ -2386,7 +2386,7 @@ namespace Pandemic_AI_Framework
 
             foreach (var cardGroup in discoverCureCardGroups)
             {
-                int group_type = game.Map.infection_type__per__city[cardGroup[0]];
+                int group_type = game.map.infection_type__per__city[cardGroup[0]];
                 if (currentPlayerIsScientist)
                 {
                     PD_PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PD_PA_DiscoverCure_Scientist(
@@ -2487,7 +2487,7 @@ namespace Pandemic_AI_Framework
                     }
                     foreach (var cardGroup in remainingDiscoverCureCardGroups)
                     {
-                        int card_group_type = game.Map.infection_type__per__city[cardGroup[0]];
+                        int card_group_type = game.map.infection_type__per__city[cardGroup[0]];
                         if (currentPlayerIsScientist)
                         {
                             List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
@@ -2554,7 +2554,7 @@ namespace Pandemic_AI_Framework
             List<List<PD_GameAction_Base>> simpleWalk_Sequences =
                 new List<List<PD_GameAction_Base>>();
 
-            foreach (var city in game.Map.cities)
+            foreach (var city in game.map.cities)
             {
                 if (city != currentPlayerLocation)
                 {
@@ -2639,7 +2639,7 @@ namespace Pandemic_AI_Framework
                 //    && x != directFlightCity
                 //    );
 
-                foreach (var finalDestination in game.Map.cities)
+                foreach (var finalDestination in game.map.cities)
                 {
                     if (
                         finalDestination == currentPlayerLocation
@@ -2722,7 +2722,7 @@ namespace Pandemic_AI_Framework
                     charterCity
                     );
 
-                List<int> possible_Destinations = game.Map.cities.FindAll(
+                List<int> possible_Destinations = game.map.cities.FindAll(
                     x =>
                     x != currentPlayerLocation
                     && x != charterCity
@@ -2802,7 +2802,7 @@ namespace Pandemic_AI_Framework
             {
                 foreach (var cityCardToUse in cityCardsInCurrentPlayerHand)
                 {
-                    foreach (var finalDestination in game.Map.cities)
+                    foreach (var finalDestination in game.map.cities)
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
@@ -2842,7 +2842,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var cityCardToUse in cityCardsInCurrentPlayerHand)
                 {
-                    foreach (var finalDestination in game.Map.cities)
+                    foreach (var finalDestination in game.map.cities)
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
@@ -2914,7 +2914,7 @@ namespace Pandemic_AI_Framework
             {
                 var city1 = walkPath[i];
                 var city2 = walkPath[i + 1];
-                if (game.Map.neighbors__per__city[city1].Contains(city2) == true)
+                if (game.map.neighbors__per__city[city1].Contains(city2) == true)
                 {
                     PD_PMA_DriveFerry driveFerryCommand = new PD_PMA_DriveFerry(
                         current_player,

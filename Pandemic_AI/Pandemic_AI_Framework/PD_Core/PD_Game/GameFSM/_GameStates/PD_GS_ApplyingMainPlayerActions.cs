@@ -29,7 +29,7 @@ namespace Pandemic_AI_Framework
                 game
                 );
 
-            game.GameStateCounter.IncreasePlayerActionIndex();
+            game.game_state_counter.IncreasePlayerActionIndex();
 
             // after executing a main player action:
             bool playerActionsFinished = game.SS_PlayerActionsFinished();
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
             }
             else if (goTo_GameLost)
             {
-                game.GameStateCounter.NotEnoughPlayerCardsToDraw = true;
+                game.game_state_counter.insufficient_player_cards_to_draw = true;
                 return new PD_GS_GameLost();
             }
             else if (goTo_GameWon)
@@ -106,7 +106,7 @@ namespace Pandemic_AI_Framework
                 typeof(PD_PA_Discard_DuringMainPlayerActions)
                 )
             {
-                game.GameStateCounter.ResetPlayerActionIndex();
+                game.game_state_counter.ResetPlayerActionIndex();
             }
         }
 

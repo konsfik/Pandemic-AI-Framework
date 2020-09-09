@@ -29,22 +29,22 @@ namespace Pandemic_AI_Framework
         {
             Num_RemainingPlayerCards =
                 game
-                .Cards
-                .DividedDeckOfPlayerCards
+                .cards
+                .divided_deck_of_player_cards
                 .GetNumberOfElementsOfAllSubLists();
 
-            Num_Outbreaks = game.GameStateCounter.OutbreaksCounter;
-            Num_Epidemics = game.GameStateCounter.EpidemicsCounter;
+            Num_Outbreaks = game.game_state_counter.outbreaks_counter;
+            Num_Epidemics = game.game_state_counter.epidemics_counter;
 
             Num_CuredDiseases = 0;
             Num_EradicatedDiseases = 0;
             for (int i = 0; i < 4; i++)
             {
-                if (game.GameStateCounter.CureMarkersStates[i] == 1)
+                if (game.game_state_counter.disease_states[i] == 1)
                 {
                     Num_CuredDiseases++;
                 }
-                if (game.GameStateCounter.CureMarkersStates[i] == 2)
+                if (game.game_state_counter.disease_states[i] == 2)
                 {
                     Num_CuredDiseases++;
                     Num_EradicatedDiseases++;

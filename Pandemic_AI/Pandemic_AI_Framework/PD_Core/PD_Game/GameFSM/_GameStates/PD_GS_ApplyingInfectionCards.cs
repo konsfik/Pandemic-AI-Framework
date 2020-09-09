@@ -42,7 +42,7 @@ namespace Pandemic_AI_Framework
                 if (game.GQ_SS_ThereAreActiveInfectionCards())
                     return null;
 
-                game.GameStateCounter.IncreaseCurrentPlayerIndex();
+                game.game_state_counter.IncreaseCurrentPlayerIndex();
                 return new PD_GS_ApplyingMainPlayerActions();
             }
             return null;

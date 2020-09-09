@@ -30,13 +30,13 @@ namespace Pandemic_AI_Framework
 
         public override void Update(PD_Game game, PD_AI_PathFinder pathFinder)
         {
-            GameID = game.UniqueID;
-            CurrentTurn = game.GameStateCounter.CurrentTurnIndex;
-            CurrentPlayerAction = game.GameStateCounter.CurrentPlayerActionIndex;
+            GameID = game.unique_id;
+            CurrentTurn = game.game_state_counter.turn_index;
+            CurrentPlayerAction = game.game_state_counter.player_action_index;
             CurrentGameStep = CurrentTurn * 4 + CurrentPlayerAction;
-            CurrentGameState = game.GameFSM.CurrentState.GetType().Name.ToString();
+            CurrentGameState = game.game_FSM.CurrentState.GetType().Name.ToString();
 
-            long gameDurationTicks = DateTime.UtcNow.Ticks - game.StartTime.Ticks;
+            long gameDurationTicks = DateTime.UtcNow.Ticks - game.start_time.Ticks;
             GameDurMillis = (float)gameDurationTicks / 10000.0f;
         }
     }

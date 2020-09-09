@@ -45,10 +45,10 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < 2; i++)
             {
-                newPlayerCards.Add(game.Cards.DividedDeckOfPlayerCards.DrawLastElementOfLastSubList());
+                newPlayerCards.Add(game.cards.divided_deck_of_player_cards.DrawLastElementOfLastSubList());
             }
 
-            game.Cards.PlayerCardsPerPlayerID[Player].AddRange(newPlayerCards);
+            game.cards.player_hand__per__player[Player].AddRange(newPlayerCards);
         }
 
         public override string GetDescription()

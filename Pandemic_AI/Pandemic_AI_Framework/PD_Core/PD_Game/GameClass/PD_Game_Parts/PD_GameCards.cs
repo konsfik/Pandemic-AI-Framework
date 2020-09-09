@@ -13,31 +13,28 @@ namespace Pandemic_AI_Framework
         ICustomDeepCopyable<PD_GameCards>
     {
 
-        public List<List<int>> DividedDeckOfInfectionCards { get; private set; }
-        public List<int> ActiveInfectionCards { get; private set; }
-        public List<int> DeckOfDiscardedInfectionCards { get; private set; }
-        public List<List<int>> DividedDeckOfPlayerCards { get; private set; }
-        public List<int> DeckOfDiscardedPlayerCards { get; private set; }
-        public Dictionary<int, List<int>> PlayerCardsPerPlayerID { get; private set; }
-        public List<int> InactiveRoleCards { get; private set; }
+        public List<List<int>> divided_deck_of_infection_cards;
+        public List<int> active_infection_cards;
+        public List<int> deck_of_discarded_infection_cards;
+        public List<List<int>> divided_deck_of_player_cards;
+        public List<int> deck_of_discarded_player_cards;
+        public Dictionary<int, List<int>> player_hand__per__player;
 
         #region constructors
         // normal constructor
         public PD_GameCards(
-            List<int> players,
-            List<int> allRoleCards
+            List<int> players
             )
         {
-            DividedDeckOfInfectionCards = new List<List<int>>();
-            ActiveInfectionCards = new List<int>();
-            DeckOfDiscardedInfectionCards = new List<int>();
+            divided_deck_of_infection_cards = new List<List<int>>();
+            active_infection_cards = new List<int>();
+            deck_of_discarded_infection_cards = new List<int>();
 
-            DividedDeckOfPlayerCards = new List<List<int>>();
-            DeckOfDiscardedPlayerCards = new List<int>();
-            PlayerCardsPerPlayerID = new Dictionary<int, List<int>>();
+            divided_deck_of_player_cards = new List<List<int>>();
+            deck_of_discarded_player_cards = new List<int>();
+            player_hand__per__player = new Dictionary<int, List<int>>();
             foreach (var player in players)
-                PlayerCardsPerPlayerID.Add(player, new List<int>());
-            InactiveRoleCards = allRoleCards.CustomDeepCopy();
+                player_hand__per__player.Add(player, new List<int>());
         }
 
         // special constructor, for use with the JSON serializer
@@ -48,17 +45,15 @@ namespace Pandemic_AI_Framework
             List<int> deckOfDiscardedInfectionCards,
             List<List<int>> dividedDeckOfPlayerCards,
             List<int> deckOfDiscardedPlayerCards,
-            Dictionary<int, List<int>> playerCardsPerPlayerID,
-            List<int> inactiveRoleCards
+            Dictionary<int, List<int>> playerCardsPerPlayerID
             )
         {
-            DividedDeckOfInfectionCards = dividedDeckOfInfectionCards.CustomDeepCopy();
-            ActiveInfectionCards = activeInfectionCards.CustomDeepCopy();
-            DeckOfDiscardedInfectionCards = deckOfDiscardedInfectionCards.CustomDeepCopy();
-            DividedDeckOfPlayerCards = dividedDeckOfPlayerCards.CustomDeepCopy();
-            DeckOfDiscardedPlayerCards = deckOfDiscardedPlayerCards.CustomDeepCopy();
-            PlayerCardsPerPlayerID = playerCardsPerPlayerID.CustomDeepCopy();
-            InactiveRoleCards = inactiveRoleCards.CustomDeepCopy();
+            divided_deck_of_infection_cards = dividedDeckOfInfectionCards.CustomDeepCopy();
+            active_infection_cards = activeInfectionCards.CustomDeepCopy();
+            deck_of_discarded_infection_cards = deckOfDiscardedInfectionCards.CustomDeepCopy();
+            divided_deck_of_player_cards = dividedDeckOfPlayerCards.CustomDeepCopy();
+            deck_of_discarded_player_cards = deckOfDiscardedPlayerCards.CustomDeepCopy();
+            player_hand__per__player = playerCardsPerPlayerID.CustomDeepCopy();
         }
 
         // private constructor, for deep copy purposes only
@@ -66,13 +61,12 @@ namespace Pandemic_AI_Framework
             PD_GameCards gameCardsToCopy
             )
         {
-            DividedDeckOfInfectionCards = gameCardsToCopy.DividedDeckOfInfectionCards.CustomDeepCopy();
-            ActiveInfectionCards = gameCardsToCopy.ActiveInfectionCards.CustomDeepCopy();
-            DeckOfDiscardedInfectionCards = gameCardsToCopy.DeckOfDiscardedInfectionCards.CustomDeepCopy();
-            DividedDeckOfPlayerCards = gameCardsToCopy.DividedDeckOfPlayerCards.CustomDeepCopy();
-            DeckOfDiscardedPlayerCards = gameCardsToCopy.DeckOfDiscardedPlayerCards.CustomDeepCopy();
-            PlayerCardsPerPlayerID = gameCardsToCopy.PlayerCardsPerPlayerID.CustomDeepCopy();
-            InactiveRoleCards = gameCardsToCopy.InactiveRoleCards.CustomDeepCopy();
+            divided_deck_of_infection_cards = gameCardsToCopy.divided_deck_of_infection_cards.CustomDeepCopy();
+            active_infection_cards = gameCardsToCopy.active_infection_cards.CustomDeepCopy();
+            deck_of_discarded_infection_cards = gameCardsToCopy.deck_of_discarded_infection_cards.CustomDeepCopy();
+            divided_deck_of_player_cards = gameCardsToCopy.divided_deck_of_player_cards.CustomDeepCopy();
+            deck_of_discarded_player_cards = gameCardsToCopy.deck_of_discarded_player_cards.CustomDeepCopy();
+            player_hand__per__player = gameCardsToCopy.player_hand__per__player.CustomDeepCopy();
         }
 
         public PD_GameCards GetCustomDeepCopy()
@@ -84,35 +78,31 @@ namespace Pandemic_AI_Framework
         #region equality overrides
         public bool Equals(PD_GameCards other)
         {
-            if (DividedDeckOfInfectionCards.List_Equals(other.DividedDeckOfInfectionCards) == false)
+            if (divided_deck_of_infection_cards.List_Equals(other.divided_deck_of_infection_cards) == false)
             {
                 return false;
             }
-            else if (ActiveInfectionCards.List_Equals(other.ActiveInfectionCards) == false)
+            else if (active_infection_cards.List_Equals(other.active_infection_cards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedInfectionCards.List_Equals(other.DeckOfDiscardedInfectionCards) == false)
+            else if (deck_of_discarded_infection_cards.List_Equals(other.deck_of_discarded_infection_cards) == false)
             {
                 return false;
             }
-            else if (DividedDeckOfPlayerCards.List_Equals(other.DividedDeckOfPlayerCards) == false)
+            else if (divided_deck_of_player_cards.List_Equals(other.divided_deck_of_player_cards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedPlayerCards.List_Equals(other.DeckOfDiscardedPlayerCards) == false)
+            else if (deck_of_discarded_player_cards.List_Equals(other.deck_of_discarded_player_cards) == false)
             {
                 return false;
             }
-            else if (DeckOfDiscardedPlayerCards.List_Equals(other.DeckOfDiscardedPlayerCards) == false)
+            else if (deck_of_discarded_player_cards.List_Equals(other.deck_of_discarded_player_cards) == false)
             {
                 return false;
             }
-            else if (PlayerCardsPerPlayerID.Dictionary_Equals(other.PlayerCardsPerPlayerID) == false)
-            {
-                return false;
-            }
-            else if (InactiveRoleCards.List_Equals(other.InactiveRoleCards) == false)
+            else if (player_hand__per__player.Dictionary_Equals(other.player_hand__per__player) == false)
             {
                 return false;
             }
@@ -135,13 +125,12 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = hash * 31 + DividedDeckOfInfectionCards.Custom_HashCode();
-            hash = hash * 31 + ActiveInfectionCards.Custom_HashCode();
-            hash = hash * 31 + DeckOfDiscardedInfectionCards.Custom_HashCode();
-            hash = hash * 31 + DividedDeckOfPlayerCards.Custom_HashCode();
-            hash = hash * 31 + DeckOfDiscardedPlayerCards.Custom_HashCode();
-            hash = hash * 31 + PlayerCardsPerPlayerID.Custom_HashCode();
-            hash = hash * 31 + InactiveRoleCards.Custom_HashCode();
+            hash = hash * 31 + divided_deck_of_infection_cards.Custom_HashCode();
+            hash = hash * 31 + active_infection_cards.Custom_HashCode();
+            hash = hash * 31 + deck_of_discarded_infection_cards.Custom_HashCode();
+            hash = hash * 31 + divided_deck_of_player_cards.Custom_HashCode();
+            hash = hash * 31 + deck_of_discarded_player_cards.Custom_HashCode();
+            hash = hash * 31 + player_hand__per__player.Custom_HashCode();
 
             return hash;
         }

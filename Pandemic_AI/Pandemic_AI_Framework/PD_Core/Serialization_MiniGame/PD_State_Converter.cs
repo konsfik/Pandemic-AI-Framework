@@ -35,19 +35,19 @@ namespace Pandemic_AI_Framework
             PD_MiniGame mini_game = new PD_MiniGame();
 
             // game - id
-            mini_game.unique_id = game.UniqueID;
+            mini_game.unique_id = game.unique_id;
 
             // game - settings:
-            mini_game.settings___number_of_players = game.GameStateCounter.NumberOfPlayers;
-            mini_game.settings___game_difficulty = game.GameSettings.GameDifficultyLevel;
-            mini_game.settings___maximum_viable_outbreaks = game.GameSettings.MaximumViableOutbreaks;
-            mini_game.settings___maximum_player_hand_size = game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer;
+            mini_game.settings___number_of_players = game.game_state_counter.number_of_players;
+            mini_game.settings___game_difficulty = game.game_settings.game_difficulty_level;
+            mini_game.settings___maximum_viable_outbreaks = game.game_settings.maximum_viable_outbreaks;
+            mini_game.settings___maximum_player_hand_size = game.game_settings.maximum_player_hand_size;
             mini_game.settings___initial_hand_size__per__number_of_players =
-                game.GameSettings.NumberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
+                game.game_settings.initial_hand_size__per__number_of_players.CustomDeepCopy();
             mini_game.settings___epidemic_cards__per__game_difficulty =
-                game.GameSettings.NumberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
+                game.game_settings.number_of_epidemic_cards__per__difficulty_level.CustomDeepCopy();
             mini_game.settings___infection_rate__per__epidemics =
-                game.GameSettings.InfectionRatesPerEpidemicsCounter.CustomDeepCopy();
+                game.game_settings.infection_rate__per__number_of_epidemics.CustomDeepCopy();
 
             // general - data
             mini_game.players = new List<int>();
@@ -57,17 +57,11 @@ namespace Pandemic_AI_Framework
             }
 
             // player - roles
-            mini_game.unassigned_player_roles = new List<int>();
-            foreach (var role_card in game.Cards.InactiveRoleCards)
-            {
-                int mini_role = MiniGame_PlayerRole__From__PlayerRole(role_card);
-                mini_game.unassigned_player_roles.Add(mini_role);
-            }
             mini_game.role__per__player = new int[mini_game.settings___number_of_players];
             foreach (int p in mini_game.players)
             {
                 var game_player = game.players[p];
-                int game_player_role = game.GQ_Find_Player_Role(game_player);
+                int game_player_role = game.GQ_Player_Role(game_player);
                 switch (game_player_role)
                 {
                     case PD_Player_Roles.None:
@@ -93,7 +87,7 @@ namespace Pandemic_AI_Framework
             //////////////////////////////////
 
             // number_of_cities
-            mini_game.map___number_of_cities = game.Map.number_of_cities;
+            mini_game.map___number_of_cities = game.map.number_of_cities;
             mini_game.map___cities = new List<int>();
             mini_game.map___name__per__city = new Dictionary<int, string>();
             mini_game.map___position__per__city = new Dictionary<int, PD_Point>();
@@ -102,28 +96,28 @@ namespace Pandemic_AI_Framework
             mini_game.map_elements___research_station__per__city = new Dictionary<int, bool>();
             mini_game.map_elements___location__per__player = new Dictionary<int, int>();
 
-            foreach (int c in game.Map.cities)
+            foreach (int c in game.map.cities)
             {
                 // cities
                 mini_game.map___cities.Add(c);
                 // name__per__city
                 mini_game.map___name__per__city.Add(
                     c,
-                    game.Map.name__per__city[c]
+                    game.map.name__per__city[c]
                     );
                 // position__per__city
                 mini_game.map___position__per__city.Add(
                     c,
-                    game.Map.position__per__city[c].GetCustomDeepCopy()
+                    game.map.position__per__city[c].GetCustomDeepCopy()
                     );
                 // infection_type__per__city
                 mini_game.map___infection_type__per__city.Add(
                     c,
-                    game.Map.infection_type__per__city[c]
+                    game.map.infection_type__per__city[c]
                     );
                 // neighbors__per__city
                 List<int> neighbors = new List<int>();
-                foreach (int nei in game.Map.neighbors__per__city[c])
+                foreach (int nei in game.map.neighbors__per__city[c])
                 {
                     neighbors.Add(nei);
                 }
@@ -132,7 +126,7 @@ namespace Pandemic_AI_Framework
                     neighbors
                     );
                 // research_station__per__city
-                if (game.GQ_Is_City_ResearchStation(game.Map.cities[c]))
+                if (game.GQ_Is_City_ResearchStation(game.map.cities[c]))
                 {
                     mini_game.map_elements___research_station__per__city.Add(c, true);
                 }
@@ -158,7 +152,7 @@ namespace Pandemic_AI_Framework
                     new Dictionary<int, int>()
                     );
             }
-            foreach (int city in game.Map.cities)
+            foreach (int city in game.map.cities)
             {
                 for (int t = 0; t < 4; t++)
                 {
@@ -177,7 +171,7 @@ namespace Pandemic_AI_Framework
 
             // availablee research stations
             mini_game.map_elements___available_research_stations
-                = game.MapElements.inactive_research_stations;
+                = game.map_elements.inactive_research_stations;
             // available infection cubes per type
             mini_game.map_elements___available_infection_cubes__per__type = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
@@ -192,43 +186,43 @@ namespace Pandemic_AI_Framework
             // state counters
             /////////////////////////////////////////////////
 
-            if (game.GameFSM.CurrentState is PD_GS_Idle)
+            if (game.game_FSM.CurrentState is PD_GS_Idle)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.IDLE;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
+            else if (game.game_FSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.MAIN_PLAYER_ACTIONS;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_Discarding_DuringMainPlayerActions)
+            else if (game.game_FSM.CurrentState is PD_GS_Discarding_DuringMainPlayerActions)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.DISCARDING_DURING_PLAY;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_DrawingNewPlayerCards)
+            else if (game.game_FSM.CurrentState is PD_GS_DrawingNewPlayerCards)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.DRAWING_NEW_PLAYER_CARDS;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_Discarding_AfterDrawing)
+            else if (game.game_FSM.CurrentState is PD_GS_Discarding_AfterDrawing)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.DISCARDING_AFTER_DRAWING;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_ApplyingEpidemicCard)
+            else if (game.game_FSM.CurrentState is PD_GS_ApplyingEpidemicCard)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.APPLYING_EPIDEMIC_CARDS;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_DrawingNewInfectionCards)
+            else if (game.game_FSM.CurrentState is PD_GS_DrawingNewInfectionCards)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.DRAWING_NEW_INFECTION_CARDS;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_ApplyingInfectionCards)
+            else if (game.game_FSM.CurrentState is PD_GS_ApplyingInfectionCards)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.APPLYING_INFECTION_CARDS;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_GameLost)
+            else if (game.game_FSM.CurrentState is PD_GS_GameLost)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.GAME_LOST;
             }
-            else if (game.GameFSM.CurrentState is PD_GS_GameWon)
+            else if (game.game_FSM.CurrentState is PD_GS_GameWon)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.GAME_WON;
             }
@@ -237,23 +231,23 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("state not found!");
             }
 
-            mini_game.state_counter___current_turn = game.GameStateCounter.CurrentTurnIndex;
-            mini_game.state_counter___current_player = game.GameStateCounter.CurrentPlayerIndex;
-            mini_game.state_counter___current_player_action_index = game.GameStateCounter.CurrentPlayerActionIndex;
-            mini_game.state_counter___number_of_outbreaks = game.GameStateCounter.OutbreaksCounter;
-            mini_game.state_counter___number_of_epidemics = game.GameStateCounter.EpidemicsCounter;
+            mini_game.state_counter___current_turn = game.game_state_counter.turn_index;
+            mini_game.state_counter___current_player = game.game_state_counter.player_index;
+            mini_game.state_counter___current_player_action_index = game.game_state_counter.player_action_index;
+            mini_game.state_counter___number_of_outbreaks = game.game_state_counter.outbreaks_counter;
+            mini_game.state_counter___number_of_epidemics = game.game_state_counter.epidemics_counter;
             mini_game.state_counter___disease_states = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
             {
-                if (game.GameStateCounter.CureMarkersStates[t] == 0)
+                if (game.game_state_counter.disease_states[t] == 0)
                 {
                     mini_game.state_counter___disease_states.Add(t, PD_MiniGame__DiseaseState.ACTIVE);
                 }
-                else if (game.GameStateCounter.CureMarkersStates[t] == 1)
+                else if (game.game_state_counter.disease_states[t] == 1)
                 {
                     mini_game.state_counter___disease_states.Add(t, PD_MiniGame__DiseaseState.CURED);
                 }
-                else if (game.GameStateCounter.CureMarkersStates[t] == 2)
+                else if (game.game_state_counter.disease_states[t] == 2)
                 {
                     mini_game.state_counter___disease_states.Add(t, PD_MiniGame__DiseaseState.ERADICATED);
                 }
@@ -265,22 +259,22 @@ namespace Pandemic_AI_Framework
             /////////////////////////////////////////////////
 
             // divided_deck_of_infection_cards
-            mini_game.cards___divided_deck_of_infection_cards = game.Cards.DividedDeckOfInfectionCards.CustomDeepCopy();
+            mini_game.cards___divided_deck_of_infection_cards = game.cards.divided_deck_of_infection_cards.CustomDeepCopy();
 
             // active_infection_cards
-            mini_game.cards___active_infection_cards = game.Cards.ActiveInfectionCards.CustomDeepCopy();
+            mini_game.cards___active_infection_cards = game.cards.active_infection_cards.CustomDeepCopy();
 
             // deck_of_discarded_infection_cards
-            mini_game.cards___deck_of_discarded_infection_cards = game.Cards.DeckOfDiscardedInfectionCards.CustomDeepCopy();
+            mini_game.cards___deck_of_discarded_infection_cards = game.cards.deck_of_discarded_infection_cards.CustomDeepCopy();
 
             // divided_deck_of_player_cards
-            mini_game.cards___divided_deck_of_player_cards = game.Cards.DividedDeckOfPlayerCards.CustomDeepCopy();
+            mini_game.cards___divided_deck_of_player_cards = game.cards.divided_deck_of_player_cards.CustomDeepCopy();
 
             // deck_of_discarded_player_cards
-            mini_game.cards___deck_of_discarded_player_cards = game.Cards.DeckOfDiscardedPlayerCards.CustomDeepCopy();
+            mini_game.cards___deck_of_discarded_player_cards = game.cards.deck_of_discarded_player_cards.CustomDeepCopy();
 
             // player cards per player
-            mini_game.cards___player_cards__per__player = game.Cards.PlayerCardsPerPlayerID.CustomDeepCopy();
+            mini_game.cards___player_cards__per__player = game.cards.player_hand__per__player.CustomDeepCopy();
 
 
 
@@ -399,13 +393,6 @@ namespace Pandemic_AI_Framework
             role_cards.Add(PD_Player_Roles.Medic);
             role_cards.Add(PD_Player_Roles.Scientist);
 
-            // game element references...
-            PD_GameElementReferences GAME_ELEMENT_REFERENCES = new PD_GameElementReferences(
-                city_cards,
-                infection_cards,
-                epidemic_cards,
-                role_cards
-                );
 
             Dictionary<int, int> ROLE_CARDS__PER__PLAYER_ID = new Dictionary<int, int>();
             foreach (int p in mini_game.players)
@@ -518,8 +505,7 @@ namespace Pandemic_AI_Framework
                 deck_of_discarded_infection_cards,
                 divided_deck_of_player_cards,
                 deck_of_dicarded_player_cards,
-                player_cards_per_player,
-                inactive_role_cards
+                player_cards_per_player
                 );
 
 
@@ -532,7 +518,6 @@ namespace Pandemic_AI_Framework
                 GAME_STATE_COUNTER,                         // game state counter
                 PLAYERS,                                    // players
                 MAP,                                        // map
-                GAME_ELEMENT_REFERENCES,                    // game element references
                 MAP_ELEMENTS,                               // map elements
                 CARDS,                                      // cards
                 ROLE_CARDS__PER__PLAYER_ID,                 // role cards per player id     

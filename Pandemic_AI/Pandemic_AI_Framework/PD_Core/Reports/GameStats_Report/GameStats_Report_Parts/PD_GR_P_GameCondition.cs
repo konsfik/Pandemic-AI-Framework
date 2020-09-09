@@ -34,9 +34,9 @@ namespace Pandemic_AI_Framework
             GameLost = game.GQ_Is_Lost() ? 1 : 0;
             Lost_Outbreaks = game.GQ_SS_DeadlyOutbreaks() ? 1 : 0;
             Lost_DiseaseCubes =
-                game.GameStateCounter.NotEnoughDiseaseCubesToCompleteAnInfection ? 1 : 0;
+                game.game_state_counter.insufficient_disease_cubes_for_infection ? 1 : 0;
             Lost_PlayerCards =
-                game.GameStateCounter.NotEnoughPlayerCardsToDraw ? 1 : 0;
+                game.game_state_counter.insufficient_player_cards_to_draw ? 1 : 0;
         }
     }
 }

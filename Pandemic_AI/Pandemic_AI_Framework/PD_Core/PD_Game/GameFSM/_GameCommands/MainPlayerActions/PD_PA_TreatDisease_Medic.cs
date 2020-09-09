@@ -64,7 +64,7 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (game.GQ_Find_Player_Role(Player) != PD_Player_Roles.Medic)
+            else if (game.GQ_Player_Role(Player) != PD_Player_Roles.Medic)
             {
                 throw new System.Exception("wrong player role!");
             }

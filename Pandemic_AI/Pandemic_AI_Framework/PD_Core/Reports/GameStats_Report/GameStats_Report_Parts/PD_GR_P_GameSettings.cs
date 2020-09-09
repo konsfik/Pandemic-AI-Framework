@@ -28,8 +28,8 @@ namespace Pandemic_AI_Framework
             PD_AI_PathFinder pathFinder
             )
         {
-            NumPlayers = game.GameStateCounter.NumberOfPlayers;
-            GameDifficulty = game.GameSettings.GameDifficultyLevel;
+            NumPlayers = game.game_state_counter.number_of_players;
+            GameDifficulty = game.game_settings.game_difficulty_level;
 
             Player1_Role = game.role__per__player[game.players[0]].ToString();
             Player2_Role = game.role__per__player[game.players[1]].ToString();

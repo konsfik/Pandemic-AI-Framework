@@ -48,7 +48,7 @@ namespace PD_SavedStates_Converter
                     );
                 string output_path = Path.Combine(
                     new_folder_path_1,
-                    game.UniqueID.ToString() + ".csv"
+                    game.unique_id.ToString() + ".csv"
                     );
                 PD_IO_Utilities.CreateFile(output_path, true, false);
                 PD_IO_Utilities.AppendToFile(

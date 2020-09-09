@@ -67,8 +67,8 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("wrong player...");
             }
             else if (
-                game.Cards.PlayerCardsPerPlayerID[Player].Count
-                <= game.GameSettings.MaximumNumberOfPlayerCardsPerPlayer)
+                game.cards.player_hand__per__player[Player].Count
+                <= game.game_settings.maximum_player_hand_size)
             {
                 throw new System.Exception("Player does not need to discard cards!");
             }

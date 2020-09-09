@@ -81,19 +81,19 @@ namespace Pandemic_AI_Framework.Tests
         #region help methods
         private bool Games_Practically_Equal(PD_Game game_1, PD_Game game_2)
         {
-            if (game_1.UniqueID != game_2.UniqueID)
+            if (game_1.unique_id != game_2.unique_id)
             {
                 return false;
             }
-            else if (game_1.GameSettings.Equals(game_2.GameSettings) == false)
+            else if (game_1.game_settings.Equals(game_2.game_settings) == false)
             {
                 return false;
             }
-            else if (game_1.GameFSM.Equals(game_2.GameFSM) == false)
+            else if (game_1.game_FSM.Equals(game_2.game_FSM) == false)
             {
                 return false;
             }
-            else if (game_1.GameStateCounter.Equals(game_2.GameStateCounter) == false)
+            else if (game_1.game_state_counter.Equals(game_2.game_state_counter) == false)
             {
                 return false;
             }
@@ -101,11 +101,7 @@ namespace Pandemic_AI_Framework.Tests
             {
                 return false;
             }
-            else if (game_1.Map.Equals(game_2.Map) == false)
-            {
-                return false;
-            }
-            else if (PracticalGameComparison_GameElementReferences(game_1, game_2) == false)
+            else if (game_1.map.Equals(game_2.map) == false)
             {
                 return false;
             }
@@ -129,76 +125,40 @@ namespace Pandemic_AI_Framework.Tests
             return true;
         }
 
-        public bool PracticalGameComparison_GameElementReferences(PD_Game game_1, PD_Game game_2)
-        {
-            if (game_1.GameElementReferences.InfectionCards.List_Equals(
-                game_2.GameElementReferences.InfectionCards) == false)
-                return false;
-            else if (game_1.GameElementReferences.CityCards.List_Equals(
-                game_2.GameElementReferences.CityCards) == false)
-                return false;
-            else if (game_1.GameElementReferences.EpidemicCards.List_Equals(
-                game_2.GameElementReferences.EpidemicCards) == false)
-                return false;
-
-
-            // same as in the pawns, only check the roles, not the card ids.
-            if (game_1.GameElementReferences.RoleCards.Count
-                != game_2.GameElementReferences.RoleCards.Count)
-            {
-                return false;
-            }
-            for (int pp = 0; pp < game_1.GameElementReferences.RoleCards.Count; pp++)
-            {
-                if (game_1.GameElementReferences.RoleCards[pp]
-                    != game_2.GameElementReferences.RoleCards[pp])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public bool PracticalGameComparison_Cards(PD_Game game_1, PD_Game game_2)
         {
-            if (game_1.Cards.DividedDeckOfInfectionCards.List_Equals(
-                game_2.Cards.DividedDeckOfInfectionCards) == false)
+            if (game_1.cards.divided_deck_of_infection_cards.List_Equals(
+                game_2.cards.divided_deck_of_infection_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.ActiveInfectionCards.List_Equals(
-                game_2.Cards.ActiveInfectionCards) == false)
+            else if (game_1.cards.active_infection_cards.List_Equals(
+                game_2.cards.active_infection_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.DeckOfDiscardedInfectionCards.List_Equals(
-                game_2.Cards.DeckOfDiscardedInfectionCards) == false)
+            else if (game_1.cards.deck_of_discarded_infection_cards.List_Equals(
+                game_2.cards.deck_of_discarded_infection_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.DividedDeckOfPlayerCards.List_Equals(
-                game_2.Cards.DividedDeckOfPlayerCards) == false)
+            else if (game_1.cards.divided_deck_of_player_cards.List_Equals(
+                game_2.cards.divided_deck_of_player_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.DeckOfDiscardedPlayerCards.List_Equals(
-                game_2.Cards.DeckOfDiscardedPlayerCards) == false)
+            else if (game_1.cards.deck_of_discarded_player_cards.List_Equals(
+                game_2.cards.deck_of_discarded_player_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.DeckOfDiscardedPlayerCards.List_Equals(
-                game_2.Cards.DeckOfDiscardedPlayerCards) == false)
+            else if (game_1.cards.deck_of_discarded_player_cards.List_Equals(
+                game_2.cards.deck_of_discarded_player_cards) == false)
             {
                 return false;
             }
-            else if (game_1.Cards.PlayerCardsPerPlayerID.Dictionary_Equals(
-                game_2.Cards.PlayerCardsPerPlayerID) == false)
-            {
-                return false;
-            }
-            else if (game_1.Cards.InactiveRoleCards.List_Equals(
-                game_2.Cards.InactiveRoleCards) == false)
+            else if (game_1.cards.player_hand__per__player.Dictionary_Equals(
+                game_2.cards.player_hand__per__player) == false)
             {
                 return false;
             }
@@ -215,16 +175,16 @@ namespace Pandemic_AI_Framework.Tests
             for (int t = 0; t < 4; t++)
             {
                 if (
-                    game_1.MapElements.inactive_infection_cubes__per__type[t]
+                    game_1.map_elements.inactive_infection_cubes__per__type[t]
                     !=
-                    game_2.MapElements.inactive_infection_cubes__per__type[t]
+                    game_2.map_elements.inactive_infection_cubes__per__type[t]
                     )
                 {
                     return false;
                 }
             }
 
-            foreach (int city in game_1.Map.cities)
+            foreach (int city in game_1.map.cities)
             {
                 for (int t = 0; t < 4; t++)
                 {
@@ -239,12 +199,12 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.MapElements.inactive_research_stations != game_2.MapElements.inactive_research_stations)
+            if (game_1.map_elements.inactive_research_stations != game_2.map_elements.inactive_research_stations)
             {
                 return false;
             }
-            else if (game_1.MapElements.research_stations__per__city.Dictionary_Equals(
-                game_2.MapElements.research_stations__per__city) == false)
+            else if (game_1.map_elements.research_stations__per__city.Dictionary_Equals(
+                game_2.map_elements.research_stations__per__city) == false)
             {
                 return false;
             }
@@ -395,9 +355,9 @@ namespace Pandemic_AI_Framework.Tests
                     );
             }
 
-            game_2.OverrideUniqueID(game_1.UniqueID);
-            game_2.OverrideStartTime(game_1.StartTime);
-            game_2.OverrideEndTime(game_1.EndTime);
+            game_2.OverrideUniqueID(game_1.unique_id);
+            game_2.OverrideStartTime(game_1.start_time);
+            game_2.OverrideEndTime(game_1.end_time);
 
             Assert.IsTrue(game_1.Equals(game_2));
             Assert.IsTrue(game_1 == game_2);
@@ -418,39 +378,39 @@ namespace Pandemic_AI_Framework.Tests
             PD_Game gameCopy = game.GetCustomDeepCopy();
 
             Assert.IsTrue(
-                game.UniqueID
+                game.unique_id
                 ==
-                gameCopy.UniqueID
+                gameCopy.unique_id
                 );
 
             Assert.IsTrue(
-                game.StartTime
+                game.start_time
                 ==
-                gameCopy.StartTime
+                gameCopy.start_time
                 );
 
             Assert.IsTrue(
-                game.EndTime
+                game.end_time
                 ==
-                gameCopy.EndTime
+                gameCopy.end_time
                 );
 
             Assert.IsTrue(
-                game.GameSettings
+                game.game_settings
                 ==
-                gameCopy.GameSettings
+                gameCopy.game_settings
                 );
 
             Assert.IsTrue(
-                game.GameFSM
+                game.game_FSM
                 ==
-                gameCopy.GameFSM
+                gameCopy.game_FSM
                 );
 
             Assert.IsTrue(
-                game.GameStateCounter
+                game.game_state_counter
                 ==
-                gameCopy.GameStateCounter
+                gameCopy.game_state_counter
                 );
 
             Assert.IsTrue(

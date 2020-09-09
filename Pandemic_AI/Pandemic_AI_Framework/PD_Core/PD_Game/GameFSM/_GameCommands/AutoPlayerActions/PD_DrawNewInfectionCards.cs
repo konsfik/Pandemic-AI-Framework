@@ -45,24 +45,24 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if ((game.GameFSM.CurrentState is PD_GS_DrawingNewInfectionCards) == false)
+            else if ((game.game_FSM.CurrentState is PD_GS_DrawingNewInfectionCards) == false)
             {
                 throw new System.Exception("wrong state!");
             }
 #endif
             int numberOfInfectionCardsToDraw =
-                game.GameSettings.InfectionRatesPerEpidemicsCounter[
-                    game.GameStateCounter.EpidemicsCounter];
+                game.game_settings.infection_rate__per__number_of_epidemics[
+                    game.game_state_counter.epidemics_counter];
 
             var infectionCards = new List<int>();
 
             for (int i = 0; i < numberOfInfectionCardsToDraw; i++)
             {
                 infectionCards.Add(
-                    game.Cards.DividedDeckOfInfectionCards.DrawLastElementOfLastSubList());
+                    game.cards.divided_deck_of_infection_cards.DrawLastElementOfLastSubList());
             }
 
-            game.Cards.ActiveInfectionCards.AddRange(infectionCards);
+            game.cards.active_infection_cards.AddRange(infectionCards);
         }
 
         public override string GetDescription()

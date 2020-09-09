@@ -16,31 +16,31 @@ namespace Pandemic_AI_Framework
         //private const int _maximumNumberOfPlayerCardsPerPlayer = 7;
 
         #region properties
-        public int GameDifficultyLevel { get; private set; }
-        public Dictionary<int, int> NumberOfInitialCardsPerNumberOfPlayers { get; private set; }
-        public Dictionary<int, int> InfectionRatesPerEpidemicsCounter { get; private set; }
-        public Dictionary<int, int> NumberOfEpidemicCardsPerDifficultyLevel { get; private set; }
-        public int MaximumViableOutbreaks { get; private set; }
-        public int MaximumNumberOfPlayerCardsPerPlayer { get; private set; }
+        public int game_difficulty_level;
+        public Dictionary<int, int> initial_hand_size__per__number_of_players;
+        public Dictionary<int, int> infection_rate__per__number_of_epidemics;
+        public Dictionary<int, int> number_of_epidemic_cards__per__difficulty_level;
+        public int maximum_viable_outbreaks;
+        public int maximum_player_hand_size;
         #endregion
 
         #region constructors
         // normal constructor
         public PD_GameSettings(int gameDifficultyLevel)
         {
-            GameDifficultyLevel = gameDifficultyLevel;
+            game_difficulty_level = gameDifficultyLevel;
 
-            InfectionRatesPerEpidemicsCounter = new Dictionary<int, int>() {
+            infection_rate__per__number_of_epidemics = new Dictionary<int, int>() {
                 {0,2}, {1,2}, {2,2}, {3,3}, {4,3}, {5,4}, {6,4} };
 
-            NumberOfInitialCardsPerNumberOfPlayers = new Dictionary<int, int>() {
+            initial_hand_size__per__number_of_players = new Dictionary<int, int>() {
                 {2,4}, {3,3}, {4,2} };
 
-            NumberOfEpidemicCardsPerDifficultyLevel = new Dictionary<int, int>() {
+            number_of_epidemic_cards__per__difficulty_level = new Dictionary<int, int>() {
                 {0,4}, {1,5}, {2,6} };
 
-            MaximumViableOutbreaks = 7;
-            MaximumNumberOfPlayerCardsPerPlayer = 7;
+            maximum_viable_outbreaks = 7;
+            maximum_player_hand_size = 7;
         }
 
         // custom constructor for json deserialization...
@@ -54,17 +54,17 @@ namespace Pandemic_AI_Framework
             int maximumNumberOfPlayerCardsPerPlayer
             )
         {
-            this.GameDifficultyLevel 
+            this.game_difficulty_level 
                 = gameDifficultyLevel;
-            this.NumberOfInitialCardsPerNumberOfPlayers 
+            this.initial_hand_size__per__number_of_players 
                 = numberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
-            this.InfectionRatesPerEpidemicsCounter 
+            this.infection_rate__per__number_of_epidemics 
                 = infectionRatesPerEpidemicsCounter.CustomDeepCopy();
-            this.NumberOfEpidemicCardsPerDifficultyLevel 
+            this.number_of_epidemic_cards__per__difficulty_level 
                 = numberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
-            this.MaximumViableOutbreaks 
+            this.maximum_viable_outbreaks 
                 = maximumViableOutbreaks;
-            this.MaximumNumberOfPlayerCardsPerPlayer 
+            this.maximum_player_hand_size 
                 = maximumNumberOfPlayerCardsPerPlayer;
         }
 
@@ -73,18 +73,18 @@ namespace Pandemic_AI_Framework
             PD_GameSettings gameSettingsToCopy
             )
         {
-            this.GameDifficultyLevel 
-                = gameSettingsToCopy.GameDifficultyLevel;
-            this.NumberOfInitialCardsPerNumberOfPlayers 
-                = gameSettingsToCopy.NumberOfInitialCardsPerNumberOfPlayers.CustomDeepCopy();
-            this.InfectionRatesPerEpidemicsCounter 
-                = gameSettingsToCopy.InfectionRatesPerEpidemicsCounter.CustomDeepCopy();
-            this.NumberOfEpidemicCardsPerDifficultyLevel
-                = gameSettingsToCopy.NumberOfEpidemicCardsPerDifficultyLevel.CustomDeepCopy();
-            this.MaximumViableOutbreaks
-                = gameSettingsToCopy.MaximumViableOutbreaks;
-            this.MaximumNumberOfPlayerCardsPerPlayer
-                = gameSettingsToCopy.MaximumNumberOfPlayerCardsPerPlayer;
+            this.game_difficulty_level 
+                = gameSettingsToCopy.game_difficulty_level;
+            this.initial_hand_size__per__number_of_players 
+                = gameSettingsToCopy.initial_hand_size__per__number_of_players.CustomDeepCopy();
+            this.infection_rate__per__number_of_epidemics 
+                = gameSettingsToCopy.infection_rate__per__number_of_epidemics.CustomDeepCopy();
+            this.number_of_epidemic_cards__per__difficulty_level
+                = gameSettingsToCopy.number_of_epidemic_cards__per__difficulty_level.CustomDeepCopy();
+            this.maximum_viable_outbreaks
+                = gameSettingsToCopy.maximum_viable_outbreaks;
+            this.maximum_player_hand_size
+                = gameSettingsToCopy.maximum_player_hand_size;
         }
 
         // custom deep copy
@@ -96,55 +96,55 @@ namespace Pandemic_AI_Framework
 
         public int GetNumberOfInitialCardsToDealPlayers(int numberOfPlayers)
         {
-            return NumberOfInitialCardsPerNumberOfPlayers[numberOfPlayers];
+            return initial_hand_size__per__number_of_players[numberOfPlayers];
         }
 
         public int GetNumberOfEpidemicCardsToUseInGame()
         {
-            return NumberOfEpidemicCardsPerDifficultyLevel[GameDifficultyLevel];
+            return number_of_epidemic_cards__per__difficulty_level[game_difficulty_level];
         }
 
         #region equalityOverride
         public bool Equals(PD_GameSettings other)
         {
-            if (this.GameDifficultyLevel != other.GameDifficultyLevel)
+            if (this.game_difficulty_level != other.game_difficulty_level)
             {
                 return false;
             }
             else if (
-                this.NumberOfInitialCardsPerNumberOfPlayers.Dictionary_Equals(
-                    other.NumberOfInitialCardsPerNumberOfPlayers
+                this.initial_hand_size__per__number_of_players.Dictionary_Equals(
+                    other.initial_hand_size__per__number_of_players
                     ) == false
                 )
             {
                 return false;
             }
             else if (
-                this.InfectionRatesPerEpidemicsCounter.Dictionary_Equals(
-                    other.InfectionRatesPerEpidemicsCounter
+                this.infection_rate__per__number_of_epidemics.Dictionary_Equals(
+                    other.infection_rate__per__number_of_epidemics
                     ) == false
                 )
             {
                 return false;
             }
             else if (
-                this.NumberOfEpidemicCardsPerDifficultyLevel.Dictionary_Equals(
-                    other.NumberOfEpidemicCardsPerDifficultyLevel
+                this.number_of_epidemic_cards__per__difficulty_level.Dictionary_Equals(
+                    other.number_of_epidemic_cards__per__difficulty_level
                     ) == false
                 )
             {
                 return false;
             }
             else if (
-                this.MaximumViableOutbreaks
-                != other.MaximumViableOutbreaks
+                this.maximum_viable_outbreaks
+                != other.maximum_viable_outbreaks
                 )
             {
                 return false;
             }
             else if (
-                this.MaximumNumberOfPlayerCardsPerPlayer
-                != other.MaximumNumberOfPlayerCardsPerPlayer
+                this.maximum_player_hand_size
+                != other.maximum_player_hand_size
                 )
             {
                 return false;
@@ -170,12 +170,12 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = (hash * 13) + GameDifficultyLevel;
-            hash = (hash * 13) + NumberOfInitialCardsPerNumberOfPlayers.Custom_HashCode();
-            hash = (hash * 13) + InfectionRatesPerEpidemicsCounter.Custom_HashCode();
-            hash = (hash * 13) + NumberOfEpidemicCardsPerDifficultyLevel.Custom_HashCode();
-            hash = (hash * 13) + MaximumViableOutbreaks;
-            hash = (hash * 13) + MaximumNumberOfPlayerCardsPerPlayer;
+            hash = (hash * 13) + game_difficulty_level;
+            hash = (hash * 13) + initial_hand_size__per__number_of_players.Custom_HashCode();
+            hash = (hash * 13) + infection_rate__per__number_of_epidemics.Custom_HashCode();
+            hash = (hash * 13) + number_of_epidemic_cards__per__difficulty_level.Custom_HashCode();
+            hash = (hash * 13) + maximum_viable_outbreaks;
+            hash = (hash * 13) + maximum_player_hand_size;
 
             return hash;
         }

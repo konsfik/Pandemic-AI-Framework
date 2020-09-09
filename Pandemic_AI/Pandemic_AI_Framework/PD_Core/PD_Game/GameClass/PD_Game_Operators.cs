@@ -22,7 +22,7 @@ namespace Pandemic_AI_Framework
             Random randomness_provider
             )
         {
-            game.Cards.DividedDeckOfInfectionCards.ShuffleAllSubListsElements(randomness_provider);
+            game.cards.divided_deck_of_infection_cards.ShuffleAllSubListsElements(randomness_provider);
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace Pandemic_AI_Framework
             )
         {
             // gather primary info:
-            int num_SubLists = game.Cards.DividedDeckOfPlayerCards.Count;
+            int num_SubLists = game.cards.divided_deck_of_player_cards.Count;
             List<int> subLists_Sizes = new List<int>();
             List<bool> subLists_IncludeEpidemic = new List<bool>();
-            foreach (List<int> subList in game.Cards.DividedDeckOfPlayerCards)
+            foreach (List<int> subList in game.cards.divided_deck_of_player_cards)
             {
                 if (subList.Any(x => x >= 128))
                 {
@@ -53,10 +53,10 @@ namespace Pandemic_AI_Framework
             }
 
             // get the material
-            var allPlayerCards_IncludingEpidemics = game.Cards.DividedDeckOfPlayerCards.DrawAllElementsOfAllSubListsAsOneList();
+            var allPlayerCards_IncludingEpidemics = game.cards.divided_deck_of_player_cards.DrawAllElementsOfAllSubListsAsOneList();
             var playerCityCards = allPlayerCards_IncludingEpidemics.FindAll(
                 x =>
-                x < game.Map.number_of_cities
+                x < game.map.number_of_cities
                 );
             var epidemicCards = allPlayerCards_IncludingEpidemics.FindAll(
                 x =>
@@ -79,7 +79,7 @@ namespace Pandemic_AI_Framework
                     newSubList.Add(epidemicCards.DrawOneRandom(randomness_provider));
                 }
                 newSubList.Shuffle(randomness_provider);
-                game.Cards.DividedDeckOfPlayerCards.Add(newSubList);
+                game.cards.divided_deck_of_player_cards.Add(newSubList);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Pandemic_AI_Framework
             int atlanta = game.GQ_Find_CityByName("Atlanta");
             foreach (var player in game.players)
             {
-                game.MapElements.location__per__player[player] = atlanta;
+                game.map_elements.location__per__player[player] = atlanta;
             }
         }
 
@@ -110,14 +110,14 @@ namespace Pandemic_AI_Framework
             bool infectionDuringGameSetup
             )
         {
-            int currentInfectionType = existingReport.InfectionType;
+            int curent_infection_type = existingReport.InfectionType;
 
             if (infectionDuringGameSetup == false)
             {
 
-                int medic_location = game.GQ_Find_Medic_Location();
+                int medic_location = game.GQ_Medic_Location();
 
-                bool currentDiseaseIsCured = game.GQ_Is_DiseaseCured_OR_Eradicated(currentInfectionType);
+                bool currentDiseaseIsCured = game.GQ_Is_DiseaseCured_OR_Eradicated(curent_infection_type);
 
                 bool medicIsAtInfectionLocation = medic_location == cityToInfect;
 
@@ -137,7 +137,7 @@ namespace Pandemic_AI_Framework
             int occupied_infection_positions =
                 game.GQ_InfectionCubes_OfType_OnCity(
                     cityToInfect,
-                    currentInfectionType
+                    curent_infection_type
                     );
 
             int free_infection_positions =
@@ -145,7 +145,7 @@ namespace Pandemic_AI_Framework
 
             int available_cubes_of_type =
                 game.Num_InactiveInfectionCubes_OfType(
-                    currentInfectionType
+                    curent_infection_type
                     );
 
             bool enoughInactiveCubes =
@@ -163,7 +163,7 @@ namespace Pandemic_AI_Framework
                     // place the remaining inactive cubes, either way...
                     for (int i = 0; i < available_cubes_of_type; i++)
                     {
-                        GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, currentInfectionType);
+                        GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
                     }
                     // game lost...
                     existingReport.SetFailureReason(InfectionFailureReasons.notEnoughDiseaseCubes);
@@ -173,7 +173,7 @@ namespace Pandemic_AI_Framework
                 // ENOUGH CUBES TO COMPLETE THIS INFECTION, JUST PROCEED!
                 for (int i = 0; i < num_CubesToPlace; i++)
                 {
-                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, currentInfectionType);
+                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
                 }
                 existingReport.AddUsedCubes(num_CubesToPlace);
                 return existingReport;
@@ -190,7 +190,7 @@ namespace Pandemic_AI_Framework
                 // place the remaining inactive cubes, either way...
                 for (int i = 0; i < available_cubes_of_type; i++)
                 {
-                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, currentInfectionType);
+                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
                 }
                 // game lost
                 existingReport.SetFailureReason(InfectionFailureReasons.notEnoughDiseaseCubes);
@@ -208,14 +208,14 @@ namespace Pandemic_AI_Framework
             }
             existingReport.AddUsedCubes(free_infection_positions);
 
-            game.GameStateCounter.IncreaseOutbreaksCounter();
+            game.game_state_counter.IncreaseOutbreaksCounter();
             if (game.GQ_SS_DeadlyOutbreaks() == true)
             {
                 existingReport.SetFailureReason(InfectionFailureReasons.maximumOutbreaksSurpassed);
                 return existingReport;
             }
 
-            var neighbors = game.Map.neighbors__per__city[cityToInfect]; // cityToInfect.AdjacentCities;
+            var neighbors = game.map.neighbors__per__city[cityToInfect]; // cityToInfect.AdjacentCities;
 
             var neighborsThatHaveNotCausedAnOutbreak = neighbors.FindAll(
                 x =>
@@ -247,8 +247,8 @@ namespace Pandemic_AI_Framework
             int infectionCubeType
             )
         {
-            game.MapElements.inactive_infection_cubes__per__type[infectionCubeType] -= 1;
-            game.MapElements.infections__per__type__per__city[city][infectionCubeType] += 1;
+            game.map_elements.inactive_infection_cubes__per__type[infectionCubeType] -= 1;
+            game.map_elements.infections__per__type__per__city[city][infectionCubeType] += 1;
         }
 
         public static void GO_PlaceResearchStationOnCity(
@@ -256,8 +256,8 @@ namespace Pandemic_AI_Framework
             int city
             )
         {
-            game.MapElements.inactive_research_stations--;
-            game.MapElements.research_stations__per__city[city] = true;
+            game.map_elements.inactive_research_stations--;
+            game.map_elements.research_stations__per__city[city] = true;
         }
 
         public static void GO_MovePawnFromCityToCity(
@@ -267,7 +267,7 @@ namespace Pandemic_AI_Framework
             int targetCity
             )
         {
-            game.MapElements.location__per__player[player] = targetCity;
+            game.map_elements.location__per__player[player] = targetCity;
         }
 
         public static void GO_PlayerDiscardsPlayerCard(
@@ -276,8 +276,8 @@ namespace Pandemic_AI_Framework
             int playerCardToDiscard
             )
         {
-            game.Cards.PlayerCardsPerPlayerID[player].Remove(playerCardToDiscard);
-            game.Cards.DeckOfDiscardedPlayerCards.Add(playerCardToDiscard);
+            game.cards.player_hand__per__player[player].Remove(playerCardToDiscard);
+            game.cards.deck_of_discarded_player_cards.Add(playerCardToDiscard);
         }
 
         public static void GO_Remove_One_InfectionCube_OfType_FromCity(
@@ -287,9 +287,9 @@ namespace Pandemic_AI_Framework
             )
         {
             // remove the cube from the city
-            game.MapElements.infections__per__type__per__city[city][treatType]--;
+            game.map_elements.infections__per__type__per__city[city][treatType]--;
             // put the cubes back in the inactive container
-            game.MapElements.inactive_infection_cubes__per__type[treatType]++;
+            game.map_elements.inactive_infection_cubes__per__type[treatType]++;
         }
 
         public static void GO_Remove_All_InfectionCubes_OfType_FromCity(
@@ -299,12 +299,12 @@ namespace Pandemic_AI_Framework
             )
         {
             // count the cubes
-            int num_cubes = game.MapElements.infections__per__type__per__city[city][diseaseType];
+            int num_cubes = game.map_elements.infections__per__type__per__city[city][diseaseType];
 
             // remove the cubes from the city
-            game.MapElements.infections__per__type__per__city[city][diseaseType] -= num_cubes;
+            game.map_elements.infections__per__type__per__city[city][diseaseType] -= num_cubes;
             // put the cubes back in the inactive container
-            game.MapElements.inactive_infection_cubes__per__type[diseaseType] += num_cubes;
+            game.map_elements.inactive_infection_cubes__per__type[diseaseType] += num_cubes;
         }
 
     }

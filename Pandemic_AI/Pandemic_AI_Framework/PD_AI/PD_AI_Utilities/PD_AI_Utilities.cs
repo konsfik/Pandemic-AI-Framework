@@ -41,7 +41,7 @@ namespace Pandemic_AI_Framework
                 foreach (var type in infectionCubeTypes)
                 {
                     int numCubesOfThisTypeOnThisCity
-                        = game.MapElements.infections__per__type__per__city[city][type];
+                        = game.map_elements.infections__per__type__per__city[city][type];
                     if (numCubesOfThisTypeOnThisCity > min_SameType_InfectionCubes)
                     {
                         if (infectionTypesPerCity_MinSameCubes.Keys.Contains(city))

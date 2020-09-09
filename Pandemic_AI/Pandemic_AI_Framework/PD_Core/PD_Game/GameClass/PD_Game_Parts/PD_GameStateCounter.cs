@@ -12,16 +12,16 @@ namespace Pandemic_AI_Framework
         IDescribable, 
         ICustomDeepCopyable<PD_GameStateCounter>
     {
-        public int NumberOfPlayers { get; private set; }
-        public int CurrentPlayerActionIndex { get; private set; }
-        public int CurrentPlayerIndex { get; private set; }
-        public int CurrentTurnIndex { get; private set; }
-        public Dictionary<int, int> CureMarkersStates { get; private set; }
-        public int OutbreaksCounter { get; private set; }
-        public int EpidemicsCounter { get; private set; }
+        public int number_of_players;
+        public int player_action_index;
+        public int player_index;
+        public int turn_index;
+        public Dictionary<int, int> disease_states;
+        public int outbreaks_counter;
+        public int epidemics_counter;
 
-        public bool NotEnoughDiseaseCubesToCompleteAnInfection { get; set; }
-        public bool NotEnoughPlayerCardsToDraw { get; set; }
+        public bool insufficient_disease_cubes_for_infection;
+        public bool insufficient_player_cards_to_draw;
 
         #region constructors
         // normal constructor
@@ -31,39 +31,39 @@ namespace Pandemic_AI_Framework
             int currentTurnIndex
             )
         {
-            NumberOfPlayers = numberOfPlayers;
-            CurrentPlayerIndex = currentPlayerIndex;
-            CurrentTurnIndex = currentTurnIndex;
-            OutbreaksCounter = 0;
-            EpidemicsCounter = 0;
-            NotEnoughDiseaseCubesToCompleteAnInfection = false;
-            NotEnoughPlayerCardsToDraw = false;
+            number_of_players = numberOfPlayers;
+            player_index = currentPlayerIndex;
+            turn_index = currentTurnIndex;
+            outbreaks_counter = 0;
+            epidemics_counter = 0;
+            insufficient_disease_cubes_for_infection = false;
+            insufficient_player_cards_to_draw = false;
         }
 
         // custom private constructor for deep copy purposes!
         [JsonConstructor]
         public PD_GameStateCounter(
-            int numberOfPlayers,
-            int currentPlayerActionIndex,
-            int currentPlayerIndex,
-            int currentTurnIndex,
-            Dictionary<int, int> cureMarkersStates,
-            int outbreaksCounter,
-            int epidemicsCounter,
-            bool notEnoughDiseaseCubesToCompleteAnInfection,
-            bool notEnoughPlayerCardsToDraw
+            int number_of_players,
+            int player_action_index,
+            int player_index,
+            int turn_index,
+            Dictionary<int, int> disease_states,
+            int outbreaks_counter,
+            int epidemics_counter,
+            bool insufficient_disease_cubes_for_infection,
+            bool insufficient_player_cards_to_draw
             )
         {
-            NumberOfPlayers = numberOfPlayers;
-            CurrentPlayerActionIndex = currentPlayerActionIndex;
-            CurrentPlayerIndex = currentPlayerIndex;
-            CurrentTurnIndex = currentTurnIndex;
-            CureMarkersStates = cureMarkersStates.CustomDeepCopy();
-            OutbreaksCounter = outbreaksCounter;
-            EpidemicsCounter = epidemicsCounter;
-            NotEnoughDiseaseCubesToCompleteAnInfection 
-                = notEnoughDiseaseCubesToCompleteAnInfection;
-            NotEnoughPlayerCardsToDraw = notEnoughPlayerCardsToDraw;
+            this.number_of_players = number_of_players;
+            this.player_action_index = player_action_index;
+            this.player_index = player_index;
+            this.turn_index = turn_index;
+            this.disease_states = disease_states.CustomDeepCopy();
+            this.outbreaks_counter = outbreaks_counter;
+            this.epidemics_counter = epidemics_counter;
+            this.insufficient_disease_cubes_for_infection 
+                = insufficient_disease_cubes_for_infection;
+            this.insufficient_player_cards_to_draw = insufficient_player_cards_to_draw;
         }
 
         // private constructor for deepcopy purposes only
@@ -71,16 +71,16 @@ namespace Pandemic_AI_Framework
             PD_GameStateCounter gameStateCounterToCopy
             )
         {
-            this.NumberOfPlayers = gameStateCounterToCopy.NumberOfPlayers;
-            this.CurrentPlayerActionIndex = gameStateCounterToCopy.CurrentPlayerActionIndex;
-            this.CurrentPlayerIndex = gameStateCounterToCopy.CurrentPlayerIndex;
-            this.CurrentTurnIndex = gameStateCounterToCopy.CurrentTurnIndex;
-            this.CureMarkersStates =
-                gameStateCounterToCopy.CureMarkersStates.CustomDeepCopy();
-            this.OutbreaksCounter = gameStateCounterToCopy.OutbreaksCounter;
-            this.EpidemicsCounter = gameStateCounterToCopy.EpidemicsCounter;
-            this.NotEnoughDiseaseCubesToCompleteAnInfection = gameStateCounterToCopy.NotEnoughDiseaseCubesToCompleteAnInfection;
-            this.NotEnoughPlayerCardsToDraw = gameStateCounterToCopy.NotEnoughPlayerCardsToDraw;
+            this.number_of_players = gameStateCounterToCopy.number_of_players;
+            this.player_action_index = gameStateCounterToCopy.player_action_index;
+            this.player_index = gameStateCounterToCopy.player_index;
+            this.turn_index = gameStateCounterToCopy.turn_index;
+            this.disease_states =
+                gameStateCounterToCopy.disease_states.CustomDeepCopy();
+            this.outbreaks_counter = gameStateCounterToCopy.outbreaks_counter;
+            this.epidemics_counter = gameStateCounterToCopy.epidemics_counter;
+            this.insufficient_disease_cubes_for_infection = gameStateCounterToCopy.insufficient_disease_cubes_for_infection;
+            this.insufficient_player_cards_to_draw = gameStateCounterToCopy.insufficient_player_cards_to_draw;
         }
 
         public PD_GameStateCounter GetCustomDeepCopy()
@@ -93,66 +93,66 @@ namespace Pandemic_AI_Framework
 
         public void ResetPlayerActionIndex()
         {
-            CurrentPlayerActionIndex = 0;
+            player_action_index = 0;
         }
 
         public void IncreasePlayerActionIndex()
         {
-            CurrentPlayerActionIndex++;
+            player_action_index++;
         }
 
         public void IncreaseCurrentPlayerIndex()
         {
-            CurrentPlayerIndex++;
-            CurrentTurnIndex++;
-            if (CurrentPlayerIndex >= NumberOfPlayers)
+            player_index++;
+            turn_index++;
+            if (player_index >= number_of_players)
             {
-                CurrentPlayerIndex = 0;
+                player_index = 0;
             }
         }
 
         public void InitializeCureMarkerStates()
         {
-            CureMarkersStates = new Dictionary<int, int>() {
-                {0, 0},
-                {1, 0},
-                {2, 0},
-                {3, 0}
+            disease_states = new Dictionary<int, int>() {
+                {0, PD_DiseaseStates.Active},
+                {1, PD_DiseaseStates.Active},
+                {2, PD_DiseaseStates.Active},
+                {3, PD_DiseaseStates.Active}
             };
         }
 
         public void CureDisease(int diseaseTypeToCure)
         {
-            if (CureMarkersStates[diseaseTypeToCure] != 0)
+            if (disease_states[diseaseTypeToCure] != 0)
             {
                 throw new System.Exception("trying to cure a cured disease");
             }
-            CureMarkersStates[diseaseTypeToCure] = PD_DiseaseStates.Cured;
+            disease_states[diseaseTypeToCure] = PD_DiseaseStates.Cured;
         }
 
         public void EradicateDisease(int diseaseTypeToEradicate)
         {
-            CureMarkersStates[diseaseTypeToEradicate] = PD_DiseaseStates.Eradicated;
+            disease_states[diseaseTypeToEradicate] = PD_DiseaseStates.Eradicated;
         }
 
         public void ResetOutbreaksCounter()
         {
-            OutbreaksCounter = 0;
+            outbreaks_counter = 0;
         }
 
         public void IncreaseOutbreaksCounter()
         {
-            OutbreaksCounter++;
+            outbreaks_counter++;
         }
 
         public void ResetEpidemicsCounter()
         {
-            EpidemicsCounter = 0;
+            epidemics_counter = 0;
         }
 
         public void IncreaseEpidemicsCounter()
         {
-            EpidemicsCounter++;
+            epidemics_counter++;
         }
 
         public string GetDescription()
@@ -182,40 +182,40 @@ namespace Pandemic_AI_Framework
         #region equalityOverride
         public bool Equals(PD_GameStateCounter other)
         {
-            if (this.NumberOfPlayers != other.NumberOfPlayers)
+            if (this.number_of_players != other.number_of_players)
             {
                 return false;
             }
-            if (this.CurrentPlayerActionIndex != other.CurrentPlayerActionIndex)
+            if (this.player_action_index != other.player_action_index)
             {
                 return false;
             }
-            if (this.CurrentPlayerIndex != other.CurrentPlayerIndex)
+            if (this.player_index != other.player_index)
             {
                 return false;
             }
-            if (this.CurrentTurnIndex != other.CurrentTurnIndex)
+            if (this.turn_index != other.turn_index)
             {
                 return false;
             }
-            if (this.CureMarkersStates.Dictionary_Equals(other.CureMarkersStates) == false)
+            if (this.disease_states.Dictionary_Equals(other.disease_states) == false)
             {
                 return false;
             }
-            if (this.OutbreaksCounter != other.OutbreaksCounter)
+            if (this.outbreaks_counter != other.outbreaks_counter)
             {
                 return false;
             }
-            if (this.EpidemicsCounter != other.EpidemicsCounter)
+            if (this.epidemics_counter != other.epidemics_counter)
             {
                 return false;
             }
 
-            if (this.NotEnoughDiseaseCubesToCompleteAnInfection != other.NotEnoughDiseaseCubesToCompleteAnInfection)
+            if (this.insufficient_disease_cubes_for_infection != other.insufficient_disease_cubes_for_infection)
             {
                 return false;
             }
-            if (this.NotEnoughPlayerCardsToDraw != other.NotEnoughPlayerCardsToDraw)
+            if (this.insufficient_player_cards_to_draw != other.insufficient_player_cards_to_draw)
             {
                 return false;
             }
@@ -239,16 +239,16 @@ namespace Pandemic_AI_Framework
         {
             int hash = 17;
 
-            hash = (hash * 13) + NumberOfPlayers;
-            hash = (hash * 13) + CurrentPlayerActionIndex;
-            hash = (hash * 13) + CurrentPlayerIndex;
-            hash = (hash * 13) + CurrentTurnIndex;
-            hash = (hash * 13) + CureMarkersStates.Custom_HashCode();
-            hash = (hash * 13) + OutbreaksCounter;
-            hash = (hash * 13) + EpidemicsCounter;
+            hash = (hash * 13) + number_of_players;
+            hash = (hash * 13) + player_action_index;
+            hash = (hash * 13) + player_index;
+            hash = (hash * 13) + turn_index;
+            hash = (hash * 13) + disease_states.Custom_HashCode();
+            hash = (hash * 13) + outbreaks_counter;
+            hash = (hash * 13) + epidemics_counter;
 
-            hash = (hash * 13) + NotEnoughDiseaseCubesToCompleteAnInfection.GetHashCode();
-            hash = (hash * 13) + NotEnoughPlayerCardsToDraw.GetHashCode();
+            hash = (hash * 13) + insufficient_disease_cubes_for_infection.GetHashCode();
+            hash = (hash * 13) + insufficient_player_cards_to_draw.GetHashCode();
 
             return hash;
         }

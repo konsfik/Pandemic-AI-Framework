@@ -101,7 +101,7 @@ namespace Pandemic_AI_Framework
             }
 
             // discover the cure for the disease here...
-            game.GameStateCounter.CureDisease(TypeOfDiseaseToCure);
+            game.game_state_counter.CureDisease(TypeOfDiseaseToCure);
 
             game.Medic_AutoTreat_AfterDiscoverCure(TypeOfDiseaseToCure);
         }

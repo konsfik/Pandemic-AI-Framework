@@ -222,7 +222,7 @@ namespace Pandemic_AI_Framework
         {
             PD_Game generator_GameState = gameState.Request_Fair_ForwardModel(randomness_provider);
 
-            int initialTurn = generator_GameState.GameStateCounter.CurrentTurnIndex;
+            int initialTurn = generator_GameState.game_state_counter.turn_index;
             int finalTurn = initialTurn + MaxGenomeLength - Genome.Count;
             int currentTurn = initialTurn;
 
@@ -256,7 +256,7 @@ namespace Pandemic_AI_Framework
                     nextMacro
                     );
 
-                currentTurn = generator_GameState.GameStateCounter.CurrentTurnIndex;
+                currentTurn = generator_GameState.game_state_counter.turn_index;
             }
 
             // expand the genome

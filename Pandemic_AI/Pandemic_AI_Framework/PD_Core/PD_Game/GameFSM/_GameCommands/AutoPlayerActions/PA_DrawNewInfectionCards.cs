@@ -6,16 +6,16 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_DrawNewPlayerCards :
-        PD_GameAction_Base,
-        IEquatable<PD_DrawNewPlayerCards>,
-        I_Auto_Action,
+    public class PA_DrawNewInfectionCards : 
+        PD_GameAction_Base, 
+        IEquatable<PA_DrawNewInfectionCards>,
+        I_Auto_Action, 
         I_Player_Action
     {
         public int Player { get; protected set; }
 
         [JsonConstructor]
-        public PD_DrawNewPlayerCards(
+        public PA_DrawNewInfectionCards(
             int player
             )
         {
@@ -23,8 +23,8 @@ namespace Pandemic_AI_Framework
         }
 
         // private constructor, for custom deep copy purposes only
-        private PD_DrawNewPlayerCards(
-            PD_DrawNewPlayerCards actionToCopy
+        private PA_DrawNewInfectionCards(
+            PA_DrawNewInfectionCards actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -32,32 +32,46 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_DrawNewPlayerCards(this);
+            return new PA_DrawNewInfectionCards(this);
         }
 
         public override void Execute(
-            Random randomness_provider,
+            Random randomness_provider, 
             PD_Game game
             )
         {
-            // draw new player cards...
-            var newPlayerCards = new List<int>();
-
-            for (int i = 0; i < 2; i++)
+#if DEBUG
+            if (Player != game.GQ_CurrentPlayer())
             {
-                newPlayerCards.Add(game.cards.divided_deck_of_player_cards.DrawLastElementOfLastSubList());
+                throw new System.Exception("wrong player!");
+            }
+            else if ((game.game_FSM.CurrentState is PD_GS_DrawingNewInfectionCards) == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+#endif
+            int numberOfInfectionCardsToDraw =
+                game.game_settings.infection_rate__per__number_of_epidemics[
+                    game.game_state_counter.epidemics_counter];
+
+            var infectionCards = new List<int>();
+
+            for (int i = 0; i < numberOfInfectionCardsToDraw; i++)
+            {
+                infectionCards.Add(
+                    game.cards.divided_deck_of_infection_cards.DrawLastElementOfLastSubList());
             }
 
-            game.cards.player_hand__per__player[Player].AddRange(newPlayerCards);
+            game.cards.active_infection_cards.AddRange(infectionCards);
         }
 
         public override string GetDescription()
         {
-            return String.Format("{0}: DRAW Player Cards.", Player.ToString());
+            return String.Format("{0}: DRAW Infection cards", Player.ToString());
         }
 
         #region equality overrides
-        public bool Equals(PD_DrawNewPlayerCards other)
+        public bool Equals(PA_DrawNewInfectionCards other)
         {
             if (this.Player != other.Player)
             {
@@ -71,7 +85,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_DrawNewPlayerCards other_action)
+            if (other is PA_DrawNewInfectionCards other_action)
             {
                 return Equals(other_action);
             }
@@ -80,15 +94,14 @@ namespace Pandemic_AI_Framework
                 return false;
             }
         }
-
+        
         public override bool Equals(object other)
         {
-            if (other is PD_DrawNewPlayerCards other_action)
+            if (other is PA_DrawNewInfectionCards other_action)
             {
                 return Equals(other_action);
             }
-            else
-            {
+            else {
                 return false;
             }
         }
@@ -102,7 +115,7 @@ namespace Pandemic_AI_Framework
             return hash;
         }
 
-
+        
 
         #endregion
     }

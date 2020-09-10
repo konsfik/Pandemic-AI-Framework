@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease_Medic : 
+    public class PA_TreatDisease_Medic : 
         PD_GameAction_Base, 
-        IEquatable<PD_PA_TreatDisease_Medic>,
+        IEquatable<PA_TreatDisease_Medic>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -25,7 +25,7 @@ namespace Pandemic_AI_Framework
         /// <param name="cityToTreatDiseaseAt"></param>
         /// <param name="typeOfDiseaseToTreat"></param>
         [JsonConstructor]
-        public PD_PA_TreatDisease_Medic(
+        public PA_TreatDisease_Medic(
             int player,
             int cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
@@ -40,8 +40,8 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_TreatDisease_Medic(
-            PD_PA_TreatDisease_Medic actionToCopy
+        private PA_TreatDisease_Medic(
+            PA_TreatDisease_Medic actionToCopy
             )
         {
             Player = actionToCopy.Player;
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_TreatDisease_Medic(this);
+            return new PA_TreatDisease_Medic(this);
         }
 
         public override string GetDescription()
@@ -98,7 +98,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_TreatDisease_Medic other)
+        public bool Equals(PA_TreatDisease_Medic other)
         {
             if (this.Player != other.Player)
             {
@@ -120,7 +120,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_TreatDisease_Medic other_action)
+            if (other is PA_TreatDisease_Medic other_action)
             {
                 return Equals(other_action);
             }
@@ -131,7 +131,7 @@ namespace Pandemic_AI_Framework
         }
         public override bool Equals(object other)
         {
-            if (other is PD_PA_TreatDisease_Medic other_action)
+            if (other is PA_TreatDisease_Medic other_action)
             {
                 return Equals(other_action);
             }

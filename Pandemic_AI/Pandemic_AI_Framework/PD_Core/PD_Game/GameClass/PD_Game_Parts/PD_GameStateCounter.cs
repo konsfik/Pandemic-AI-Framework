@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_GameStateCounter : 
-        PD_GameParts_Base, 
-        IDescribable, 
+    public class PD_GameStateCounter :
+        PD_GameParts_Base,
+        IDescribable,
         ICustomDeepCopyable<PD_GameStateCounter>
     {
         public int number_of_players;
@@ -22,6 +22,7 @@ namespace Pandemic_AI_Framework
 
         public bool insufficient_disease_cubes_for_infection;
         public bool insufficient_player_cards_to_draw;
+        public bool operations_expert_flight_used_this_turn;
 
         #region constructors
         // normal constructor
@@ -38,6 +39,7 @@ namespace Pandemic_AI_Framework
             epidemics_counter = 0;
             insufficient_disease_cubes_for_infection = false;
             insufficient_player_cards_to_draw = false;
+            operations_expert_flight_used_this_turn = false;
         }
 
         // custom private constructor for deep copy purposes!
@@ -51,7 +53,8 @@ namespace Pandemic_AI_Framework
             int outbreaks_counter,
             int epidemics_counter,
             bool insufficient_disease_cubes_for_infection,
-            bool insufficient_player_cards_to_draw
+            bool insufficient_player_cards_to_draw,
+            bool operations_expert_flight_used_this_turn
             )
         {
             this.number_of_players = number_of_players;
@@ -61,9 +64,10 @@ namespace Pandemic_AI_Framework
             this.disease_states = disease_states.CustomDeepCopy();
             this.outbreaks_counter = outbreaks_counter;
             this.epidemics_counter = epidemics_counter;
-            this.insufficient_disease_cubes_for_infection 
+            this.insufficient_disease_cubes_for_infection
                 = insufficient_disease_cubes_for_infection;
             this.insufficient_player_cards_to_draw = insufficient_player_cards_to_draw;
+            this.operations_expert_flight_used_this_turn = operations_expert_flight_used_this_turn;
         }
 
         // private constructor for deepcopy purposes only
@@ -81,6 +85,7 @@ namespace Pandemic_AI_Framework
             this.epidemics_counter = gameStateCounterToCopy.epidemics_counter;
             this.insufficient_disease_cubes_for_infection = gameStateCounterToCopy.insufficient_disease_cubes_for_infection;
             this.insufficient_player_cards_to_draw = gameStateCounterToCopy.insufficient_player_cards_to_draw;
+            this.operations_expert_flight_used_this_turn = gameStateCounterToCopy.operations_expert_flight_used_this_turn;
         }
 
         public PD_GameStateCounter GetCustomDeepCopy()
@@ -229,7 +234,7 @@ namespace Pandemic_AI_Framework
             {
                 return Equals(other_game_state_counter);
             }
-            else 
+            else
             {
                 return false;
             }
@@ -247,13 +252,14 @@ namespace Pandemic_AI_Framework
             hash = (hash * 13) + outbreaks_counter;
             hash = (hash * 13) + epidemics_counter;
 
-            hash = (hash * 13) + insufficient_disease_cubes_for_infection.GetHashCode();
-            hash = (hash * 13) + insufficient_player_cards_to_draw.GetHashCode();
+            hash = (hash * 13) + (insufficient_disease_cubes_for_infection ? 1 : 0);
+            hash = (hash * 13) + (insufficient_player_cards_to_draw ? 1 : 0);
+            hash = (hash * 13) + (operations_expert_flight_used_this_turn ? 1 : 0);
 
             return hash;
         }
 
-        
+
         #endregion
     }
 }

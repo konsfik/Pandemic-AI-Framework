@@ -242,7 +242,7 @@ namespace Pandemic_AI_Framework
             )
         {
 
-            string record_Header = "";
+            string record_Header;
 
             List<PD_Report_Part> report_Parts = new List<PD_Report_Part>();
 
@@ -269,7 +269,7 @@ namespace Pandemic_AI_Framework
             int repetitionIndex
             )
         {
-            string record_Row = "";
+            string record_Row;
 
             List<PD_Report_Part> report_Parts = new List<PD_Report_Part>();
 

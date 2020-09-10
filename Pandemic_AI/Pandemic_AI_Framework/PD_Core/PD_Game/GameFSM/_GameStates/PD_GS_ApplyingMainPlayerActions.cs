@@ -8,11 +8,6 @@ namespace Pandemic_AI_Framework
     public class PD_GS_ApplyingMainPlayerActions : PD_GameStateBase, ICustomDeepCopyable<PD_GS_ApplyingMainPlayerActions>
     {
         #region constructors
-        public PD_GS_ApplyingMainPlayerActions()
-        {
-
-        }
-
         public PD_GS_ApplyingMainPlayerActions GetCustomDeepCopy()
         {
             return new PD_GS_ApplyingMainPlayerActions();
@@ -103,10 +98,13 @@ namespace Pandemic_AI_Framework
             // reset the current player action index...
             if (
                 game.PlayerActionsHistory.GetLast().GetType() !=
-                typeof(PD_PA_Discard_DuringMainPlayerActions)
+                typeof(PA_Discard_DuringMainPlayerActions)
                 )
             {
+                // reset the player action index
                 game.game_state_counter.ResetPlayerActionIndex();
+                // reset the flag of operations expert flight, so that it can be used again
+                game.game_state_counter.operations_expert_flight_used_this_turn = false;
             }
         }
 

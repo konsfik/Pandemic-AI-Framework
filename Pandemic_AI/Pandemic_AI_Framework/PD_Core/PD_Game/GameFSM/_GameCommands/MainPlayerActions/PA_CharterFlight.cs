@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     /// <summary>
-    /// Player discards a city card to move to the city named of the card
+    /// Player Discards the City card that matches the city you are in to move to any city.
     /// </summary>
     [Serializable]
-    public class PD_PMA_DirectFlight :
+    public class PA_CharterFlight :
         PD_GameAction_Base,
-        IEquatable<PD_PMA_DirectFlight>,
+        IEquatable<PA_CharterFlight>,
         I_Player_Action,
         I_Movement_Action,
         I_Uses_Card
@@ -25,8 +25,17 @@ namespace Pandemic_AI_Framework
         public int UsedCard { get; private set; }
 
 
+
+        #region constructors
+        /// <summary>
+        /// normal && json constructor
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="fromCity"></param>
+        /// <param name="toCity"></param>
+        /// <param name="usedCard"></param>
         [JsonConstructor]
-        public PD_PMA_DirectFlight(
+        public PA_CharterFlight(
             int player,
             int fromCity,
             int toCity,
@@ -39,9 +48,12 @@ namespace Pandemic_AI_Framework
             this.UsedCard = usedCard;
         }
 
-        // private constructor, for custom deep copy purposes only
-        private PD_PMA_DirectFlight(
-            PD_PMA_DirectFlight actionToCopy
+        /// <summary>
+        /// private constructor, for custom deep copy purposes only
+        /// </summary>
+        /// <param name="actionToCopy"></param>
+        private PA_CharterFlight(
+            PA_CharterFlight actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -49,11 +61,7 @@ namespace Pandemic_AI_Framework
             this.ToCity = actionToCopy.ToCity;
             this.UsedCard = actionToCopy.UsedCard;
         }
-
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PMA_DirectFlight(this);
-        }
+        #endregion
 
         public override void Execute(
             Random randomness_provider,
@@ -73,10 +81,15 @@ namespace Pandemic_AI_Framework
             game.Medic_MoveTreat(ToCity);
         }
 
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PA_CharterFlight(this);
+        }
+
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: DIRECT_FLIGHT | card: {1} | {2} -> {3}",
+                "{0}: CHARTER_FLIGHT | card: {1} | {2} -> {3}",
                 Player.ToString(),
                 UsedCard.ToString(),
                 FromCity.ToString(),
@@ -87,7 +100,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PMA_DirectFlight other)
+        public bool Equals(PA_CharterFlight other)
         {
             if (this.Player != other.Player)
             {
@@ -113,7 +126,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PMA_DirectFlight other_action)
+            if (other is PA_CharterFlight other_action)
             {
                 return Equals(other_action);
             }
@@ -125,7 +138,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PMA_DirectFlight other_action)
+            if (other is PA_CharterFlight other_action)
             {
                 return Equals(other_action);
             }

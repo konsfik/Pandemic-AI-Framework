@@ -9,11 +9,6 @@ namespace Pandemic_AI_Framework
         PD_GameStateBase, ICustomDeepCopyable<PD_GS_Discarding_AfterDrawing>
     {
         #region constructors
-        public PD_GS_Discarding_AfterDrawing()
-        {
-
-        }
-
         public PD_GS_Discarding_AfterDrawing GetCustomDeepCopy()
         {
             return new PD_GS_Discarding_AfterDrawing();
@@ -25,7 +20,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_GameAction_Base command)
         {
-            if (command.GetType() == typeof(PD_PA_Discard_AfterDrawing))
+            if (command.GetType() == typeof(PA_Discard_AfterDrawing))
             {
                 command.Execute(
                     randomness_provider,

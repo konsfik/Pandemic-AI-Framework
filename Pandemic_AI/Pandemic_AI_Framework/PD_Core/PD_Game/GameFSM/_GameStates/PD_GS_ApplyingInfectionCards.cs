@@ -8,11 +8,6 @@ namespace Pandemic_AI_Framework
     public class PD_GS_ApplyingInfectionCards : PD_GameStateBase, ICustomDeepCopyable<PD_GS_ApplyingInfectionCards>
     {
         #region constructors
-        public PD_GS_ApplyingInfectionCards()
-        {
-
-        }
-
         public PD_GS_ApplyingInfectionCards GetCustomDeepCopy()
         {
             return new PD_GS_ApplyingInfectionCards();
@@ -25,14 +20,12 @@ namespace Pandemic_AI_Framework
             PD_GameAction_Base command
             )
         {
-            if (command.GetType() == typeof(PD_ApplyInfectionCard))
+            if (command.GetType() == typeof(PA_ApplyInfectionCard))
             {
                 command.Execute(
                     randomness_provider,
                     game
                     );
-
-                bool thereAreMoreActiveInfectionCards = game.GQ_SS_ThereAreActiveInfectionCards();
 
                 // check if game is lost, etc..
                 if (game.GQ_SS_NotEnoughDiseaseCubestoCompleteAnInfection())

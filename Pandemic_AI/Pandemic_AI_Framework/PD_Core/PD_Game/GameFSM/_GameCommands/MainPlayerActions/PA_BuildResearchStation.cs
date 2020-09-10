@@ -6,45 +6,46 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_GiveCard :
+    public class PA_BuildResearchStation :
         PD_GameAction_Base,
-        IEquatable<PD_PA_ShareKnowledge_GiveCard>,
-        I_Player_Action
+        IEquatable<PA_BuildResearchStation>,
+        I_Player_Action,
+        I_Uses_Card
     {
         public int Player { get; private set; }
-        public int OtherPlayer { get; private set; }
-        public int CityCardToGive { get; private set; }
+        public int UsedCard { get; private set; }
+        public int Build_RS_On { get; private set; }
 
         #region constructors
         /// <summary>
         /// Normal & Json constructor
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="otherPlayer"></param>
-        /// <param name="cityCardToGive"></param>
+        /// <param name="usedCard"></param>
+        /// <param name="build_RS_On"></param>
         [JsonConstructor]
-        public PD_PA_ShareKnowledge_GiveCard(
+        public PA_BuildResearchStation(
             int player,
-            int otherPlayer,
-            int cityCardToGive
+            int usedCard,
+            int build_RS_On
             )
         {
-            Player = player;
-            OtherPlayer = otherPlayer;
-            CityCardToGive = cityCardToGive;
+            this.Player = player;
+            this.UsedCard = usedCard;
+            this.Build_RS_On = build_RS_On;
         }
 
         /// <summary>
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_ShareKnowledge_GiveCard(
-            PD_PA_ShareKnowledge_GiveCard actionToCopy
+        private PA_BuildResearchStation(
+            PA_BuildResearchStation actionToCopy
             )
         {
-            Player = actionToCopy.Player;
-            OtherPlayer = actionToCopy.OtherPlayer;
-            CityCardToGive = actionToCopy.CityCardToGive;
+            this.Player = actionToCopy.Player;
+            this.UsedCard = actionToCopy.UsedCard;
+            this.Build_RS_On = actionToCopy.Build_RS_On;
         }
         #endregion
 
@@ -60,52 +61,57 @@ namespace Pandemic_AI_Framework
             }
             else if (Player != game.GQ_CurrentPlayer())
             {
-                throw new System.Exception("wrong player!");
+                throw new System.Exception("wrong player...");
             }
-            else if (game.GQ_Player_Role(Player) == PD_Player_Roles.Researcher)
+            else if (UsedCard != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("city card does not match current player position");
+            }
+            else if (Build_RS_On != game.GQ_CurrentPlayer_Location())
+            {
+                throw new System.Exception("selected city does not match current player position");
+            }
+            else if (game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Operations_Expert)
             {
                 throw new System.Exception("wrong player role!");
             }
-            else if (game.GQ_PlayerLocation(Player) != game.GQ_PlayerLocation(OtherPlayer))
-            {
-                throw new System.Exception("Players do not share the same location");
-            }
-            else if (game.GQ_PlayerLocation(Player) != CityCardToGive)
-            {
-                throw new System.Exception("Player is not on the correct city");
-            }
 #endif
-            game.cards.player_hand__per__player[Player].Remove(CityCardToGive);
-            game.cards.player_hand__per__player[OtherPlayer].Add(CityCardToGive);
+            game.GO_PlayerDiscardsPlayerCard(
+                Player,
+                UsedCard
+                );
+
+            game.GO_Place_ResearchStation_OnCity(
+                Build_RS_On
+                );
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_ShareKnowledge_GiveCard(this);
+            return new PA_BuildResearchStation(this);
         }
 
         public override string GetDescription()
         {
             return String.Format(
-                "{0}: SHARE_KNOWLEDGE | GIVE {1} to {2}",
+                "{0}: BUILD_RS on {1}",
                 Player.ToString(),
-                CityCardToGive.ToString(),
-                OtherPlayer.ToString()
+                Build_RS_On.ToString()
                 );
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_ShareKnowledge_GiveCard other)
+        public bool Equals(PA_BuildResearchStation other)
         {
             if (this.Player != other.Player)
             {
                 return false;
             }
-            else if (this.OtherPlayer != other.OtherPlayer)
+            if (this.UsedCard != other.UsedCard)
             {
                 return false;
             }
-            else if (this.CityCardToGive != other.CityCardToGive)
+            if (this.Build_RS_On != other.Build_RS_On)
             {
                 return false;
             }
@@ -117,7 +123,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_ShareKnowledge_GiveCard other_action)
+            if (other is PA_BuildResearchStation other_action)
             {
                 return Equals(other_action);
             }
@@ -126,9 +132,10 @@ namespace Pandemic_AI_Framework
                 return false;
             }
         }
+
         public override bool Equals(object other)
         {
-            if (other is PD_PA_ShareKnowledge_GiveCard other_action)
+            if (other is PA_BuildResearchStation other_action)
             {
                 return Equals(other_action);
             }
@@ -143,12 +150,11 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + OtherPlayer;
-            hash = hash * 31 + CityCardToGive;
+            hash = hash * 31 + UsedCard;
+            hash = hash * 31 + Build_RS_On;
 
             return hash;
         }
-
 
 
         #endregion

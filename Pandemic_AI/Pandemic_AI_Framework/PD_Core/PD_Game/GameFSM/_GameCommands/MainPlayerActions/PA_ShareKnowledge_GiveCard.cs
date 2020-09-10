@@ -1,13 +1,14 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_GiveCard_ResearcherGives :
+    public class PA_ShareKnowledge_GiveCard :
         PD_GameAction_Base,
-        IEquatable<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>,
+        IEquatable<PA_ShareKnowledge_GiveCard>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -22,7 +23,7 @@ namespace Pandemic_AI_Framework
         /// <param name="otherPlayer"></param>
         /// <param name="cityCardToGive"></param>
         [JsonConstructor]
-        public PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
+        public PA_ShareKnowledge_GiveCard(
             int player,
             int otherPlayer,
             int cityCardToGive
@@ -37,15 +38,14 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
-            PD_PA_ShareKnowledge_GiveCard_ResearcherGives actionToCopy
+        private PA_ShareKnowledge_GiveCard(
+            PA_ShareKnowledge_GiveCard actionToCopy
             )
         {
             Player = actionToCopy.Player;
             OtherPlayer = actionToCopy.OtherPlayer;
             CityCardToGive = actionToCopy.CityCardToGive;
         }
-
         #endregion
 
         public override void Execute(
@@ -62,13 +62,17 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (game.GQ_Player_Role(Player) != PD_Player_Roles.Researcher)
+            else if (game.GQ_Player_Role(Player) == PD_Player_Roles.Researcher)
             {
                 throw new System.Exception("wrong player role!");
             }
             else if (game.GQ_PlayerLocation(Player) != game.GQ_PlayerLocation(OtherPlayer))
             {
-                throw new System.Exception("players do not share location!");
+                throw new System.Exception("Players do not share the same location");
+            }
+            else if (game.GQ_PlayerLocation(Player) != CityCardToGive)
+            {
+                throw new System.Exception("Player is not on the correct city");
             }
 #endif
             game.cards.player_hand__per__player[Player].Remove(CityCardToGive);
@@ -77,13 +81,13 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(this);
+            return new PA_ShareKnowledge_GiveCard(this);
         }
 
         public override string GetDescription()
         {
             return String.Format(
-                "{0}: SHARE_KNOWLEDGE_RESEARCHER | GIVE {1} to {2}",
+                "{0}: SHARE_KNOWLEDGE | GIVE {1} to {2}",
                 Player.ToString(),
                 CityCardToGive.ToString(),
                 OtherPlayer.ToString()
@@ -91,7 +95,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_ShareKnowledge_GiveCard_ResearcherGives other)
+        public bool Equals(PA_ShareKnowledge_GiveCard other)
         {
             if (this.Player != other.Player)
             {
@@ -113,7 +117,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_ShareKnowledge_GiveCard_ResearcherGives other_action)
+            if (other is PA_ShareKnowledge_GiveCard other_action)
             {
                 return Equals(other_action);
             }
@@ -124,7 +128,7 @@ namespace Pandemic_AI_Framework
         }
         public override bool Equals(object other)
         {
-            if (other is PD_PA_ShareKnowledge_GiveCard_ResearcherGives other_action)
+            if (other is PA_ShareKnowledge_GiveCard other_action)
             {
                 return Equals(other_action);
             }

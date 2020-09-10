@@ -21,23 +21,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            bool operationsExpertFlightHasBeenUsedInThisTurn = false;
-            int totalNumActions = game.PlayerActionsHistory.Count;
-            int numActionsToSearch = 4;
-            if (totalNumActions < numActionsToSearch)
-            {
-                numActionsToSearch = totalNumActions;
-            }
-            for (int i = 0; i < numActionsToSearch; i++)
-            {
-                int index = game.PlayerActionsHistory.Count - 1 - i;
-                var action = game.PlayerActionsHistory[index];
-                if (action.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
-                {
-                    operationsExpertFlightHasBeenUsedInThisTurn = true;
-                }
-            }
-            return operationsExpertFlightHasBeenUsedInThisTurn;
+            return game.game_state_counter.operations_expert_flight_used_this_turn;
         }
 
         public static int GQ_Medic_Location(

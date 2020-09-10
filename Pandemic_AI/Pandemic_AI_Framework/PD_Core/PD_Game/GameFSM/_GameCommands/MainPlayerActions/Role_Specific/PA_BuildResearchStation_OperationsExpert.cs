@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_BuildResearchStation_OperationsExpert : 
+    public class PA_BuildResearchStation_OperationsExpert : 
         PD_GameAction_Base, 
-        IEquatable<PD_PA_BuildResearchStation_OperationsExpert>,
+        IEquatable<PA_BuildResearchStation_OperationsExpert>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -22,7 +22,7 @@ namespace Pandemic_AI_Framework
         /// <param name="used_CityCard"></param>
         /// <param name="build_RS_On"></param>
         [JsonConstructor]
-        public PD_PA_BuildResearchStation_OperationsExpert(
+        public PA_BuildResearchStation_OperationsExpert(
             int player,
             int build_RS_On
             )
@@ -35,8 +35,8 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_BuildResearchStation_OperationsExpert(
-            PD_PA_BuildResearchStation_OperationsExpert actionToCopy
+        private PA_BuildResearchStation_OperationsExpert(
+            PA_BuildResearchStation_OperationsExpert actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -45,7 +45,7 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_BuildResearchStation_OperationsExpert(this);
+            return new PA_BuildResearchStation_OperationsExpert(this);
         }
         #endregion
 
@@ -85,7 +85,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_BuildResearchStation_OperationsExpert other)
+        public bool Equals(PA_BuildResearchStation_OperationsExpert other)
         {
             if (this.Player != other.Player)
             {
@@ -102,7 +102,7 @@ namespace Pandemic_AI_Framework
         }
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_BuildResearchStation_OperationsExpert other_action)
+            if (other is PA_BuildResearchStation_OperationsExpert other_action)
             {
                 return Equals(other_action);
             }
@@ -112,7 +112,7 @@ namespace Pandemic_AI_Framework
         }
         public override bool Equals(object otherObject)
         {
-            if (otherObject is PD_PA_BuildResearchStation_OperationsExpert other_action)
+            if (otherObject is PA_BuildResearchStation_OperationsExpert other_action)
             {
                 return Equals(other_action);
             }

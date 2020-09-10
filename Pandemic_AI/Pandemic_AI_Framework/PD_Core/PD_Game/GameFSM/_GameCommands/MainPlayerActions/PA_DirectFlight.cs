@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     /// <summary>
-    /// A player moves to an adjacent location
+    /// Player discards a city card to move to the city named of the card
     /// </summary>
     [Serializable]
-    public class PD_PMA_DriveFerry :
+    public class PA_DirectFlight :
         PD_GameAction_Base,
-        IEquatable<PD_PMA_DriveFerry>,
+        IEquatable<PA_DirectFlight>,
         I_Player_Action,
-        I_Movement_Action
+        I_Movement_Action,
+        I_Uses_Card
     {
         public int Player { get; private set; }
 
@@ -20,30 +22,37 @@ namespace Pandemic_AI_Framework
 
         public int ToCity { get; protected set; }
 
-        public PD_PMA_DriveFerry(
+        public int UsedCard { get; private set; }
+
+
+        [JsonConstructor]
+        public PA_DirectFlight(
             int player,
-            int initialLocation,
-            int targetLocation
+            int fromCity,
+            int toCity,
+            int usedCard
             )
         {
             this.Player = player;
-            this.FromCity = initialLocation;
-            this.ToCity = targetLocation;
+            this.FromCity = fromCity;
+            this.ToCity = toCity;
+            this.UsedCard = usedCard;
         }
 
         // private constructor, for custom deep copy purposes only
-        private PD_PMA_DriveFerry(
-            PD_PMA_DriveFerry actionToCopy
+        private PA_DirectFlight(
+            PA_DirectFlight actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
             this.FromCity = actionToCopy.FromCity;
             this.ToCity = actionToCopy.ToCity;
+            this.UsedCard = actionToCopy.UsedCard;
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PMA_DriveFerry(this);
+            return new PA_DirectFlight(this);
         }
 
         public override void Execute(
@@ -51,6 +60,11 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+            game.GO_PlayerDiscardsPlayerCard(
+                Player,
+                UsedCard
+                );
+
             game.GO_MovePawn_ToCity(
                 Player,
                 ToCity
@@ -62,8 +76,9 @@ namespace Pandemic_AI_Framework
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: DRIVE_FERRY: {1} -> {2}",
+                "{0}: DIRECT_FLIGHT | card: {1} | {2} -> {3}",
                 Player.ToString(),
+                UsedCard.ToString(),
                 FromCity.ToString(),
                 ToCity.ToString()
                 );
@@ -72,7 +87,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PMA_DriveFerry other)
+        public bool Equals(PA_DirectFlight other)
         {
             if (this.Player != other.Player)
             {
@@ -86,6 +101,10 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
+            else if (this.UsedCard != other.UsedCard)
+            {
+                return false;
+            }
             else
             {
                 return true;
@@ -94,7 +113,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PMA_DriveFerry other_action)
+            if (other is PA_DirectFlight other_action)
             {
                 return Equals(other_action);
             }
@@ -103,9 +122,10 @@ namespace Pandemic_AI_Framework
                 return false;
             }
         }
+
         public override bool Equals(object other)
         {
-            if (other is PD_PMA_DriveFerry other_action)
+            if (other is PA_DirectFlight other_action)
             {
                 return Equals(other_action);
             }
@@ -122,6 +142,7 @@ namespace Pandemic_AI_Framework
             hash = hash * 31 + Player;
             hash = hash * 31 + FromCity;
             hash = hash * 31 + ToCity;
+            hash = hash * 31 + UsedCard;
 
             return hash;
         }

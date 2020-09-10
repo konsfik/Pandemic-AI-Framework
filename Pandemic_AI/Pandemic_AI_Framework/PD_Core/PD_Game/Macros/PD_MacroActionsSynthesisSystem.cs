@@ -296,7 +296,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var command in availableCommands)
                 {
-                    if (command.GetType() == typeof(PD_PA_Discard_AfterDrawing))
+                    if (command.GetType() == typeof(PA_Discard_AfterDrawing))
                     {
                         var commandSequence = new List<PD_GameAction_Base>();
                         commandSequence.Add(command);
@@ -318,7 +318,7 @@ namespace Pandemic_AI_Framework
                 foreach (var command in availableCommands)
                 {
                     var macroType = command.GetType();
-                    if (macroType == typeof(PD_PA_Discard_DuringMainPlayerActions))
+                    if (macroType == typeof(PA_Discard_DuringMainPlayerActions))
                     {
                         var commandSequence = new List<PD_GameAction_Base>();
                         commandSequence.Add(command);
@@ -574,7 +574,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < numAvailableActions; i++)
             {
                 actionsList.Add(
-                    new PD_PA_Stay(
+                    new PA_Stay(
                         currentPlayer,
                         currentPlayerLocation
                         )
@@ -620,7 +620,7 @@ namespace Pandemic_AI_Framework
 
                 for (int i = 0; i < numRemainingActions; i++)
                 {
-                    PD_PA_Stay stayAction = new PD_PA_Stay(
+                    PA_Stay stayAction = new PA_Stay(
                         player,
                         destination
                         );
@@ -757,7 +757,7 @@ namespace Pandemic_AI_Framework
                     thisDiseaseTypeHasNotBeenCured
                     )
                 {
-                    PD_PA_TreatDisease_Medic treatDisease_Medic_Action = new PD_PA_TreatDisease_Medic(
+                    PA_TreatDisease_Medic treatDisease_Medic_Action = new PA_TreatDisease_Medic(
                             currentPlayer,
                             currentPlayerLocation,
                             infectionType
@@ -781,7 +781,7 @@ namespace Pandemic_AI_Framework
                     currentPlayerIsMedic == false
                     )
                 {
-                    PD_PA_TreatDisease treatDiseaseAction = new PD_PA_TreatDisease(
+                    PA_TreatDisease treatDiseaseAction = new PA_TreatDisease(
                             currentPlayer,
                             currentPlayerLocation,
                             infectionType
@@ -840,7 +840,7 @@ namespace Pandemic_AI_Framework
                         thisDiseaseTypeHasNotBeenCured == true
                         )
                     {
-                        PD_PA_TreatDisease_Medic treatDisease_Medic_Action = new PD_PA_TreatDisease_Medic(
+                        PA_TreatDisease_Medic treatDisease_Medic_Action = new PA_TreatDisease_Medic(
                             currentPlayer,
                             destination,
                             t
@@ -867,7 +867,7 @@ namespace Pandemic_AI_Framework
                         currentPlayerIsMedic == false
                         )
                     {
-                        PD_PA_TreatDisease treatDiseaseAction = new PD_PA_TreatDisease(
+                        PA_TreatDisease treatDiseaseAction = new PA_TreatDisease(
                                 currentPlayer,
                                 destination,
                                 t
@@ -1143,7 +1143,7 @@ namespace Pandemic_AI_Framework
 
             if (currentPlayerIsOperationsExpert)
             {
-                PD_PA_BuildResearchStation_OperationsExpert buildResearchStationAction = new PD_PA_BuildResearchStation_OperationsExpert(
+                PA_BuildResearchStation_OperationsExpert buildResearchStationAction = new PA_BuildResearchStation_OperationsExpert(
                     currentPlayer,
                     currentPlayerLocation
                     );
@@ -1167,7 +1167,7 @@ namespace Pandemic_AI_Framework
                 {
                     if (currentPlayerLocation == cityCardToBuildResearchStation)
                     {
-                        PD_PA_BuildResearchStation buildResearchStationAction = new PD_PA_BuildResearchStation(
+                        PA_BuildResearchStation buildResearchStationAction = new PA_BuildResearchStation(
                             currentPlayer,
                             cityCardToBuildResearchStation,
                             currentPlayerLocation
@@ -1231,8 +1231,8 @@ namespace Pandemic_AI_Framework
 
                 if (currentPlayerIsOperationsExpert)
                 {
-                    PD_PA_BuildResearchStation_OperationsExpert buildResearchStationAction
-                        = new PD_PA_BuildResearchStation_OperationsExpert(
+                    PA_BuildResearchStation_OperationsExpert buildResearchStationAction
+                        = new PA_BuildResearchStation_OperationsExpert(
                             currentPlayer,
                             destination
                             );
@@ -1262,7 +1262,7 @@ namespace Pandemic_AI_Framework
                     {
                         if (destination == cityCardToBuildResearchStation)
                         {
-                            PD_PA_BuildResearchStation buildResearchStationAction = new PD_PA_BuildResearchStation(
+                            PA_BuildResearchStation buildResearchStationAction = new PA_BuildResearchStation(
                                 currentPlayer,
                                 cityCardToBuildResearchStation,
                                 destination
@@ -1406,7 +1406,7 @@ namespace Pandemic_AI_Framework
 
                     foreach (var existing_rs_city in existingResearchStationCities)
                     {
-                        PD_PA_MoveResearchStation moveResearchStationAction = new PD_PA_MoveResearchStation(
+                        PA_MoveResearchStation moveResearchStationAction = new PA_MoveResearchStation(
                             currentPlayer,
                             cityCardToMoveResearchStation,
                             existing_rs_city,
@@ -1470,22 +1470,22 @@ namespace Pandemic_AI_Framework
                 List<int> cityCardsUsedForWalking = new List<int>();
                 foreach (var action in walkSequence)
                 {
-                    if (action.GetType() == typeof(PD_PMA_DirectFlight))
+                    if (action.GetType() == typeof(PA_DirectFlight))
                     {
                         cityCardsUsedForWalking.Add(
-                            ((PD_PMA_DirectFlight)action).UsedCard
+                            ((PA_DirectFlight)action).UsedCard
                             );
                     }
-                    else if (action.GetType() == typeof(PD_PMA_CharterFlight))
+                    else if (action.GetType() == typeof(PA_CharterFlight))
                     {
                         cityCardsUsedForWalking.Add(
-                            ((PD_PMA_CharterFlight)action).UsedCard
+                            ((PA_CharterFlight)action).UsedCard
                             );
                     }
-                    else if (action.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
+                    else if (action.GetType() == typeof(PA_OperationsExpert_Flight))
                     {
                         cityCardsUsedForWalking.Add(
-                            ((PD_PMA_OperationsExpert_Flight)action).UsedCard
+                            ((PA_OperationsExpert_Flight)action).UsedCard
                             );
                     }
                 }
@@ -1503,7 +1503,7 @@ namespace Pandemic_AI_Framework
 
                         foreach (var existing_rs_city in existingResearchStationCities)
                         {
-                            PD_PA_MoveResearchStation moveResearchStationAction = new PD_PA_MoveResearchStation(
+                            PA_MoveResearchStation moveResearchStationAction = new PA_MoveResearchStation(
                                 currentPlayer,
                                 cityCardToMoveResearchStation,
                                 existing_rs_city,
@@ -1652,7 +1652,7 @@ namespace Pandemic_AI_Framework
                     {
                         foreach (var cityCardToGive in cityCardsInCurrentPlayerHand)
                         {
-                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
+                            PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction = new PA_ShareKnowledge_GiveCard_ResearcherGives(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToGive
@@ -1686,7 +1686,7 @@ namespace Pandemic_AI_Framework
 
                             if (otherPlayerLocation == currentPlayerLocation)
                             {
-                                PD_PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard(
+                                PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PA_ShareKnowledge_GiveCard(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToGive
@@ -1708,7 +1708,7 @@ namespace Pandemic_AI_Framework
 
                             else
                             {
-                                PD_PA_ShareKnowledge_GiveCard supposedShareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard(
+                                PA_ShareKnowledge_GiveCard supposedShareKnowledgeAction = new PA_ShareKnowledge_GiveCard(
                                     currentPlayer,
                                     otherPlayer,
                                     cityCardToGive
@@ -1718,7 +1718,7 @@ namespace Pandemic_AI_Framework
 
                                 for (int i = 0; i < numAvailableActions; i++)
                                 {
-                                    PD_PA_Stay stayCommand = new PD_PA_Stay(
+                                    PA_Stay stayCommand = new PA_Stay(
                                         currentPlayer,
                                         currentPlayerLocation
                                         );
@@ -1794,8 +1794,8 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction =
-                                new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
+                            PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledgeAction =
+                                new PA_ShareKnowledge_GiveCard_ResearcherGives(
                                     currentPlayer,
                                     otherPlayer,
                                     cityCardToGive
@@ -1822,7 +1822,7 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard(
+                            PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PA_ShareKnowledge_GiveCard(
                                     currentPlayer,
                                     otherPlayer,
                                     cityCardToGive
@@ -1849,7 +1849,7 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == false
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PD_PA_ShareKnowledge_GiveCard(
+                            PA_ShareKnowledge_GiveCard shareKnowledgeAction = new PA_ShareKnowledge_GiveCard(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToGive
@@ -1864,7 +1864,7 @@ namespace Pandemic_AI_Framework
                             {
                                 for (int i = 0; i < numRemainingActions; i++)
                                 {
-                                    PD_PA_Stay stayAction = new PD_PA_Stay(
+                                    PA_Stay stayAction = new PA_Stay(
                                         currentPlayer,
                                         destination
                                         );
@@ -2024,8 +2024,8 @@ namespace Pandemic_AI_Framework
                         otherPlayer_IsAt_CurrentLocation == true
                         )
                     {
-                        PD_PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_FromResearcher_Action =
-                            new PD_PA_ShareKnowledge_TakeCard_FromResearcher(
+                        PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_FromResearcher_Action =
+                            new PA_ShareKnowledge_TakeCard_FromResearcher(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToTake
@@ -2052,7 +2052,7 @@ namespace Pandemic_AI_Framework
                         otherPlayer_IsAt_CurrentLocation == true
                         )
                     {
-                        PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PD_PA_ShareKnowledge_TakeCard(
+                        PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PA_ShareKnowledge_TakeCard(
                             currentPlayer,
                             otherPlayer,
                             cityCardToTake
@@ -2079,7 +2079,7 @@ namespace Pandemic_AI_Framework
                         otherPlayer_IsAt_CurrentLocation == false
                         )
                     {
-                        PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PD_PA_ShareKnowledge_TakeCard(
+                        PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PA_ShareKnowledge_TakeCard(
                             currentPlayer,
                             otherPlayer,
                             cityCardToTake
@@ -2089,7 +2089,7 @@ namespace Pandemic_AI_Framework
 
                         for (int i = 0; i < numAvailableActions; i++)
                         {
-                            PD_PA_Stay stayAction = new PD_PA_Stay(
+                            PA_Stay stayAction = new PA_Stay(
                                 currentPlayer,
                                 currentPlayerLocation
                                 );
@@ -2165,8 +2165,8 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_FromResearcher_Action =
-                                new PD_PA_ShareKnowledge_TakeCard_FromResearcher(
+                            PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_FromResearcher_Action =
+                                new PA_ShareKnowledge_TakeCard_FromResearcher(
                                     currentPlayer,
                                     otherPlayer,
                                     cityCardToTake
@@ -2193,7 +2193,7 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == true
                             )
                         {
-                            PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PD_PA_ShareKnowledge_TakeCard(
+                            PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PA_ShareKnowledge_TakeCard(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToTake
@@ -2220,7 +2220,7 @@ namespace Pandemic_AI_Framework
                             otherPlayer_IsAt_Destination == false
                             )
                         {
-                            PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PD_PA_ShareKnowledge_TakeCard(
+                            PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = new PA_ShareKnowledge_TakeCard(
                                 currentPlayer,
                                 otherPlayer,
                                 cityCardToTake
@@ -2233,7 +2233,7 @@ namespace Pandemic_AI_Framework
                             {
                                 for (int i = 0; i < numRemainingActions_AfterWalking; i++)
                                 {
-                                    PD_PA_Stay stayAction = new PD_PA_Stay(
+                                    PA_Stay stayAction = new PA_Stay(
                                         currentPlayer,
                                         currentPlayerLocation
                                         );
@@ -2389,7 +2389,7 @@ namespace Pandemic_AI_Framework
                 int group_type = game.map.infection_type__per__city[cardGroup[0]];
                 if (currentPlayerIsScientist)
                 {
-                    PD_PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PD_PA_DiscoverCure_Scientist(
+                    PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PA_DiscoverCure_Scientist(
                         currentPlayer,
                         currentPlayerLocation,
                         cardGroup,
@@ -2407,7 +2407,7 @@ namespace Pandemic_AI_Framework
                 }
                 else
                 {
-                    PD_PA_DiscoverCure discoverCure_Action = new PD_PA_DiscoverCure(
+                    PA_DiscoverCure discoverCure_Action = new PA_DiscoverCure(
                         currentPlayer,
                         currentPlayerLocation,
                         cardGroup,
@@ -2494,7 +2494,7 @@ namespace Pandemic_AI_Framework
 
                             allCommands.AddRange(walkSequence);
 
-                            PD_PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PD_PA_DiscoverCure_Scientist(
+                            PA_DiscoverCure_Scientist discoverCure_Scientist_Action = new PA_DiscoverCure_Scientist(
                                 currentPlayer,
                                 destination,
                                 cardGroup,
@@ -2518,7 +2518,7 @@ namespace Pandemic_AI_Framework
 
                             allCommands.AddRange(walkSequence);
 
-                            PD_PA_DiscoverCure discoverCure_Action = new PD_PA_DiscoverCure(
+                            PA_DiscoverCure discoverCure_Action = new PA_DiscoverCure(
                                 currentPlayer,
                                 destination,
                                 cardGroup,
@@ -2621,7 +2621,7 @@ namespace Pandemic_AI_Framework
             {
                 int directFlightCity = cityCard;
 
-                PD_PMA_DirectFlight directFlightAction = new PD_PMA_DirectFlight(
+                PA_DirectFlight directFlightAction = new PA_DirectFlight(
                     currentPlayer,
                     currentPlayerLocation,
                     directFlightCity,
@@ -2730,7 +2730,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var finalDestination in possible_Destinations)
                 {
-                    PD_PMA_CharterFlight charterFlightAction = new PD_PMA_CharterFlight(
+                    PA_CharterFlight charterFlightAction = new PA_CharterFlight(
                         currentPlayer,
                         charterCity,
                         finalDestination,
@@ -2806,7 +2806,7 @@ namespace Pandemic_AI_Framework
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
-                            PD_PMA_OperationsExpert_Flight action = new PD_PMA_OperationsExpert_Flight(
+                            PA_OperationsExpert_Flight action = new PA_OperationsExpert_Flight(
                                 currentPlayer,
                                 currentPlayerLocation,
                                 finalDestination,
@@ -2846,7 +2846,7 @@ namespace Pandemic_AI_Framework
                     {
                         if (finalDestination != currentPlayerLocation)
                         {
-                            PD_PMA_OperationsExpert_Flight finalAction = new PD_PMA_OperationsExpert_Flight(
+                            PA_OperationsExpert_Flight finalAction = new PA_OperationsExpert_Flight(
                                 currentPlayer,
                                 currentPlayerLocation,
                                 nearest_RS_City,
@@ -2916,7 +2916,7 @@ namespace Pandemic_AI_Framework
                 var city2 = walkPath[i + 1];
                 if (game.map.neighbors__per__city[city1].Contains(city2) == true)
                 {
-                    PD_PMA_DriveFerry driveFerryCommand = new PD_PMA_DriveFerry(
+                    PA_DriveFerry driveFerryCommand = new PA_DriveFerry(
                         current_player,
                         city1,
                         city2
@@ -2928,7 +2928,7 @@ namespace Pandemic_AI_Framework
                     && researchStationCities.Contains(city2)
                     )
                 {
-                    PD_PMA_ShuttleFlight shuttleFlightCommand = new PD_PMA_ShuttleFlight(
+                    PA_ShuttleFlight shuttleFlightCommand = new PA_ShuttleFlight(
                         current_player,
                         city1,
                         city2
@@ -2965,7 +2965,7 @@ namespace Pandemic_AI_Framework
                 charterCity
                 );
             // step 2: apply charter command to go from charter city to destination
-            PD_PMA_CharterFlight charterCommand = new PD_PMA_CharterFlight(
+            PA_CharterFlight charterCommand = new PA_CharterFlight(
                 current_player,
                 charterCity,
                 destination,
@@ -2990,7 +2990,7 @@ namespace Pandemic_AI_Framework
             var directFlightCity = directFlightCard;
 
             // step 1: use the direct flight card to go to the direct flight city
-            PD_PMA_DirectFlight directFlightCommand = new PD_PMA_DirectFlight(
+            PA_DirectFlight directFlightCommand = new PA_DirectFlight(
                 current_player,
                 root,
                 directFlightCity,

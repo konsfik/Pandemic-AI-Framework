@@ -253,6 +253,17 @@ namespace Pandemic_AI_Framework
                 }
             }
 
+            /////////////////////////////////////////////////
+            // flags
+            /////////////////////////////////////////////////
+
+            mini_game.flag___insufficient_player_cards_to_draw
+                = game.game_state_counter.insufficient_player_cards_to_draw;
+            mini_game.flag___insufficient_disease_cubes_during_infection
+                = game.game_state_counter.insufficient_disease_cubes_for_infection;
+            mini_game.flag___operations_expert_flight_used_this_turn
+                = game.game_state_counter.operations_expert_flight_used_this_turn;
+
 
             /////////////////////////////////////////////////
             // cards
@@ -337,7 +348,8 @@ namespace Pandemic_AI_Framework
                 mini_game.state_counter___number_of_outbreaks,
                 mini_game.state_counter___number_of_epidemics,
                 mini_game.flag___insufficient_disease_cubes_during_infection,
-                mini_game.flag___insufficient_player_cards_to_draw
+                mini_game.flag___insufficient_player_cards_to_draw,
+                mini_game.flag___operations_expert_flight_used_this_turn
                 );
 
             ////////////////////////////////////////////////////////////
@@ -553,13 +565,13 @@ namespace Pandemic_AI_Framework
                 case PD_MiniGame__PlayerRole.UNDEFINED:
                     return PD_Player_Roles.None;
                 case PD_MiniGame__PlayerRole.Contingency_Planner:
-                    return PD_Player_Roles.None;
+                    return PD_Player_Roles.Contingency_Planner;
                 case PD_MiniGame__PlayerRole.Operations_Expert:
                     return PD_Player_Roles.Operations_Expert;
                 case PD_MiniGame__PlayerRole.Dispatcher:
-                    return PD_Player_Roles.None;
+                    return PD_Player_Roles.Dispatcher;
                 case PD_MiniGame__PlayerRole.Quarantine_Specialist:
-                    return PD_Player_Roles.None;
+                    return PD_Player_Roles.Quarantine_Specialist;
                 case PD_MiniGame__PlayerRole.Researcher:
                     return PD_Player_Roles.Researcher;
                 case PD_MiniGame__PlayerRole.Medic:
@@ -575,16 +587,31 @@ namespace Pandemic_AI_Framework
         {
             switch (player_role)
             {
+                // 0 : undefined
                 case PD_Player_Roles.None:
                     return PD_MiniGame__PlayerRole.UNDEFINED;
+                // 1: Contingency planner
+                case PD_Player_Roles.Contingency_Planner:
+                    return PD_MiniGame__PlayerRole.Contingency_Planner;
+                // 2: operations expert
                 case PD_Player_Roles.Operations_Expert:
                     return PD_MiniGame__PlayerRole.Operations_Expert;
+                // 3: dispatcher
+                case PD_Player_Roles.Dispatcher:
+                    return PD_MiniGame__PlayerRole.Dispatcher;
+                // 4: quarantine specialist
+                case PD_Player_Roles.Quarantine_Specialist:
+                    return PD_MiniGame__PlayerRole.Quarantine_Specialist;
+                // 5: researcher
                 case PD_Player_Roles.Researcher:
                     return PD_MiniGame__PlayerRole.Researcher;
+                // 6: medic
                 case PD_Player_Roles.Medic:
                     return PD_MiniGame__PlayerRole.Medic;
+                // 7: scientist
                 case PD_Player_Roles.Scientist:
                     return PD_MiniGame__PlayerRole.Scientist;
+                // otherwise: undefined
                 default:
                     return PD_MiniGame__PlayerRole.UNDEFINED;
             }

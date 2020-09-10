@@ -187,11 +187,11 @@ namespace Pandemic_AI_Framework
                         if (
                             macro.NonExecutable_ShareKnowledge_Action.GetType()
                             ==
-                            typeof(PD_PA_ShareKnowledge_GiveCard)
+                            typeof(PA_ShareKnowledge_GiveCard)
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard action =
-                                (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
+                            PA_ShareKnowledge_GiveCard action =
+                                (PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
                             int destination = action.CityCardToGive;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
@@ -210,11 +210,11 @@ namespace Pandemic_AI_Framework
                         else if (
                             macro.NonExecutable_ShareKnowledge_Action.GetType()
                             ==
-                            typeof(PD_PA_ShareKnowledge_TakeCard)
+                            typeof(PA_ShareKnowledge_TakeCard)
                             )
                         {
-                            PD_PA_ShareKnowledge_TakeCard action =
-                                (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
+                            PA_ShareKnowledge_TakeCard action =
+                                (PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
                             int destination = action.CityCardToTake;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
@@ -355,11 +355,11 @@ namespace Pandemic_AI_Framework
                         if (
                             macro.NonExecutable_ShareKnowledge_Action.GetType()
                             ==
-                            typeof(PD_PA_ShareKnowledge_GiveCard)
+                            typeof(PA_ShareKnowledge_GiveCard)
                             )
                         {
-                            PD_PA_ShareKnowledge_GiveCard action =
-                                (PD_PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
+                            PA_ShareKnowledge_GiveCard action =
+                                (PA_ShareKnowledge_GiveCard)macro.NonExecutable_ShareKnowledge_Action;
                             int destination = action.CityCardToGive;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =
@@ -378,11 +378,11 @@ namespace Pandemic_AI_Framework
                         else if (
                             macro.NonExecutable_ShareKnowledge_Action.GetType()
                             ==
-                            typeof(PD_PA_ShareKnowledge_TakeCard)
+                            typeof(PA_ShareKnowledge_TakeCard)
                             )
                         {
-                            PD_PA_ShareKnowledge_TakeCard action =
-                                (PD_PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
+                            PA_ShareKnowledge_TakeCard action =
+                                (PA_ShareKnowledge_TakeCard)macro.NonExecutable_ShareKnowledge_Action;
                             int destination = action.CityCardToTake;
                             int otherPlayer = action.OtherPlayer;
                             int otherPlayerLocation =

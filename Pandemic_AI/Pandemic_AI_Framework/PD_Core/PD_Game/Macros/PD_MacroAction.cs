@@ -218,16 +218,16 @@ namespace Pandemic_AI_Framework
             }
             else if (MacroAction_Type == PD_MacroAction_Type.Stay_Macro)
             {
-                return ((PD_PA_Stay)lastCommand).CityToStayOn;
+                return ((PA_Stay)lastCommand).CityToStayOn;
             }
 
             else if (MacroAction_Type == PD_MacroAction_Type.TreatDisease_Macro)
             {
-                return ((PD_PA_TreatDisease)lastCommand).CityToTreatDiseaseAt;
+                return ((PA_TreatDisease)lastCommand).CityToTreatDiseaseAt;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.TreatDisease_Medic_Macro)
             {
-                return ((PD_PA_TreatDisease_Medic)lastCommand).CityToTreatDiseaseAt;
+                return ((PA_TreatDisease_Medic)lastCommand).CityToTreatDiseaseAt;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.AutoTreatDisease_Medic_Macro)
             {
@@ -236,54 +236,54 @@ namespace Pandemic_AI_Framework
 
             else if (MacroAction_Type == PD_MacroAction_Type.BuildResearchStation_Macro)
             {
-                return ((PD_PA_BuildResearchStation)lastCommand).Build_RS_On;
+                return ((PA_BuildResearchStation)lastCommand).Build_RS_On;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.BuildResearchStation_OperationsExpert_Macro)
             {
-                return ((PD_PA_BuildResearchStation_OperationsExpert)lastCommand).Build_RS_On;
+                return ((PA_BuildResearchStation_OperationsExpert)lastCommand).Build_RS_On;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.MoveResearchStation_Macro)
             {
-                return ((PD_PA_MoveResearchStation)lastCommand).Move_RS_To;
+                return ((PA_MoveResearchStation)lastCommand).Move_RS_To;
             }
 
             else if (MacroAction_Type == PD_MacroAction_Type.ShareKnowledge_Give_Macro)
             {
-                return ((PD_PA_ShareKnowledge_GiveCard)lastCommand).CityCardToGive;
+                return ((PA_ShareKnowledge_GiveCard)lastCommand).CityCardToGive;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.ShareKnowledge_Give_ResearcherGives_Macro)
             {
-                return ((PD_PA_ShareKnowledge_GiveCard_ResearcherGives)lastCommand).CityCardToGive;
+                return ((PA_ShareKnowledge_GiveCard_ResearcherGives)lastCommand).CityCardToGive;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.ShareKnowledge_Take_Macro)
             {
-                return ((PD_PA_ShareKnowledge_TakeCard)lastCommand).CityCardToTake;
+                return ((PA_ShareKnowledge_TakeCard)lastCommand).CityCardToTake;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.ShareKnowledge_Take_FromResearcher_Macro)
             {
-                return ((PD_PA_ShareKnowledge_TakeCard_FromResearcher)lastCommand).CityCardToTake;
+                return ((PA_ShareKnowledge_TakeCard_FromResearcher)lastCommand).CityCardToTake;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.TakePositionFor_ShareKnowledge_Give_Macro)
             {
-                if (lastCommand.GetType() == typeof(PD_PA_Stay))
+                if (lastCommand.GetType() == typeof(PA_Stay))
                 {
-                    return ((PD_PA_Stay)lastCommand).CityToStayOn;
+                    return ((PA_Stay)lastCommand).CityToStayOn;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_DriveFerry))
+                else if (lastCommand.GetType() == typeof(PA_DriveFerry))
                 {
-                    return ((PD_PMA_DriveFerry)lastCommand).ToCity;
+                    return ((PA_DriveFerry)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_ShuttleFlight))
+                else if (lastCommand.GetType() == typeof(PA_ShuttleFlight))
                 {
-                    return ((PD_PMA_ShuttleFlight)lastCommand).ToCity;
+                    return ((PA_ShuttleFlight)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_DirectFlight))
+                else if (lastCommand.GetType() == typeof(PA_DirectFlight))
                 {
-                    return ((PD_PMA_DirectFlight)lastCommand).ToCity;
+                    return ((PA_DirectFlight)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
+                else if (lastCommand.GetType() == typeof(PA_OperationsExpert_Flight))
                 {
-                    return ((PD_PMA_OperationsExpert_Flight)lastCommand).ToCity;
+                    return ((PA_OperationsExpert_Flight)lastCommand).ToCity;
                 }
                 else
                 {
@@ -292,25 +292,25 @@ namespace Pandemic_AI_Framework
             }
             else if (MacroAction_Type == PD_MacroAction_Type.TakePositionFor_ShareKnowledge_Take_Macro)
             {
-                if (lastCommand.GetType() == typeof(PD_PA_Stay))
+                if (lastCommand.GetType() == typeof(PA_Stay))
                 {
-                    return ((PD_PA_Stay)lastCommand).CityToStayOn;
+                    return ((PA_Stay)lastCommand).CityToStayOn;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_DriveFerry))
+                else if (lastCommand.GetType() == typeof(PA_DriveFerry))
                 {
-                    return ((PD_PMA_DriveFerry)lastCommand).ToCity;
+                    return ((PA_DriveFerry)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_ShuttleFlight))
+                else if (lastCommand.GetType() == typeof(PA_ShuttleFlight))
                 {
-                    return ((PD_PMA_ShuttleFlight)lastCommand).ToCity;
+                    return ((PA_ShuttleFlight)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_DirectFlight))
+                else if (lastCommand.GetType() == typeof(PA_DirectFlight))
                 {
-                    return ((PD_PMA_DirectFlight)lastCommand).ToCity;
+                    return ((PA_DirectFlight)lastCommand).ToCity;
                 }
-                else if (lastCommand.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
+                else if (lastCommand.GetType() == typeof(PA_OperationsExpert_Flight))
                 {
-                    return ((PD_PMA_OperationsExpert_Flight)lastCommand).ToCity;
+                    return ((PA_OperationsExpert_Flight)lastCommand).ToCity;
                 }
                 else
                 {
@@ -320,11 +320,11 @@ namespace Pandemic_AI_Framework
 
             else if (MacroAction_Type == PD_MacroAction_Type.DiscoverCure_Macro)
             {
-                return ((PD_PA_DiscoverCure)lastCommand).CityOfResearchStation;
+                return ((PA_DiscoverCure)lastCommand).CityOfResearchStation;
             }
             else if (MacroAction_Type == PD_MacroAction_Type.DiscoverCure_Scientist_Macro)
             {
-                return ((PD_PA_DiscoverCure_Scientist)lastCommand).CityOfResearchStation;
+                return ((PA_DiscoverCure_Scientist)lastCommand).CityOfResearchStation;
             }
             else
             {
@@ -343,7 +343,7 @@ namespace Pandemic_AI_Framework
                 x =>
                 x is I_Movement_Action
                 &&
-                x.GetType() != typeof(PD_PA_Stay)
+                x.GetType() != typeof(PA_Stay)
                 ).Count;
         }
 

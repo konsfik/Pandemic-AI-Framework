@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Discard_AfterDrawing : 
+    public class PA_Discard_AfterDrawing : 
         PD_GameAction_Base, 
-        IEquatable<PD_PA_Discard_AfterDrawing>,
+        IEquatable<PA_Discard_AfterDrawing>,
         I_Player_Action, 
         I_Discard_Action
     {
@@ -24,7 +24,7 @@ namespace Pandemic_AI_Framework
         /// <param name="player"></param>
         /// <param name="playerCardToDiscard"></param>
         [JsonConstructor]
-        public PD_PA_Discard_AfterDrawing(
+        public PA_Discard_AfterDrawing(
             int player,
             int playerCardToDiscard
             )
@@ -37,14 +37,14 @@ namespace Pandemic_AI_Framework
         {
             if (PlayerCardToDiscard < 48)
             {
-                return new PD_PA_Discard_AfterDrawing(
+                return new PA_Discard_AfterDrawing(
                     Player,
                     PlayerCardToDiscard
                     );
             }
             else if (PlayerCardToDiscard >= 128)
             {
-                return new PD_PA_Discard_AfterDrawing(
+                return new PA_Discard_AfterDrawing(
                     Player,
                     PlayerCardToDiscard
                     );
@@ -77,7 +77,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_Discard_AfterDrawing other)
+        public bool Equals(PA_Discard_AfterDrawing other)
         {
             if (this.Player != other.Player)
             {
@@ -95,7 +95,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_Discard_AfterDrawing other_action)
+            if (other is PA_Discard_AfterDrawing other_action)
             {
                 return Equals(other_action);
             }
@@ -107,7 +107,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_Discard_AfterDrawing other_action)
+            if (other is PA_Discard_AfterDrawing other_action)
             {
                 return Equals(other_action);
             }

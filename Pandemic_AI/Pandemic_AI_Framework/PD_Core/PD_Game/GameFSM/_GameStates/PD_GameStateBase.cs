@@ -8,11 +8,6 @@ namespace Pandemic_AI_Framework
     public abstract class PD_GameStateBase
     {
 
-        public PD_GameStateBase()
-        {
-
-        }
-
         public abstract PD_GameStateBase OnCommand(
             Random randomness_provider,
             PD_Game game, 

@@ -9,11 +9,6 @@ namespace Pandemic_AI_Framework
         PD_GameStateBase, ICustomDeepCopyable<PD_GS_Discarding_DuringMainPlayerActions>
     {
         #region constructors
-        public PD_GS_Discarding_DuringMainPlayerActions()
-        {
-
-        }
-
         public PD_GS_Discarding_DuringMainPlayerActions GetCustomDeepCopy()
         {
             return new PD_GS_Discarding_DuringMainPlayerActions();
@@ -26,7 +21,7 @@ namespace Pandemic_AI_Framework
             PD_GameAction_Base command
             )
         {
-            if (command.GetType() == typeof(PD_PA_Discard_DuringMainPlayerActions))
+            if (command.GetType() == typeof(PA_Discard_DuringMainPlayerActions))
             {
                 command.Execute(
                     randomness_provider,

@@ -287,7 +287,7 @@ namespace Pandemic_AI_Framework
                     {
                         var stayAction = availableCommands.Find(
                             x =>
-                            x.GetType() == typeof(PD_PA_Stay)
+                            x.GetType() == typeof(PA_Stay)
                             );
                         if (stayAction != null)
                         {

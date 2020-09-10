@@ -8,45 +8,40 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease_Medic_Auto :
+    public class PA_Stay :
         PD_GameAction_Base,
-        IEquatable<PD_PA_TreatDisease_Medic_Auto>,
+        IEquatable<PA_Stay>,
         I_Player_Action
     {
         public int Player { get; private set; }
-        public int CityToTreatDiseaseAt { get; private set; }
-        public int TypeOfDiseaseToTreat { get; private set; }
+        public int CityToStayOn { get; private set; }
 
         #region constructors
         /// <summary>
-        /// Normal & Json constructor
+        /// Normal & Json Constructor
         /// </summary>
         /// <param name="player"></param>
-        /// <param name="cityToTreatDiseaseAt"></param>
-        /// <param name="typeOfDiseaseToTreat"></param>
+        /// <param name="cityToStayOn"></param>
         [JsonConstructor]
-        public PD_PA_TreatDisease_Medic_Auto(
+        public PA_Stay(
             int player,
-            int cityToTreatDiseaseAt,
-            int typeOfDiseaseToTreat
+            int cityToStayOn
             )
         {
-            Player = player;
-            CityToTreatDiseaseAt = cityToTreatDiseaseAt;
-            TypeOfDiseaseToTreat = typeOfDiseaseToTreat;
+            Player = player; ;
+            CityToStayOn = cityToStayOn;
         }
 
         /// <summary>
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_TreatDisease_Medic_Auto(
-            PD_PA_TreatDisease_Medic_Auto actionToCopy
+        private PA_Stay(
+            PA_Stay actionToCopy
             )
         {
             Player = actionToCopy.Player;
-            CityToTreatDiseaseAt = actionToCopy.CityToTreatDiseaseAt;
-            TypeOfDiseaseToTreat = actionToCopy.TypeOfDiseaseToTreat;
+            CityToStayOn = actionToCopy.CityToStayOn;
         }
         #endregion
 
@@ -55,36 +50,41 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-            game.Com_PA_TreatDisease_Medic(Player, CityToTreatDiseaseAt, TypeOfDiseaseToTreat);
+#if DEBUG
+            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
+            {
+                throw new System.Exception("wrong state!");
+            }
+            else if (Player != game.GQ_CurrentPlayer())
+            {
+                throw new System.Exception("wrong player!");
+            }
+#endif
+            // do nothing! :)
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_TreatDisease_Medic_Auto(this);
+            return new PA_Stay(this);
         }
 
         public override string GetDescription()
         {
             return String.Format(
-                "{0}: TREAT_DISEASE_MEDIC_AUTO type {1} on {2}",
+                "{0}: STAY on {1}",
                 Player.ToString(),
-                TypeOfDiseaseToTreat,
-                CityToTreatDiseaseAt.ToString()
+                CityToStayOn.ToString()
                 );
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_TreatDisease_Medic_Auto other)
+        public bool Equals(PA_Stay other)
         {
             if (this.Player != other.Player)
             {
                 return false;
             }
-            else if (this.CityToTreatDiseaseAt != other.CityToTreatDiseaseAt)
-            {
-                return false;
-            }
-            else if (this.TypeOfDiseaseToTreat != other.TypeOfDiseaseToTreat)
+            if (this.CityToStayOn != other.CityToStayOn)
             {
                 return false;
             }
@@ -96,7 +96,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_TreatDisease_Medic_Auto other_action)
+            if (other is PA_Stay other_action)
             {
                 return Equals(other_action);
             }
@@ -108,7 +108,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_TreatDisease_Medic_Auto other_action)
+            if (other is PA_Stay other_action)
             {
                 return Equals(other_action);
             }
@@ -123,8 +123,7 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + CityToTreatDiseaseAt;
-            hash = hash * 31 + TypeOfDiseaseToTreat;
+            hash = hash * 31 + CityToStayOn;
 
             return hash;
         }

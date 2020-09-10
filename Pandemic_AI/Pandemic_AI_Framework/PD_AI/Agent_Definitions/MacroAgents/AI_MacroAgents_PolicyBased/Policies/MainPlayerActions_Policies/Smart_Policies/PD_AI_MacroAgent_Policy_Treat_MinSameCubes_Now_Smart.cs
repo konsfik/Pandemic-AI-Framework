@@ -67,7 +67,7 @@ namespace Pandemic_AI_Framework
                     macro.MacroAction_Type == PD_MacroAction_Type.TreatDisease_Macro
                     )
                 {
-                    PD_PA_TreatDisease treatAction = (PD_PA_TreatDisease)macro.Find_LastCommand();
+                    PA_TreatDisease treatAction = (PA_TreatDisease)macro.Find_LastCommand();
                     int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
                     macro.MacroAction_Type == PD_MacroAction_Type.TreatDisease_Medic_Macro
                     )
                 {
-                    PD_PA_TreatDisease_Medic treatAction = (PD_PA_TreatDisease_Medic)macro.Find_LastCommand();
+                    PA_TreatDisease_Medic treatAction = (PA_TreatDisease_Medic)macro.Find_LastCommand();
                     int destination = treatAction.CityToTreatDiseaseAt;
                     int treatType = treatAction.TypeOfDiseaseToTreat;
                     int numCubesThisTypeOnThatCity =

@@ -49,108 +49,108 @@ namespace Pandemic_AI_Framework
             NumActions_Stay =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_Stay)
+                    x.GetType() == typeof(PA_Stay)
                     ).Count;
 
             NumActions_DriveFerry =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PMA_DriveFerry)
+                    x.GetType() == typeof(PA_DriveFerry)
                     ).Count;
             NumActions_DirectFlight =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PMA_DirectFlight)
+                    x.GetType() == typeof(PA_DirectFlight)
                     ).Count;
             NumActions_CharterFlight =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PMA_CharterFlight)
+                    x.GetType() == typeof(PA_CharterFlight)
                     ).Count;
             NumActions_ShuttleFlight =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PMA_ShuttleFlight)
+                    x.GetType() == typeof(PA_ShuttleFlight)
                     ).Count;
             NumActions_OperationsExpertFlight =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PMA_OperationsExpert_Flight)
+                    x.GetType() == typeof(PA_OperationsExpert_Flight)
                     ).Count;
 
             NumActions_BuildResearchStation =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_BuildResearchStation)
+                    x.GetType() == typeof(PA_BuildResearchStation)
                     ).Count;
             NumActions_BuildResearchStation_OperationsExpert =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_BuildResearchStation_OperationsExpert)
+                    x.GetType() == typeof(PA_BuildResearchStation_OperationsExpert)
                     ).Count;
             NumActions_MoveResearchStation =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_MoveResearchStation)
+                    x.GetType() == typeof(PA_MoveResearchStation)
                     ).Count;
 
             NumActions_TreatDisease =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_TreatDisease)
+                    x.GetType() == typeof(PA_TreatDisease)
                     ).Count;
             NumActions_TreatDisease_Medic =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_TreatDisease_Medic)
+                    x.GetType() == typeof(PA_TreatDisease_Medic)
                     ).Count;
             NumActions_TreatDisease_Medic_Auto =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_TreatDisease_Medic_Auto)
+                    x.GetType() == typeof(PA_TreatDisease_Medic_Auto)
                     ).Count;
 
             NumActions_ShareKnowledge_Give =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_ShareKnowledge_GiveCard)
+                    x.GetType() == typeof(PA_ShareKnowledge_GiveCard)
                     ).Count;
             NumActions_ShareKnowledge_Give_ResearcherGives =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_ShareKnowledge_GiveCard_ResearcherGives)
+                    x.GetType() == typeof(PA_ShareKnowledge_GiveCard_ResearcherGives)
                     ).Count;
             NumActions_ShareKnowledge_Take =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_ShareKnowledge_TakeCard)
+                    x.GetType() == typeof(PA_ShareKnowledge_TakeCard)
                     ).Count;
             NumActions_ShareKnowledge_Take_FromResearcher =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_ShareKnowledge_TakeCard_FromResearcher)
+                    x.GetType() == typeof(PA_ShareKnowledge_TakeCard_FromResearcher)
                     ).Count;
 
             NumActions_DiscoverCure =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_DiscoverCure)
+                    x.GetType() == typeof(PA_DiscoverCure)
                     ).Count;
             NumActions_DiscoverCure_Scientist =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_DiscoverCure_Scientist)
+                    x.GetType() == typeof(PA_DiscoverCure_Scientist)
                     ).Count;
 
             NumActions_Discard_DuringMainPlayerActions =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_Discard_DuringMainPlayerActions)
+                    x.GetType() == typeof(PA_Discard_DuringMainPlayerActions)
                     ).Count;
             NumActions_Discard_AfterDrawing =
                 game.PlayerActionsHistory.FindAll(
                     x =>
-                    x.GetType() == typeof(PD_PA_Discard_AfterDrawing)
+                    x.GetType() == typeof(PA_Discard_AfterDrawing)
                     ).Count;
         }
 

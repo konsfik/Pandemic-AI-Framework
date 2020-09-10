@@ -1,14 +1,16 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_TreatDisease :
+    public class PA_TreatDisease_Medic_Auto :
         PD_GameAction_Base,
-        IEquatable<PD_PA_TreatDisease>,
+        IEquatable<PA_TreatDisease_Medic_Auto>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -23,7 +25,7 @@ namespace Pandemic_AI_Framework
         /// <param name="cityToTreatDiseaseAt"></param>
         /// <param name="typeOfDiseaseToTreat"></param>
         [JsonConstructor]
-        public PD_PA_TreatDisease(
+        public PA_TreatDisease_Medic_Auto(
             int player,
             int cityToTreatDiseaseAt,
             int typeOfDiseaseToTreat
@@ -38,8 +40,8 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_TreatDisease(
-            PD_PA_TreatDisease actionToCopy
+        private PA_TreatDisease_Medic_Auto(
+            PA_TreatDisease_Medic_Auto actionToCopy
             )
         {
             Player = actionToCopy.Player;
@@ -53,70 +55,18 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
-#if DEBUG
-            if (game.GQ_IsInState_ApplyingMainPlayerActions() == false)
-            {
-                throw new System.Exception("wrong state!");
-            }
-            else if (Player != game.GQ_CurrentPlayer())
-            {
-                throw new System.Exception("wrong player!");
-            }
-            else if (game.GQ_Player_Role(Player) == PD_Player_Roles.Medic)
-            {
-                throw new System.Exception("wrong player role!");
-            }
-            else if (CityToTreatDiseaseAt != game.GQ_PlayerLocation(Player))
-            {
-                throw new System.Exception("wrong player location");
-            }
-            else if (
-                game.GQ_InfectionCubeTypes_OnCity(CityToTreatDiseaseAt)
-                .Contains(TypeOfDiseaseToTreat) == false)
-            {
-                throw new System.Exception("the selected city does not have cubes of this type!");
-            }
-#endif
-
-            bool diseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(TypeOfDiseaseToTreat);
-
-            if (diseaseCured)
-            {
-                // remove all cubes of this type
-                game.GO_Remove_All_InfectionCubes_OfType_FromCity(
-                    CityToTreatDiseaseAt,
-                    TypeOfDiseaseToTreat
-                    );
-
-                // check if disease is eradicated...
-                int remaining_cubes_this_type
-                    = game.map_elements.inactive_infection_cubes__per__type[TypeOfDiseaseToTreat];
-
-                // if disease eradicated -> set marker to 2
-                if (remaining_cubes_this_type == 0)
-                {
-                    game.game_state_counter.disease_states[TypeOfDiseaseToTreat] = 2;
-                }
-            }
-            else
-            {
-                // remove only one cube of this type
-                game.GO_Remove_One_InfectionCube_OfType_FromCity(
-                    CityToTreatDiseaseAt,
-                    TypeOfDiseaseToTreat
-                    );
-            }
+            game.Com_PA_TreatDisease_Medic(Player, CityToTreatDiseaseAt, TypeOfDiseaseToTreat);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_TreatDisease(this);
+            return new PA_TreatDisease_Medic_Auto(this);
         }
 
         public override string GetDescription()
         {
             return String.Format(
-                "{0}: TREAT_DISEASE type {1} on {2}",
+                "{0}: TREAT_DISEASE_MEDIC_AUTO type {1} on {2}",
                 Player.ToString(),
                 TypeOfDiseaseToTreat,
                 CityToTreatDiseaseAt.ToString()
@@ -124,7 +74,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_TreatDisease other)
+        public bool Equals(PA_TreatDisease_Medic_Auto other)
         {
             if (this.Player != other.Player)
             {
@@ -146,7 +96,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_TreatDisease other_action)
+            if (other is PA_TreatDisease_Medic_Auto other_action)
             {
                 return Equals(other_action);
             }
@@ -158,7 +108,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_TreatDisease other_action)
+            if (other is PA_TreatDisease_Medic_Auto other_action)
             {
                 return Equals(other_action);
             }

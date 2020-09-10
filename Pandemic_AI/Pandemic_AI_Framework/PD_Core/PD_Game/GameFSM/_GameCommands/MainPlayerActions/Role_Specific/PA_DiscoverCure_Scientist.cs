@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_DiscoverCure :
+    public class PA_DiscoverCure_Scientist :
         PD_GameAction_Base,
-        IEquatable<PD_PA_DiscoverCure>,
+        IEquatable<PA_DiscoverCure_Scientist>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -25,7 +25,7 @@ namespace Pandemic_AI_Framework
         /// <param name="cityCardsToDiscard"></param>
         /// <param name="typeOfDiseaseToCure"></param>
         [JsonConstructor]
-        public PD_PA_DiscoverCure(
+        public PA_DiscoverCure_Scientist(
             int player,
             int cityOfResearchStation,
             List<int> cityCardsToDiscard,
@@ -33,8 +33,8 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = player;
-            this.CityOfResearchStation = cityOfResearchStation;
             this.CityCardsToDiscard = cityCardsToDiscard.CustomDeepCopy();
+            this.CityOfResearchStation = cityOfResearchStation;
             this.TypeOfDiseaseToCure = typeOfDiseaseToCure;
         }
 
@@ -42,14 +42,19 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_DiscoverCure(
-            PD_PA_DiscoverCure actionToCopy
+        private PA_DiscoverCure_Scientist(
+            PA_DiscoverCure_Scientist actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
-            this.CityOfResearchStation = actionToCopy.CityOfResearchStation;
             this.CityCardsToDiscard = actionToCopy.CityCardsToDiscard.CustomDeepCopy();
+            this.CityOfResearchStation = actionToCopy.CityOfResearchStation;
             this.TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
+        }
+
+        public override PD_GameAction_Base GetCustomDeepCopy()
+        {
+            return new PA_DiscoverCure_Scientist(this);
         }
         #endregion
 
@@ -82,7 +87,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("selected city is not the player's location");
             }
             List<int> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
-            foreach (int city_card in CityCardsToDiscard)
+            foreach (var city_card in CityCardsToDiscard)
             {
                 if (city_cards_in_player_hand.Contains(city_card) == false)
                 {
@@ -90,7 +95,6 @@ namespace Pandemic_AI_Framework
                 }
             }
 #endif
-
             // discard the cards
             foreach (var cityCard in CityCardsToDiscard)
             {
@@ -106,15 +110,10 @@ namespace Pandemic_AI_Framework
             game.Medic_AutoTreat_AfterDiscoverCure(TypeOfDiseaseToCure);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
-        {
-            return new PD_PA_DiscoverCure(this);
-        }
-
         public override string GetDescription()
         {
             string description = String.Format(
-                "{0}: DISCOVER_CURE of type {1} on {2}",
+                "{0}: DISCOVER_CURE_SCIENTIST of type {1} on {2}",
                 Player.ToString(),
                 TypeOfDiseaseToCure,
                 CityOfResearchStation.ToString()
@@ -124,7 +123,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_DiscoverCure other)
+        public bool Equals(PA_DiscoverCure_Scientist other)
         {
             if (this.Player != other.Player)
             {
@@ -148,7 +147,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_DiscoverCure other_action)
+            if (other is PA_DiscoverCure_Scientist other_action)
             {
                 return Equals(other_action);
             }
@@ -160,7 +159,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_DiscoverCure other_action)
+            if (other is PA_DiscoverCure_Scientist other_action)
             {
                 return Equals(other_action);
             }

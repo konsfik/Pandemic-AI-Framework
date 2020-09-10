@@ -7,9 +7,9 @@ using System.Linq;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_MoveResearchStation : 
+    public class PA_MoveResearchStation : 
         PD_GameAction_Base, 
-        IEquatable<PD_PA_MoveResearchStation>,
+        IEquatable<PA_MoveResearchStation>,
         I_Player_Action
     {
         public int Player { get; private set; }
@@ -25,7 +25,7 @@ namespace Pandemic_AI_Framework
         /// <param name="move_RS_From"></param>
         /// <param name="move_RS_To"></param>
         [JsonConstructor]
-        public PD_PA_MoveResearchStation(
+        public PA_MoveResearchStation(
             int player,
             int used_CityCard,
             int move_RS_From,
@@ -42,8 +42,8 @@ namespace Pandemic_AI_Framework
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_MoveResearchStation(
-            PD_PA_MoveResearchStation actionToCopy
+        private PA_MoveResearchStation(
+            PA_MoveResearchStation actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -92,7 +92,7 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_MoveResearchStation(this);
+            return new PA_MoveResearchStation(this);
         }
 
         public override string GetDescription()
@@ -106,7 +106,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_MoveResearchStation other)
+        public bool Equals(PA_MoveResearchStation other)
         {
             if (this.Player != other.Player)
             {
@@ -132,7 +132,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_MoveResearchStation other_action)
+            if (other is PA_MoveResearchStation other_action)
             {
                 return Equals(other_action);
             }
@@ -144,7 +144,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_MoveResearchStation other_action)
+            if (other is PA_MoveResearchStation other_action)
             {
                 return Equals(other_action);
             }

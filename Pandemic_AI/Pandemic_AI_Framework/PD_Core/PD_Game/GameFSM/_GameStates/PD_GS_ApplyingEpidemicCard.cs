@@ -8,10 +8,6 @@ namespace Pandemic_AI_Framework
     public class PD_GS_ApplyingEpidemicCard : PD_GameStateBase, ICustomDeepCopyable<PD_GS_ApplyingEpidemicCard>
     {
         #region constructors
-        public PD_GS_ApplyingEpidemicCard()
-        {
-
-        }
 
         public PD_GS_ApplyingEpidemicCard GetCustomDeepCopy()
         {
@@ -24,7 +20,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_GameAction_Base command)
         {
-            if (command.GetType() == typeof(PD_ApplyEpidemicCard))
+            if (command.GetType() == typeof(PA_ApplyEpidemicCard))
             {
                 command.Execute(
                     randomness_provider,

@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_Discard_DuringMainPlayerActions :
+    public class PA_Discard_DuringMainPlayerActions :
         PD_GameAction_Base,
-        IEquatable<PD_PA_Discard_DuringMainPlayerActions>,
+        IEquatable<PA_Discard_DuringMainPlayerActions>,
         I_Player_Action,
         I_Discard_Action
     {
@@ -23,7 +23,7 @@ namespace Pandemic_AI_Framework
         /// <param name="player"></param>
         /// <param name="playerCardToDiscard"></param>
         [JsonConstructor]
-        public PD_PA_Discard_DuringMainPlayerActions(
+        public PA_Discard_DuringMainPlayerActions(
             int player,
             int playerCardToDiscard
             )
@@ -35,7 +35,7 @@ namespace Pandemic_AI_Framework
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
             if (PlayerCardToDiscard < 48 || PlayerCardToDiscard >= 128) {
-                return new PD_PA_Discard_DuringMainPlayerActions(
+                return new PA_Discard_DuringMainPlayerActions(
                     Player,
                     PlayerCardToDiscard
                     );
@@ -64,7 +64,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_Discard_DuringMainPlayerActions other)
+        public bool Equals(PA_Discard_DuringMainPlayerActions other)
         {
             if (this.Player != other.Player)
             {
@@ -82,7 +82,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_Discard_DuringMainPlayerActions other_action)
+            if (other is PA_Discard_DuringMainPlayerActions other_action)
             {
                 return Equals(other_action);
             }
@@ -94,7 +94,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_PA_Discard_DuringMainPlayerActions other_action)
+            if (other is PA_Discard_DuringMainPlayerActions other_action)
             {
                 return Equals(other_action);
             }

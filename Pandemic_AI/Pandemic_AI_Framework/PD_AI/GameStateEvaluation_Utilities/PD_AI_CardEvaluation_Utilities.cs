@@ -226,132 +226,102 @@ namespace Pandemic_AI_Framework
             )
         {
             int[,] hypothetical_NumCardsTable = initialNumCardsTable.CustomDeepCopy();
-            if (action.GetType() == typeof(PD_PA_ShareKnowledge_GiveCard))
+            if (action is PA_ShareKnowledge_GiveCard give_card_action)
             {
-                PD_PA_ShareKnowledge_GiveCard shareKnowledge_Give_Action = (PD_PA_ShareKnowledge_GiveCard)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive);
-                int giver_Index = game.players.IndexOf(shareKnowledge_Give_Action.Player);
-                int taker_Index = game.players.IndexOf(shareKnowledge_Give_Action.OtherPlayer);
+                int cardType = game.GQ_City_InfectionType(give_card_action.CityCardToGive);
+                int giver_Index = game.players.IndexOf(give_card_action.Player);
+                int taker_Index = game.players.IndexOf(give_card_action.OtherPlayer);
 
                 hypothetical_NumCardsTable[cardType, giver_Index] -= 1;
                 hypothetical_NumCardsTable[cardType, taker_Index] += 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_ShareKnowledge_GiveCard_ResearcherGives))
+            else if (action is PA_ShareKnowledge_GiveCard_ResearcherGives researcher_gives_action)
             {
-                PD_PA_ShareKnowledge_GiveCard_ResearcherGives shareKnowledge_Give_Action =
-                    (PD_PA_ShareKnowledge_GiveCard_ResearcherGives)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Give_Action.CityCardToGive);
-                int giver_Index = game.players.IndexOf(shareKnowledge_Give_Action.Player);
-                int taker_Index = game.players.IndexOf(shareKnowledge_Give_Action.OtherPlayer);
+                int cardType = game.GQ_City_InfectionType(researcher_gives_action.CityCardToGive);
+                int giver_Index = game.players.IndexOf(researcher_gives_action.Player);
+                int taker_Index = game.players.IndexOf(researcher_gives_action.OtherPlayer);
 
                 hypothetical_NumCardsTable[cardType, giver_Index] -= 1;
                 hypothetical_NumCardsTable[cardType, taker_Index] += 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_ShareKnowledge_TakeCard))
+            else if (action is PA_ShareKnowledge_TakeCard take_card_action)
             {
-                PD_PA_ShareKnowledge_TakeCard shareKnowledge_Take_Action = (PD_PA_ShareKnowledge_TakeCard)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake);
-                int taker_Index = game.players.IndexOf(shareKnowledge_Take_Action.Player);
-                int giver_Index = game.players.IndexOf(shareKnowledge_Take_Action.OtherPlayer);
+                int cardType = game.GQ_City_InfectionType(take_card_action.CityCardToTake);
+                int taker_Index = game.players.IndexOf(take_card_action.Player);
+                int giver_Index = game.players.IndexOf(take_card_action.OtherPlayer);
 
                 hypothetical_NumCardsTable[cardType, giver_Index] -= 1;
                 hypothetical_NumCardsTable[cardType, taker_Index] += 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_ShareKnowledge_TakeCard_FromResearcher))
+            else if (action is PA_ShareKnowledge_TakeCard_FromResearcher take_card_from_researcher_action)
             {
-                PD_PA_ShareKnowledge_TakeCard_FromResearcher shareKnowledge_Take_Action =
-                    (PD_PA_ShareKnowledge_TakeCard_FromResearcher)action;
-                int cardType = game.GQ_City_InfectionType(shareKnowledge_Take_Action.CityCardToTake);
-                int taker_Index = game.players.IndexOf(shareKnowledge_Take_Action.Player);
-                int giver_Index = game.players.IndexOf(shareKnowledge_Take_Action.OtherPlayer);
+                int cardType = game.GQ_City_InfectionType(take_card_from_researcher_action.CityCardToTake);
+                int taker_Index = game.players.IndexOf(take_card_from_researcher_action.Player);
+                int giver_Index = game.players.IndexOf(take_card_from_researcher_action.OtherPlayer);
 
                 hypothetical_NumCardsTable[cardType, giver_Index] -= 1;
                 hypothetical_NumCardsTable[cardType, taker_Index] += 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PMA_DirectFlight))
+            else if (action is PA_DirectFlight directFlightAction)
             {
-                PD_PMA_DirectFlight directFlightAction =
-                    (PD_PMA_DirectFlight)action;
                 int cardType = game.GQ_City_InfectionType(directFlightAction.UsedCard);
                 int playerIndex = game.players.IndexOf(directFlightAction.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PMA_CharterFlight))
+            else if (action is PA_CharterFlight charter_flight_action)
             {
-                PD_PMA_CharterFlight charterFlightAction =
-                    (PD_PMA_CharterFlight)action;
-                int cardType = game.GQ_City_InfectionType(charterFlightAction.UsedCard);
-                int playerIndex = game.players.IndexOf(charterFlightAction.Player);
+                int cardType = game.GQ_City_InfectionType(charter_flight_action.UsedCard);
+                int playerIndex = game.players.IndexOf(charter_flight_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
+            else if (action is PA_OperationsExpert_Flight operations_expert_flight_action)
             {
-                PD_PMA_OperationsExpert_Flight operationsExpertFlightAction =
-                    (PD_PMA_OperationsExpert_Flight)action;
-                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.UsedCard);
-                int playerIndex = game.players.IndexOf(operationsExpertFlightAction.Player);
+                int cardType = game.GQ_City_InfectionType(operations_expert_flight_action.UsedCard);
+                int playerIndex = game.players.IndexOf(operations_expert_flight_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PMA_OperationsExpert_Flight))
+            else if (action is PA_BuildResearchStation build_research_station_action)
             {
-                PD_PMA_OperationsExpert_Flight operationsExpertFlightAction =
-                    (PD_PMA_OperationsExpert_Flight)action;
-                int cardType = game.GQ_City_InfectionType(operationsExpertFlightAction.UsedCard);
-                int playerIndex = game.players.IndexOf(operationsExpertFlightAction.Player);
+                int cardType = game.GQ_City_InfectionType(build_research_station_action.UsedCard);
+                int playerIndex = game.players.IndexOf(build_research_station_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_BuildResearchStation))
+            else if (action is PA_MoveResearchStation move_research_station_action)
             {
-                PD_PA_BuildResearchStation buildResearchStationAction =
-                    (PD_PA_BuildResearchStation)action;
-                int cardType = game.GQ_City_InfectionType(buildResearchStationAction.UsedCard);
-                int playerIndex = game.players.IndexOf(buildResearchStationAction.Player);
+                int cardType = game.GQ_City_InfectionType(move_research_station_action.Used_CityCard);
+                int playerIndex = game.players.IndexOf(move_research_station_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_MoveResearchStation))
+            else if (action is PA_Discard_DuringMainPlayerActions discard_during_action)
             {
-                PD_PA_MoveResearchStation moveResearchStationAction =
-                    (PD_PA_MoveResearchStation)action;
-                int cardType = game.GQ_City_InfectionType(moveResearchStationAction.Used_CityCard);
-                int playerIndex = game.players.IndexOf(moveResearchStationAction.Player);
+                int cardType = game.GQ_City_InfectionType(discard_during_action.PlayerCardToDiscard);
+                int playerIndex = game.players.IndexOf(discard_during_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;
             }
-            else if (action.GetType() == typeof(PD_PA_Discard_DuringMainPlayerActions))
+            else if (action is PA_Discard_AfterDrawing discard_after_action)
             {
-                PD_PA_Discard_DuringMainPlayerActions discardAction =
-                    (PD_PA_Discard_DuringMainPlayerActions)action;
-                int cardType = game.GQ_City_InfectionType(discardAction.PlayerCardToDiscard);
-                int playerIndex = game.players.IndexOf(discardAction.Player);
-                hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
-
-                return hypothetical_NumCardsTable;
-            }
-            else if (action.GetType() == typeof(PD_PA_Discard_AfterDrawing))
-            {
-                PD_PA_Discard_AfterDrawing discardAction =
-                    (PD_PA_Discard_AfterDrawing)action;
-                int cardType = game.GQ_City_InfectionType(discardAction.PlayerCardToDiscard);
-                int playerIndex = game.players.IndexOf(discardAction.Player);
+                int cardType = game.GQ_City_InfectionType(discard_after_action.PlayerCardToDiscard);
+                int playerIndex = game.players.IndexOf(discard_after_action.Player);
                 hypothetical_NumCardsTable[cardType, playerIndex] -= 1;
 
                 return hypothetical_NumCardsTable;

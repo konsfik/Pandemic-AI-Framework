@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_PA_ShareKnowledge_TakeCard_FromResearcher :
+    public class PA_ShareKnowledge_GiveCard_ResearcherGives :
         PD_GameAction_Base,
-        IEquatable<PD_PA_ShareKnowledge_TakeCard_FromResearcher>,
+        IEquatable<PA_ShareKnowledge_GiveCard_ResearcherGives>,
         I_Player_Action
     {
         public int Player { get; private set; }
         public int OtherPlayer { get; private set; }
-        public int CityCardToTake { get; private set; }
+        public int CityCardToGive { get; private set; }
 
         #region constructors
         /// <summary>
@@ -20,30 +20,30 @@ namespace Pandemic_AI_Framework
         /// </summary>
         /// <param name="player"></param>
         /// <param name="otherPlayer"></param>
-        /// <param name="cityCardToTake"></param>
+        /// <param name="cityCardToGive"></param>
         [JsonConstructor]
-        public PD_PA_ShareKnowledge_TakeCard_FromResearcher(
+        public PA_ShareKnowledge_GiveCard_ResearcherGives(
             int player,
             int otherPlayer,
-            int cityCardToTake
+            int cityCardToGive
             )
         {
             Player = player;
             OtherPlayer = otherPlayer;
-            CityCardToTake = cityCardToTake;
+            CityCardToGive = cityCardToGive;
         }
 
         /// <summary>
         /// private constructor, for custom deep copy purposes only
         /// </summary>
         /// <param name="actionToCopy"></param>
-        private PD_PA_ShareKnowledge_TakeCard_FromResearcher(
-            PD_PA_ShareKnowledge_TakeCard_FromResearcher actionToCopy
+        private PA_ShareKnowledge_GiveCard_ResearcherGives(
+            PA_ShareKnowledge_GiveCard_ResearcherGives actionToCopy
             )
         {
             Player = actionToCopy.Player;
             OtherPlayer = actionToCopy.OtherPlayer;
-            CityCardToTake = actionToCopy.CityCardToTake;
+            CityCardToGive = actionToCopy.CityCardToGive;
         }
 
         #endregion
@@ -62,46 +62,46 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player!");
             }
-            else if (game.GQ_Player_Role(OtherPlayer) != PD_Player_Roles.Researcher)
+            else if (game.GQ_Player_Role(Player) != PD_Player_Roles.Researcher)
             {
-                throw new System.Exception("the other player must be researcher!");
+                throw new System.Exception("wrong player role!");
             }
             else if (game.GQ_PlayerLocation(Player) != game.GQ_PlayerLocation(OtherPlayer))
             {
-                throw new System.Exception("Players do not share the same location");
+                throw new System.Exception("players do not share location!");
             }
 #endif
-            game.cards.player_hand__per__player[OtherPlayer].Remove(CityCardToTake);
-            game.cards.player_hand__per__player[Player].Add(CityCardToTake);
+            game.cards.player_hand__per__player[Player].Remove(CityCardToGive);
+            game.cards.player_hand__per__player[OtherPlayer].Add(CityCardToGive);
         }
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_PA_ShareKnowledge_TakeCard_FromResearcher(this);
+            return new PA_ShareKnowledge_GiveCard_ResearcherGives(this);
         }
 
         public override string GetDescription()
         {
             return String.Format(
-                "{0}: SHARE_KNOWLEDGE_TAKE {1} FROM RESEARCHER: {2}",
+                "{0}: SHARE_KNOWLEDGE_RESEARCHER | GIVE {1} to {2}",
                 Player.ToString(),
-                CityCardToTake.ToString(),
+                CityCardToGive.ToString(),
                 OtherPlayer.ToString()
                 );
         }
 
         #region equality overrides
-        public bool Equals(PD_PA_ShareKnowledge_TakeCard_FromResearcher other)
+        public bool Equals(PA_ShareKnowledge_GiveCard_ResearcherGives other)
         {
             if (this.Player != other.Player)
             {
                 return false;
             }
-            if (this.OtherPlayer != other.OtherPlayer)
+            else if (this.OtherPlayer != other.OtherPlayer)
             {
                 return false;
             }
-            if (this.CityCardToTake != other.CityCardToTake)
+            else if (this.CityCardToGive != other.CityCardToGive)
             {
                 return false;
             }
@@ -113,7 +113,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_PA_ShareKnowledge_TakeCard_FromResearcher other_action)
+            if (other is PA_ShareKnowledge_GiveCard_ResearcherGives other_action)
             {
                 return Equals(other_action);
             }
@@ -122,10 +122,9 @@ namespace Pandemic_AI_Framework
                 return false;
             }
         }
-
         public override bool Equals(object other)
         {
-            if (other is PD_PA_ShareKnowledge_TakeCard_FromResearcher other_action)
+            if (other is PA_ShareKnowledge_GiveCard_ResearcherGives other_action)
             {
                 return Equals(other_action);
             }
@@ -141,7 +140,7 @@ namespace Pandemic_AI_Framework
 
             hash = hash * 31 + Player;
             hash = hash * 31 + OtherPlayer;
-            hash = hash * 31 + CityCardToTake;
+            hash = hash * 31 + CityCardToGive;
 
             return hash;
         }

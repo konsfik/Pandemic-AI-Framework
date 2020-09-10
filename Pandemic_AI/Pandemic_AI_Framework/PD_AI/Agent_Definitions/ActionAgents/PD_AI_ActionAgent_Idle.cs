@@ -24,13 +24,13 @@ namespace Pandemic_AI_Framework
             if (
                 availableCommands.Any(
                     x =>
-                    x.GetType() == typeof(PD_PA_Stay)
+                    x.GetType() == typeof(PA_Stay)
                     )
                 )
             {
                 return availableCommands.Find(
                     x =>
-                    x.GetType() == typeof(PD_PA_Stay)
+                    x.GetType() == typeof(PA_Stay)
                     );
             }
 

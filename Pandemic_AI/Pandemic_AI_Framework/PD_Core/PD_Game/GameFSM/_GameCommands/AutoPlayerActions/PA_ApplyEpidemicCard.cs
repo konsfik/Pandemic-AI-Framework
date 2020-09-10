@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyEpidemicCard :
+    public class PA_ApplyEpidemicCard :
         PD_GameAction_Base,
-        IEquatable<PD_ApplyEpidemicCard>,
+        IEquatable<PA_ApplyEpidemicCard>,
         I_Auto_Action,
         I_Player_Action
     {
@@ -17,7 +17,7 @@ namespace Pandemic_AI_Framework
 
         #region constructors
         [JsonConstructor]
-        public PD_ApplyEpidemicCard(
+        public PA_ApplyEpidemicCard(
             int player
             )
         {
@@ -25,8 +25,8 @@ namespace Pandemic_AI_Framework
         }
 
         // private constructor, for custom deep copy purposes only
-        private PD_ApplyEpidemicCard(
-            PD_ApplyEpidemicCard actionToCopy
+        private PA_ApplyEpidemicCard(
+            PA_ApplyEpidemicCard actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -34,7 +34,7 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_ApplyEpidemicCard(this);
+            return new PA_ApplyEpidemicCard(this);
         }
         #endregion
 
@@ -121,7 +121,7 @@ namespace Pandemic_AI_Framework
         }
 
         #region equality overrides
-        public bool Equals(PD_ApplyEpidemicCard other)
+        public bool Equals(PA_ApplyEpidemicCard other)
         {
             if (this.Player != other.Player)
             {
@@ -135,7 +135,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_ApplyEpidemicCard other_action)
+            if (other is PA_ApplyEpidemicCard other_action)
             {
                 return Equals(other_action);
             }
@@ -147,7 +147,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object otherObject)
         {
-            if (otherObject is PD_ApplyEpidemicCard other_action)
+            if (otherObject is PA_ApplyEpidemicCard other_action)
             {
                 return Equals(other_action);
             }

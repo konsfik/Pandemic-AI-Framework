@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public class PD_ApplyInfectionCard : 
+    public class PA_ApplyInfectionCard : 
         PD_GameAction_Base, 
-        IEquatable<PD_ApplyInfectionCard>,
+        IEquatable<PA_ApplyInfectionCard>,
         I_Auto_Action, 
         I_Player_Action
     {
@@ -17,7 +17,7 @@ namespace Pandemic_AI_Framework
         public int InfectionCardToApply { get; private set; }
 
         [JsonConstructor]
-        public PD_ApplyInfectionCard(
+        public PA_ApplyInfectionCard(
             int player,
             int infectionCardToApply
             )
@@ -27,8 +27,8 @@ namespace Pandemic_AI_Framework
         }
 
         // private constructor, for custom deep copy purposes only
-        private PD_ApplyInfectionCard(
-            PD_ApplyInfectionCard actionToCopy
+        private PA_ApplyInfectionCard(
+            PA_ApplyInfectionCard actionToCopy
             )
         {
             this.Player = actionToCopy.Player;
@@ -86,7 +86,7 @@ namespace Pandemic_AI_Framework
 
         public override PD_GameAction_Base GetCustomDeepCopy()
         {
-            return new PD_ApplyInfectionCard(this);
+            return new PA_ApplyInfectionCard(this);
         }
 
         public override string GetDescription()
@@ -96,7 +96,7 @@ namespace Pandemic_AI_Framework
 
         #region equality overrides
 
-        public bool Equals(PD_ApplyInfectionCard other)
+        public bool Equals(PA_ApplyInfectionCard other)
         {
             if (this.Player != other.Player)
             {
@@ -114,7 +114,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(PD_GameAction_Base other)
         {
-            if (other is PD_ApplyInfectionCard other_action)
+            if (other is PA_ApplyInfectionCard other_action)
             {
                 return Equals(other_action);
             }
@@ -126,7 +126,7 @@ namespace Pandemic_AI_Framework
 
         public override bool Equals(object other)
         {
-            if (other is PD_ApplyInfectionCard other_action)
+            if (other is PA_ApplyInfectionCard other_action)
             {
                 return Equals(other_action);
             }

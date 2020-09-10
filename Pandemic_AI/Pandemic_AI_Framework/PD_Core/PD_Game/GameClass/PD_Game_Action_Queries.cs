@@ -55,7 +55,7 @@ namespace Pandemic_AI_Framework
             else if (game.GQ_IsInState_DrawingNewPlayerCards())
             {
                 action_set.Add(
-                    new PD_DrawNewPlayerCards(currentPlayer)
+                    new PA_DrawNewPlayerCards(currentPlayer)
                     );
             }
             else if (game.GQ_IsInState_DiscardAfterDrawing())
@@ -67,38 +67,38 @@ namespace Pandemic_AI_Framework
             else if (game.game_FSM.CurrentState.GetType() == typeof(PD_GS_ApplyingEpidemicCard))
             {
                 action_set.Add(
-                    new PD_ApplyEpidemicCard(currentPlayer)
+                    new PA_ApplyEpidemicCard(currentPlayer)
                     );
             }
             else if (game.game_FSM.CurrentState.GetType() == typeof(PD_GS_DrawingNewInfectionCards))
             {
                 action_set.Add(
-                    new PD_DrawNewInfectionCards(currentPlayer)
+                    new PA_DrawNewInfectionCards(currentPlayer)
                     );
             }
             else if (game.game_FSM.CurrentState.GetType() == typeof(PD_GS_ApplyingInfectionCards))
             {
                 action_set.Add(
-                    new PD_ApplyInfectionCard(currentPlayer, game.cards.active_infection_cards[0])
+                    new PA_ApplyInfectionCard(currentPlayer, game.cards.active_infection_cards[0])
                     );
             }
 
             return action_set;
         }
 
-        private static List<PD_PA_Stay> FindAvailable_Stay_Actions(
+        private static List<PA_Stay> FindAvailable_Stay_Actions(
             PD_Game game
             )
         {
-            return new List<PD_PA_Stay>() {
-                new PD_PA_Stay(
+            return new List<PA_Stay>() {
+                new PA_Stay(
                     game.GQ_CurrentPlayer(),
                     game.GQ_CurrentPlayer_Location()
                     )
             };
         }
 
-        private static List<PD_PMA_DriveFerry> FindAvailable_DriveFerry_Actions(
+        private static List<PA_DriveFerry> FindAvailable_DriveFerry_Actions(
             PD_Game game
             )
         {
@@ -106,11 +106,11 @@ namespace Pandemic_AI_Framework
             int current_player_location = game.GQ_CurrentPlayer_Location();
             List<int> neighbor_locations = game.map.neighbors__per__city[current_player_location];
 
-            List<PD_PMA_DriveFerry> drive_ferry_actions = new List<PD_PMA_DriveFerry>();
+            List<PA_DriveFerry> drive_ferry_actions = new List<PA_DriveFerry>();
             foreach (int neighbor_location in neighbor_locations)
             {
                 drive_ferry_actions.Add(
-                    new PD_PMA_DriveFerry(
+                    new PA_DriveFerry(
                         current_player,
                         current_player_location,
                         neighbor_location
@@ -120,7 +120,7 @@ namespace Pandemic_AI_Framework
             return drive_ferry_actions;
         }
 
-        private static List<PD_PMA_DirectFlight> FindAvailable_DirectFlight_Actions(
+        private static List<PA_DirectFlight> FindAvailable_DirectFlight_Actions(
             PD_Game game
             )
         {
@@ -129,13 +129,13 @@ namespace Pandemic_AI_Framework
 
             List<int> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            var directFlightActions = new List<PD_PMA_DirectFlight>();
+            var directFlightActions = new List<PA_DirectFlight>();
 
             foreach (int cityCard in cityCardsInCurrentPlayerHand)
             {
                 if (cityCard != current_player_location)
                 {
-                    var action = new PD_PMA_DirectFlight(
+                    var action = new PA_DirectFlight(
                         current_player,
                         current_player_location,
                         cityCard,
@@ -147,7 +147,7 @@ namespace Pandemic_AI_Framework
             return directFlightActions;
         }
 
-        private static List<PD_PMA_CharterFlight> FindAvailable_CharterFlight_Actions(
+        private static List<PA_CharterFlight> FindAvailable_CharterFlight_Actions(
             PD_Game game
             )
         {
@@ -156,7 +156,7 @@ namespace Pandemic_AI_Framework
 
             var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            var charterFlightActions = new List<PD_PMA_CharterFlight>();
+            var charterFlightActions = new List<PA_CharterFlight>();
 
             // if the player is standing on a location that exists in the city cards in their hand
             var citiesOfCityCardsInPlayerHand = new List<int>();
@@ -179,7 +179,7 @@ namespace Pandemic_AI_Framework
 
                 foreach (var otherCity in allOtherCities)
                 {
-                    var action = new PD_PMA_CharterFlight(
+                    var action = new PA_CharterFlight(
                         currentPlayer,
                         current_player_location,
                         otherCity,
@@ -191,7 +191,7 @@ namespace Pandemic_AI_Framework
             return charterFlightActions;
         }
 
-        private static List<PD_PMA_ShuttleFlight> FindAvailable_ShuttleFlight_Actions(
+        private static List<PA_ShuttleFlight> FindAvailable_ShuttleFlight_Actions(
             PD_Game game
             )
         {
@@ -200,7 +200,7 @@ namespace Pandemic_AI_Framework
 
             if (game.GQ_Is_City_ResearchStation(current_player_location) == false)
             {
-                return new List<PD_PMA_ShuttleFlight>();
+                return new List<PA_ShuttleFlight>();
             }
 
             List<int> other_research_station_cities = game.map.cities.FindAll(
@@ -212,14 +212,14 @@ namespace Pandemic_AI_Framework
 
             if (other_research_station_cities.Count == 0)
             {
-                return new List<PD_PMA_ShuttleFlight>();
+                return new List<PA_ShuttleFlight>();
             }
 
-            var shuttleFlightActions = new List<PD_PMA_ShuttleFlight>();
+            var shuttleFlightActions = new List<PA_ShuttleFlight>();
 
             foreach (var city in other_research_station_cities)
             {
-                var action = new PD_PMA_ShuttleFlight(
+                var action = new PA_ShuttleFlight(
                     currentPlayer,
                     current_player_location,
                     city
@@ -230,13 +230,13 @@ namespace Pandemic_AI_Framework
             return shuttleFlightActions;
         }
 
-        private static List<PD_PMA_OperationsExpert_Flight> FindAvailable_OperationsExpertFlight_Actions(
+        private static List<PA_OperationsExpert_Flight> FindAvailable_OperationsExpertFlight_Actions(
             PD_Game game
             )
         {
             if (game.GQ_CurrentPlayer_Role() != PD_Player_Roles.Operations_Expert)
             {
-                return new List<PD_PMA_OperationsExpert_Flight>();
+                return new List<PA_OperationsExpert_Flight>();
             }
 
             int currentPlayer = game.GQ_CurrentPlayer();
@@ -244,18 +244,18 @@ namespace Pandemic_AI_Framework
 
             if (game.GQ_Is_City_ResearchStation(currentPlayerLocation) == false)
             {
-                return new List<PD_PMA_OperationsExpert_Flight>();
+                return new List<PA_OperationsExpert_Flight>();
             }
 
             if (game.GQ_OperationsExpertFlight_HasBeenUsedInThisTurn())
             {
-                return new List<PD_PMA_OperationsExpert_Flight>();
+                return new List<PA_OperationsExpert_Flight>();
             }
 
             List<int> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
             if (city_cards_in_player_hand.Count == 0)
             {
-                return new List<PD_PMA_OperationsExpert_Flight>();
+                return new List<PA_OperationsExpert_Flight>();
             }
 
             List<int> target_locations = game.map.cities.FindAll(
@@ -263,13 +263,13 @@ namespace Pandemic_AI_Framework
                 x != currentPlayerLocation
                 );
 
-            List<PD_PMA_OperationsExpert_Flight> available_actions = new List<PD_PMA_OperationsExpert_Flight>();
+            List<PA_OperationsExpert_Flight> available_actions = new List<PA_OperationsExpert_Flight>();
 
             foreach (var used_card in city_cards_in_player_hand)
             {
                 foreach (var targetLocation in target_locations)
                 {
-                    PD_PMA_OperationsExpert_Flight action = new PD_PMA_OperationsExpert_Flight(
+                    PA_OperationsExpert_Flight action = new PA_OperationsExpert_Flight(
                         currentPlayer,
                         currentPlayerLocation,
                         targetLocation,
@@ -283,7 +283,7 @@ namespace Pandemic_AI_Framework
             return available_actions;
         }
 
-        private static List<PD_PA_BuildResearchStation> FindAvailable_BuildResearchStation_Actions(
+        private static List<PA_BuildResearchStation> FindAvailable_BuildResearchStation_Actions(
             PD_Game game
             )
         {
@@ -302,7 +302,7 @@ namespace Pandemic_AI_Framework
                 inactive_RS_Available == false
                 )
             {
-                return new List<PD_PA_BuildResearchStation>();
+                return new List<PA_BuildResearchStation>();
             }
 
             bool currentPlayer_Is_Operations_Expert =
@@ -310,11 +310,11 @@ namespace Pandemic_AI_Framework
 
             if (currentPlayer_Is_Operations_Expert)
             {
-                return new List<PD_PA_BuildResearchStation>();
+                return new List<PA_BuildResearchStation>();
             }
             else
             {
-                List<PD_PA_BuildResearchStation> buildResearchStation_Actions = new List<PD_PA_BuildResearchStation>();
+                List<PA_BuildResearchStation> buildResearchStation_Actions = new List<PA_BuildResearchStation>();
 
                 var cityCardsInPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
@@ -326,7 +326,7 @@ namespace Pandemic_AI_Framework
 
                 if (player_Has_CurrentLocation_CityCard == true)
                 {
-                    PD_PA_BuildResearchStation action = new PD_PA_BuildResearchStation(
+                    PA_BuildResearchStation action = new PA_BuildResearchStation(
                         currentPlayer,
                         cityCardsInPlayerHand.Find(x => x == currentPlayerLocation),
                         currentPlayerLocation
@@ -338,7 +338,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        private static List<PD_PA_BuildResearchStation_OperationsExpert> FindAvailable_BuildResearchStation_OperationsExpert_Actions(
+        private static List<PA_BuildResearchStation_OperationsExpert> FindAvailable_BuildResearchStation_OperationsExpert_Actions(
             PD_Game game
             )
         {
@@ -356,7 +356,7 @@ namespace Pandemic_AI_Framework
                 inactive_RS_Available == false
                 )
             {
-                return new List<PD_PA_BuildResearchStation_OperationsExpert>();
+                return new List<PA_BuildResearchStation_OperationsExpert>();
             }
 
             bool currentPlayer_Is_Operations_Expert =
@@ -364,11 +364,11 @@ namespace Pandemic_AI_Framework
 
             if (currentPlayer_Is_Operations_Expert)
             {
-                List<PD_PA_BuildResearchStation_OperationsExpert> buildResearchStation_Actions =
-                    new List<PD_PA_BuildResearchStation_OperationsExpert>();
+                List<PA_BuildResearchStation_OperationsExpert> buildResearchStation_Actions =
+                    new List<PA_BuildResearchStation_OperationsExpert>();
 
-                PD_PA_BuildResearchStation_OperationsExpert action =
-                    new PD_PA_BuildResearchStation_OperationsExpert(
+                PA_BuildResearchStation_OperationsExpert action =
+                    new PA_BuildResearchStation_OperationsExpert(
                         currentPlayer,
                         currentPlayerLocation
                         );
@@ -376,23 +376,23 @@ namespace Pandemic_AI_Framework
 
                 return buildResearchStation_Actions;
             }
-            return new List<PD_PA_BuildResearchStation_OperationsExpert>();
+            return new List<PA_BuildResearchStation_OperationsExpert>();
         }
 
-        private static List<PD_PA_MoveResearchStation> FindAvailable_MoveResearchStation_Actions(
+        private static List<PA_MoveResearchStation> FindAvailable_MoveResearchStation_Actions(
             PD_Game game
             )
         {
             // if there are available research stations, this action does not apply...
             if (game.GQ_NumInactiveResearchStations() > 0)
             {
-                return new List<PD_PA_MoveResearchStation>();
+                return new List<PA_MoveResearchStation>();
             }
 
             // if the current player's location is a research station, this action does not apply...
             if (game.GQ_Is_City_ResearchStation(game.GQ_CurrentPlayer_Location()))
             {
-                return new List<PD_PA_MoveResearchStation>();
+                return new List<PA_MoveResearchStation>();
             }
 
             int current_player = game.GQ_CurrentPlayer();
@@ -402,15 +402,15 @@ namespace Pandemic_AI_Framework
             // if the player does not have the city card of their current location, the action cannot be executed
             if (city_cards_in_current_player_hand.Any(x => x == current_player_location) == false)
             {
-                return new List<PD_PA_MoveResearchStation>();
+                return new List<PA_MoveResearchStation>();
             }
 
             var research_station_cities = game.GQ_ResearchStationCities();
 
-            List<PD_PA_MoveResearchStation> moveResearchStationActions = new List<PD_PA_MoveResearchStation>();
+            List<PA_MoveResearchStation> moveResearchStationActions = new List<PA_MoveResearchStation>();
             foreach (var rs_city in research_station_cities)
             {
-                PD_PA_MoveResearchStation action = new PD_PA_MoveResearchStation(
+                PA_MoveResearchStation action = new PA_MoveResearchStation(
                     current_player,
                     city_cards_in_current_player_hand.Find(x => x == current_player_location),
                     rs_city,
@@ -422,7 +422,7 @@ namespace Pandemic_AI_Framework
             return moveResearchStationActions;
         }
 
-        private static List<PD_PA_TreatDisease> FindAvailable_TreatDisease_Actions(
+        private static List<PA_TreatDisease> FindAvailable_TreatDisease_Actions(
             PD_Game game
             )
         {
@@ -431,25 +431,25 @@ namespace Pandemic_AI_Framework
             bool currentPlayerIsMedic = game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic;
             if (currentPlayerIsMedic)
             {
-                return new List<PD_PA_TreatDisease>();
+                return new List<PA_TreatDisease>();
             }
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
                 game.GQ_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
-            List<PD_PA_TreatDisease> availableTreatDiseaseActions = new List<PD_PA_TreatDisease>();
+            List<PA_TreatDisease> availableTreatDiseaseActions = new List<PA_TreatDisease>();
 
             foreach (var type in infectionCubesTypesOnCity)
             {
-                var action = new PD_PA_TreatDisease(currentPlayer, currentPlayerLocation, type);
+                var action = new PA_TreatDisease(currentPlayer, currentPlayerLocation, type);
                 availableTreatDiseaseActions.Add(action);
             }
 
             return availableTreatDiseaseActions;
         }
 
-        private static List<PD_PA_TreatDisease_Medic> FindAvailable_TreatDisease_Medic_Actions(
+        private static List<PA_TreatDisease_Medic> FindAvailable_TreatDisease_Medic_Actions(
             PD_Game game
             )
         {
@@ -458,31 +458,31 @@ namespace Pandemic_AI_Framework
             bool currentPlayerIsMedic = game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Medic;
             if (currentPlayerIsMedic == false)
             {
-                return new List<PD_PA_TreatDisease_Medic>();
+                return new List<PA_TreatDisease_Medic>();
             }
 
             var currentPlayerLocation = game.GQ_PlayerLocation(currentPlayer);
             List<int> infectionCubesTypesOnCity =
                 game.GQ_InfectionCubeTypes_OnCity(currentPlayerLocation);
 
-            List<PD_PA_TreatDisease_Medic> availableTreatDiseaseMedicActions = new List<PD_PA_TreatDisease_Medic>();
+            List<PA_TreatDisease_Medic> availableTreatDiseaseMedicActions = new List<PA_TreatDisease_Medic>();
 
             foreach (var type in infectionCubesTypesOnCity)
             {
-                var action = new PD_PA_TreatDisease_Medic(currentPlayer, currentPlayerLocation, type);
+                var action = new PA_TreatDisease_Medic(currentPlayer, currentPlayerLocation, type);
                 availableTreatDiseaseMedicActions.Add(action);
             }
 
             return availableTreatDiseaseMedicActions;
         }
 
-        private static List<PD_PA_ShareKnowledge_GiveCard> FindAvailable_ShareKnowledge_Give_Actions(
+        private static List<PA_ShareKnowledge_GiveCard> FindAvailable_ShareKnowledge_Give_Actions(
             PD_Game game
             )
         {
             if (game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Researcher)
             {
-                return new List<PD_PA_ShareKnowledge_GiveCard>();
+                return new List<PA_ShareKnowledge_GiveCard>();
             }
 
             int current_player = game.GQ_CurrentPlayer();
@@ -492,11 +492,11 @@ namespace Pandemic_AI_Framework
 
             if (city_cards_in_player_hand.Contains(city_card_to_give) == false)
             {
-                return new List<PD_PA_ShareKnowledge_GiveCard>();
+                return new List<PA_ShareKnowledge_GiveCard>();
             }
 
-            List<PD_PA_ShareKnowledge_GiveCard> available_ShareKnowledge_GiveCard_Actions =
-                new List<PD_PA_ShareKnowledge_GiveCard>();
+            List<PA_ShareKnowledge_GiveCard> available_ShareKnowledge_GiveCard_Actions =
+                new List<PA_ShareKnowledge_GiveCard>();
 
             var other_players_in_same_location = game.players.FindAll(
                 x =>
@@ -507,7 +507,7 @@ namespace Pandemic_AI_Framework
             foreach (var other_player in other_players_in_same_location)
             {
                 available_ShareKnowledge_GiveCard_Actions.Add(
-                    new PD_PA_ShareKnowledge_GiveCard(
+                    new PA_ShareKnowledge_GiveCard(
                         current_player,
                         other_player,
                         city_card_to_give
@@ -518,7 +518,7 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_GiveCard_Actions;
         }
 
-        private static List<PD_PA_ShareKnowledge_TakeCard> FindAvailable_ShareKnowledge_Take_Actions(
+        private static List<PA_ShareKnowledge_TakeCard> FindAvailable_ShareKnowledge_Take_Actions(
             PD_Game game
             )
         {
@@ -535,8 +535,8 @@ namespace Pandemic_AI_Framework
                     game.GQ_Player_Role(x) != PD_Player_Roles.Researcher
                 );
 
-            List<PD_PA_ShareKnowledge_TakeCard> availableShareKnowledge_TakeCard_Actions =
-                new List<PD_PA_ShareKnowledge_TakeCard>();
+            List<PA_ShareKnowledge_TakeCard> availableShareKnowledge_TakeCard_Actions =
+                new List<PA_ShareKnowledge_TakeCard>();
 
             foreach (var other_player in other_players_same_location_not_researcher)
             {
@@ -544,7 +544,7 @@ namespace Pandemic_AI_Framework
                 if (city_cards_in_other_player_hand.Contains(city_card_to_take))
                 {
                     availableShareKnowledge_TakeCard_Actions.Add(
-                        new PD_PA_ShareKnowledge_TakeCard(
+                        new PA_ShareKnowledge_TakeCard(
                             current_player,
                             other_player,
                             city_card_to_take
@@ -557,7 +557,7 @@ namespace Pandemic_AI_Framework
             return availableShareKnowledge_TakeCard_Actions;
         }
 
-        private static List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>
+        private static List<PA_ShareKnowledge_GiveCard_ResearcherGives>
             FindAvailable_ShareKnowledge_Give_ResearcherGives_Actions(
             PD_Game game
             )
@@ -565,7 +565,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole != PD_Player_Roles.Researcher)
             {
-                return new List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>();
+                return new List<PA_ShareKnowledge_GiveCard_ResearcherGives>();
             }
 
             int currentPlayer = game.GQ_CurrentPlayer();
@@ -578,8 +578,8 @@ namespace Pandemic_AI_Framework
                 game.GQ_PlayerLocation(x) == currentPlayerLocation
                 );
 
-            List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives> available_actions =
-                new List<PD_PA_ShareKnowledge_GiveCard_ResearcherGives>();
+            List<PA_ShareKnowledge_GiveCard_ResearcherGives> available_actions =
+                new List<PA_ShareKnowledge_GiveCard_ResearcherGives>();
 
             var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInPlayerHand(currentPlayer);
 
@@ -590,7 +590,7 @@ namespace Pandemic_AI_Framework
                 {
                     foreach (var cityCardInCurrentPlayerHand in cityCardsInCurrentPlayerHand)
                     {
-                        PD_PA_ShareKnowledge_GiveCard_ResearcherGives giveCommand = new PD_PA_ShareKnowledge_GiveCard_ResearcherGives(
+                        PA_ShareKnowledge_GiveCard_ResearcherGives giveCommand = new PA_ShareKnowledge_GiveCard_ResearcherGives(
                             currentPlayer,
                             otherPlayer,
                             cityCardInCurrentPlayerHand
@@ -603,7 +603,7 @@ namespace Pandemic_AI_Framework
             return available_actions;
         }
 
-        private static List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>
+        private static List<PA_ShareKnowledge_TakeCard_FromResearcher>
             FindAvailable_ShareKnowledge_Take_FromResearcher_Actions(
             PD_Game game
             )
@@ -613,14 +613,14 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole = game.GQ_CurrentPlayer_Role();
             if (currentPlayerRole == PD_Player_Roles.Researcher)
             {
-                return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
+                return new List<PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
             if (game.players.Any(
                 x => game.GQ_Player_Role(x) == PD_Player_Roles.Researcher
                 ) == false)
             {
-                return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
+                return new List<PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
             var researcher = game.players.Find(
@@ -633,17 +633,17 @@ namespace Pandemic_AI_Framework
 
             if (researcherLocation != currentPlayerLocation)
             {
-                return new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
+                return new List<PA_ShareKnowledge_TakeCard_FromResearcher>();
             }
 
-            List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>
+            List<PA_ShareKnowledge_TakeCard_FromResearcher>
                 available_ShareKnowledge_TakeCard_FromResearcher_Actions =
-                new List<PD_PA_ShareKnowledge_TakeCard_FromResearcher>();
+                new List<PA_ShareKnowledge_TakeCard_FromResearcher>();
 
             List<int> cityCardsInResearchersHand = game.GQ_CityCardsInPlayerHand(researcher);
             foreach (var cityCardToTake in cityCardsInResearchersHand)
             {
-                PD_PA_ShareKnowledge_TakeCard_FromResearcher takeAction = new PD_PA_ShareKnowledge_TakeCard_FromResearcher(
+                PA_ShareKnowledge_TakeCard_FromResearcher takeAction = new PA_ShareKnowledge_TakeCard_FromResearcher(
                     currentPlayer,
                     researcher,
                     cityCardToTake
@@ -654,14 +654,14 @@ namespace Pandemic_AI_Framework
             return available_ShareKnowledge_TakeCard_FromResearcher_Actions;
         }
 
-        private static List<PD_PA_DiscoverCure>
+        private static List<PA_DiscoverCure>
             FindAvailable_DiscoverCure_Actions(
             PD_Game game
             )
         {
             if (game.GQ_CurrentPlayer_Role() == PD_Player_Roles.Scientist)
             {
-                return new List<PD_PA_DiscoverCure>();
+                return new List<PA_DiscoverCure>();
             }
 
             int currentPlayer = game.GQ_CurrentPlayer();
@@ -669,21 +669,21 @@ namespace Pandemic_AI_Framework
 
             if (game.GQ_Is_City_ResearchStation(currentPlayerLocation) == false)
             {
-                return new List<PD_PA_DiscoverCure>();
+                return new List<PA_DiscoverCure>();
             }
 
             List<List<int>> usableDiscoverCureCardGroups =
                 game.GQ_Find_UsableDiscoverCureCardGroups(currentPlayer);
             if (usableDiscoverCureCardGroups.Count == 0)
             {
-                return new List<PD_PA_DiscoverCure>();
+                return new List<PA_DiscoverCure>();
             }
 
-            List<PD_PA_DiscoverCure> availableDiscoverCureActions = new List<PD_PA_DiscoverCure>();
+            List<PA_DiscoverCure> availableDiscoverCureActions = new List<PA_DiscoverCure>();
             foreach (var usableDiscoverCureCardGroup in usableDiscoverCureCardGroups)
             {
                 int group_type = game.map.infection_type__per__city[usableDiscoverCureCardGroup[0]];
-                var action = new PD_PA_DiscoverCure(
+                var action = new PA_DiscoverCure(
                     currentPlayer,
                     currentPlayerLocation,
                     usableDiscoverCureCardGroup,
@@ -695,14 +695,14 @@ namespace Pandemic_AI_Framework
             return availableDiscoverCureActions;
         }
 
-        private static List<PD_PA_DiscoverCure_Scientist>
+        private static List<PA_DiscoverCure_Scientist>
             FindAvailable_DiscoverCure_Scientist_Actions(
             PD_Game game
             )
         {
             if (game.GQ_CurrentPlayer_Role() != PD_Player_Roles.Scientist)
             {
-                return new List<PD_PA_DiscoverCure_Scientist>();
+                return new List<PA_DiscoverCure_Scientist>();
             }
 
             int currentPlayer = game.GQ_CurrentPlayer();
@@ -710,21 +710,21 @@ namespace Pandemic_AI_Framework
 
             if (game.GQ_Is_City_ResearchStation(currentPlayerLocation) == false)
             {
-                return new List<PD_PA_DiscoverCure_Scientist>();
+                return new List<PA_DiscoverCure_Scientist>();
             }
 
             var usableDiscoverCureCardGroups =
                 game.GQ_Find_UsableDiscoverCureCardGroups(currentPlayer);
             if (usableDiscoverCureCardGroups.Count == 0)
             {
-                return new List<PD_PA_DiscoverCure_Scientist>();
+                return new List<PA_DiscoverCure_Scientist>();
             }
 
-            List<PD_PA_DiscoverCure_Scientist> availableDiscoverCureActions = new List<PD_PA_DiscoverCure_Scientist>();
+            List<PA_DiscoverCure_Scientist> availableDiscoverCureActions = new List<PA_DiscoverCure_Scientist>();
             foreach (var usableDiscoverCureCardGroup in usableDiscoverCureCardGroups)
             {
                 int group_type = game.map.infection_type__per__city[usableDiscoverCureCardGroup[0]];
-                var action = new PD_PA_DiscoverCure_Scientist(
+                var action = new PA_DiscoverCure_Scientist(
                     currentPlayer,
                     currentPlayerLocation,
                     usableDiscoverCureCardGroup,
@@ -736,13 +736,13 @@ namespace Pandemic_AI_Framework
             return availableDiscoverCureActions;
         }
 
-        private static List<PD_PA_Discard_DuringMainPlayerActions>
+        private static List<PA_Discard_DuringMainPlayerActions>
             GAQ_FindAvailable_DiscardDuringMainPlayerActions_Actions(
             PD_Game game
             )
         {
-            List<PD_PA_Discard_DuringMainPlayerActions> discardDuringMainPlayerActions_Actions =
-                new List<PD_PA_Discard_DuringMainPlayerActions>();
+            List<PA_Discard_DuringMainPlayerActions> discardDuringMainPlayerActions_Actions =
+                new List<PA_Discard_DuringMainPlayerActions>();
 
             if (game.GQ_IsInState_DiscardDuringMainPlayerActions())
             {
@@ -753,7 +753,7 @@ namespace Pandemic_AI_Framework
                     {
                         foreach (var cardToDiscard in cityCardsInPlayerHand)
                         {
-                            PD_PA_Discard_DuringMainPlayerActions discardAction = new PD_PA_Discard_DuringMainPlayerActions(
+                            PA_Discard_DuringMainPlayerActions discardAction = new PA_Discard_DuringMainPlayerActions(
                                 player,
                                 cardToDiscard
                                 );
@@ -765,12 +765,12 @@ namespace Pandemic_AI_Framework
             return discardDuringMainPlayerActions_Actions;
         }
 
-        private static List<PD_PA_Discard_AfterDrawing>
+        private static List<PA_Discard_AfterDrawing>
             GAQ_FindAvailable_DiscardAfterDrawing_Actions(
             PD_Game game
             )
         {
-            List<PD_PA_Discard_AfterDrawing> discardAfterDrawing_Actions = new List<PD_PA_Discard_AfterDrawing>();
+            List<PA_Discard_AfterDrawing> discardAfterDrawing_Actions = new List<PA_Discard_AfterDrawing>();
 
             if (game.GQ_IsInState_DiscardAfterDrawing())
             {
@@ -781,7 +781,7 @@ namespace Pandemic_AI_Framework
                 {
                     foreach (var cardToDiscard in cityCardsInCurrentPlayerHand)
                     {
-                        PD_PA_Discard_AfterDrawing discardAction = new PD_PA_Discard_AfterDrawing(
+                        PA_Discard_AfterDrawing discardAction = new PA_Discard_AfterDrawing(
                             currentPlayer,
                             cardToDiscard
                             );

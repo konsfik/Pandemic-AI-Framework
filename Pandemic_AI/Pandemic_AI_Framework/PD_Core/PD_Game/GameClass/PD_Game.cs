@@ -661,7 +661,7 @@ namespace Pandemic_AI_Framework
                             type
                             );
                         // create the supposed (auto) action
-                        PD_PA_TreatDisease_Medic_Auto actionToStore = new PD_PA_TreatDisease_Medic_Auto(
+                        PA_TreatDisease_Medic_Auto actionToStore = new PA_TreatDisease_Medic_Auto(
                             this.GQ_CurrentPlayer(),
                             city,
                             type

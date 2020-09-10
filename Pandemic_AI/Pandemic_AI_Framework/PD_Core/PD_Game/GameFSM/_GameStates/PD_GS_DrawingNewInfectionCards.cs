@@ -8,11 +8,6 @@ namespace Pandemic_AI_Framework
     public class PD_GS_DrawingNewInfectionCards : PD_GameStateBase, ICustomDeepCopyable<PD_GS_DrawingNewInfectionCards>
     {
 
-        public PD_GS_DrawingNewInfectionCards()
-        {
-
-        }
-
         public PD_GS_DrawingNewInfectionCards GetCustomDeepCopy()
         {
             return new PD_GS_DrawingNewInfectionCards();
@@ -23,7 +18,7 @@ namespace Pandemic_AI_Framework
             PD_Game game,
             PD_GameAction_Base command)
         {
-            if (command.GetType() == typeof(PD_DrawNewInfectionCards))
+            if (command.GetType() == typeof(PA_DrawNewInfectionCards))
             {
                 command.Execute(
                     randomness_provider,

@@ -73,9 +73,8 @@ namespace Pandemic_AI_Framework
                 UsedCard
                 );
 
-            game.GO_MovePawnFromCityToCity(
+            game.GO_MovePawn_ToCity(
                 Player,
-                FromCity,
                 ToCity
                 );
 

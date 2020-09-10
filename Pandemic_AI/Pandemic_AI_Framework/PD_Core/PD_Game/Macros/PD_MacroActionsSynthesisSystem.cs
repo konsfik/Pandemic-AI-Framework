@@ -1001,7 +1001,7 @@ namespace Pandemic_AI_Framework
                 foreach (var curedDiseaseType in curedDiseaseTypes)
                 {
                     int num_InfectionCubes_Of_CuredDiseaseType_On_Destination =
-                        game.GQ_InfectionCubes_OfType_OnCity(destination, curedDiseaseType);
+                        game.GQ_Num_InfectionCubes_OfType_OnCity(destination, curedDiseaseType);
 
                     if (num_InfectionCubes_Of_CuredDiseaseType_On_Destination > 0)
                     {

@@ -95,31 +95,32 @@ namespace Pandemic_AI_Framework
         }
 
         /// <summary>
-        /// The act of infecting a city.
+        /// The process of infecting a city
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="cityToInfect"></param>
-        /// <param name="num_CubesToPlace"></param>
+        /// <param name="target_city"></param>
+        /// <param name="infection_size"></param>
         /// <param name="existingReport"></param>
+        /// <param name="infectionDuringGameSetup"></param>
         /// <returns></returns>
         public static PD_InfectionReport GO_InfectCity(
             this PD_Game game,
-            int cityToInfect,
-            int num_CubesToPlace,
+            int target_city,
+            int infection_size,
             PD_InfectionReport existingReport,
             bool infectionDuringGameSetup
             )
         {
-            int curent_infection_type = existingReport.InfectionType;
+            int infection_type = existingReport.InfectionType;
 
             if (infectionDuringGameSetup == false)
             {
 
                 int medic_location = game.GQ_Medic_Location();
 
-                bool currentDiseaseIsCured = game.GQ_Is_DiseaseCured_OR_Eradicated(curent_infection_type);
+                bool currentDiseaseIsCured = game.GQ_Is_DiseaseCured_OR_Eradicated(infection_type);
 
-                bool medicIsAtInfectionLocation = medic_location == cityToInfect;
+                bool medicIsAtInfectionLocation = medic_location == target_city;
 
                 if (
                     currentDiseaseIsCured
@@ -127,43 +128,38 @@ namespace Pandemic_AI_Framework
                     medicIsAtInfectionLocation
                     )
                 {
-                    existingReport.AddInfectionPreventedByMedic(cityToInfect);
+                    existingReport.AddInfectionPreventedByMedic(target_city);
                     return existingReport;
                 }
             }
 
-            existingReport.AddInfectedCity(cityToInfect);
+            existingReport.AddInfectedCity(target_city);
 
-            int occupied_infection_positions =
-                game.GQ_InfectionCubes_OfType_OnCity(
-                    cityToInfect,
-                    curent_infection_type
-                    );
+            int occupied_infection_positions_on_city =
+                game.GQ_Num_InfectionCubes_OfType_OnCity(target_city, infection_type);
 
-            int free_infection_positions =
-                3 - occupied_infection_positions;
+            int remaining_infection_positions_on_city =
+                3 - occupied_infection_positions_on_city;
 
-            int available_cubes_of_type =
-                game.Num_InactiveInfectionCubes_OfType(
-                    curent_infection_type
-                    );
+            int available_infection_cubes_this_type =
+                game.GQ_Num_AvailableInfectionCubes_OfType(infection_type);
 
-            bool enoughInactiveCubes =
-                available_cubes_of_type >= num_CubesToPlace;
+            bool enough_available_infection_cubes =
+                available_infection_cubes_this_type >= infection_size;
 
-            bool cityCausesOutbreak =
-                free_infection_positions < num_CubesToPlace;
+            bool city_causes_outbreak =
+                remaining_infection_positions_on_city < infection_size;
 
             // CASE 1: CITY DOES NOT CAUSE AN OUTBREAK
-            if (cityCausesOutbreak == false)
+            if (city_causes_outbreak == false)
             {
                 // NOT ENOUGH CUBES FOR THIS INFECTION... GAME LOST
-                if (enoughInactiveCubes == false)
+                if (enough_available_infection_cubes == false)
                 {
                     // place the remaining inactive cubes, either way...
-                    for (int i = 0; i < available_cubes_of_type; i++)
+                    for (int i = 0; i < available_infection_cubes_this_type; i++)
                     {
-                        GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
+                        GO_Place_InfectionCube_OnCity(game, target_city, infection_type);
                     }
                     // game lost...
                     existingReport.SetFailureReason(InfectionFailureReasons.notEnoughDiseaseCubes);
@@ -171,26 +167,26 @@ namespace Pandemic_AI_Framework
                 }
 
                 // ENOUGH CUBES TO COMPLETE THIS INFECTION, JUST PROCEED!
-                for (int i = 0; i < num_CubesToPlace; i++)
+                for (int i = 0; i < infection_size; i++)
                 {
-                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
+                    GO_Place_InfectionCube_OnCity(game, target_city, infection_type);
                 }
-                existingReport.AddUsedCubes(num_CubesToPlace);
+                existingReport.AddUsedCubes(infection_size);
                 return existingReport;
 
             }
 
             // CASE 2: CITY DOES CAUSE AN OUTBREAK!!!
-            bool enoughCubesToFillUpCity = available_cubes_of_type >= free_infection_positions;
+            bool enoughCubesToFillUpCity = available_infection_cubes_this_type >= remaining_infection_positions_on_city;
 
-            existingReport.AddCityThatCausedOutbreak(cityToInfect);
+            existingReport.AddCityThatCausedOutbreak(target_city);
 
             if (enoughCubesToFillUpCity == false)
             {
                 // place the remaining inactive cubes, either way...
-                for (int i = 0; i < available_cubes_of_type; i++)
+                for (int i = 0; i < available_infection_cubes_this_type; i++)
                 {
-                    GO_PA_PlaceInfectionCubeOnCity(game, cityToInfect, curent_infection_type);
+                    GO_Place_InfectionCube_OnCity(game, target_city, infection_type);
                 }
                 // game lost
                 existingReport.SetFailureReason(InfectionFailureReasons.notEnoughDiseaseCubes);
@@ -198,15 +194,15 @@ namespace Pandemic_AI_Framework
             }
 
             // fill up this city
-            for (int i = 0; i < free_infection_positions; i++)
+            for (int i = 0; i < remaining_infection_positions_on_city; i++)
             {
-                GO_PA_PlaceInfectionCubeOnCity(
+                GO_Place_InfectionCube_OnCity(
                     game,
-                    cityToInfect,
+                    target_city,
                     existingReport.InfectionType
                     );
             }
-            existingReport.AddUsedCubes(free_infection_positions);
+            existingReport.AddUsedCubes(remaining_infection_positions_on_city);
 
             game.game_state_counter.IncreaseOutbreaksCounter();
             if (game.GQ_SS_DeadlyOutbreaks() == true)
@@ -215,7 +211,7 @@ namespace Pandemic_AI_Framework
                 return existingReport;
             }
 
-            var neighbors = game.map.neighbors__per__city[cityToInfect]; // cityToInfect.AdjacentCities;
+            var neighbors = game.map.neighbors__per__city[target_city]; // cityToInfect.AdjacentCities;
 
             var neighborsThatHaveNotCausedAnOutbreak = neighbors.FindAll(
                 x =>
@@ -241,17 +237,17 @@ namespace Pandemic_AI_Framework
 
         }
 
-        public static void GO_PA_PlaceInfectionCubeOnCity(
+        public static void GO_Place_InfectionCube_OnCity(
             this PD_Game game,
             int city,
-            int infectionCubeType
+            int infection_type
             )
         {
-            game.map_elements.inactive_infection_cubes__per__type[infectionCubeType] -= 1;
-            game.map_elements.infections__per__type__per__city[city][infectionCubeType] += 1;
+            game.map_elements.inactive_infection_cubes__per__type[infection_type] -= 1;
+            game.map_elements.infections__per__type__per__city[city][infection_type] += 1;
         }
 
-        public static void GO_PlaceResearchStationOnCity(
+        public static void GO_Place_ResearchStation_OnCity(
             this PD_Game game,
             int city
             )
@@ -260,10 +256,9 @@ namespace Pandemic_AI_Framework
             game.map_elements.research_stations__per__city[city] = true;
         }
 
-        public static void GO_MovePawnFromCityToCity(
+        public static void GO_MovePawn_ToCity(
             this PD_Game game,
             int player,
-            int initialCity,
             int targetCity
             )
         {

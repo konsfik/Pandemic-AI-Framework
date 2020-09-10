@@ -83,7 +83,7 @@ namespace Pandemic_AI_Framework
             return false;
         }
 
-        public static int Num_InactiveInfectionCubes_OfType(
+        public static int GQ_Num_AvailableInfectionCubes_OfType(
             this PD_Game game,
             int type
             )
@@ -575,22 +575,12 @@ namespace Pandemic_AI_Framework
             return uncuredDiseaseTypes;
         }
 
-        public static int GQ_InfectionCubes_OfType_OnCity(
+        public static int GQ_Num_InfectionCubes_OfType_OnCity(
             this PD_Game game,
             int city,
             int type
             )
         {
-            return game.map_elements.infections__per__type__per__city[city][type];
-        }
-
-        public static int GQ_Find_InfectionCubes_OfType_OnCity(
-            this PD_Game game,
-            int city,
-            int type
-            )
-        {
-
             return game.map_elements.infections__per__type__per__city[city][type];
         }
 

@@ -505,7 +505,7 @@ namespace Pandemic_AI_Framework
 
             // 1.3. place research station on atlanta
             int atlanta = this.GQ_Find_CityByName("Atlanta");
-            PD_Game_Operators.GO_PlaceResearchStationOnCity(
+            PD_Game_Operators.GO_Place_ResearchStation_OnCity(
                 this, atlanta);
 
             // 2. Place outbreaks and cure markers

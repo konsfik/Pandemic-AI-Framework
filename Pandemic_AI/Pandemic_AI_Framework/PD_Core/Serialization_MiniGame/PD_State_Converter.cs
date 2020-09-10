@@ -157,7 +157,7 @@ namespace Pandemic_AI_Framework
                 for (int t = 0; t < 4; t++)
                 {
                     int num_cubes__this_type__that_city
-                        = game.GQ_InfectionCubes_OfType_OnCity(city, t);
+                        = game.GQ_Num_InfectionCubes_OfType_OnCity(city, t);
                     mini_game.map_elements___infection_cubes__per__type__per__city[city].Add(
                         t,
                         num_cubes__this_type__that_city
@@ -177,7 +177,7 @@ namespace Pandemic_AI_Framework
             for (int t = 0; t < 4; t++)
             {
                 mini_game.map_elements___available_infection_cubes__per__type.Add(
-                    t, game.Num_InactiveInfectionCubes_OfType(t)
+                    t, game.GQ_Num_AvailableInfectionCubes_OfType(t)
                     );
             }
 

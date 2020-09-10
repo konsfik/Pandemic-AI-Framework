@@ -72,7 +72,7 @@ namespace Pandemic_AI_Framework
                 throw new System.Exception("wrong player role!");
             }
 #endif
-            game.GO_PlaceResearchStationOnCity(Build_RS_On);
+            game.GO_Place_ResearchStation_OnCity(Build_RS_On);
         }
 
         public override string GetDescription()

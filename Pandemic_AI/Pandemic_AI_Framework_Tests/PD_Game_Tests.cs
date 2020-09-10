@@ -189,9 +189,9 @@ namespace Pandemic_AI_Framework.Tests
                 for (int t = 0; t < 4; t++)
                 {
                     if (
-                        game_1.GQ_InfectionCubes_OfType_OnCity(city, t)
+                        game_1.GQ_Num_InfectionCubes_OfType_OnCity(city, t)
                         !=
-                        game_2.GQ_InfectionCubes_OfType_OnCity(city, t)
+                        game_2.GQ_Num_InfectionCubes_OfType_OnCity(city, t)
                         )
                     {
                         return false;

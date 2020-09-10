@@ -81,7 +81,7 @@ namespace Pandemic_AI_Framework
                 UsedCard
                 );
 
-            game.GO_PlaceResearchStationOnCity(
+            game.GO_Place_ResearchStation_OnCity(
                 Build_RS_On
                 );
         }

@@ -14,8 +14,6 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public int FromCity { get; protected set; }
-
         public int ToCity { get; protected set; }
 
         #region constructors
@@ -28,12 +26,10 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PA_ShuttleFlight(
             int player,
-            int initialLocation,
             int targetLocation
             )
         {
             this.Player = player;
-            this.FromCity = initialLocation;
             this.ToCity = targetLocation;
         }
 
@@ -46,7 +42,6 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.FromCity = actionToCopy.FromCity;
             this.ToCity = actionToCopy.ToCity;
         }
 
@@ -70,9 +65,9 @@ namespace Pandemic_AI_Framework
             {
                 throw new System.Exception("wrong player...");
             }
-            else if (game.GQ_Is_City_ResearchStation(FromCity) == false)
+            else if (game.GQ_Is_City_ResearchStation(game.GQ_CurrentPlayer_Location()) == false)
             {
-                throw new System.Exception("initial location is NOT a research station!");
+                throw new System.Exception("current player location is NOT a research station!");
             }
             else if (game.GQ_Is_City_ResearchStation(ToCity) == false)
             {
@@ -92,10 +87,6 @@ namespace Pandemic_AI_Framework
         public bool Equals(PA_ShuttleFlight other)
         {
             if (this.Player != other.Player)
-            {
-                return false;
-            }
-            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
@@ -138,7 +129,6 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + FromCity;
             hash = hash * 31 + ToCity;
 
             return hash;
@@ -149,9 +139,8 @@ namespace Pandemic_AI_Framework
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: SHUTTLE_FLIGHT {1} -> {2}",
+                "{0}: SHUTTLE_FLIGHT to City_{1}",
                 Player.ToString(),
-                FromCity.ToString(),
                 ToCity.ToString()
                 );
 

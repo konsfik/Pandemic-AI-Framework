@@ -112,7 +112,6 @@ namespace Pandemic_AI_Framework
                 drive_ferry_actions.Add(
                     new PA_DriveFerry(
                         current_player,
-                        current_player_location,
                         neighbor_location
                         )
                     );
@@ -137,7 +136,6 @@ namespace Pandemic_AI_Framework
                 {
                     var action = new PA_DirectFlight(
                         current_player,
-                        current_player_location,
                         cityCard,
                         cityCard);
                     directFlightActions.Add(action);
@@ -181,7 +179,6 @@ namespace Pandemic_AI_Framework
                 {
                     var action = new PA_CharterFlight(
                         currentPlayer,
-                        current_player_location,
                         otherCity,
                         cityCardtoDiscard);
                     charterFlightActions.Add(action);
@@ -221,7 +218,6 @@ namespace Pandemic_AI_Framework
             {
                 var action = new PA_ShuttleFlight(
                     currentPlayer,
-                    current_player_location,
                     city
                     );
                 shuttleFlightActions.Add(action);
@@ -271,7 +267,6 @@ namespace Pandemic_AI_Framework
                 {
                     PA_OperationsExpert_Flight action = new PA_OperationsExpert_Flight(
                         currentPlayer,
-                        currentPlayerLocation,
                         targetLocation,
                         used_card
                         );

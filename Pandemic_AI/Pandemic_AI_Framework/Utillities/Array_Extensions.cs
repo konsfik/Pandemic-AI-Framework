@@ -57,7 +57,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int j = 0; j < originalArray.Width(); j++)
                 {
-                    newArray[i, j] = originalArray[i, j] * originalArray[i, j];
+                    newArray[i, j] *= newArray[i, j];
                 }
             }
             return newArray;
@@ -70,7 +70,7 @@ namespace Pandemic_AI_Framework
             {
                 for (int j = 0; j < originalArray.Width(); j++)
                 {
-                    newArray[i, j] = originalArray[i, j] * originalArray[i, j];
+                    newArray[i, j] *= newArray[i, j];
                 }
             }
             return newArray;

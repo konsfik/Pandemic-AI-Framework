@@ -16,18 +16,14 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public int FromCity { get; protected set; }
-
         public int ToCity { get; protected set; }
 
         public PA_DriveFerry(
             int player,
-            int initialLocation,
             int targetLocation
             )
         {
             this.Player = player;
-            this.FromCity = initialLocation;
             this.ToCity = targetLocation;
         }
 
@@ -37,7 +33,6 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.FromCity = actionToCopy.FromCity;
             this.ToCity = actionToCopy.ToCity;
         }
 
@@ -51,6 +46,13 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.map.neighbors__per__city[game.GQ_CurrentPlayer_Location()].Contains(ToCity) == false)
+            {
+                throw new System.Exception("cannot go there!");
+            }
+#endif
+
             game.GO_MovePawn_ToCity(
                 Player,
                 ToCity
@@ -62,9 +64,8 @@ namespace Pandemic_AI_Framework
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: DRIVE_FERRY: {1} -> {2}",
+                "{0}: DRIVE_FERRY: to City_{1}",
                 Player.ToString(),
-                FromCity.ToString(),
                 ToCity.ToString()
                 );
 
@@ -75,10 +76,6 @@ namespace Pandemic_AI_Framework
         public bool Equals(PA_DriveFerry other)
         {
             if (this.Player != other.Player)
-            {
-                return false;
-            }
-            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
@@ -120,7 +117,6 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + FromCity;
             hash = hash * 31 + ToCity;
 
             return hash;

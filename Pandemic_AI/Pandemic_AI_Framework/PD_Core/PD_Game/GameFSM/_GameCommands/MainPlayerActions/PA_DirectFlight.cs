@@ -18,8 +18,6 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public int FromCity { get; protected set; }
-
         public int ToCity { get; protected set; }
 
         public int UsedCard { get; private set; }
@@ -28,13 +26,11 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PA_DirectFlight(
             int player,
-            int fromCity,
             int toCity,
             int usedCard
             )
         {
             this.Player = player;
-            this.FromCity = fromCity;
             this.ToCity = toCity;
             this.UsedCard = usedCard;
         }
@@ -45,7 +41,6 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.FromCity = actionToCopy.FromCity;
             this.ToCity = actionToCopy.ToCity;
             this.UsedCard = actionToCopy.UsedCard;
         }
@@ -60,6 +55,13 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            if (game.GQ_CityCardsInCurrentPlayerHand().Contains(UsedCard) == false)
+            {
+                throw new System.Exception("player does not own this card");
+            }
+#endif
+
             game.GO_PlayerDiscardsPlayerCard(
                 Player,
                 UsedCard
@@ -76,10 +78,9 @@ namespace Pandemic_AI_Framework
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: DIRECT_FLIGHT | card: {1} | {2} -> {3}",
+                "{0}: DIRECT_FLIGHT | card: {1} | to City_{2}",
                 Player.ToString(),
                 UsedCard.ToString(),
-                FromCity.ToString(),
                 ToCity.ToString()
                 );
 
@@ -90,10 +91,6 @@ namespace Pandemic_AI_Framework
         public bool Equals(PA_DirectFlight other)
         {
             if (this.Player != other.Player)
-            {
-                return false;
-            }
-            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
@@ -140,7 +137,6 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + FromCity;
             hash = hash * 31 + ToCity;
             hash = hash * 31 + UsedCard;
 

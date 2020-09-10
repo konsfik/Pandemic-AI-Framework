@@ -39,10 +39,7 @@ namespace Pandemic_AI_Framework
                     FindAll_SimpleWalk_Sequences(
                         game,
                         pathFinder,
-                        researchStationCities,
-
-                        currentPlayer,
-                        currentPlayerLocation
+                        researchStationCities
                         );
                 List<List<PD_Action>> all_DirectFlightWalk_Sequences =
                     FindAll_DirectFlightWalk_Sequences(
@@ -2546,25 +2543,24 @@ namespace Pandemic_AI_Framework
         public static List<List<PD_Action>> FindAll_SimpleWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
-            List<int> researchStationCities,
-            int currentPlayer,
-            int currentPlayerLocation
+            List<int> research_station_cities
             )
         {
+            int current_player_location = game.GQ_CurrentPlayer_Location();
+
             List<List<PD_Action>> simpleWalk_Sequences =
                 new List<List<PD_Action>>();
 
-            foreach (var city in game.map.cities)
+            foreach (var target_location in game.map.cities)
             {
-                if (city != currentPlayerLocation)
+                if (target_location != current_player_location)
                 {
                     List<PD_Action> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
                         game,
                         pathFinder,
-                        researchStationCities,
-                        currentPlayer,
-                        currentPlayerLocation,
-                        city
+                        research_station_cities,
+                        current_player_location,
+                        target_location
                         );
                     simpleWalk_Sequences.Add(simpleWalkCommandSequence);
                 }
@@ -2623,7 +2619,6 @@ namespace Pandemic_AI_Framework
 
                 PA_DirectFlight directFlightAction = new PA_DirectFlight(
                     currentPlayer,
-                    currentPlayerLocation,
                     directFlightCity,
                     cityCard
                     );
@@ -2651,15 +2646,16 @@ namespace Pandemic_AI_Framework
                     }
 
                     List<PD_Action> actionSequence = new List<PD_Action>();
-                    actionSequence.Add(directFlightAction);
+                        actionSequence.Add(directFlightAction);
+
                     List<PD_Action> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
                         game,
                         pathFinder,
                         researchStationCities,
-                        currentPlayer,
                         directFlightCity,
                         finalDestination
                         );
+
                     actionSequence.AddRange(
                         simpleWalkCommandSequence
                         );
@@ -2717,7 +2713,6 @@ namespace Pandemic_AI_Framework
                     game,
                     pathFinder,
                     researchStationCities,
-                    currentPlayer,
                     currentPlayerLocation,
                     charterCity
                     );
@@ -2732,7 +2727,6 @@ namespace Pandemic_AI_Framework
                 {
                     PA_CharterFlight charterFlightAction = new PA_CharterFlight(
                         currentPlayer,
-                        charterCity,
                         finalDestination,
                         city_card
                         );
@@ -2808,7 +2802,6 @@ namespace Pandemic_AI_Framework
                         {
                             PA_OperationsExpert_Flight action = new PA_OperationsExpert_Flight(
                                 currentPlayer,
-                                currentPlayerLocation,
                                 finalDestination,
                                 cityCardToUse
                                 );
@@ -2835,7 +2828,6 @@ namespace Pandemic_AI_Framework
                     game,
                     pathFinder,
                     researchStationCities,
-                    currentPlayer,
                     currentPlayerLocation,
                     nearest_RS_City
                     );
@@ -2848,8 +2840,7 @@ namespace Pandemic_AI_Framework
                         {
                             PA_OperationsExpert_Flight finalAction = new PA_OperationsExpert_Flight(
                                 currentPlayer,
-                                currentPlayerLocation,
-                                nearest_RS_City,
+                                finalDestination,
                                 cityCardToUse
                                 );
 
@@ -2889,16 +2880,17 @@ namespace Pandemic_AI_Framework
 
             return operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences;
         }
-        #region walk-types-command-sequences
+
         public static List<PD_Action> Compose_SimpleWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
-            int current_player,
             int root,
             int destination
             )
         {
+            int current_player = game.GQ_CurrentPlayer();
+
             List<int> walkPath = pathFinder.GetPrecalculatedShortestPath(
                 game,
                 researchStationCities,
@@ -2912,26 +2904,27 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < walkPath.Count - 1; i++)
             {
-                var city1 = walkPath[i];
-                var city2 = walkPath[i + 1];
-                if (game.map.neighbors__per__city[city1].Contains(city2) == true)
+                var from_city = walkPath[i];
+                var to_city = walkPath[i + 1];
+                bool cities_are_neighbors = game.map.neighbors__per__city[from_city].Contains(to_city);
+                bool cities_are_research_stations =
+                    game.GQ_Is_City_ResearchStation(from_city)
+                    &&
+                    game.GQ_Is_City_ResearchStation(to_city);
+
+                if (cities_are_neighbors)
                 {
                     PA_DriveFerry driveFerryCommand = new PA_DriveFerry(
                         current_player,
-                        city1,
-                        city2
+                        to_city
                         );
                     commands.Add(driveFerryCommand);
                 }
-                else if (
-                    researchStationCities.Contains(city1)
-                    && researchStationCities.Contains(city2)
-                    )
+                else if (cities_are_research_stations)
                 {
                     PA_ShuttleFlight shuttleFlightCommand = new PA_ShuttleFlight(
                         current_player,
-                        city1,
-                        city2
+                        to_city
                         );
                     commands.Add(shuttleFlightCommand);
                 }
@@ -2943,76 +2936,5 @@ namespace Pandemic_AI_Framework
 
             return commands;
         }
-
-        public static List<PD_Action> Compose_CharterWalk_CommandSequence(
-            PD_Game game,
-            PD_AI_PathFinder pathFinder,
-            List<int> researchStationCities,
-            int current_player,
-            int root,
-            int destination,
-            int charterCard
-            )
-        {
-            var charterCity = charterCard;
-            // step 1: walk to charter city
-            var walkCommands = Compose_SimpleWalk_CommandSequence(
-                game,
-                pathFinder,
-                researchStationCities,
-                current_player,
-                root,
-                charterCity
-                );
-            // step 2: apply charter command to go from charter city to destination
-            PA_CharterFlight charterCommand = new PA_CharterFlight(
-                current_player,
-                charterCity,
-                destination,
-                charterCard
-                );
-            // combine commands
-            var commandSequence = walkCommands;
-            commandSequence.Add(charterCommand);
-            return commandSequence;
-        }
-
-        public static List<PD_Action> Compose_DirectFlightWalk_CommandSequence(
-            PD_Game game,
-            PD_AI_PathFinder pathFinder,
-            List<int> researchStationCities,
-            int current_player,
-            int root,
-            int destination,
-            int directFlightCard
-            )
-        {
-            var directFlightCity = directFlightCard;
-
-            // step 1: use the direct flight card to go to the direct flight city
-            PA_DirectFlight directFlightCommand = new PA_DirectFlight(
-                current_player,
-                root,
-                directFlightCity,
-                directFlightCard
-                );
-
-            // step 2: walk from the direct flight city to the destination
-            var walkCommands = Compose_SimpleWalk_CommandSequence(
-                game,
-                pathFinder,
-                researchStationCities,
-                current_player,
-                directFlightCity,
-                destination
-                );
-
-            // combine commands
-            var commandSequence = new List<PD_Action>();
-            commandSequence.Add(directFlightCommand);
-            commandSequence.AddRange(walkCommands);
-            return commandSequence;
-        }
-        #endregion
     }
 }

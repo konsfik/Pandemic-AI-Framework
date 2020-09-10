@@ -6,7 +6,6 @@ namespace Pandemic_AI_Framework
 {
     public interface I_Movement_Action
     {
-        int FromCity { get; }
         int ToCity { get; }
     }
 }

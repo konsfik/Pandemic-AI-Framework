@@ -17,8 +17,6 @@ namespace Pandemic_AI_Framework
     {
         public int Player { get; private set; }
 
-        public int FromCity { get; protected set; }
-
         public int ToCity { get; protected set; }
 
         public int UsedCard { get; private set; }
@@ -34,13 +32,11 @@ namespace Pandemic_AI_Framework
         [JsonConstructor]
         public PA_OperationsExpert_Flight(
             int player,
-            int fromCity,
             int toCity,
             int usedCard
             )
         {
             this.Player = player;
-            this.FromCity = fromCity;
             this.ToCity = toCity;
             this.UsedCard = usedCard;
         }
@@ -54,7 +50,6 @@ namespace Pandemic_AI_Framework
             )
         {
             this.Player = actionToCopy.Player;
-            this.FromCity = actionToCopy.FromCity;
             this.ToCity = actionToCopy.ToCity;
             this.UsedCard = actionToCopy.UsedCard;
         }
@@ -71,6 +66,22 @@ namespace Pandemic_AI_Framework
             PD_Game game
             )
         {
+#if DEBUG
+            int current_player = game.GQ_CurrentPlayer();
+            if (game.GQ_CurrentPlayer_Role() != PD_Player_Roles.Operations_Expert)
+            {
+                throw new System.Exception("player is not an operations expert!");
+            }
+            else if (game.GQ_Is_City_ResearchStation(game.GQ_CurrentPlayer_Location()) == false)
+            {
+                throw new System.Exception("current player location is not a research station!");
+            }
+            else if (game.GQ_CityCardsInCurrentPlayerHand().Contains(UsedCard) == false)
+            {
+                throw new System.Exception("player dows not own this card!");
+            }
+#endif
+
             game.GO_PlayerDiscardsPlayerCard(
                 Player,
                 UsedCard
@@ -89,10 +100,9 @@ namespace Pandemic_AI_Framework
         public override string GetDescription()
         {
             string actionDescription = String.Format(
-                "{0}: OPERATIONS_EXPERT_FLIGHT | card:{1} | {2} -> {3}",
+                "{0}: OPERATIONS_EXPERT_FLIGHT | card:{1} | to City_{2}",
                 Player.ToString(),
                 UsedCard.ToString(),
-                FromCity.ToString(),
                 ToCity.ToString()
                 );
 
@@ -103,10 +113,6 @@ namespace Pandemic_AI_Framework
         public bool Equals(PA_OperationsExpert_Flight other)
         {
             if (this.Player != other.Player)
-            {
-                return false;
-            }
-            else if (this.FromCity != other.FromCity)
             {
                 return false;
             }
@@ -152,7 +158,6 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = hash * 31 + Player;
-            hash = hash * 31 + FromCity;
             hash = hash * 31 + ToCity;
             hash = hash * 31 + UsedCard;
 

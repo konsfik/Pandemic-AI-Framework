@@ -266,7 +266,7 @@ namespace Pandemic_AI_Framework
             if (macroType == RH_Macro_Type.MainPlayerActions)
             {
                 int numAvailableActions = gameState.GQ_RemainingPlayerActions_ThisRound();
-                List<PD_GameAction_Base> executablePart = new List<PD_GameAction_Base>();
+                List<PD_Action> executablePart = new List<PD_Action>();
                 for (int i = 0; i < numAvailableActions; i++)
                 {
                     if (i < macro.Actions_All.Count)

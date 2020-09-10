@@ -35,7 +35,7 @@ namespace Pandemic_AI_Framework
                 ////////////////////////////////////////////////////////////////
 
                 // all walk sequences
-                List<List<PD_GameAction_Base>> all_SimpleWalk_Sequences =
+                List<List<PD_Action>> all_SimpleWalk_Sequences =
                     FindAll_SimpleWalk_Sequences(
                         game,
                         pathFinder,
@@ -44,7 +44,7 @@ namespace Pandemic_AI_Framework
                         currentPlayer,
                         currentPlayerLocation
                         );
-                List<List<PD_GameAction_Base>> all_DirectFlightWalk_Sequences =
+                List<List<PD_Action>> all_DirectFlightWalk_Sequences =
                     FindAll_DirectFlightWalk_Sequences(
                         game,
                         pathFinder,
@@ -55,7 +55,7 @@ namespace Pandemic_AI_Framework
 
                         all_SimpleWalk_Sequences
                         );
-                List<List<PD_GameAction_Base>> all_CharterFlightWalk_Sequences =
+                List<List<PD_Action>> all_CharterFlightWalk_Sequences =
                     FindAll_CharterFlightWalk_Sequences(
                         game,
                         pathFinder,
@@ -66,7 +66,7 @@ namespace Pandemic_AI_Framework
 
                         all_SimpleWalk_Sequences
                         );
-                List<List<PD_GameAction_Base>> all_operationsExpertFlightWalk_Sequences =
+                List<List<PD_Action>> all_operationsExpertFlightWalk_Sequences =
                     FindAll_OperationsExpertFlightWalk_Sequences(
                         game,
                         pathFinder,
@@ -79,22 +79,22 @@ namespace Pandemic_AI_Framework
                         );
 
                 // walk sequences of maximum executable length
-                List<List<PD_GameAction_Base>> simpleWalk_Sequences_MaxExecutableLength =
+                List<List<PD_Action>> simpleWalk_Sequences_MaxExecutableLength =
                     all_SimpleWalk_Sequences.FindAll(
                         x =>
                         x.Count == numAvailableActions
                         );
-                List<List<PD_GameAction_Base>> directFlightWalk_Sequences_MaxExecutableLength =
+                List<List<PD_Action>> directFlightWalk_Sequences_MaxExecutableLength =
                     all_DirectFlightWalk_Sequences.FindAll(
                         x =>
                         x.Count == numAvailableActions
                         );
-                List<List<PD_GameAction_Base>> charterFlightWalk_Sequences_MaxExecutableLength =
+                List<List<PD_Action>> charterFlightWalk_Sequences_MaxExecutableLength =
                     all_CharterFlightWalk_Sequences.FindAll(
                         x =>
                         x.Count == numAvailableActions
                         );
-                List<List<PD_GameAction_Base>> operationsExpertFlightWalk_Sequences_MaxExecutableLength =
+                List<List<PD_Action>> operationsExpertFlightWalk_Sequences_MaxExecutableLength =
                     all_operationsExpertFlightWalk_Sequences.FindAll(
                         x =>
                         x.Count == numAvailableActions
@@ -298,7 +298,7 @@ namespace Pandemic_AI_Framework
                 {
                     if (command.GetType() == typeof(PA_Discard_AfterDrawing))
                     {
-                        var commandSequence = new List<PD_GameAction_Base>();
+                        var commandSequence = new List<PD_Action>();
                         commandSequence.Add(command);
                         PD_MacroAction mc = new PD_MacroAction(
                             commandSequence,
@@ -320,7 +320,7 @@ namespace Pandemic_AI_Framework
                     var macroType = command.GetType();
                     if (macroType == typeof(PA_Discard_DuringMainPlayerActions))
                     {
-                        var commandSequence = new List<PD_GameAction_Base>();
+                        var commandSequence = new List<PD_Action>();
                         commandSequence.Add(command);
                         PD_MacroAction mc = new PD_MacroAction(
                             commandSequence,
@@ -344,10 +344,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerLocation,
             int currentPlayerRole,
             int numAvailableActions,
-            List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_MaximumLength,
-            List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_ActionSequences_MaximumLength,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ExecutableNow_ActionSequences_MaximumLength,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_ActionSequences_MaximumLength
+            List<List<PD_Action>> simpleWalk_ExecutableNow_ActionSequences_MaximumLength,
+            List<List<PD_Action>> directFlightWalk_ExecutableNow_ActionSequences_MaximumLength,
+            List<List<PD_Action>> charterFlightWalk_ExecutableNow_ActionSequences_MaximumLength,
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_ActionSequences_MaximumLength
             )
         {
             List<PD_MacroAction> walkMacros = new List<PD_MacroAction>();
@@ -411,7 +411,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_MaximumLength,
+            List<List<PD_Action>> walkSequences_MaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -444,10 +444,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
+            List<List<PD_Action>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
             )
         {
             List<PD_MacroAction> stayMacros = new List<PD_MacroAction>();
@@ -570,7 +570,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+            List<PD_Action> actionsList = new List<PD_Action>();
             for (int i = 0; i < numAvailableActions; i++)
             {
                 actionsList.Add(
@@ -602,7 +602,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
+            List<List<PD_Action>> walkSequences_NonMaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -615,7 +615,7 @@ namespace Pandemic_AI_Framework
                 int player = ((I_Player_Action)seq.GetLast()).Player;
                 int destination = ((I_Movement_Action)(seq.GetLast())).ToCity;
 
-                List<PD_GameAction_Base> completeSequence = new List<PD_GameAction_Base>();
+                List<PD_Action> completeSequence = new List<PD_Action>();
                 completeSequence.AddRange(seq);
 
                 for (int i = 0; i < numRemainingActions; i++)
@@ -650,10 +650,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ActionSequences,
-            List<List<PD_GameAction_Base>> directFlightWalk_ActionSequences,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ActionSequences,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ActionSequences
+            List<List<PD_Action>> simpleWalk_ActionSequences,
+            List<List<PD_Action>> directFlightWalk_ActionSequences,
+            List<List<PD_Action>> charterFlightWalk_ActionSequences,
+            List<List<PD_Action>> operationsExpertFlightWalk_ActionSequences
             )
         {
             var treatDiseaseMacros = new List<PD_MacroAction>();
@@ -763,7 +763,7 @@ namespace Pandemic_AI_Framework
                             infectionType
                             );
 
-                    List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                    List<PD_Action> allCommands = new List<PD_Action>();
                     allCommands.Add(treatDisease_Medic_Action);
 
                     PD_MacroAction treatMacro = new PD_MacroAction(
@@ -787,7 +787,7 @@ namespace Pandemic_AI_Framework
                             infectionType
                             );
 
-                    List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                    List<PD_Action> allCommands = new List<PD_Action>();
                     allCommands.Add(treatDiseaseAction);
 
                     PD_MacroAction treatMacro = new PD_MacroAction(
@@ -813,7 +813,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences,
+            List<List<PD_Action>> walkSequences,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -846,7 +846,7 @@ namespace Pandemic_AI_Framework
                             t
                             );
 
-                        List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                        List<PD_Action> allCommands = new List<PD_Action>();
 
                         allCommands.AddRange(walkSequence);
 
@@ -873,7 +873,7 @@ namespace Pandemic_AI_Framework
                                 t
                                 );
 
-                        List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                        List<PD_Action> allCommands = new List<PD_Action>();
 
                         allCommands.AddRange(walkSequence);
 
@@ -905,10 +905,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_Sequences,
-            List<List<PD_GameAction_Base>> directFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> charterFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_Sequences
+            List<List<PD_Action>> simpleWalk_Sequences,
+            List<List<PD_Action>> directFlightWalk_Sequences,
+            List<List<PD_Action>> charterFlightWalk_Sequences,
+            List<List<PD_Action>> operationsExpertFlightWalk_Sequences
             )
         {
             var autoTreatDisease_Medic_Macros = new List<PD_MacroAction>();
@@ -975,7 +975,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences,
+            List<List<PD_Action>> walkSequences,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -1030,10 +1030,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_Sequences,
-            List<List<PD_GameAction_Base>> directFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> charterFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_Sequences
+            List<List<PD_Action>> simpleWalk_Sequences,
+            List<List<PD_Action>> directFlightWalk_Sequences,
+            List<List<PD_Action>> charterFlightWalk_Sequences,
+            List<List<PD_Action>> operationsExpertFlightWalk_Sequences
             )
         {
             var buildResearchStationMacros = new List<PD_MacroAction>();
@@ -1148,7 +1148,7 @@ namespace Pandemic_AI_Framework
                     currentPlayerLocation
                     );
 
-                List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                List<PD_Action> actionsList = new List<PD_Action>();
 
                 actionsList.Add(buildResearchStationAction);
 
@@ -1172,7 +1172,7 @@ namespace Pandemic_AI_Framework
                             cityCardToBuildResearchStation,
                             currentPlayerLocation
                             );
-                        List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
+                        List<PD_Action> totalListOfActions = new List<PD_Action>();
 
                         totalListOfActions.Add(buildResearchStationAction);
 
@@ -1200,7 +1200,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
+            List<List<PD_Action>> walkSequences_NonMaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -1237,7 +1237,7 @@ namespace Pandemic_AI_Framework
                             destination
                             );
 
-                    List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
+                    List<PD_Action> totalListOfActions = new List<PD_Action>();
                     totalListOfActions.AddRange(walkSequence);
                     totalListOfActions.Add(buildResearchStationAction);
 
@@ -1267,7 +1267,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToBuildResearchStation,
                                 destination
                                 );
-                            List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
+                            List<PD_Action> totalListOfActions = new List<PD_Action>();
                             totalListOfActions.AddRange(walkSequence);
                             totalListOfActions.Add(buildResearchStationAction);
 
@@ -1298,10 +1298,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
+            List<List<PD_Action>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
             )
         {
             var moveResearchStationMacros = new List<PD_MacroAction>();
@@ -1413,7 +1413,7 @@ namespace Pandemic_AI_Framework
                             currentPlayerLocation
                             );
 
-                        List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
+                        List<PD_Action> totalListOfActions = new List<PD_Action>();
 
                         totalListOfActions.Add(moveResearchStationAction);
 
@@ -1441,7 +1441,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
+            List<List<PD_Action>> walkSequences_NonMaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -1510,7 +1510,7 @@ namespace Pandemic_AI_Framework
                                 destination
                                 );
 
-                            List<PD_GameAction_Base> totalListOfActions = new List<PD_GameAction_Base>();
+                            List<PD_Action> totalListOfActions = new List<PD_Action>();
                             totalListOfActions.AddRange(walkSequence);
                             totalListOfActions.Add(moveResearchStationAction);
 
@@ -1541,10 +1541,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_Sequences,
-            List<List<PD_GameAction_Base>> directFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> charterFlightWalk_Sequences,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_Sequences
+            List<List<PD_Action>> simpleWalk_Sequences,
+            List<List<PD_Action>> directFlightWalk_Sequences,
+            List<List<PD_Action>> charterFlightWalk_Sequences,
+            List<List<PD_Action>> operationsExpertFlightWalk_Sequences
             )
         {
             var shareKnowledge_Give_Macros = new List<PD_MacroAction>();
@@ -1658,7 +1658,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToGive
                                 );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
 
                             actionsList.Add(shareKnowledgeAction);
 
@@ -1692,7 +1692,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToGive
                                 );
 
-                                List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                                List<PD_Action> actionsList = new List<PD_Action>();
 
                                 actionsList.Add(shareKnowledgeAction);
 
@@ -1714,7 +1714,7 @@ namespace Pandemic_AI_Framework
                                     cityCardToGive
                                     );
 
-                                List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                                List<PD_Action> actionsList = new List<PD_Action>();
 
                                 for (int i = 0; i < numAvailableActions; i++)
                                 {
@@ -1753,7 +1753,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences,
+            List<List<PD_Action>> walkSequences,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -1801,7 +1801,7 @@ namespace Pandemic_AI_Framework
                                     cityCardToGive
                                     );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
                             actionsList.Add(shareKnowledgeAction);
 
@@ -1828,7 +1828,7 @@ namespace Pandemic_AI_Framework
                                     cityCardToGive
                                     );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
                             actionsList.Add(shareKnowledgeAction);
 
@@ -1855,7 +1855,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToGive
                                 );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
 
                             int walkLength = walkSequence.Count;
@@ -1911,10 +1911,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
+            List<List<PD_Action>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> directFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> charterFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_Optimal_ActionSequences_NonMaximumLength
             )
         {
             var shareKnowledge_Take_Macros = new List<PD_MacroAction>();
@@ -2031,7 +2031,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToTake
                                 );
 
-                        List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                        List<PD_Action> actionsList = new List<PD_Action>();
 
                         actionsList.Add(shareKnowledge_Take_FromResearcher_Action);
 
@@ -2058,7 +2058,7 @@ namespace Pandemic_AI_Framework
                             cityCardToTake
                             );
 
-                        List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                        List<PD_Action> actionsList = new List<PD_Action>();
 
                         actionsList.Add(shareKnowledge_Take_Action);
 
@@ -2085,7 +2085,7 @@ namespace Pandemic_AI_Framework
                             cityCardToTake
                             );
 
-                        List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                        List<PD_Action> actionsList = new List<PD_Action>();
 
                         for (int i = 0; i < numAvailableActions; i++)
                         {
@@ -2123,7 +2123,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
+            List<List<PD_Action>> walkSequences_NonMaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -2172,7 +2172,7 @@ namespace Pandemic_AI_Framework
                                     cityCardToTake
                                     );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
                             actionsList.Add(shareKnowledge_Take_FromResearcher_Action);
 
@@ -2199,7 +2199,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToTake
                                 );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
                             actionsList.Add(shareKnowledge_Take_Action);
 
@@ -2226,7 +2226,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToTake
                                 );
 
-                            List<PD_GameAction_Base> actionsList = new List<PD_GameAction_Base>();
+                            List<PD_Action> actionsList = new List<PD_Action>();
                             actionsList.AddRange(walkSequence);
 
                             if (numRemainingActions_AfterWalking > 0)
@@ -2283,10 +2283,10 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> directFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> charterFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength,
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength
+            List<List<PD_Action>> simpleWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> directFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> charterFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength,
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_ActionSequences_NonMaximumLength
             )
         {
             var discoverCureMacros = new List<PD_MacroAction>();
@@ -2397,7 +2397,7 @@ namespace Pandemic_AI_Framework
                         );
 
                     PD_MacroAction discoverCure_Scientist_Macro = new PD_MacroAction(
-                        new List<PD_GameAction_Base>() { discoverCure_Scientist_Action },
+                        new List<PD_Action>() { discoverCure_Scientist_Action },
                         PD_MacroAction_Type.DiscoverCure_Scientist_Macro,
                         PD_MacroAction_WalkType.None,
                         numAvailableActions
@@ -2415,7 +2415,7 @@ namespace Pandemic_AI_Framework
                         );
 
                     PD_MacroAction discoverCure_Macro = new PD_MacroAction(
-                        new List<PD_GameAction_Base>() { discoverCure_Action },
+                        new List<PD_Action>() { discoverCure_Action },
                         PD_MacroAction_Type.DiscoverCure_Macro,
                         PD_MacroAction_WalkType.None,
                         numAvailableActions
@@ -2436,7 +2436,7 @@ namespace Pandemic_AI_Framework
             int currentPlayerRole,
             int numAvailableActions,
 
-            List<List<PD_GameAction_Base>> walkSequences_NonMaximumLength,
+            List<List<PD_Action>> walkSequences_NonMaximumLength,
             PD_MacroAction_WalkType walkType
             )
         {
@@ -2490,7 +2490,7 @@ namespace Pandemic_AI_Framework
                         int card_group_type = game.map.infection_type__per__city[cardGroup[0]];
                         if (currentPlayerIsScientist)
                         {
-                            List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                            List<PD_Action> allCommands = new List<PD_Action>();
 
                             allCommands.AddRange(walkSequence);
 
@@ -2514,7 +2514,7 @@ namespace Pandemic_AI_Framework
                         }
                         else
                         {
-                            List<PD_GameAction_Base> allCommands = new List<PD_GameAction_Base>();
+                            List<PD_Action> allCommands = new List<PD_Action>();
 
                             allCommands.AddRange(walkSequence);
 
@@ -2543,7 +2543,7 @@ namespace Pandemic_AI_Framework
         }
         #endregion
 
-        public static List<List<PD_GameAction_Base>> FindAll_SimpleWalk_Sequences(
+        public static List<List<PD_Action>> FindAll_SimpleWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
@@ -2551,14 +2551,14 @@ namespace Pandemic_AI_Framework
             int currentPlayerLocation
             )
         {
-            List<List<PD_GameAction_Base>> simpleWalk_Sequences =
-                new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> simpleWalk_Sequences =
+                new List<List<PD_Action>>();
 
             foreach (var city in game.map.cities)
             {
                 if (city != currentPlayerLocation)
                 {
-                    List<PD_GameAction_Base> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
+                    List<PD_Action> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
                         game,
                         pathFinder,
                         researchStationCities,
@@ -2588,20 +2588,20 @@ namespace Pandemic_AI_Framework
         /// <param name="simpleWalk_ActionSequences"></param>
         /// <param name="numAvailableActions"></param>
         /// <returns></returns>
-        public static List<List<PD_GameAction_Base>> FindAll_DirectFlightWalk_Sequences(
+        public static List<List<PD_Action>> FindAll_DirectFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
             int currentPlayer,
             int currentPlayerLocation,
-            List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
+            List<List<PD_Action>> simpleWalk_ActionSequences
             )
         {
 
             List<int> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
             if (cityCardsInCurrentPlayerHand.Count == 0)
             {
-                return new List<List<PD_GameAction_Base>>();
+                return new List<List<PD_Action>>();
             }
 
             List<int> directFlight_CityCards = cityCardsInCurrentPlayerHand.FindAll(
@@ -2611,11 +2611,11 @@ namespace Pandemic_AI_Framework
 
             if (directFlight_CityCards.Count == 0)
             {
-                return new List<List<PD_GameAction_Base>>();
+                return new List<List<PD_Action>>();
             }
 
-            List<List<PD_GameAction_Base>> directFlightWalk_Sequences =
-                new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> directFlightWalk_Sequences =
+                new List<List<PD_Action>>();
 
             foreach (var cityCard in directFlight_CityCards)
             {
@@ -2628,7 +2628,7 @@ namespace Pandemic_AI_Framework
                     cityCard
                     );
 
-                List<PD_GameAction_Base> singleActionList = new List<PD_GameAction_Base>();
+                List<PD_Action> singleActionList = new List<PD_Action>();
                 singleActionList.Add(directFlightAction);
 
                 directFlightWalk_Sequences.Add(singleActionList);
@@ -2650,9 +2650,9 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    List<PD_GameAction_Base> actionSequence = new List<PD_GameAction_Base>();
+                    List<PD_Action> actionSequence = new List<PD_Action>();
                     actionSequence.Add(directFlightAction);
-                    List<PD_GameAction_Base> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
+                    List<PD_Action> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
                         game,
                         pathFinder,
                         researchStationCities,
@@ -2668,12 +2668,12 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-            List<List<PD_GameAction_Base>> directFlightWalk_Optimal_Sequences = new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> directFlightWalk_Optimal_Sequences = new List<List<PD_Action>>();
             foreach (var seq in directFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
                 int targetLocation = ((I_Movement_Action)seq.GetLast()).ToCity;
-                List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
+                List<PD_Action> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).ToCity == targetLocation
                     );
@@ -2694,26 +2694,26 @@ namespace Pandemic_AI_Framework
             return directFlightWalk_Optimal_Sequences;
         }
 
-        public static List<List<PD_GameAction_Base>> FindAll_CharterFlightWalk_Sequences(
+        public static List<List<PD_Action>> FindAll_CharterFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
             int currentPlayer,
             int currentPlayerLocation,
-            List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
+            List<List<PD_Action>> simpleWalk_ActionSequences
             )
         {
 
             List<int> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            List<List<PD_GameAction_Base>> charterFlightWalk_Sequences =
-                new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> charterFlightWalk_Sequences =
+                new List<List<PD_Action>>();
 
             foreach (var city_card in city_cards_in_player_hand)
             {
                 int charterCity = city_card;
 
-                List<PD_GameAction_Base> simpleWalkToCharterCity = Compose_SimpleWalk_CommandSequence(
+                List<PD_Action> simpleWalkToCharterCity = Compose_SimpleWalk_CommandSequence(
                     game,
                     pathFinder,
                     researchStationCities,
@@ -2737,7 +2737,7 @@ namespace Pandemic_AI_Framework
                         city_card
                         );
 
-                    List<PD_GameAction_Base> charterWalkCommandSequence = new List<PD_GameAction_Base>();
+                    List<PD_Action> charterWalkCommandSequence = new List<PD_Action>();
                     charterWalkCommandSequence.AddRange(simpleWalkToCharterCity);
                     charterWalkCommandSequence.Add(charterFlightAction);
 
@@ -2745,12 +2745,12 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-            List<List<PD_GameAction_Base>> charterFlightWalk_Optimal_Sequences = new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> charterFlightWalk_Optimal_Sequences = new List<List<PD_Action>>();
             foreach (var seq in charterFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
                 int targetLocation = ((I_Movement_Action)seq.GetLast()).ToCity;
-                List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
+                List<PD_Action> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).ToCity == targetLocation
                     );
@@ -2771,32 +2771,32 @@ namespace Pandemic_AI_Framework
             return charterFlightWalk_Optimal_Sequences;
         }
 
-        public static List<List<PD_GameAction_Base>> FindAll_OperationsExpertFlightWalk_Sequences(
+        public static List<List<PD_Action>> FindAll_OperationsExpertFlightWalk_Sequences(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
             int currentPlayer,
             int currentPlayerLocation,
 
-            List<List<PD_GameAction_Base>> simpleWalk_ActionSequences
+            List<List<PD_Action>> simpleWalk_ActionSequences
             )
         {
             // if role is not operations expert -> skip
             if (game.GQ_CurrentPlayer_Role() != PD_Player_Roles.Operations_Expert)
             {
-                return new List<List<PD_GameAction_Base>>();
+                return new List<List<PD_Action>>();
             }
 
             // if operations expert flight has been used this turn -> skip
             if (game.GQ_OperationsExpertFlight_HasBeenUsedInThisTurn())
             {
-                return new List<List<PD_GameAction_Base>>();
+                return new List<List<PD_Action>>();
             }
 
             List<int> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_Sequences =
-                new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> operationsExpertFlightWalk_Sequences =
+                new List<List<PD_Action>>();
 
             if (game.GQ_Is_City_ResearchStation(currentPlayerLocation))
             {
@@ -2813,7 +2813,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToUse
                                 );
 
-                            List<PD_GameAction_Base> singleActionList = new List<PD_GameAction_Base>() {
+                            List<PD_Action> singleActionList = new List<PD_Action>() {
                                 action
                             };
 
@@ -2831,7 +2831,7 @@ namespace Pandemic_AI_Framework
                     currentPlayerLocation
                     );
 
-                List<PD_GameAction_Base> simpleWalkSequence = Compose_SimpleWalk_CommandSequence(
+                List<PD_Action> simpleWalkSequence = Compose_SimpleWalk_CommandSequence(
                     game,
                     pathFinder,
                     researchStationCities,
@@ -2853,7 +2853,7 @@ namespace Pandemic_AI_Framework
                                 cityCardToUse
                                 );
 
-                            List<PD_GameAction_Base> totalActionSequence = new List<PD_GameAction_Base>();
+                            List<PD_Action> totalActionSequence = new List<PD_Action>();
                             totalActionSequence.AddRange(simpleWalkSequence);
                             totalActionSequence.Add(finalAction);
 
@@ -2864,12 +2864,12 @@ namespace Pandemic_AI_Framework
             }
 
 
-            List<List<PD_GameAction_Base>> operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences = new List<List<PD_GameAction_Base>>();
+            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences = new List<List<PD_Action>>();
             foreach (var seq in operationsExpertFlightWalk_Sequences)
             {
                 int directFlightSequenceLength = seq.Count;
                 int targetLocation = ((I_Movement_Action)seq.GetLast()).ToCity;
-                List<PD_GameAction_Base> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
+                List<PD_Action> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
                     x =>
                     ((I_Movement_Action)x.GetLast()).ToCity == targetLocation
                     );
@@ -2890,7 +2890,7 @@ namespace Pandemic_AI_Framework
             return operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences;
         }
         #region walk-types-command-sequences
-        public static List<PD_GameAction_Base> Compose_SimpleWalk_CommandSequence(
+        public static List<PD_Action> Compose_SimpleWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
@@ -2906,9 +2906,9 @@ namespace Pandemic_AI_Framework
                 destination
                 );
 
-            if (walkPath.Count < 2) return new List<PD_GameAction_Base>();
+            if (walkPath.Count < 2) return new List<PD_Action>();
 
-            List<PD_GameAction_Base> commands = new List<PD_GameAction_Base>();
+            List<PD_Action> commands = new List<PD_Action>();
 
             for (int i = 0; i < walkPath.Count - 1; i++)
             {
@@ -2944,7 +2944,7 @@ namespace Pandemic_AI_Framework
             return commands;
         }
 
-        public static List<PD_GameAction_Base> Compose_CharterWalk_CommandSequence(
+        public static List<PD_Action> Compose_CharterWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
@@ -2977,7 +2977,7 @@ namespace Pandemic_AI_Framework
             return commandSequence;
         }
 
-        public static List<PD_GameAction_Base> Compose_DirectFlightWalk_CommandSequence(
+        public static List<PD_Action> Compose_DirectFlightWalk_CommandSequence(
             PD_Game game,
             PD_AI_PathFinder pathFinder,
             List<int> researchStationCities,
@@ -3008,7 +3008,7 @@ namespace Pandemic_AI_Framework
                 );
 
             // combine commands
-            var commandSequence = new List<PD_GameAction_Base>();
+            var commandSequence = new List<PD_Action>();
             commandSequence.Add(directFlightCommand);
             commandSequence.AddRange(walkCommands);
             return commandSequence;

@@ -10,7 +10,7 @@ namespace Pandemic_AI_Framework
     {
 
         public static List<int> Find_CityCardsUsedForWalking_In_ActionList(
-            List<PD_GameAction_Base> actionList
+            List<PD_Action> actionList
             )
         {
             List<int> cityCardsUsedForWalking = new List<int>();

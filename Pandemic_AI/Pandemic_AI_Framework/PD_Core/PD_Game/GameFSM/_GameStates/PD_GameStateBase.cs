@@ -11,7 +11,7 @@ namespace Pandemic_AI_Framework
         public abstract PD_GameStateBase OnCommand(
             Random randomness_provider,
             PD_Game game, 
-            PD_GameAction_Base command
+            PD_Action command
             );
         public abstract void OnEnter(PD_Game game);
         public abstract void OnExit(PD_Game game);

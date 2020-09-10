@@ -31,10 +31,10 @@ namespace Pandemic_AI_Framework
         public PD_MapElements map_elements;
 
         // GAME HISTORY
-        public List<PD_GameAction_Base> PlayerActionsHistory;
+        public List<PD_Action> PlayerActionsHistory;
         public List<PD_InfectionReport> InfectionReports;
 
-        public List<PD_GameAction_Base> CurrentAvailablePlayerActions;
+        public List<PD_Action> CurrentAvailablePlayerActions;
         public List<PD_MacroAction> CurrentAvailableMacros;
 
         #endregion
@@ -391,7 +391,7 @@ namespace Pandemic_AI_Framework
                 role__per__player.Add(player, PD_Player_Roles.None);
             }
 
-            PlayerActionsHistory = new List<PD_GameAction_Base>();
+            PlayerActionsHistory = new List<PD_Action>();
             InfectionReports = new List<PD_InfectionReport>();
 
             UpdateAvailablePlayerActions();
@@ -415,10 +415,10 @@ namespace Pandemic_AI_Framework
 
             Dictionary<int, int> role__per__player,
 
-            List<PD_GameAction_Base> playerActionsHistory,
+            List<PD_Action> playerActionsHistory,
             List<PD_InfectionReport> infectionReports,
 
-            List<PD_GameAction_Base> currentAvailablePlayerActions,
+            List<PD_Action> currentAvailablePlayerActions,
             List<PD_MacroAction> currentAvailableMacros
             )
         {
@@ -740,7 +740,7 @@ namespace Pandemic_AI_Framework
 
         public void Apply_Action(
             Random randomness_provider,
-            PD_GameAction_Base playerAction
+            PD_Action playerAction
             )
         {
             CurrentAvailableMacros = new List<PD_MacroAction>();
@@ -824,7 +824,7 @@ namespace Pandemic_AI_Framework
                     || macro.MacroAction_Type == PD_MacroAction_Type.DiscoverCure_Scientist_Macro
                     )
                 {
-                    var executablePart = new List<PD_GameAction_Base>();
+                    var executablePart = new List<PD_Action>();
                     int numRemainingActionsThisRound = 4 - game_state_counter.player_action_index;
                     for (int i = 0; i < numRemainingActionsThisRound; i++)
                     {

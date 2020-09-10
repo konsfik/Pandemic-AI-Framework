@@ -9,7 +9,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_TreatDisease_Medic : 
-        PD_GameAction_Base, 
+        PD_Action, 
         IEquatable<PA_TreatDisease_Medic>,
         I_Player_Action
     {
@@ -82,7 +82,7 @@ namespace Pandemic_AI_Framework
             game.Com_PA_TreatDisease_Medic(Player, CityToTreatDiseaseAt, TypeOfDiseaseToTreat);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_TreatDisease_Medic(this);
         }
@@ -118,7 +118,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_TreatDisease_Medic other_action)
             {

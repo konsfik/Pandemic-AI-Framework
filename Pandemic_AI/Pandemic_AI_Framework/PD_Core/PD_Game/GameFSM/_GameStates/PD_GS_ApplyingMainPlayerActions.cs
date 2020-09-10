@@ -17,7 +17,7 @@ namespace Pandemic_AI_Framework
         public override PD_GameStateBase OnCommand(
             Random randommness_provider,
             PD_Game game,
-            PD_GameAction_Base command)
+            PD_Action command)
         {
             command.Execute(
                 randommness_provider,

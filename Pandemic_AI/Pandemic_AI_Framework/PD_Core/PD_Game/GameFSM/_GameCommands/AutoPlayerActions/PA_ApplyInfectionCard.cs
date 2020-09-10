@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_ApplyInfectionCard : 
-        PD_GameAction_Base, 
+        PD_Action, 
         IEquatable<PA_ApplyInfectionCard>,
         I_Auto_Action, 
         I_Player_Action
@@ -84,7 +84,7 @@ namespace Pandemic_AI_Framework
             game.cards.deck_of_discarded_infection_cards.Add(InfectionCardToApply);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_ApplyInfectionCard(this);
         }
@@ -112,7 +112,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_ApplyInfectionCard other_action)
             {

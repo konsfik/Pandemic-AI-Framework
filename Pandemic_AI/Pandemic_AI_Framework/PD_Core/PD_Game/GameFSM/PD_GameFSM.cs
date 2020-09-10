@@ -57,7 +57,7 @@ namespace Pandemic_AI_Framework
         public void OnCommand(
             Random randomness_provider,
             PD_Game game,
-            PD_GameAction_Base command
+            PD_Action command
             )
         {
             PD_GameStateBase nextState = CurrentState.OnCommand(

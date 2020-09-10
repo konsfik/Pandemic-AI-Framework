@@ -8,7 +8,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_ApplyEpidemicCard :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_ApplyEpidemicCard>,
         I_Auto_Action,
         I_Player_Action
@@ -32,7 +32,7 @@ namespace Pandemic_AI_Framework
             this.Player = actionToCopy.Player;
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_ApplyEpidemicCard(this);
         }
@@ -133,7 +133,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_ApplyEpidemicCard other_action)
             {

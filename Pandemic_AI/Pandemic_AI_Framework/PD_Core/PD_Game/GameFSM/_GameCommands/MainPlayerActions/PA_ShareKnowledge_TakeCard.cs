@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_ShareKnowledge_TakeCard :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_ShareKnowledge_TakeCard>,
         I_Player_Action
     {
@@ -79,7 +79,7 @@ namespace Pandemic_AI_Framework
             game.cards.player_hand__per__player[game.GQ_CurrentPlayer()].Add(CityCardToTake);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_ShareKnowledge_TakeCard(this);
         }
@@ -115,7 +115,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_ShareKnowledge_TakeCard other_action)
             {

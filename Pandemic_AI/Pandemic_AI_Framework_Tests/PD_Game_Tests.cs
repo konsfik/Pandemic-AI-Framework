@@ -56,7 +56,7 @@ namespace Pandemic_AI_Framework.Tests
                 randomness_provider = new Random(i);
                 while (final_game.GQ_Is_Ongoing())
                 {
-                    PD_GameAction_Base action =
+                    PD_Action action =
                         final_game
                         .CurrentAvailablePlayerActions
                         .GetOneRandom(randomness_provider);

@@ -32,7 +32,7 @@ namespace Pandemic_AI_Framework
                 List<PD_MacroAction> positiveShareKnowledgeMacros = new List<PD_MacroAction>();
                 foreach (var macro in shareKnowledgeMacros_ExecutableNow)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All.CustomDeepCopy();
+                    List<PD_Action> walkSequence = macro.Actions_All.CustomDeepCopy();
                     walkSequence.RemoveAt(walkSequence.Count - 1);
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
@@ -45,7 +45,7 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    PD_GameAction_Base lastCommand = macro.Find_LastCommand();
+                    PD_Action lastCommand = macro.Find_LastCommand();
                     double exchangeValue =
                         PD_AI_CardEvaluation_Utilities
                         .Calculate_PlayerAction_Effect_On_Percent_AbilityToCureDiseases(
@@ -95,7 +95,7 @@ namespace Pandemic_AI_Framework
                 List<PD_MacroAction> positiveShareKnowledgeMacros = new List<PD_MacroAction>();
                 foreach (var macro in shareKnowledgeMacros_ExecutableNextRound)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All.CustomDeepCopy();
+                    List<PD_Action> walkSequence = macro.Actions_All.CustomDeepCopy();
                     walkSequence.RemoveAt(walkSequence.Count - 1);
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
@@ -108,7 +108,7 @@ namespace Pandemic_AI_Framework
                         continue;
                     }
 
-                    PD_GameAction_Base lastCommand = macro.Find_LastCommand();
+                    PD_Action lastCommand = macro.Find_LastCommand();
                     double exchangeValue =
                         PD_AI_CardEvaluation_Utilities
                         .Calculate_PlayerAction_Effect_On_Percent_AbilityToCureDiseases(
@@ -150,7 +150,7 @@ namespace Pandemic_AI_Framework
                 // find all take position macros that would have a positive outcome (ability to cure)
                 foreach (var macro in takePositionFor_shareKnowledge_Macros_ExecutableNow)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All;
+                    List<PD_Action> walkSequence = macro.Actions_All;
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
                             game,
@@ -260,7 +260,7 @@ namespace Pandemic_AI_Framework
                 // find all take position macros that would have a positive outcome (ability to cure)
                 foreach (var macro in takePosition_Now)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All;
+                    List<PD_Action> walkSequence = macro.Actions_All;
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
                             game,
@@ -318,7 +318,7 @@ namespace Pandemic_AI_Framework
                 // find all take position macros that would have a positive outcome (ability to cure)
                 foreach (var macro in takePosition_NextRound)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All;
+                    List<PD_Action> walkSequence = macro.Actions_All;
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
                             game,
@@ -432,7 +432,7 @@ namespace Pandemic_AI_Framework
                 // find all take position macros that would have a positive outcome (ability to cure)
                 foreach (var macro in takePosition_NextRound)
                 {
-                    List<PD_GameAction_Base> walkSequence = macro.Actions_All;
+                    List<PD_Action> walkSequence = macro.Actions_All;
                     double walkSequenceValue = PD_AI_CardEvaluation_Utilities
                         .Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
                             game,

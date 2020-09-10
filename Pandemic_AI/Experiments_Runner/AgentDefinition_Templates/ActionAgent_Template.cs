@@ -26,7 +26,7 @@ namespace Experiments_Runner
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public override PD_GameAction_Base GetNextAction(
+        public override PD_Action GetNextAction(
             Random randomness_provider,
             PD_Game game
             )

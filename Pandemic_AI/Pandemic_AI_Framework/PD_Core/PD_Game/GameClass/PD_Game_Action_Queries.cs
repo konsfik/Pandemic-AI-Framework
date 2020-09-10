@@ -8,11 +8,11 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_Game_Action_Queries
     {
-        public static List<PD_GameAction_Base> FindAvailable_PlayerActions(
+        public static List<PD_Action> FindAvailable_PlayerActions(
             this PD_Game game
             )
         {
-            List<PD_GameAction_Base> action_set = new List<PD_GameAction_Base>();
+            List<PD_Action> action_set = new List<PD_Action>();
 
             int currentPlayer = game.GQ_CurrentPlayer();
 

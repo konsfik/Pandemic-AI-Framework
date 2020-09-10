@@ -10,7 +10,7 @@ namespace Pandemic_AI_Framework
     /// </summary>
     [Serializable]
     public class PA_CharterFlight :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_CharterFlight>,
         I_Player_Action,
         I_Movement_Action,
@@ -81,7 +81,7 @@ namespace Pandemic_AI_Framework
             game.Medic_MoveTreat(ToCity);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_CharterFlight(this);
         }
@@ -124,7 +124,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_CharterFlight other_action)
             {

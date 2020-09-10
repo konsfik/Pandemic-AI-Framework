@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_ShuttleFlight :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_ShuttleFlight>,
         I_Player_Action,
         I_Movement_Action
@@ -50,7 +50,7 @@ namespace Pandemic_AI_Framework
             this.ToCity = actionToCopy.ToCity;
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_ShuttleFlight(this);
         }
@@ -109,7 +109,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_ShuttleFlight other_action)
             {

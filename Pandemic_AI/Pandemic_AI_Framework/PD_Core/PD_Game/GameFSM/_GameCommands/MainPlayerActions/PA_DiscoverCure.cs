@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_DiscoverCure :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_DiscoverCure>,
         I_Player_Action
     {
@@ -106,7 +106,7 @@ namespace Pandemic_AI_Framework
             game.Medic_AutoTreat_AfterDiscoverCure(TypeOfDiseaseToCure);
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_DiscoverCure(this);
         }
@@ -146,7 +146,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_DiscoverCure other_action)
             {

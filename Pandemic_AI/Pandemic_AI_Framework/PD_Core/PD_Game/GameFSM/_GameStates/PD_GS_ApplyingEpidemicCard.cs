@@ -18,7 +18,7 @@ namespace Pandemic_AI_Framework
         public override PD_GameStateBase OnCommand(
             Random randomness_provider,
             PD_Game game,
-            PD_GameAction_Base command)
+            PD_Action command)
         {
             if (command.GetType() == typeof(PA_ApplyEpidemicCard))
             {

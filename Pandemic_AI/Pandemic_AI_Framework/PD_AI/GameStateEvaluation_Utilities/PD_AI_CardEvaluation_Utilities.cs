@@ -222,7 +222,7 @@ namespace Pandemic_AI_Framework
         public static int[,] NumCardsTable_AfterApplying_PlayerAction(
             PD_Game game,
             int[,] initialNumCardsTable,
-            PD_GameAction_Base action
+            PD_Action action
             )
         {
             int[,] hypothetical_NumCardsTable = initialNumCardsTable.CustomDeepCopy();
@@ -335,7 +335,7 @@ namespace Pandemic_AI_Framework
         public static int[,] NumCardsTable_AfterApplying_ListOfActions(
             PD_Game game,
             int[,] initialNumCardsTable,
-            List<PD_GameAction_Base> actions
+            List<PD_Action> actions
             )
         {
             int[,] result = initialNumCardsTable.CustomDeepCopy();
@@ -352,7 +352,7 @@ namespace Pandemic_AI_Framework
 
         public static double Calculate_PlayerAction_Effect_On_Percent_AbilityToCureDiseases(
             PD_Game game,
-            PD_GameAction_Base action,
+            PD_Action action,
             bool squared
             )
         {
@@ -395,7 +395,7 @@ namespace Pandemic_AI_Framework
 
         public static double Calculate_ListOfPlayerActions_Effect_On_Percent_AbilityToCureDiseases(
             PD_Game game,
-            List<PD_GameAction_Base> actions,
+            List<PD_Action> actions,
             bool squared
             )
         {

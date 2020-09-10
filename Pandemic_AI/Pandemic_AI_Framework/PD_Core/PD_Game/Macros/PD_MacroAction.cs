@@ -16,10 +16,10 @@ namespace Pandemic_AI_Framework
         IEquatable<PD_MacroAction>,
         ICustomDeepCopyable<PD_MacroAction>
     {
-        public List<PD_GameAction_Base> Actions_All { get; private set; }
-        public List<PD_GameAction_Base> Actions_Executable_Now { get; private set; }
-        public List<PD_GameAction_Base> Actions_Executable_Later { get; private set; }
-        public PD_GameAction_Base NonExecutable_ShareKnowledge_Action { get; private set; }
+        public List<PD_Action> Actions_All { get; private set; }
+        public List<PD_Action> Actions_Executable_Now { get; private set; }
+        public List<PD_Action> Actions_Executable_Later { get; private set; }
+        public PD_Action NonExecutable_ShareKnowledge_Action { get; private set; }
 
         public PD_MacroAction_Type MacroAction_Type { get; private set; }
         public PD_MacroAction_WalkType MacroAction_WalkType { get; private set; }
@@ -34,7 +34,7 @@ namespace Pandemic_AI_Framework
         /// <param name="macroAction_WalkType"></param>
         [JsonConstructor]
         public PD_MacroAction(
-            List<PD_GameAction_Base> actions_All,
+            List<PD_Action> actions_All,
             PD_MacroAction_Type macroAction_Type,
             PD_MacroAction_WalkType macroAction_WalkType,
             int current_NumAvailableActions
@@ -44,9 +44,9 @@ namespace Pandemic_AI_Framework
             MacroAction_Type = macroAction_Type;
             MacroAction_WalkType = macroAction_WalkType;
 
-            Actions_All = new List<PD_GameAction_Base>();
-            Actions_Executable_Now = new List<PD_GameAction_Base>();
-            Actions_Executable_Later = new List<PD_GameAction_Base>();
+            Actions_All = new List<PD_Action>();
+            Actions_Executable_Now = new List<PD_Action>();
+            Actions_Executable_Later = new List<PD_Action>();
 
             if (Is_TypeOf_TakePositionFor_ShareKnowledge_Any() == true)
             {
@@ -201,7 +201,7 @@ namespace Pandemic_AI_Framework
                 || MacroAction_Type == PD_MacroAction_Type.TakePositionFor_ShareKnowledge_Take_Macro;
         }
 
-        public PD_GameAction_Base Find_LastCommand()
+        public PD_Action Find_LastCommand()
         {
             return Actions_All.GetLast();
         }

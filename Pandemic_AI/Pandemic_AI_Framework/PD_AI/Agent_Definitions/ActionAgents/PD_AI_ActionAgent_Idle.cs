@@ -9,7 +9,7 @@ namespace Pandemic_AI_Framework
     [Serializable]
     public class PD_AI_ActionAgent_Idle : PD_AI_Action_Agent_Base
     {
-        public override PD_GameAction_Base GetNextAction(
+        public override PD_Action GetNextAction(
             Random randomness_provider,
             PD_Game game
             )

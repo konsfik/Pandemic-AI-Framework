@@ -7,7 +7,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_DiscoverCure_Scientist :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_DiscoverCure_Scientist>,
         I_Player_Action
     {
@@ -52,7 +52,7 @@ namespace Pandemic_AI_Framework
             this.TypeOfDiseaseToCure = actionToCopy.TypeOfDiseaseToCure;
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_DiscoverCure_Scientist(this);
         }
@@ -145,7 +145,7 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_DiscoverCure_Scientist other_action)
             {

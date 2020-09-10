@@ -7,12 +7,12 @@ using Pandemic_AI_Framework;
 namespace Pandemic_AI_Framework
 {
     [Serializable]
-    public abstract class PD_GameAction_Base : 
-        IEquatable<PD_GameAction_Base>,
-        ICustomDeepCopyable<PD_GameAction_Base>
+    public abstract class PD_Action: 
+        IEquatable<PD_Action>,
+        ICustomDeepCopyable<PD_Action>
     {
 
-        public abstract PD_GameAction_Base GetCustomDeepCopy();
+        public abstract PD_Action GetCustomDeepCopy();
         public abstract void Execute(
             Random randomness_provider, 
             PD_Game game
@@ -20,11 +20,11 @@ namespace Pandemic_AI_Framework
         public abstract string GetDescription();
 
         #region equalityOverride
-        public abstract bool Equals(PD_GameAction_Base other);
+        public abstract bool Equals(PD_Action other);
         public abstract override bool Equals(object otherObject);
         public abstract override int GetHashCode();
 
-        public static bool operator ==(PD_GameAction_Base c1, PD_GameAction_Base c2)
+        public static bool operator ==(PD_Action c1, PD_Action c2)
         {
             if (Object.ReferenceEquals(c1, null))
             {
@@ -49,7 +49,7 @@ namespace Pandemic_AI_Framework
             return c1.Equals(c2);
         }
 
-        public static bool operator !=(PD_GameAction_Base c1, PD_GameAction_Base c2)
+        public static bool operator !=(PD_Action c1, PD_Action c2)
         {
             return !(c1 == c2);
         }

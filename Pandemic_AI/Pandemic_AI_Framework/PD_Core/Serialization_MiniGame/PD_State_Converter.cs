@@ -533,9 +533,9 @@ namespace Pandemic_AI_Framework
                 MAP_ELEMENTS,                               // map elements
                 CARDS,                                      // cards
                 ROLE_CARDS__PER__PLAYER_ID,                 // role cards per player id     
-                new List<PD_GameAction_Base>(),             // player actions history
+                new List<PD_Action>(),             // player actions history
                 new List<PD_InfectionReport>(),             // infection reports
-                new List<PD_GameAction_Base>(),             // current aavailable player actions
+                new List<PD_Action>(),             // current aavailable player actions
                 new List<PD_MacroAction>()                  // current available player actions
                 );
 

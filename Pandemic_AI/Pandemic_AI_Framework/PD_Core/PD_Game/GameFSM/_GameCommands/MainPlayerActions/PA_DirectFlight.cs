@@ -10,7 +10,7 @@ namespace Pandemic_AI_Framework
     /// </summary>
     [Serializable]
     public class PA_DirectFlight :
-        PD_GameAction_Base,
+        PD_Action,
         IEquatable<PA_DirectFlight>,
         I_Player_Action,
         I_Movement_Action,
@@ -50,7 +50,7 @@ namespace Pandemic_AI_Framework
             this.UsedCard = actionToCopy.UsedCard;
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             return new PA_DirectFlight(this);
         }
@@ -111,7 +111,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_DirectFlight other_action)
             {

@@ -9,7 +9,7 @@ namespace Pandemic_AI_Framework
 {
     [Serializable]
     public class PA_Discard_AfterDrawing : 
-        PD_GameAction_Base, 
+        PD_Action, 
         IEquatable<PA_Discard_AfterDrawing>,
         I_Player_Action, 
         I_Discard_Action
@@ -33,7 +33,7 @@ namespace Pandemic_AI_Framework
             this.PlayerCardToDiscard = playerCardToDiscard;
         }
 
-        public override PD_GameAction_Base GetCustomDeepCopy()
+        public override PD_Action GetCustomDeepCopy()
         {
             if (PlayerCardToDiscard < 48)
             {
@@ -93,7 +93,7 @@ namespace Pandemic_AI_Framework
             }
         }
 
-        public override bool Equals(PD_GameAction_Base other)
+        public override bool Equals(PD_Action other)
         {
             if (other is PA_Discard_AfterDrawing other_action)
             {

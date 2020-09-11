@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pandemic_AI_Framework", "Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance_Tests", "Performance_Tests\Performance_Tests.csproj", "{5756A819-66E4-491D-8951-BF6A19BBFEE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandemic_Mini_State_Tester", "Pandemic_Mini_State_Tester\Pandemic_Mini_State_Tester.csproj", "{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PD_SavedStates_Converter", "PD_SavedStates_Converter\PD_SavedStates_Converter.csproj", "{74C9D810-8B57-4F5C-A3D2-03965656CD00}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,22 +51,6 @@ Global
 		{5756A819-66E4-491D-8951-BF6A19BBFEE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5756A819-66E4-491D-8951-BF6A19BBFEE6}.Release|x86.ActiveCfg = Release|Any CPU
 		{5756A819-66E4-491D-8951-BF6A19BBFEE6}.Release|x86.Build.0 = Release|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Debug|x86.Build.0 = Debug|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Release|x86.ActiveCfg = Release|Any CPU
-		{03DFA7AA-63CF-41CA-ADA8-F317408ABE0E}.Release|x86.Build.0 = Release|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Debug|x86.Build.0 = Debug|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Release|x86.ActiveCfg = Release|Any CPU
-		{74C9D810-8B57-4F5C-A3D2-03965656CD00}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

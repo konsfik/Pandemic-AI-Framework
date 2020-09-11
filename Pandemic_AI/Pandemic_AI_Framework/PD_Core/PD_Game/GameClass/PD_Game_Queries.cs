@@ -427,17 +427,6 @@ namespace Pandemic_AI_Framework
             return game.map_elements.location__per__player[player];
         }
 
-        public static int GQ_Find_CityByName(
-            this PD_Game game,
-            string cityName
-            )
-        {
-            return game.map.cities.Find(
-                x =>
-                game.map.name__per__city[x] == cityName
-                );
-        }
-
         public static List<int> GQ_ResearchStationCities(
             this PD_Game game
             )

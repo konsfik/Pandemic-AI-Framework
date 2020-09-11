@@ -89,8 +89,6 @@ namespace Pandemic_AI_Framework
             // number_of_cities
             mini_game.map___number_of_cities = game.map.number_of_cities;
             mini_game.map___cities = new List<int>();
-            mini_game.map___name__per__city = new Dictionary<int, string>();
-            mini_game.map___position__per__city = new Dictionary<int, PD_Point>();
             mini_game.map___infection_type__per__city = new Dictionary<int, int>();
             mini_game.map___neighbors__per__city = new Dictionary<int, List<int>>();
             mini_game.map_elements___research_station__per__city = new Dictionary<int, bool>();
@@ -100,16 +98,6 @@ namespace Pandemic_AI_Framework
             {
                 // cities
                 mini_game.map___cities.Add(c);
-                // name__per__city
-                mini_game.map___name__per__city.Add(
-                    c,
-                    game.map.name__per__city[c]
-                    );
-                // position__per__city
-                mini_game.map___position__per__city.Add(
-                    c,
-                    game.map.position__per__city[c].GetCustomDeepCopy()
-                    );
                 // infection_type__per__city
                 mini_game.map___infection_type__per__city.Add(
                     c,
@@ -366,8 +354,6 @@ namespace Pandemic_AI_Framework
             PD_Map MAP = new PD_Map(
                 mini_game.map___number_of_cities,
                 mini_game.map___cities,
-                mini_game.map___name__per__city,
-                mini_game.map___position__per__city,
                 mini_game.map___infection_type__per__city,
                 mini_game.map___neighbors__per__city
                 );

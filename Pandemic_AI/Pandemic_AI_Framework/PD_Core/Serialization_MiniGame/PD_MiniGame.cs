@@ -49,8 +49,6 @@ namespace Pandemic_AI_Framework
         // map - data
         public int map___number_of_cities;
         public List<int> map___cities;
-        public Dictionary<int, string> map___name__per__city;
-        public Dictionary<int, PD_Point> map___position__per__city;
         public Dictionary<int, int> map___infection_type__per__city;
         public Dictionary<int, List<int>> map___neighbors__per__city;
 
@@ -110,8 +108,6 @@ namespace Pandemic_AI_Framework
             // map
             int map___number_of_cities,
             List<int> map___cities,
-            Dictionary<int, string> map___name__per__city,
-            Dictionary<int, PD_Point> map___position__per__city,
             Dictionary<int, int> map___infection_type__per__city,
             Dictionary<int, List<int>> map___neighbors__per__city,
 
@@ -171,9 +167,6 @@ namespace Pandemic_AI_Framework
             // map - data
             this.map___number_of_cities = map___number_of_cities;
             this.map___cities = map___cities.CustomDeepCopy();
-            this.map___name__per__city = map___name__per__city.CustomDeepCopy();
-            this.map___position__per__city
-                = map___position__per__city.CustomDeepCopy();
             this.map___infection_type__per__city
                 = map___infection_type__per__city.CustomDeepCopy();
             this.map___neighbors__per__city
@@ -284,10 +277,6 @@ namespace Pandemic_AI_Framework
                 != other.map___number_of_cities) return false;
             else if (this.map___cities
                 .List_Equals(other.map___cities) == false) return false;
-            else if (this.map___name__per__city
-                .Dictionary_Equals(other.map___name__per__city) == false) return false;
-            else if (this.map___position__per__city
-                .Dictionary_Equals(other.map___position__per__city) == false) return false;
             else if (this.map___infection_type__per__city
                 .Dictionary_Equal_S(other.map___infection_type__per__city) == false) return false;
             else if (this.map___neighbors__per__city
@@ -383,8 +372,6 @@ namespace Pandemic_AI_Framework
             // map - data
             hash = (hash * 13) + map___number_of_cities;
             hash = (hash * 13) + map___cities.Custom_HashCode();
-            hash = (hash * 13) + map___name__per__city.Custom_HashCode();
-            hash = (hash * 13) + map___position__per__city.Custom_HashCode();
             hash = (hash * 13) + map___infection_type__per__city.Custom_HashCode();
             hash = (hash * 13) + map___neighbors__per__city.Custom_HashCode();
 

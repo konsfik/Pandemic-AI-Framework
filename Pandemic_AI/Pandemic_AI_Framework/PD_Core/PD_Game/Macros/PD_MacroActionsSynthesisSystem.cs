@@ -2906,7 +2906,7 @@ namespace Pandemic_AI_Framework
             {
                 var from_city = walkPath[i];
                 var to_city = walkPath[i + 1];
-                bool cities_are_neighbors = game.map.neighbors__per__city[from_city].Contains(to_city);
+                bool cities_are_neighbors = game.GQ_Cities_Are_Neighbors(from_city, to_city);
                 bool cities_are_research_stations =
                     game.GQ_Is_City_ResearchStation(from_city)
                     &&
@@ -2914,19 +2914,19 @@ namespace Pandemic_AI_Framework
 
                 if (cities_are_neighbors)
                 {
-                    PA_DriveFerry driveFerryCommand = new PA_DriveFerry(
+                    PA_DriveFerry drive_ferry_action = new PA_DriveFerry(
                         current_player,
                         to_city
                         );
-                    commands.Add(driveFerryCommand);
+                    commands.Add(drive_ferry_action);
                 }
                 else if (cities_are_research_stations)
                 {
-                    PA_ShuttleFlight shuttleFlightCommand = new PA_ShuttleFlight(
+                    PA_ShuttleFlight shuttle_flight_action = new PA_ShuttleFlight(
                         current_player,
                         to_city
                         );
-                    commands.Add(shuttleFlightCommand);
+                    commands.Add(shuttle_flight_action);
                 }
                 else
                 {

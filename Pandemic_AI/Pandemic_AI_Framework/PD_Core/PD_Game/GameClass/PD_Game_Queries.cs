@@ -525,6 +525,15 @@ namespace Pandemic_AI_Framework
             return city_cards_in_player_hand;
         }
 
+        public static bool GQ_Cities_Are_Neighbors(
+            this PD_Game game,
+            int city_1,
+            int city_2
+            )
+        {
+            return game.map.neighbors__per__city[city_1].Contains(city_2);
+        }
+
         public static List<int> GQ_CityCards_OfType_InPlayerHand(
             this PD_Game game,
             int player,

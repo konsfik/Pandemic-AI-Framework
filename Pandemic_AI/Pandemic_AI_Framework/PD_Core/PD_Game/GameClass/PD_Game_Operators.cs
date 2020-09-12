@@ -243,7 +243,7 @@ namespace Pandemic_AI_Framework
             int infection_type
             )
         {
-            game.map_elements.inactive_infection_cubes__per__type[infection_type] -= 1;
+            game.map_elements.available_infection_cubes__per__type[infection_type] -= 1;
             game.map_elements.infections__per__type__per__city[city][infection_type] += 1;
         }
 
@@ -252,7 +252,7 @@ namespace Pandemic_AI_Framework
             int city
             )
         {
-            game.map_elements.inactive_research_stations--;
+            game.map_elements.available_research_stations--;
             game.map_elements.research_stations__per__city[city] = true;
         }
 
@@ -284,7 +284,7 @@ namespace Pandemic_AI_Framework
             // remove the cube from the city
             game.map_elements.infections__per__type__per__city[city][treatType]--;
             // put the cubes back in the inactive container
-            game.map_elements.inactive_infection_cubes__per__type[treatType]++;
+            game.map_elements.available_infection_cubes__per__type[treatType]++;
         }
 
         public static void GO_Remove_All_InfectionCubes_OfType_FromCity(
@@ -299,7 +299,7 @@ namespace Pandemic_AI_Framework
             // remove the cubes from the city
             game.map_elements.infections__per__type__per__city[city][diseaseType] -= num_cubes;
             // put the cubes back in the inactive container
-            game.map_elements.inactive_infection_cubes__per__type[diseaseType] += num_cubes;
+            game.map_elements.available_infection_cubes__per__type[diseaseType] += num_cubes;
         }
 
     }

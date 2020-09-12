@@ -13,7 +13,7 @@ namespace Pandemic_AI_Framework
         #region constructors
         public PD_GameFSM(PD_Game game)
         {
-            CurrentState = new PD_GS_Idle();
+            CurrentState = new PD_GS_ApplyingMainPlayerActions();
             CurrentState.OnEnter(game);
         }
 
@@ -24,9 +24,7 @@ namespace Pandemic_AI_Framework
             PD_GameStateBase currentState
             )
         {
-            if (currentState is PD_GS_Idle idle_state)
-                CurrentState = idle_state.GetCustomDeepCopy();
-            else if (currentState is PD_GS_ApplyingMainPlayerActions main_actions_state)
+            if (currentState is PD_GS_ApplyingMainPlayerActions main_actions_state)
                 CurrentState = main_actions_state.GetCustomDeepCopy();
             else if (currentState is PD_GS_Discarding_DuringMainPlayerActions discarding_main_state)
                 CurrentState = discarding_main_state.GetCustomDeepCopy();

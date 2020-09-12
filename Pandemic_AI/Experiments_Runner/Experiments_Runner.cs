@@ -82,7 +82,7 @@ namespace Experiment_1
             bool keep_trace = false;
 
             // debugging settings
-            bool display_actions = false;
+            bool display_actions = true;
             bool display_end_state = true;
 
             // define the agent and the dictionary for the experiment runner
@@ -206,7 +206,7 @@ namespace Experiment_1
             bool keep_trace = false;
 
             // debugging settings
-            bool display_actions = false;
+            bool display_actions = true;
             bool display_end_state = true;
 
             // initialize the pathFinder
@@ -250,11 +250,17 @@ namespace Experiment_1
             int gameDifficulty
             )
         {
-            return PD_Game.Create(
+            List<int> roles_list = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
+            return PD_Game.Create_Game__AvailableRolesList(
                 randomness_provider,
                 numberOfPlayers,
                 gameDifficulty,
-                true
+                roles_list
                 );
         }
 
@@ -265,15 +271,21 @@ namespace Experiment_1
             int gameDifficulty
             )
         {
+            List<int> roles_list = new List<int>() { 
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
             List<PD_Game> games = new List<PD_Game>();
             for (int i = 0; i < numberOfGames; i++)
             {
                 games.Add(
-                    PD_Game.Create(
+                    PD_Game.Create_Game__AvailableRolesList(
                         randomness_provider,
                         numberOfPlayers, 
-                        gameDifficulty, 
-                        true
+                        gameDifficulty,
+                        roles_list
                         )
                     );
             }

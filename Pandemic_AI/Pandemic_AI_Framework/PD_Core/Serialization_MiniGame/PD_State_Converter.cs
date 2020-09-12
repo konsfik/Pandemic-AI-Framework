@@ -159,7 +159,7 @@ namespace Pandemic_AI_Framework
 
             // availablee research stations
             mini_game.map_elements___available_research_stations
-                = game.map_elements.inactive_research_stations;
+                = game.map_elements.available_research_stations;
             // available infection cubes per type
             mini_game.map_elements___available_infection_cubes__per__type = new Dictionary<int, int>();
             for (int t = 0; t < 4; t++)
@@ -174,11 +174,7 @@ namespace Pandemic_AI_Framework
             // state counters
             /////////////////////////////////////////////////
 
-            if (game.game_FSM.CurrentState is PD_GS_Idle)
-            {
-                mini_game.state_counter___current_state = PD_MiniGame__GameState.IDLE;
-            }
-            else if (game.game_FSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
+            if (game.game_FSM.CurrentState is PD_GS_ApplyingMainPlayerActions)
             {
                 mini_game.state_counter___current_state = PD_MiniGame__GameState.MAIN_PLAYER_ACTIONS;
             }
@@ -292,9 +288,6 @@ namespace Pandemic_AI_Framework
             PD_GameFSM GAME_FSM;
             switch (mini_game.state_counter___current_state)
             {
-                case PD_MiniGame__GameState.IDLE:
-                    GAME_FSM = new PD_GameFSM(new PD_GS_Idle());
-                    break;
                 case PD_MiniGame__GameState.MAIN_PLAYER_ACTIONS:
                     GAME_FSM = new PD_GameFSM(new PD_GS_ApplyingMainPlayerActions());
                     break;

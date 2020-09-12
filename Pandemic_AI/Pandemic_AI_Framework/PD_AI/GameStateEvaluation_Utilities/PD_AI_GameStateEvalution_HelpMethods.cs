@@ -139,7 +139,7 @@ namespace Pandemic_AI_Framework
 
             int maxNumAvailableCubesOfAnyType = 24;
             int numAvailableCubesThisType 
-                = game.map_elements.inactive_infection_cubes__per__type[infectionType];
+                = game.map_elements.available_infection_cubes__per__type[infectionType];
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
 
@@ -175,7 +175,7 @@ namespace Pandemic_AI_Framework
             int maxNumAvailableCubesOfAnyType = 25; // 24 + 1
 
             int numAvailableCubesThisType 
-                = game.map_elements.inactive_infection_cubes__per__type[infectionType] + 1;
+                = game.map_elements.available_infection_cubes__per__type[infectionType] + 1;
 
             return (double)numAvailableCubesThisType / (double)maxNumAvailableCubesOfAnyType;
         }
@@ -188,7 +188,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.map_elements.inactive_infection_cubes__per__type[i];
+                    = game.map_elements.available_infection_cubes__per__type[i];
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -203,7 +203,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.map_elements.inactive_infection_cubes__per__type[i] + 1;
+                    = game.map_elements.available_infection_cubes__per__type[i] + 1;
                 inactiveCubesPerType.Add(numInactiveCubesThisType);
             }
             int minValue = inactiveCubesPerType.Min();
@@ -238,7 +238,7 @@ namespace Pandemic_AI_Framework
             for (int i = 0; i < 4; i++)
             {
                 int numInactiveCubesThisType 
-                    = game.map_elements.inactive_infection_cubes__per__type[i];
+                    = game.map_elements.available_infection_cubes__per__type[i];
                 allInactiveCubes += numInactiveCubesThisType;
             }
             double percentage = (double)allInactiveCubes / (double)numAllCubes;

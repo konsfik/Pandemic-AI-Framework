@@ -90,7 +90,7 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 int remaining_cubes_this_type
-                    = game.map_elements.inactive_infection_cubes__per__type[TypeOfDiseaseToTreat];
+                    = game.map_elements.available_infection_cubes__per__type[TypeOfDiseaseToTreat];
 
                 // if disease eradicated -> set marker to 2
                 if (remaining_cubes_this_type == 0)

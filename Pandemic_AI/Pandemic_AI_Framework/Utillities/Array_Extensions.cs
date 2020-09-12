@@ -52,27 +52,37 @@ namespace Pandemic_AI_Framework
 
         public static double[,] Squared(this double[,] originalArray)
         {
-            double[,] newArray = originalArray.CustomDeepCopy();
-            for (int i = 0; i < originalArray.Height(); i++)
+            int num_rows = originalArray.NumRows();
+            int num_columns = originalArray.NumColumns();
+            double[,] newArray = new double[num_rows, num_columns];
+
+            for (int ri = 0; ri < num_rows; ri++)
             {
-                for (int j = 0; j < originalArray.Width(); j++)
+                for (int ci = 0; ci < num_columns; ci++)
                 {
-                    newArray[i, j] *= newArray[i, j];
+                    double value = originalArray[ri, ci];
+                    newArray[ri, ci] = value * value;
                 }
             }
+
             return newArray;
         }
 
         public static int[,] Squared(this int[,] originalArray)
         {
-            int[,] newArray = originalArray.CustomDeepCopy();
-            for (int i = 0; i < originalArray.Height(); i++)
+            int num_rows = originalArray.NumRows();
+            int num_columns = originalArray.NumColumns();
+            int[,] newArray = new int[num_rows, num_columns];
+
+            for (int ri = 0; ri < num_rows; ri++)
             {
-                for (int j = 0; j < originalArray.Width(); j++)
+                for (int ci = 0; ci < num_columns; ci++)
                 {
-                    newArray[i, j] *= newArray[i, j];
+                    int value = originalArray[ri, ci];
+                    newArray[ri, ci] = value * value;
                 }
             }
+
             return newArray;
         }
 
@@ -234,8 +244,9 @@ namespace Pandemic_AI_Framework
 
         public static int[] CustomDeepCopy(this int[] originalArray)
         {
-            int[] newArray = new int[originalArray.Length];
-            for (int i = 0; i < originalArray.Length; i++)
+            int length = originalArray.Length;
+            int[] newArray = new int[length];
+            for (int i = 0; i < length; i++)
             {
                 newArray[i] = originalArray[i];
             }
@@ -244,8 +255,9 @@ namespace Pandemic_AI_Framework
 
         public static double[] CustomDeepCopy(this double[] originalArray)
         {
-            double[] newArray = new double[originalArray.Length];
-            for (int i = 0; i < originalArray.Length; i++)
+            int length = originalArray.Length;
+            double[] newArray = new double[length];
+            for (int i = 0; i < length; i++)
             {
                 newArray[i] = originalArray[i];
             }
@@ -254,12 +266,14 @@ namespace Pandemic_AI_Framework
 
         public static int[,] CustomDeepCopy(this int[,] originalArray)
         {
-            int[,] newArray = new int[originalArray.NumRows(), originalArray.NumColumns()];
-            for (int rowIndex = 0; rowIndex < originalArray.NumRows(); rowIndex++)
+            int num_rows = originalArray.NumRows();
+            int num_columns = originalArray.NumColumns();
+            int[,] newArray = new int[num_rows, num_columns];
+            for (int ri = 0; ri < num_rows; ri++)
             {
-                for (int columnIndex = 0; columnIndex < originalArray.NumColumns(); columnIndex++)
+                for (int ci = 0; ci < num_columns; ci++)
                 {
-                    newArray[rowIndex, columnIndex] = originalArray[rowIndex, columnIndex];
+                    newArray[ri, ci] = originalArray[ri, ci];
                 }
             }
             return newArray;
@@ -267,10 +281,12 @@ namespace Pandemic_AI_Framework
 
         public static double[,] CustomDeepCopy(this double[,] originalArray)
         {
-            double[,] newArray = new double[originalArray.NumRows(), originalArray.NumColumns()];
-            for (int rowIndex = 0; rowIndex < originalArray.NumRows(); rowIndex++)
+            int num_rows = originalArray.NumRows();
+            int num_columns = originalArray.NumColumns();
+            double[,] newArray = new double[num_rows, num_columns];
+            for (int rowIndex = 0; rowIndex < num_rows; rowIndex++)
             {
-                for (int columnIndex = 0; columnIndex < originalArray.NumColumns(); columnIndex++)
+                for (int columnIndex = 0; columnIndex < num_columns; columnIndex++)
                 {
                     newArray[rowIndex, columnIndex] = originalArray[rowIndex, columnIndex];
                 }

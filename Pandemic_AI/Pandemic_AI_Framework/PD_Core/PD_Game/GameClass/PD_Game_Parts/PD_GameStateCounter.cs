@@ -27,14 +27,12 @@ namespace Pandemic_AI_Framework
         #region constructors
         // normal constructor
         public PD_GameStateCounter(
-            int numberOfPlayers,
-            int currentPlayerIndex,
-            int currentTurnIndex
+            int numberOfPlayers
             )
         {
             number_of_players = numberOfPlayers;
-            player_index = currentPlayerIndex;
-            turn_index = currentTurnIndex;
+            player_index = 0;
+            turn_index = 0;
             outbreaks_counter = 0;
             epidemics_counter = 0;
             insufficient_disease_cubes_for_infection = false;

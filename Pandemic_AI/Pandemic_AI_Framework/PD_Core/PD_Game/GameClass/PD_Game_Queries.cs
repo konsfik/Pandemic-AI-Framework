@@ -72,7 +72,7 @@ namespace Pandemic_AI_Framework
             int type
             )
         {
-            return game.map_elements.inactive_infection_cubes__per__type[type];
+            return game.map_elements.available_infection_cubes__per__type[type];
         }
 
         public static int GQ_RemainingPlayerActions_ThisRound(
@@ -514,22 +514,27 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            List<int> city_cards_in_player_hand = new List<int>();
-            foreach (var card in game.cards.player_hand__per__player[player])
-            {
-                if (card < game.map.number_of_cities)
-                {
-                    city_cards_in_player_hand.Add(card);
-                }
-            }
-            return city_cards_in_player_hand;
+            return game.cards.player_hand__per__player[player].FindAll(
+                x =>
+                x < game.map.number_of_cities
+                );
 
-            //var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
-            //var cityCardsInPlayerHand = playerHand.FindAll(
-            //    x =>
-            //    x.GetType() == typeof(PD_CityCard)
-            //    ).Cast<PD_CityCard>().ToList();
-            //return cityCardsInPlayerHand;
+            //List<int> city_cards_in_player_hand = new List<int>();
+            //foreach (int card in game.cards.player_hand__per__player[player])
+            //{
+            //    if (card < game.map.number_of_cities)
+            //    {
+            //        city_cards_in_player_hand.Add(card);
+            //    }
+            //}
+            //return city_cards_in_player_hand;
+
+            ////var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
+            ////var cityCardsInPlayerHand = playerHand.FindAll(
+            ////    x =>
+            ////    x.GetType() == typeof(PD_CityCard)
+            ////    ).Cast<PD_CityCard>().ToList();
+            ////return cityCardsInPlayerHand;
         }
 
         public static List<int> GQ_UncuredDiseaseTypes(
@@ -658,7 +663,7 @@ namespace Pandemic_AI_Framework
             this PD_Game game
             )
         {
-            return game.map_elements.inactive_research_stations;
+            return game.map_elements.available_research_stations;
         }
 
         public static int GQ_NumActiveResearchStations(

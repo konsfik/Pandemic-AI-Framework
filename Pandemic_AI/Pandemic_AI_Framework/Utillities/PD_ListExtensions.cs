@@ -195,7 +195,7 @@ namespace Pandemic_AI_Framework
             this Dictionary<int, T> this_dictionary,
             Dictionary<int, T> other_dictionary
             )
-            where T : ICustomDeepCopyable<T>
+            where T : IEquatable<T>
         {
             List<int> this_dictionary_keys = this_dictionary.Keys.ToList();
             List<int> other_dictionary_keys = other_dictionary.Keys.ToList();
@@ -263,7 +263,7 @@ namespace Pandemic_AI_Framework
         }
 
         public static bool Dictionary_Equals(
-            this Dictionary<int, Dictionary<int,int>> this_dictionary,
+            this Dictionary<int, Dictionary<int, int>> this_dictionary,
             Dictionary<int, Dictionary<int, int>> other_dictionary
             )
         {
@@ -528,16 +528,16 @@ namespace Pandemic_AI_Framework
             return true;
         }
 
-        public static List<int> CustomDeepCopy(this List<int> originalList)
+        public static List<int> CustomDeepCopy(this List<int> original_list)
         {
-            List<int> copyList = new List<int>();
+            List<int> copy_list = new List<int>();
 
-            foreach (int element in originalList)
+            foreach (int element in original_list)
             {
-                copyList.Add(element);
+                copy_list.Add(element);
             }
 
-            return copyList;
+            return copy_list;
         }
 
         public static List<T> CustomDeepCopy<T>(this List<T> originalList)
@@ -568,17 +568,17 @@ namespace Pandemic_AI_Framework
 
 
         public static Dictionary<int, int> CustomDeepCopy(
-            this Dictionary<int, int> originalDictionary
+            this Dictionary<int, int> original_dictinoary
             )
         {
-            Dictionary<int, int> dictionaryCopy = new Dictionary<int, int>();
+            Dictionary<int, int> dictionary_copy = new Dictionary<int, int>();
 
-            foreach (var kvp in originalDictionary)
+            foreach (int key in original_dictinoary.Keys)
             {
-                dictionaryCopy.Add(kvp.Key, kvp.Value);
+                dictionary_copy.Add(key, original_dictinoary[key]);
             }
 
-            return dictionaryCopy;
+            return dictionary_copy;
         }
 
         public static Dictionary<int, Dictionary<int, int>> CustomDeepCopy(
@@ -588,9 +588,11 @@ namespace Pandemic_AI_Framework
             Dictionary<int, Dictionary<int, int>> dictionaryCopy
                 = new Dictionary<int, Dictionary<int, int>>();
 
-            foreach (var kvp in originalDictionary)
-            {
-                dictionaryCopy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
+            foreach (int key in originalDictionary.Keys) {
+                dictionaryCopy.Add(
+                    key,
+                    originalDictionary[key].CustomDeepCopy()
+                    );
             }
 
             return dictionaryCopy;
@@ -602,9 +604,9 @@ namespace Pandemic_AI_Framework
         {
             Dictionary<int, bool> dictionaryCopy = new Dictionary<int, bool>();
 
-            foreach (var kvp in originalDictionary)
+            foreach (int key in originalDictionary.Keys)
             {
-                dictionaryCopy.Add(kvp.Key, kvp.Value);
+                dictionaryCopy.Add(key, originalDictionary[key]);
             }
 
             return dictionaryCopy;
@@ -616,9 +618,9 @@ namespace Pandemic_AI_Framework
         {
             Dictionary<int, List<int>> dictionaryCopy = new Dictionary<int, List<int>>();
 
-            foreach (var kvp in originalDictionary)
+            foreach (int key in originalDictionary.Keys)
             {
-                dictionaryCopy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
+                dictionaryCopy.Add(key, originalDictionary[key].CustomDeepCopy());
             }
 
             return dictionaryCopy;
@@ -651,95 +653,6 @@ namespace Pandemic_AI_Framework
 
             return dictionaryCopy;
         }
-
-
-        public static Dictionary<T, List<T>> CustomDeepCopy<T>(this Dictionary<T, List<T>> originalDictionary)
-            where T : ICustomDeepCopyable<T>
-        {
-            Dictionary<T, List<T>> dictionaryCopy = new Dictionary<T, List<T>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<T, List<R>> CustomDeepCopy<T, R>(this Dictionary<T, List<R>> originalDictionary)
-            where T : ICustomDeepCopyable<T>
-            where R : ICustomDeepCopyable<R>
-        {
-            Dictionary<T, List<R>> dictionaryCopy = new Dictionary<T, List<R>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.CustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<T, R> CustomDeepCopy<T, R>(this Dictionary<T, R> originalDictionary)
-            where T : ICustomDeepCopyable<T>
-            where R : ICustomDeepCopyable<R>
-        {
-            Dictionary<T, R> dictionaryCopy = new Dictionary<T, R>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key.GetCustomDeepCopy(), value.GetCustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<int, T> CustomDeepCopy<T>(this Dictionary<int, T> originalDictionary)
-            where T : ICustomDeepCopyable<T>
-        {
-            Dictionary<int, T> dictionaryCopy = new Dictionary<int, T>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                var key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key, value.GetCustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static Dictionary<int, List<T>> CustomDeepCopy<T>(this Dictionary<int, List<T>> originalDictionary)
-            where T : ICustomDeepCopyable<T>
-        {
-            Dictionary<int, List<T>> dictionaryCopy = new Dictionary<int, List<T>>();
-
-            foreach (var kvp in originalDictionary)
-            {
-                int key = kvp.Key;
-                var value = kvp.Value;
-                dictionaryCopy.Add(key, value.CustomDeepCopy());
-            }
-
-            return dictionaryCopy;
-        }
-
-        public static List<List<T>> CustomDeepCopy<T>(this List<List<T>> originalListOfLists) where T : ICustomDeepCopyable<T>
-        {
-            List<List<T>> listOfListsCopy = new List<List<T>>();
-            foreach (var list in originalListOfLists)
-            {
-                listOfListsCopy.Add(list.CustomDeepCopy());
-            }
-            return listOfListsCopy;
-        }
-
 
 
         public static List<List<T>> GetNonSamePairs<T>(this List<T> originalList)

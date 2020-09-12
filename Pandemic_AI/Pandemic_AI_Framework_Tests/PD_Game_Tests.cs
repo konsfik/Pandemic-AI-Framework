@@ -16,11 +16,22 @@ namespace Pandemic_AI_Framework.Tests
         public void Serialize_Deserialize_MiniGame()
         {
             Random randomness_provider = new Random();
+            List<int> roles_list = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
 
             for (int i = 0; i < 2000; i++)
             {
                 // create a normal game, for later use
-                PD_Game initial_game = PD_Game.Create(randomness_provider, 4, 0, true);
+                PD_Game initial_game = PD_Game.Create_Game__AvailableRolesList(
+                    randomness_provider, 
+                    4, 
+                    0,
+                    roles_list
+                    );
 
                 // convert to mini game
                 PD_MiniGame converted_mini_game = initial_game.Convert_To_MiniGame();
@@ -175,9 +186,9 @@ namespace Pandemic_AI_Framework.Tests
             for (int t = 0; t < 4; t++)
             {
                 if (
-                    game_1.map_elements.inactive_infection_cubes__per__type[t]
+                    game_1.map_elements.available_infection_cubes__per__type[t]
                     !=
-                    game_2.map_elements.inactive_infection_cubes__per__type[t]
+                    game_2.map_elements.available_infection_cubes__per__type[t]
                     )
                 {
                     return false;
@@ -199,7 +210,7 @@ namespace Pandemic_AI_Framework.Tests
                 }
             }
 
-            if (game_1.map_elements.inactive_research_stations != game_2.map_elements.inactive_research_stations)
+            if (game_1.map_elements.available_research_stations != game_2.map_elements.available_research_stations)
             {
                 return false;
             }
@@ -280,6 +291,13 @@ namespace Pandemic_AI_Framework.Tests
         public void Generate_Game_Without_Data()
         {
             Random randomness_provider = new Random(1000);
+            List<int> available_roles = new List<int>()
+            {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
 
             // generate 100 games for every possible settings selection
             for (int num_players = 2; num_players <= 4; num_players++)
@@ -289,11 +307,12 @@ namespace Pandemic_AI_Framework.Tests
                     // repeat the process 100 times!
                     for (int i = 0; i < 1000; i++)
                     {
-                        PD_Game game = PD_Game.Create(
+                        
+                        PD_Game game = PD_Game.Create_Game__AvailableRolesList(
                             randomness_provider,
                             num_players,
                             game_difficulty,
-                            true
+                            available_roles
                             );
 
                         while (game.GQ_Is_Ongoing())
@@ -319,22 +338,30 @@ namespace Pandemic_AI_Framework.Tests
         [TestMethod()]
         public void RandomSeed_Tests()
         {
+            List<int> available_roles = new List<int>()
+            {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
+
             Random randomness_provider = new Random(1000);
 
-            PD_Game game_1 = PD_Game.Create(
+            PD_Game game_1 = PD_Game.Create_Game__AvailableRolesList(
                 randomness_provider,
                 4,
                 0,
-                true
+                available_roles
                 );
 
             randomness_provider = new Random(1000);
 
-            PD_Game game_2 = PD_Game.Create(
+            PD_Game game_2 = PD_Game.Create_Game__AvailableRolesList(
                 randomness_provider,
                 4,
                 0,
-                true
+                available_roles
                 );
 
             randomness_provider = new Random(1000);
@@ -355,7 +382,7 @@ namespace Pandemic_AI_Framework.Tests
                     );
             }
 
-            game_2.OverrideUniqueID(game_1.unique_id);
+            game_2.unique_id = game_1.unique_id;
             game_2.OverrideStartTime(game_1.start_time);
             game_2.OverrideEndTime(game_1.end_time);
 
@@ -369,53 +396,23 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            PD_Game game = PD_Game.Create(
+            List<int> available_roles = new List<int>()
+            {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
+
+            PD_Game game = PD_Game.Create_Game__AvailableRolesList(
                 randomness_provider,
                 4,
                 0,
-                true
+                available_roles
                 );
             PD_Game gameCopy = game.GetCustomDeepCopy();
 
-            Assert.IsTrue(
-                game.unique_id
-                ==
-                gameCopy.unique_id
-                );
-
-            Assert.IsTrue(
-                game.start_time
-                ==
-                gameCopy.start_time
-                );
-
-            Assert.IsTrue(
-                game.end_time
-                ==
-                gameCopy.end_time
-                );
-
-            Assert.IsTrue(
-                game.game_settings
-                ==
-                gameCopy.game_settings
-                );
-
-            Assert.IsTrue(
-                game.game_FSM
-                ==
-                gameCopy.game_FSM
-                );
-
-            Assert.IsTrue(
-                game.game_state_counter
-                ==
-                gameCopy.game_state_counter
-                );
-
-            Assert.IsTrue(
-                game.players.SequenceEqual(gameCopy.players)
-                );
+            Assert.IsTrue(gameCopy.Equals(game));
 
         }
     }

@@ -97,6 +97,8 @@ namespace Pandemic_AI_Framework
             // if the last commmand was not a discard command, then 
             // reset the current player action index...
             if (
+                game.PlayerActionsHistory.Count == 0
+                ||
                 game.PlayerActionsHistory.GetLast().GetType() !=
                 typeof(PA_Discard_DuringMainPlayerActions)
                 )

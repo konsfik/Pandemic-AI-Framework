@@ -40,248 +40,395 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Creates a game of specific number of players and difficulty
+        /// and automatically performs the game - setup
+        /// </summary>
+        /// <param name="randomness_provider"></param>
+        /// <param name="number_of_players"></param>
+        /// <param name="game_difficulty"></param>
+        /// <returns></returns>
+        public static PD_Game Create_Game__RandomRoles(
+            Random randomness_provider,
+            int number_of_players,
+            int game_difficulty
+            )
+        {
+            throw new NotImplementedException();
+        }
 
-        public static PD_Game Create(
+        /// <summary>
+        /// Creates a new game with the following settings:
+        /// - number of players
+        /// - game difficulty
+        /// - specific role per player
+        /// and performs the game setup, generaiting a randomized initial state
+        /// </summary>
+        /// <param name="randomness_provider"></param>
+        /// <param name="number_of_players"></param>
+        /// <param name="game_difficulty"></param>
+        /// <param name="role__per__player"></param>
+        /// <returns></returns>
+        public static PD_Game Create_Game__SpecificRolePerPlayer(
             Random randomness_provider,
             int number_of_players,
             int game_difficulty,
-            bool auto_game_setup
+            Dictionary<int, int> role__per__player
             )
         {
-
             List<int> players = new List<int>();
             for (int i = 0; i < number_of_players; i++)
             {
                 players.Add(i);
             }
 
-            List<int> cities = new List<int>() {
-                0,   1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-                12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-                36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47
-            };
+            List<int> cities = PD_Game_Data_Assistant.Default__Cities();
+            Dictionary<int, List<int>> neighbors__per__city = PD_Game_Data_Assistant.Default__Neighbors__Per__City();
+            Dictionary<int, int> infection_type__per__city = PD_Game_Data_Assistant.Default__InfectionType__Per__City();
 
-            Dictionary<int, int> infection_type__per__city = new Dictionary<int, int>() {
-                {0,   0},
-                {1,   0},
-                {2,   0},
-                {3,   0},
-                {4,   0},
-                {5,   0},
-                {6,   0},
-                {7,   0},
-                {8,   0},
-                {9,   0},
-                {10,  0},
-                {11,  0},
+            // cards...
+            List<int> allCityCards = PD_Game_Data_Assistant.Default__CityCards();
+            List<int> all_infection_cards = PD_Game_Data_Assistant.Default__InfectionCards();
+            List<int> all_epidemic_cards = PD_Game_Data_Assistant.Default__EpidemicCards();
 
-                {12,  1},
-                {13,  1},
-                {14,  1},
-                {15,  1},
-                {16,  1},
-                {17,  1},
-                {18,  1},
-                {19,  1},
-                {20,  1},
-                {21,  1},
-                {22,  1},
-                {23,  1},
+            return new PD_Game(
+                randomness_provider,
 
-                {24,  2},
-                {25,  2},
-                {26,  2},
-                {27,  2},
-                {28,  2},
-                {29,  2},
-                {30,  2},
-                {31,  2},
-                {32,  2},
-                {33,  2},
-                {34,  2},
-                {35,  2},
-
-                {36,  3},
-                {37,  3},
-                {38,  3},
-                {39,  3},
-                {40,  3},
-                {41,  3},
-                {42,  3},
-                {43,  3},
-                {44,  3},
-                {45,  3},
-                {46,  3},
-                {47,  3}
-            };
-
-            Dictionary<int, List<int>> neighbors__per__city = new Dictionary<int, List<int>>() {
-                { 0,  new List<int>(){  11, 21, 1              } },
-                { 1,  new List<int>(){  9,  0,  6              } },
-                { 2,  new List<int>(){  3,  8,  5,  10         } },
-                { 3,  new List<int>(){  7,  4,  8,  2          } },
-                { 4,  new List<int>(){  7,  3,  8,  24, 23     } },
-                { 5,  new List<int>(){  29, 8,  2              } },
-                { 6,  new List<int>(){  11, 7,  1              } },
-                { 7,  new List<int>(){  6,  11, 3,  4          } },
-                { 8,  new List<int>(){  3,  4,  2,  5,  24     } },
-                { 9,  new List<int>(){  1,  19, 47, 41         } },
-                { 10, new List<int>(){  32, 29, 2              } },
-                { 11, new List<int>(){  0,  21, 6,  7          } },
-
-                { 12, new List<int>(){  21, 20, 18, 13, 23     } },
-                { 13, new List<int>(){  12, 23                 } },
-                { 14, new List<int>(){  16, 15                 } },
-                { 15, new List<int>(){  17, 16, 14, 26         } },
-                { 16, new List<int>(){  17, 15, 14             } },
-                { 17, new List<int>(){  23, 15, 16             } },
-                { 18, new List<int>(){  12, 20, 22             } },
-                { 19, new List<int>(){  20, 45, 9,  1          } },
-                { 20, new List<int>(){  21, 1,  19, 12         } },
-                { 21, new List<int>(){  0,  11, 20, 12         } },
-                { 22, new List<int>(){  18                     } },
-                { 23, new List<int>(){  12, 13, 17, 4          } },
-
-                { 24, new List<int>(){  8,  4,  29, 26         } },
-                { 25, new List<int>(){  29, 34, 26, 30, 35     } },
-                { 26, new List<int>(){  24, 15, 34, 25, 29     } },
-                { 27, new List<int>(){  33, 28, 31, 36, 40     } },
-                { 28, new List<int>(){  30, 35, 33, 27, 31     } },
-                { 29, new List<int>(){  5,  10, 32, 25, 26, 24 } },
-                { 30, new List<int>(){  28, 25, 35, 34, 33     } },
-                { 31, new List<int>(){  36, 39, 28, 27         } },
-                { 32, new List<int>(){  10, 29, 35             } },
-                { 33, new List<int>(){  30, 27, 28             } },
-                { 34, new List<int>(){  25, 26, 30             } },
-                { 35, new List<int>(){  32, 25, 28, 30         } },
-
-                { 36, new List<int>(){  31, 27,39,38,40        } },
-                { 37, new List<int>(){  44, 43                 } },
-                { 38, new List<int>(){  36, 39, 41, 40         } },
-                { 39, new List<int>(){  31, 36, 46, 44, 38, 41 } },
-                { 40, new List<int>(){  38, 36, 27, 45         } },
-                { 41, new List<int>(){  45, 9,  39, 38, 46     } },
-                { 42, new List<int>(){  47, 46                 } },
-                { 43, new List<int>(){  47, 37, 44             } },
-                { 44, new List<int>(){  37, 47, 43, 46, 39     } },
-                { 45, new List<int>(){  40, 41, 19             } },
-                { 46, new List<int>(){  39, 42, 41, 44         } },
-                { 47, new List<int>(){  42, 9, 43, 44          } },
-            };
-
-
-            List<int> allCityCards = new List<int>();
-            for (int cc = 0; cc < 48; cc++)
-            {
-                allCityCards.Add(cc);
-            }
-
-            List<int> all_infection_cards = new List<int>();
-            for (int i = 0; i < 48; i++)
-            {
-                all_infection_cards.Add(i);
-            }
-
-            List<int> all_epidemic_cards = new List<int>();
-            for (int ec = 0; ec < 6; ec++)
-            {
-                all_epidemic_cards.Add(128 + ec);
-            }
-
-            List<int> roleCards = new List<int>() {
-                PD_Player_Roles.Operations_Expert,
-                PD_Player_Roles.Researcher,
-                PD_Player_Roles.Medic,
-                PD_Player_Roles.Scientist
-            };
-
-            int number_of_research_stations = 6;
-
-            PD_Game new_game = new PD_Game(
+                number_of_players,
                 game_difficulty,
                 players,
+                role__per__player,
+
                 cities,
                 infection_type__per__city,
                 neighbors__per__city,
+
                 allCityCards,
                 all_infection_cards,
-                all_epidemic_cards,
-                roleCards,
-                number_of_research_stations
+                all_epidemic_cards
                 );
+        }
 
-
-
-            if (auto_game_setup)
+        /// <summary>
+        /// Creates a new game with the following settings:
+        /// - number of players
+        /// - game difficulty
+        /// - available roles list (the roles will be assigned at random, from this list, to the players)
+        /// and performs the initial game setup
+        /// </summary>
+        /// <param name="randomness_provider"></param>
+        /// <param name="number_of_players"></param>
+        /// <param name="game_difficulty"></param>
+        /// <param name="available_roles_list"></param>
+        /// <returns></returns>
+        public static PD_Game Create_Game__AvailableRolesList(
+            Random randomness_provider,
+            int number_of_players,
+            int game_difficulty,
+            List<int> available_roles_list
+            )
+        {
+            List<int> players = new List<int>();
+            for (int i = 0; i < number_of_players; i++)
             {
-                new_game.Apply_Action(
-                    randomness_provider,
-                    new_game.CurrentAvailablePlayerActions[0]
-                    );
+                players.Add(i);
             }
 
-            return new_game;
+            List<int> cities = PD_Game_Data_Assistant.Default__Cities();
+            Dictionary<int, List<int>> neighbors__per__city = PD_Game_Data_Assistant.Default__Neighbors__Per__City();
+            Dictionary<int, int> infection_type__per__city = PD_Game_Data_Assistant.Default__InfectionType__Per__City();
+
+            // cards...
+            List<int> allCityCards = PD_Game_Data_Assistant.Default__CityCards();
+            List<int> all_infection_cards = PD_Game_Data_Assistant.Default__InfectionCards();
+            List<int> all_epidemic_cards = PD_Game_Data_Assistant.Default__EpidemicCards();
+
+            List<int> temp_roles_list = available_roles_list.CustomDeepCopy();
+            Dictionary<int, int> role__per__player = new Dictionary<int, int>();
+            foreach (int player in players)
+            {
+                int role = temp_roles_list.DrawOneRandom(randomness_provider);
+                role__per__player.Add(player, role);
+            }
+
+            return new PD_Game(
+                randomness_provider,
+
+                number_of_players,
+                game_difficulty,
+                players,
+                role__per__player,
+
+                cities,
+                infection_type__per__city,
+                neighbors__per__city,
+
+                allCityCards,
+                all_infection_cards,
+                all_epidemic_cards
+                );
+        }
+
+        /// <summary>
+        /// Creates a game with the following settings:
+        /// - game difficulty
+        /// the number of players is set to 4, and the player roles are specific:
+        /// - operations expert, 
+        /// - researcher
+        /// - medic
+        /// - scientist
+        /// </summary>
+        /// <param name="randomness_provider"></param>
+        /// <param name="game_difficulty"></param>
+        /// <returns></returns>
+        public static PD_Game Create_Default_Testing(
+            Random randomness_provider,
+            int game_difficulty
+            )
+        {
+
+            List<int> players = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                players.Add(i);
+            }
+
+            List<int> cities = PD_Game_Data_Assistant.Default__Cities();
+            Dictionary<int, List<int>> neighbors__per__city = PD_Game_Data_Assistant.Default__Neighbors__Per__City();
+            Dictionary<int, int> infection_type__per__city = PD_Game_Data_Assistant.Default__InfectionType__Per__City();
+
+            // cards...
+            List<int> allCityCards = PD_Game_Data_Assistant.Default__CityCards();
+            List<int> all_infection_cards = PD_Game_Data_Assistant.Default__InfectionCards();
+            List<int> all_epidemic_cards = PD_Game_Data_Assistant.Default__EpidemicCards();
+
+
+            Dictionary<int, int> role__per__player = new Dictionary<int, int>() {
+                {0, PD_Player_Roles.Operations_Expert},
+                {1, PD_Player_Roles.Researcher},
+                {2, PD_Player_Roles.Medic},
+                {3, PD_Player_Roles.Scientist}
+            };
+
+            return new PD_Game(
+                randomness_provider,
+
+                players.Count,
+                game_difficulty,
+                players,
+                role__per__player,
+
+                cities,
+                infection_type__per__city,
+                neighbors__per__city,
+
+                allCityCards,
+                all_infection_cards,
+                all_epidemic_cards
+                );
         }
 
         // normal constructor
-        public PD_Game(
-            int gameDifficultyLevel,
-            List<int> players,
+        private PD_Game(
+            Random randomness_provider,
+            int number_of_players,
+            int level_of_difficulty,
+            List<int> assigned__players,
+            Dictionary<int, int> assigned__role__per__player,
 
             // map - related
             List<int> cities,
             Dictionary<int, int> infection_type__per__city,
             Dictionary<int, List<int>> neighbors_per_city,
 
-            List<int> allCityCards,
-            List<int> allInfectionCards,
-            List<int> allEpidemicCards,
-
-            List<int> allRoleCards,
-            int number_of_research_stations
+            List<int> initial_container__city_cards,
+            List<int> initial_container__infection_cards,
+            List<int> initial_container__epidemic_cards
             )
         {
+            if (assigned__players.Count != number_of_players)
+            {
+                throw new Exception("number of players is wrong");
+            }
+            else if (assigned__role__per__player.Keys.Count != number_of_players)
+            {
+                throw new Exception("number of roles not correct");
+            }
+
+            this.players = assigned__players.CustomDeepCopy();
+            this.role__per__player = assigned__role__per__player.CustomDeepCopy();
+
+            // initialize parts...
+            this.start_time = DateTime.UtcNow;
+            this.unique_id = DateTime.UtcNow.Ticks;
+            this.unique_id = this.start_time.Ticks;
+
+            CurrentAvailablePlayerActions = new List<PD_Action>();
             CurrentAvailableMacros = new List<PD_MacroAction>();
+            PlayerActionsHistory = new List<PD_Action>();
+            InfectionReports = new List<PD_InfectionReport>();
 
-            start_time = DateTime.UtcNow;
-            unique_id = DateTime.UtcNow.Ticks;
+            this.game_settings = new PD_GameSettings(level_of_difficulty);
 
-            game_settings = new PD_GameSettings(gameDifficultyLevel);
+            this.game_state_counter = new PD_GameStateCounter(number_of_players);
 
-            game_state_counter = new PD_GameStateCounter(
-                players.Count,
-                0,
-                0
-                );
+            this.game_FSM = new PD_GameFSM(this);
 
-            game_FSM = new PD_GameFSM(this);
-
-            this.players = players;
-
-            UpdateAvailablePlayerActions();
-
-            map = new PD_Map(
+            this.map = new PD_Map(
                 cities.Count,
                 cities,
                 infection_type__per__city,
                 neighbors_per_city);
 
-            map_elements = new PD_MapElements(players, cities);
-            cards = new PD_GameCards(this.players);
+            this.map_elements = new PD_MapElements(this.players, cities);
+            this.cards = new PD_GameCards(this.players);
 
 
-            role__per__player = new Dictionary<int, int>();
-            foreach (var player in players)
+
+            //////////////////////////////////////////////////////////////////////
+            /// PERFORM THE GAME SETUP, HERE!
+            //////////////////////////////////////////////////////////////////////
+
+            // 1. Set out board and pieces
+
+
+            // 1.1. put research stations in research stations container
+            map_elements.available_research_stations = 6;
+
+            // 1.2. separate the infection cubes by color (type) in their containers
+            for (int i = 0; i < 4; i++)
             {
-                role__per__player.Add(player, PD_Player_Roles.None);
+                map_elements.available_infection_cubes__per__type[i] = 24;
             }
 
-            PlayerActionsHistory = new List<PD_Action>();
-            InfectionReports = new List<PD_InfectionReport>();
+            // 1.3. place research station on atlanta
+            int atlanta = 0;
+            PD_Game_Operators.GO_Place_ResearchStation_OnCity(
+                this, atlanta);
+
+            // 2. Place outbreaks and cure markers
+            // put outbreaks counter to position zero
+            game_state_counter.ResetOutbreaksCounter();
+
+            // place cure markers vial side up
+            game_state_counter.InitializeCureMarkerStates();
+
+            // 3. place infection marker and infect 9 cities
+            // 3.1. place the infection marker (epidemics counter) on the lowest position
+            game_state_counter.ResetEpidemicsCounter();
+
+            // 3.2. Infect the first cities - process
+            // 3.2.1. put all infection cards in the divided deck of infection cards...
+            cards.divided_deck_of_infection_cards.Add(initial_container__infection_cards.DrawAll());
+
+            // 3.2.2 shuffle the infection cards deck...
+            cards.divided_deck_of_infection_cards.ShuffleAllSubListsElements(randomness_provider);
+
+            // 3.2.3 actually infect the cities.. 
+            var firstPlayer = assigned__players[0];
+            for (int num_InfectionCubes_ToPlace = 3; num_InfectionCubes_ToPlace > 0; num_InfectionCubes_ToPlace--)
+            {
+                for (int city_Counter = 0; city_Counter < 3; city_Counter++)
+                {
+                    var infectionCard = cards.divided_deck_of_infection_cards.DrawLastElementOfLastSubList();
+
+                    int city = infectionCard;
+                    int city_type = map.infection_type__per__city[city];
+
+                    PD_InfectionReport report = new PD_InfectionReport(
+                        true,
+                        firstPlayer,
+                        city,
+                        city_type,
+                        num_InfectionCubes_ToPlace
+                        );
+
+                    PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
+                        this,
+                        city,
+                        num_InfectionCubes_ToPlace,
+                        report,
+                        true
+                        );
+
+                    InfectionReports.Add(finalReport);
+
+                    cards.deck_of_discarded_infection_cards.Add(infectionCard);
+                }
+            }
+
+            // 4. Give each player cards and a pawn
+            // 4.1. Assign roles (and pawns)
+            // -> already done ^^
+
+            // 4.2. Deal cards to players: initial hands
+            cards.divided_deck_of_player_cards.Add(initial_container__city_cards.DrawAll());
+            cards.divided_deck_of_player_cards.ShuffleAllSubListsElements(randomness_provider);
+
+            int numPlayers = assigned__players.Count;
+            int numCardsToDealPerPlayer = game_settings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
+            foreach (var player in assigned__players)
+            {
+                for (int i = 0; i < numCardsToDealPerPlayer; i++)
+                {
+                    cards.player_hand__per__player[player].Add(cards.divided_deck_of_player_cards.DrawLastElementOfLastSubList());
+                }
+            }
+
+            // 5. Prepare the player deck
+            // 5.1. get the necessary number of epidemic cards
+            int numEpidemicCards = game_settings.GetNumberOfEpidemicCardsToUseInGame();
+
+            // divide the player cards deck in as many sub decks as necessary
+            var allPlayerCardsList = cards.divided_deck_of_player_cards.DrawAllElementsOfAllSubListsAsOneList();
+            //int numberOfPlayerCardsPerSubDeck = allPlayerCardsList.Count / numEpidemicCards;
+
+            int numCards = allPlayerCardsList.Count;
+            int numSubDecks = numEpidemicCards;
+            int numCardsPerSubDeck = numCards / numSubDecks;
+            int remainingCardsNumber = numCards % numSubDecks;
+
+            // create the sub decks
+            List<List<int>> temporaryDividedList = new List<List<int>>();
+            for (int i = 0; i < numEpidemicCards; i++)
+            {
+                var subDeck = new List<int>();
+                for (int j = 0; j < numCardsPerSubDeck; j++)
+                {
+                    subDeck.Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
+                }
+                temporaryDividedList.Add(subDeck);
+            }
+            // add the remaining cards
+            for (int i = 0; i < remainingCardsNumber; i++)
+            {
+                int deckIndex = (temporaryDividedList.Count - 1) - i;
+                temporaryDividedList[deckIndex].Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
+            }
+            // insert the epidemic cards
+            foreach (List<int> subList in temporaryDividedList)
+            {
+                int epidemic_card = initial_container__epidemic_cards.DrawFirst();
+                subList.Add(epidemic_card);
+            }
+
+            // shuffle all the sublists!
+            temporaryDividedList.ShuffleAllSubListsElements(randomness_provider);
+
+            // set the player cards deck as necessary
+            cards.divided_deck_of_player_cards.Clear();
+            foreach (var sublist in temporaryDividedList)
+            {
+                cards.divided_deck_of_player_cards.Add(sublist);
+            }
+
+            //// place all pawns on atlanta
+            PD_Game_Operators.GO_PlaceAllPawnsOnAtlanta(this);
+
 
             UpdateAvailablePlayerActions();
         }
+
 
         [JsonConstructor]
         public PD_Game(
@@ -365,167 +512,6 @@ namespace Pandemic_AI_Framework
         #endregion
 
         #region command methods
-        public void Com_SetupGame_Random(Random randomness_provider)
-        {
-            List<int> initial_container__city_cards = new List<int>();
-            List<int> initial_container__infection_cards = new List<int>();
-            foreach (int city in map.cities) {
-                initial_container__city_cards.Add(city);
-                initial_container__infection_cards.Add(city);
-            }
-            List<int> initial_container__epidemic_cards = new List<int>();
-            for (int i = 0; i < 6; i++) {
-                initial_container__epidemic_cards.Add(128 + i);
-            }
-
-
-            // 1. Set out board and pieces
-            // 1.1. put research stations in research stations container
-            map_elements.inactive_research_stations = 6;
-
-            // 1.2. separate the infection cubes by color (type) in their containers
-            for (int i = 0; i < 4; i++)
-            {
-                map_elements.inactive_infection_cubes__per__type[i] = 24;
-            }
-
-            // 1.3. place research station on atlanta
-            int atlanta = 0;
-            PD_Game_Operators.GO_Place_ResearchStation_OnCity(
-                this, atlanta);
-
-            // 2. Place outbreaks and cure markers
-            // put outbreaks counter to position zero
-            game_state_counter.ResetOutbreaksCounter();
-
-            // place cure markers vial side up
-            game_state_counter.InitializeCureMarkerStates();
-
-            // 3. place infection marker and infect 9 cities
-            // 3.1. place the infection marker (epidemics counter) on the lowest position
-            game_state_counter.ResetEpidemicsCounter();
-
-            // 3.2. Infect the first cities - process
-            // 3.2.1. put all infection cards in the divided deck of infection cards...
-            cards.divided_deck_of_infection_cards.Add(initial_container__infection_cards.DrawAll());
-
-            // 3.2.2 shuffle the infection cards deck...
-            cards.divided_deck_of_infection_cards.ShuffleAllSubListsElements(randomness_provider);
-
-            // 3.2.3 actually infect the cities.. 
-            var firstPlayer = players[0];
-            for (int num_InfectionCubes_ToPlace = 3; num_InfectionCubes_ToPlace > 0; num_InfectionCubes_ToPlace--)
-            {
-                for (int city_Counter = 0; city_Counter < 3; city_Counter++)
-                {
-                    var infectionCard = cards.divided_deck_of_infection_cards.DrawLastElementOfLastSubList();
-
-                    int city = infectionCard;
-                    int city_type = map.infection_type__per__city[city];
-
-                    PD_InfectionReport report = new PD_InfectionReport(
-                        true,
-                        firstPlayer,
-                        city,
-                        city_type,
-                        num_InfectionCubes_ToPlace
-                        );
-
-                    PD_InfectionReport finalReport = PD_Game_Operators.GO_InfectCity(
-                        this,
-                        city,
-                        num_InfectionCubes_ToPlace,
-                        report,
-                        true
-                        );
-
-                    InfectionReports.Add(finalReport);
-
-                    cards.deck_of_discarded_infection_cards.Add(infectionCard);
-                }
-            }
-
-            // 4. Give each player cards and a pawn
-            // 4.1. Assign random roles and pawns to players
-            List<int> available_roles = new List<int>() {
-                PD_Player_Roles.Operations_Expert,
-                PD_Player_Roles.Researcher,
-                PD_Player_Roles.Medic,
-                PD_Player_Roles.Scientist
-            };
-            foreach (int player in players)
-            {
-                int roleCard = available_roles.DrawOneRandom(randomness_provider);
-                role__per__player[player] = roleCard;
-            }
-
-            // 4.2. Deal cards to players: initial hands
-            cards.divided_deck_of_player_cards.Add(initial_container__city_cards.DrawAll());
-            cards.divided_deck_of_player_cards.ShuffleAllSubListsElements(randomness_provider);
-
-            int numPlayers = players.Count;
-            int numCardsToDealPerPlayer = game_settings.GetNumberOfInitialCardsToDealPlayers(numPlayers);
-            foreach (var player in players)
-            {
-                for (int i = 0; i < numCardsToDealPerPlayer; i++)
-                {
-                    cards.player_hand__per__player[player].Add(cards.divided_deck_of_player_cards.DrawLastElementOfLastSubList());
-                }
-            }
-
-            // 5. Prepare the player deck
-            // 5.1. get the necessary number of epidemic cards
-            int numEpidemicCards = game_settings.GetNumberOfEpidemicCardsToUseInGame();
-
-            // divide the player cards deck in as many sub decks as necessary
-            var allPlayerCardsList = cards.divided_deck_of_player_cards.DrawAllElementsOfAllSubListsAsOneList();
-            //int numberOfPlayerCardsPerSubDeck = allPlayerCardsList.Count / numEpidemicCards;
-
-            int numCards = allPlayerCardsList.Count;
-            int numSubDecks = numEpidemicCards;
-            int numCardsPerSubDeck = numCards / numSubDecks;
-            int remainingCardsNumber = numCards % numSubDecks;
-
-            // create the sub decks
-            List<List<int>> temporaryDividedList = new List<List<int>>();
-            for (int i = 0; i < numEpidemicCards; i++)
-            {
-                var subDeck = new List<int>();
-                for (int j = 0; j < numCardsPerSubDeck; j++)
-                {
-                    subDeck.Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
-                }
-                temporaryDividedList.Add(subDeck);
-            }
-            // add the remaining cards
-            for (int i = 0; i < remainingCardsNumber; i++)
-            {
-                int deckIndex = (temporaryDividedList.Count - 1) - i;
-                temporaryDividedList[deckIndex].Add(allPlayerCardsList.DrawOneRandom(randomness_provider));
-            }
-            // insert the epidemic cards
-            foreach (List<int> subList in temporaryDividedList)
-            {
-                int epidemic_card = initial_container__epidemic_cards.DrawFirst();
-                subList.Add(epidemic_card);
-            }
-
-            // shuffle all the sublists!
-            temporaryDividedList.ShuffleAllSubListsElements(randomness_provider);
-
-            // set the player cards deck as necessary
-            cards.divided_deck_of_player_cards.Clear();
-            foreach (var sublist in temporaryDividedList)
-            {
-                cards.divided_deck_of_player_cards.Add(sublist);
-            }
-
-            //// place all pawns on atlanta
-            PD_Game_Operators.GO_PlaceAllPawnsOnAtlanta(this);
-
-            UpdateAvailablePlayerActions();
-        }
-
         public void Medic_MoveTreat(
             int city
             )
@@ -578,7 +564,7 @@ namespace Pandemic_AI_Framework
 
                 // check if disease is eradicated...
                 int remaining_cubes_this_type
-                    = map_elements.inactive_infection_cubes__per__type[treat_Type];
+                    = map_elements.available_infection_cubes__per__type[treat_Type];
 
                 // if disease eradicated -> set marker to 2
                 if (remaining_cubes_this_type == 0)
@@ -790,11 +776,6 @@ namespace Pandemic_AI_Framework
                     throw new System.Exception("wrong macro type");
                 }
             }
-        }
-
-        public void OverrideUniqueID(long unique_id)
-        {
-            this.unique_id = unique_id;
         }
 
         public void OverrideStartTime()

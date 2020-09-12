@@ -18,11 +18,11 @@ namespace Pandemic_AI_Framework
 
         public Dictionary<int, int> location__per__player;
 
-        public Dictionary<int, int> inactive_infection_cubes__per__type;
+        public Dictionary<int, int> available_infection_cubes__per__type;
 
         public Dictionary<int, Dictionary<int, int>> infections__per__type__per__city;
 
-        public int inactive_research_stations;
+        public int available_research_stations;
         public Dictionary<int, bool> research_stations__per__city;
 
         #endregion
@@ -40,7 +40,7 @@ namespace Pandemic_AI_Framework
                 location__per__player.Add(player, -1);
             }
 
-            inactive_infection_cubes__per__type = new Dictionary<int, int>();
+            available_infection_cubes__per__type = new Dictionary<int, int>();
             infections__per__type__per__city = new Dictionary<int, Dictionary<int, int>>();
             foreach (int city in cities)
             {
@@ -51,7 +51,7 @@ namespace Pandemic_AI_Framework
                 }
             }
 
-            inactive_research_stations = 6;
+            available_research_stations = 6;
             research_stations__per__city = new Dictionary<int, bool>();
             foreach (int city in cities)
             {
@@ -70,9 +70,9 @@ namespace Pandemic_AI_Framework
             )
         {
             this.location__per__player = location__per__player.CustomDeepCopy();
-            this.inactive_infection_cubes__per__type = inactive_infection_cubes__per__type.CustomDeepCopy();
+            this.available_infection_cubes__per__type = inactive_infection_cubes__per__type.CustomDeepCopy();
             this.infections__per__type__per__city = infections__per__type__per__city.CustomDeepCopy();
-            this.inactive_research_stations = inactive_research_stations;
+            this.available_research_stations = inactive_research_stations;
             this.research_stations__per__city = research_stations__per__city;
         }
 
@@ -92,11 +92,11 @@ namespace Pandemic_AI_Framework
         {
             this.location__per__player 
                 = mapElementsToCopy.location__per__player.CustomDeepCopy();
-            this.inactive_infection_cubes__per__type
-                = mapElementsToCopy.inactive_infection_cubes__per__type.CustomDeepCopy();
+            this.available_infection_cubes__per__type
+                = mapElementsToCopy.available_infection_cubes__per__type.CustomDeepCopy();
             this.infections__per__type__per__city
                 = mapElementsToCopy.infections__per__type__per__city.CustomDeepCopy();
-            this.inactive_research_stations = mapElementsToCopy.inactive_research_stations;
+            this.available_research_stations = mapElementsToCopy.available_research_stations;
             this.research_stations__per__city = mapElementsToCopy.research_stations__per__city.CustomDeepCopy();
         }
 
@@ -108,8 +108,8 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.inactive_infection_cubes__per__type.Dictionary_Equals(
-                other.inactive_infection_cubes__per__type) == false)
+            else if (this.available_infection_cubes__per__type.Dictionary_Equals(
+                other.available_infection_cubes__per__type) == false)
             {
                 return false;
             }
@@ -118,8 +118,8 @@ namespace Pandemic_AI_Framework
             {
                 return false;
             }
-            else if (this.inactive_research_stations
-                != other.inactive_research_stations)
+            else if (this.available_research_stations
+                != other.available_research_stations)
             {
                 return false;
             }
@@ -151,9 +151,9 @@ namespace Pandemic_AI_Framework
             int hash = 17;
 
             hash = (hash * 13) + location__per__player.Custom_HashCode();
-            hash = (hash * 13) + inactive_infection_cubes__per__type.Custom_HashCode();
+            hash = (hash * 13) + available_infection_cubes__per__type.Custom_HashCode();
             hash = (hash * 13) + infections__per__type__per__city.Custom_HashCode();
-            hash = (hash * 13) + inactive_research_stations;
+            hash = (hash * 13) + available_research_stations;
             hash = (hash * 13) + research_stations__per__city.Custom_HashCode();
 
             return hash;

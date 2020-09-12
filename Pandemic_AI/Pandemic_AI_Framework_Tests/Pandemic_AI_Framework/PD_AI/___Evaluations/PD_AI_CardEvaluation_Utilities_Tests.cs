@@ -16,13 +16,20 @@ namespace Pandemic_AI_Framework.Tests
         {
             Random randomness_provider = new Random();
 
-            //string data = DataUtilities.ReadGameData("gameCreationData.csv");
-            PD_Game game = PD_Game.Create(
+            List<int> roles_list = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
+
+            PD_Game game = PD_Game.Create_Game__AvailableRolesList(
                 randomness_provider,
                 4, 
-                0, 
-                true
+                0,
+                roles_list
                 );
+
             PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
 
             int[,] numCardsTable = PD_AI_CardEvaluation_Utilities.NumCardsTable(game);

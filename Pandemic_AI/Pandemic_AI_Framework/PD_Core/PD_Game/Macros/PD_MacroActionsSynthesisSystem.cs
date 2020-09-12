@@ -1117,7 +1117,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.available_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
@@ -1201,7 +1201,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.available_research_stations;
 
             if (numInactiveResearchStations == 0)
             {
@@ -1376,7 +1376,7 @@ namespace Pandemic_AI_Framework
             int numAvailableActions
             )
         {
-            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.available_research_stations;
 
             if (numInactiveResearchStations > 0)
             {
@@ -1442,7 +1442,7 @@ namespace Pandemic_AI_Framework
             PD_MacroAction_WalkType walkType
             )
         {
-            int numInactiveResearchStations = game.map_elements.inactive_research_stations;
+            int numInactiveResearchStations = game.map_elements.available_research_stations;
 
             if (numInactiveResearchStations > 0)
             {

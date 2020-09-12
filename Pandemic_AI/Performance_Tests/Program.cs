@@ -14,7 +14,14 @@ namespace Performance_Tests
         {
             DateTime dateTimeOfExperiment = DateTime.UtcNow;
             int number_of_games = 1000;
-            Random randomness_provider = new Random(1000);
+            List<int> roles_list = new List<int>() {
+                PD_Player_Roles.Operations_Expert,
+                PD_Player_Roles.Researcher,
+                PD_Player_Roles.Medic,
+                PD_Player_Roles.Scientist
+            };
+
+            Random randomness_provider = new Random(1001);
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -37,41 +44,20 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_Game.Create(
+                    PD_Game.Create_Game__AvailableRolesList(
                         randomness_provider,
                         4,
                         0,
-                        false
+                        roles_list
                         )
                     );
             }
             watch.Stop();
             long time_to_generate_games = watch.ElapsedMilliseconds;
             report_part = String.Format(
-                "Generate {0} games from data: {1}",
+                "Generate {0} games from data and perform game setup: {1}",
                 number_of_games,
                 time_to_generate_games
-                );
-            Console.WriteLine(report_part);
-            PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
-
-            //////////////////////////////////////////////////////////////////////////////
-            /// 1.2 Perform the game setup for all games...
-            //////////////////////////////////////////////////////////////////////////////
-            watch.Restart();
-            foreach (var game in games)
-            {
-                game.Apply_Action(
-                    randomness_provider,
-                    game.CurrentAvailablePlayerActions[0]
-                    );
-            }
-            watch.Stop();
-            long time_to_perform_game_setups = watch.ElapsedMilliseconds;
-            report_part = String.Format(
-                "Perform game setup on {0} games: {1}",
-                number_of_games,
-                time_to_perform_game_setups
                 );
             Console.WriteLine(report_part);
             PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
@@ -131,11 +117,11 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_Game.Create(
+                    PD_Game.Create_Game__AvailableRolesList(
                         randomness_provider,
                         4,
                         0,
-                        true
+                        roles_list
                         )
                     );
             }
@@ -209,11 +195,11 @@ namespace Performance_Tests
             for (int i = 0; i < number_of_games; i++)
             {
                 games.Add(
-                    PD_Game.Create(
+                    PD_Game.Create_Game__AvailableRolesList(
                         randomness_provider,
                         4,
                         0,
-                        true
+                        roles_list
                         )
                     );
             }

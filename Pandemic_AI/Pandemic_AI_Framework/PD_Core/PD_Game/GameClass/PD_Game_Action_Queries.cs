@@ -16,12 +16,7 @@ namespace Pandemic_AI_Framework
 
             int currentPlayer = game.GQ_CurrentPlayer();
 
-            if (game.game_FSM.CurrentState.GetType() != null && game.game_FSM.CurrentState.GetType() == typeof(PD_GS_Idle))
-            {
-                PD_GA_SetupGame_Random sg = new PD_GA_SetupGame_Random();
-                action_set.Add(sg);
-            }
-            else if (game.GQ_IsInState_ApplyingMainPlayerActions())
+            if (game.GQ_IsInState_ApplyingMainPlayerActions())
             {
                 action_set.AddRange(FindAvailable_Stay_Actions(game));
 
@@ -119,6 +114,12 @@ namespace Pandemic_AI_Framework
             return drive_ferry_actions;
         }
 
+        /// <summary>
+        /// Direct Flight Action:
+        /// Player discards a card and moves immediately to the city of that card
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         private static List<PA_DirectFlight> FindAvailable_DirectFlight_Actions(
             PD_Game game
             )
@@ -126,68 +127,75 @@ namespace Pandemic_AI_Framework
             int current_player = game.GQ_CurrentPlayer();
             int current_player_location = game.GQ_CurrentPlayer_Location();
 
-            List<int> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
+            List<int> city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
 
             var directFlightActions = new List<PA_DirectFlight>();
 
-            foreach (int cityCard in cityCardsInCurrentPlayerHand)
+            foreach (int cityCard in city_cards_in_player_hand)
             {
                 if (cityCard != current_player_location)
                 {
-                    var action = new PA_DirectFlight(
-                        current_player,
-                        cityCard,
-                        cityCard);
-                    directFlightActions.Add(action);
+                    directFlightActions.Add(
+                        new PA_DirectFlight(
+                            current_player,
+                            cityCard,
+                            cityCard
+                        )
+                    );
                 }
             }
 
             return directFlightActions;
         }
 
+        /// <summary>
+        /// Charter Flight Action:
+        /// Player discards the card of the city they are standing on, 
+        /// and they move to any city on the map
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         private static List<PA_CharterFlight> FindAvailable_CharterFlight_Actions(
             PD_Game game
             )
         {
             int currentPlayer = game.GQ_CurrentPlayer();
             int current_player_location = game.GQ_CurrentPlayer_Location();
+            var city_cards_in_player_hand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            var cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
-
-            var charterFlightActions = new List<PA_CharterFlight>();
-
-            // if the player is standing on a location that exists in the city cards in their hand
-            var citiesOfCityCardsInPlayerHand = new List<int>();
-            foreach (var card in cityCardsInCurrentPlayerHand)
+            if (city_cards_in_player_hand.Contains(current_player_location))
             {
-                citiesOfCityCardsInPlayerHand.Add(card);
-            }
+                int used_card = current_player_location;
 
-            if (citiesOfCityCardsInPlayerHand.Any(x => x == current_player_location))
-            {
-                var allOtherCities = game.map.cities.FindAll(
-                    x =>
-                    x != current_player_location
-                    );
+                var charterFlightActions = new List<PA_CharterFlight>();
 
-                var cityCardtoDiscard = cityCardsInCurrentPlayerHand.Find(
-                    x =>
-                    x == current_player_location
-                    );
-
-                foreach (var otherCity in allOtherCities)
+                foreach (int target_city in game.map.cities)
                 {
-                    var action = new PA_CharterFlight(
-                        currentPlayer,
-                        otherCity,
-                        cityCardtoDiscard);
-                    charterFlightActions.Add(action);
+                    if (target_city != current_player_location)
+                    {
+                        var action = new PA_CharterFlight(
+                            currentPlayer,
+                            target_city,
+                            used_card
+                            );
+                        charterFlightActions.Add(action);
+                    }
                 }
-            }
 
-            return charterFlightActions;
+                return charterFlightActions;
+            }
+            else
+            {
+                return new List<PA_CharterFlight>();
+            }
         }
 
+        /// <summary>
+        /// Shuttle flight action:
+        /// Player moves from a research station city to another research station city
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         private static List<PA_ShuttleFlight> FindAvailable_ShuttleFlight_Actions(
             PD_Game game
             )
@@ -200,12 +208,9 @@ namespace Pandemic_AI_Framework
                 return new List<PA_ShuttleFlight>();
             }
 
-            List<int> other_research_station_cities = game.map.cities.FindAll(
-                x =>
-                game.GQ_Is_City_ResearchStation(x)
-                &&
-                x != current_player_location
-                );
+            List<int> other_research_station_cities 
+                = game.GQ_ResearchStationCities();
+            other_research_station_cities.Remove(current_player_location);
 
             if (other_research_station_cities.Count == 0)
             {
@@ -214,11 +219,11 @@ namespace Pandemic_AI_Framework
 
             var shuttleFlightActions = new List<PA_ShuttleFlight>();
 
-            foreach (var city in other_research_station_cities)
+            foreach (var target_city in other_research_station_cities)
             {
                 var action = new PA_ShuttleFlight(
                     currentPlayer,
-                    city
+                    target_city
                     );
                 shuttleFlightActions.Add(action);
             }
@@ -226,6 +231,14 @@ namespace Pandemic_AI_Framework
             return shuttleFlightActions;
         }
 
+        /// <summary>
+        /// Operations expert flight action:
+        /// Applicable if the current player is operations expert:
+        /// If the o.e. is standing on a research station, 
+        /// they may use any city card from their hand, to go to any other city on the map
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         private static List<PA_OperationsExpert_Flight> FindAvailable_OperationsExpertFlight_Actions(
             PD_Game game
             )
@@ -289,7 +302,7 @@ namespace Pandemic_AI_Framework
                 game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             bool inactive_RS_Available =
-                game.map_elements.inactive_research_stations > 0;
+                game.map_elements.available_research_stations > 0;
 
             if (
                 currentLocation_Is_RS
@@ -343,7 +356,7 @@ namespace Pandemic_AI_Framework
             bool currentLocation_Is_RS = game.GQ_Is_City_ResearchStation(currentPlayerLocation);
 
             bool inactive_RS_Available =
-                game.map_elements.inactive_research_stations > 0;
+                game.map_elements.available_research_stations > 0;
 
             if (
                 currentLocation_Is_RS

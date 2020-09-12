@@ -153,7 +153,7 @@ namespace Pandemic_AI_Framework
 
                                 var nextMacro = ((PD_AI_Macro_Agent_Base)thisAgent).GetNextMacroAction(
                                     randomness_provider,
-                                    gameCopy.Request_Fair_ForwardModel(randomness_provider),
+                                    gameCopy.Request_Randomized_Copy(randomness_provider),
                                     pathFinder
                                     );
 
@@ -201,7 +201,7 @@ namespace Pandemic_AI_Framework
                                 var nextAction =
                                     ((PD_AI_Action_Agent_Base)thisAgent).GetNextAction(
                                         randomness_provider,
-                                        gameCopy.Request_Fair_ForwardModel(randomness_provider)
+                                        gameCopy.Request_Randomized_Copy(randomness_provider)
                                         );
 
                                 if (displayActions)

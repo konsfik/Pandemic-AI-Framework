@@ -67,7 +67,7 @@ namespace Pandemic_AI_Framework
             Random randomnessProvider
             )
         {
-            PD_Game mutationGameState = gameState.Request_Fair_ForwardModel(randomness_provider);
+            PD_Game mutationGameState = gameState.Request_Randomized_Copy(randomness_provider);
 
             bool atLeastOneMutation = false;
 
@@ -108,7 +108,7 @@ namespace Pandemic_AI_Framework
 
             if (atLeastOneMutation == false)
             {
-                PD_Game newMutationGameState = gameState.Request_Fair_ForwardModel(randomness_provider);
+                PD_Game newMutationGameState = gameState.Request_Randomized_Copy(randomness_provider);
 
                 int randomMutationIndex = randomnessProvider.Next(Genome.Count);
                 for (int i = 0; i < Genome.Count; i++)
@@ -177,7 +177,7 @@ namespace Pandemic_AI_Framework
 
             for (int i = 0; i < NumSimulationsForEvaluation; i++)
             {
-                PD_Game evaluation_GameState = initial_GameState.Request_Fair_ForwardModel(randomness_provider);
+                PD_Game evaluation_GameState = initial_GameState.Request_Randomized_Copy(randomness_provider);
                 foreach (var gene in Genome)
                 {
                     if (evaluation_GameState.GQ_Is_Ongoing())
@@ -220,7 +220,7 @@ namespace Pandemic_AI_Framework
             PD_AI_Macro_Agent_Base defaultPolicyAgent
             )
         {
-            PD_Game generator_GameState = gameState.Request_Fair_ForwardModel(randomness_provider);
+            PD_Game generator_GameState = gameState.Request_Randomized_Copy(randomness_provider);
 
             int initialTurn = generator_GameState.game_state_counter.turn_index;
             int finalTurn = initialTurn + MaxGenomeLength - Genome.Count;

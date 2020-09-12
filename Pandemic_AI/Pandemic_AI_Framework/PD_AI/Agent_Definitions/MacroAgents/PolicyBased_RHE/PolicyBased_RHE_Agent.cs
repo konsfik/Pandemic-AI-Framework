@@ -122,7 +122,7 @@ namespace Pandemic_AI_Framework
             Num_Successful_Mutations_ThisTime = 0;
             Num_Successful_Mutations_Different_FirstAction_ThisTime = 0;
 
-            PD_Game rh_gameState = game.Request_Fair_ForwardModel(randomness_provider);
+            PD_Game rh_gameState = game.Request_Randomized_Copy(randomness_provider);
 
             // generate parent individual
             RH_Individual parentIndividual = new RH_Individual(

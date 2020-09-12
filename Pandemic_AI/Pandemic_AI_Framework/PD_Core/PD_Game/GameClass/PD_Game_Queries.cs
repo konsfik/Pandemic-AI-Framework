@@ -514,27 +514,57 @@ namespace Pandemic_AI_Framework
             int player
             )
         {
-            return game.cards.player_hand__per__player[player].FindAll(
-                x =>
-                x < game.map.number_of_cities
-                );
+            List<int> city_cards_in_player_hand = new List<int>();
+            foreach (int card in game.cards.player_hand__per__player[player])
+            {
+                if (card < game.map.number_of_cities)
+                {
+                    city_cards_in_player_hand.Add(card);
+                }
+            }
+            return city_cards_in_player_hand;
+        }
 
-            //List<int> city_cards_in_player_hand = new List<int>();
-            //foreach (int card in game.cards.player_hand__per__player[player])
-            //{
-            //    if (card < game.map.number_of_cities)
-            //    {
-            //        city_cards_in_player_hand.Add(card);
-            //    }
-            //}
-            //return city_cards_in_player_hand;
+        public static List<int> GQ_CityCards_OfType_InPlayerHand(
+            this PD_Game game,
+            int player,
+            int disease_type
+            )
+        {
+            List<int> city_cards_of_type_in_player_hand = new List<int>();
+            foreach (int card in game.cards.player_hand__per__player[player])
+            {
+                if (
+                    card < game.map.number_of_cities
+                    &&
+                    game.map.infection_type__per__city[card] == disease_type
+                    )
+                {
+                    city_cards_of_type_in_player_hand.Add(card);
+                }
+            }
+            return city_cards_of_type_in_player_hand;
+        }
 
-            ////var playerHand = game.Cards.PlayerCardsPerPlayerID[player];
-            ////var cityCardsInPlayerHand = playerHand.FindAll(
-            ////    x =>
-            ////    x.GetType() == typeof(PD_CityCard)
-            ////    ).Cast<PD_CityCard>().ToList();
-            ////return cityCardsInPlayerHand;
+        public static int GQ_Num_CityCards_OfType_InPlayerHand(
+            this PD_Game game,
+            int player,
+            int disease_type
+            )
+        {
+            int num_city_cards_of_type_in_player_hand = 0;
+            foreach (int card in game.cards.player_hand__per__player[player])
+            {
+                if (
+                    card < game.map.number_of_cities
+                    &&
+                    game.map.infection_type__per__city[card] == disease_type
+                    )
+                {
+                    num_city_cards_of_type_in_player_hand++;
+                }
+            }
+            return num_city_cards_of_type_in_player_hand;
         }
 
         public static List<int> GQ_UncuredDiseaseTypes(

@@ -553,14 +553,16 @@ namespace Pandemic_AI_Framework
             int treat_Type
             )
         {
+            // remove all cubes of this type
+            PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
+                this,
+                city,
+                treat_Type
+                );
+
             if (this.GQ_Is_DiseaseCured_OR_Eradicated(treat_Type))
             {
-                // remove all cubes of this type
-                PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
-                    this,
-                    city,
-                    treat_Type
-                    );
+                
 
                 // check if disease is eradicated...
                 int remaining_cubes_this_type
@@ -572,16 +574,6 @@ namespace Pandemic_AI_Framework
                     game_state_counter.disease_states[treat_Type] = 2;
                 }
             }
-            else
-            {
-                // remove all cubes of this type
-                PD_Game_Operators.GO_Remove_All_InfectionCubes_OfType_FromCity(
-                    this,
-                    city,
-                    treat_Type
-                    );
-            }
-
         }
 
         public void Medic_AutoTreat_AfterDiscoverCure(int curedDiseaaseType)
@@ -801,16 +793,10 @@ namespace Pandemic_AI_Framework
             end_time = date_time;
         }
 
-        public PD_Game Request_Fair_ForwardModel(Random randomness_provider)
+        public PD_Game Request_Randomized_Copy(Random randomness_provider)
         {
             PD_Game gameCopy = this.GetCustomDeepCopy();
-            gameCopy.GO_RandomizeGame(randomness_provider);
-            return gameCopy;
-        }
-
-        public PD_Game Request_Unfair_ForwardModel()
-        {
-            PD_Game gameCopy = this.GetCustomDeepCopy();
+            gameCopy.GO_Randomize_HiddenState(randomness_provider);
             return gameCopy;
         }
 

@@ -8,7 +8,7 @@ namespace Pandemic_AI_Framework
 {
     public static class PD_Game_Operators
     {
-        public static void GO_RandomizeGame(
+        public static void GO_Randomize_HiddenState(
             this PD_Game game,
             Random randomness_provider
             )

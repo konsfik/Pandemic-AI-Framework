@@ -9,9 +9,10 @@ namespace Pandemic_AI_Framework
     {
         public override double CalculateScore(PD_Game gameState)
         {
-            int[,] numCardsTable = PD_AI_CardEvaluation_Utilities.NumCardsTable(
-                gameState
-                );
+            int[,] numCardsTable = 
+                PD_AI_CardEvaluation_Utilities.NumCardsTable(
+                    gameState
+                    );
 
             double[,] percentComplete_Table = 
                 PD_AI_CardEvaluation_Utilities.Calculate_Percent_CompleteSetsOfCards_Table(
@@ -51,11 +52,6 @@ namespace Pandemic_AI_Framework
             }
 
             double[,] normalized_Table = finalTable.Divided_By(1.3);
-
-            //if (squared)
-            //{
-            //    normalized_Table = normalized_Table.Squared();
-            //}
 
             return 
                 normalized_Table

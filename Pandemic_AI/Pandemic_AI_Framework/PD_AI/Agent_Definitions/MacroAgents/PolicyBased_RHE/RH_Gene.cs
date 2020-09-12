@@ -43,7 +43,7 @@ namespace Pandemic_AI_Framework
             PD_AI_Macro_Agent_Base mutatorAgent
             )
         {
-            PD_Game mutation_GameState = initial_gameState.Request_Fair_ForwardModel(randomness_provider);
+            PD_Game mutation_GameState = initial_gameState.Request_Randomized_Copy(randomness_provider);
 
             int numberOfMacros = MacroActions.Count;
             int mutationIndex = randomness_provider.Next(numberOfMacros);

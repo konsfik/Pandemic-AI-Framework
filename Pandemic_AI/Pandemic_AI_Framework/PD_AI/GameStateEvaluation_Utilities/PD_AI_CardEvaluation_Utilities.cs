@@ -43,15 +43,6 @@ namespace Pandemic_AI_Framework
                     int city_card_type = game.map.infection_type__per__city[city_card];
                     numCardsTable[city_card_type, playerIndex]++;
                 }
-                //for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
-                //{
-                //    int numCards_ThisType = cityCardsInPlayerHand.FindAll(
-                //        x =>
-                //        game.Map.infection_type__per__city[x.City] == typeIndex
-                //        ).Count;
-
-                //    numCardsTable[typeIndex, playerIndex] = numCards_ThisType;
-                //}
             }
 
             return numCardsTable;
@@ -62,6 +53,41 @@ namespace Pandemic_AI_Framework
 
         #region percent complete sets of cards
         public static double[,] Calculate_Percent_CompleteSetsOfCards_Table(
+            PD_Game game
+            )
+        {
+            int numPlayers = game.players.Count;
+            int numTypes = 4;
+
+            // step 2: calculate percent complete sets of cards table
+            double[,] percent_CompleteSetsOfCards_Table = new double[numTypes, numPlayers];
+
+            for (int pi = 0; pi < numPlayers; pi++)
+            {
+                for (int ti = 0; ti < numTypes; ti++)
+                {
+                    bool isPlayerScientist = game.GQ_Player_Role(pi) == PD_Player_Roles.Scientist;
+
+                    int num_city_cards_of_type_in_player_hand 
+                        = game.GQ_Num_CityCards_OfType_InPlayerHand(pi, ti);
+
+                    int numCards_SetComplete = isPlayerScientist ? 4 : 5;
+
+                    double percent_SetCompleteness = 
+                        (double)num_city_cards_of_type_in_player_hand / (double)numCards_SetComplete;
+                    if (percent_SetCompleteness > 1.0)
+                    {
+                        percent_SetCompleteness = 1.0;
+                    }
+
+                    percent_CompleteSetsOfCards_Table[ti, pi] = percent_SetCompleteness;
+                }
+            }
+
+            return percent_CompleteSetsOfCards_Table;
+        }
+
+        public static double[,] Calculate_Percent_CompleteSetsOfCards_Table(
             PD_Game game,
             int[,] numCardsTable
             )
@@ -71,22 +97,22 @@ namespace Pandemic_AI_Framework
 
             double[,] percent_CompleteSetsOfCards_Table = new double[numTypes, numPlayers];
 
-            for (int player = 0; player < numPlayers; player++)
+            for (int pi = 0; pi < numPlayers; pi++)
             {
-                for (int typeIndex = 0; typeIndex < numTypes; typeIndex++)
+                bool isPlayerScientist = game.GQ_Player_Role(pi) == PD_Player_Roles.Scientist;
+                for (int ti = 0; ti < numTypes; ti++)
                 {
-                    bool isPlayerScientist = game.GQ_Player_Role(player) == PD_Player_Roles.Scientist;
+                    int num_cards_this_player_this_type = numCardsTable[ti, pi];
+                    int num_cards_complete_set = isPlayerScientist ? 4 : 5;
 
-                    int numCards = numCardsTable[typeIndex, player];
-                    int numCards_SetComplete = isPlayerScientist ? 4 : 5;
-
-                    double percent_SetCompleteness = (double)numCards / (double)numCards_SetComplete;
+                    double percent_SetCompleteness = 
+                        (double)num_cards_this_player_this_type / (double)num_cards_complete_set;
                     if (percent_SetCompleteness > 1.0)
                     {
                         percent_SetCompleteness = 1.0;
                     }
 
-                    percent_CompleteSetsOfCards_Table[typeIndex, player] = percent_SetCompleteness;
+                    percent_CompleteSetsOfCards_Table[ti, pi] = percent_SetCompleteness;
                 }
             }
 
@@ -109,8 +135,7 @@ namespace Pandemic_AI_Framework
 
             for (int type = 0; type < numTypes; type++)
             {
-                bool isDiseaseCured = game.GQ_Is_DiseaseCured_OR_Eradicated(type);
-                if (isDiseaseCured)
+                if (game.GQ_Is_DiseaseCured_OR_Eradicated(type))
                 {
                     for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++)
                     {
@@ -133,9 +158,7 @@ namespace Pandemic_AI_Framework
             bool squared
             )
         {
-            int[,] numCardsTable = NumCardsTable(
-                game
-                );
+            int[,] numCardsTable = NumCardsTable(game);
 
             double[,] percentComplete_Table = Calculate_Percent_CompleteSetsOfCards_Table(game, numCardsTable);
 

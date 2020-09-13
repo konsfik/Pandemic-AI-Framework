@@ -261,6 +261,25 @@ namespace Pandemic_AI_Framework.Tests
                 Assert.IsTrue(game.GQ_Is_Ongoing() == false);
             }
 
+            // play the games until the end, using single actions
+            foreach (var game_file_path in game_file_paths)
+            {
+                PD_Game game = PD_IO_Utilities.DeserializeGame_From_MiniGameJsonFile(game_file_path);
+
+                // play the game until the end...
+                while (game.GQ_Is_Ongoing())
+                {
+                    var available_actions = game.CurrentAvailablePlayerActions;
+                    var random_action = available_actions.GetOneRandom(randomness_provider);
+                    game.Apply_Action(
+                        randomness_provider,
+                        random_action
+                        );
+                }
+
+                Assert.IsTrue(game.GQ_Is_Ongoing() == false);
+            }
+
             // play the games until the end, using macro actions
             PD_AI_PathFinder pathFinder = new PD_AI_PathFinder();
             foreach (var game_file_path in game_file_paths)
@@ -271,6 +290,25 @@ namespace Pandemic_AI_Framework.Tests
                     JsonConvert.DeserializeObject<PD_MiniGame>(serialized_mini_game);
 
                 PD_Game game = deserialized_mini_game.Convert_To_Game();
+
+                // play the game until the end...
+                while (game.GQ_Is_Ongoing())
+                {
+                    var available_macro_actions = game.GetAvailableMacros(pathFinder);
+                    var random_macro_action = available_macro_actions.GetOneRandom(randomness_provider);
+                    game.Apply_Macro_Action(
+                        randomness_provider,
+                        random_macro_action
+                        );
+                }
+
+                Assert.IsTrue(game.GQ_Is_Ongoing() == false);
+            }
+
+            // play the games until the end, using macro actions
+            foreach (var game_file_path in game_file_paths)
+            {
+                PD_Game game = PD_IO_Utilities.DeserializeGame_From_MiniGameJsonFile(game_file_path);
 
                 // play the game until the end...
                 while (game.GQ_Is_Ongoing())

@@ -136,6 +136,61 @@ namespace Pandemic_AI_Framework
             );
         }
 
+        public static PD_Game DeserializeGame_From_MiniGameJsonFile(
+            string jsonFilePath
+            )
+        {
+            if (FileExists(jsonFilePath) == false)
+            {
+                throw new System.Exception("file does not exist");
+            }
+
+            string serialized_mini_game = ReadFile(jsonFilePath);
+
+            PD_MiniGame deserialized_mini_game = JsonConvert.DeserializeObject<PD_MiniGame>(
+                serialized_mini_game,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.None,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None
+                }
+                );
+
+            PD_Game game = deserialized_mini_game.Convert_To_Game();
+
+            return game;
+        }
+
+        public static void SerializeGame_To_MiniGameJson_AndSave(
+            PD_Game game,
+            string saveFilePath,
+            bool compressed
+            ) {
+
+            PD_MiniGame mini_game = game.Convert_To_MiniGame();
+            
+            string serialized_mini_game = JsonConvert.SerializeObject(
+                    mini_game,
+                    compressed ? Formatting.None : Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                    }
+                );
+
+            CreateFile(
+                saveFilePath,
+                false,
+                true
+                );
+
+            AppendToFile(
+                saveFilePath,
+                serialized_mini_game
+                );
+        }
+
         public static string ReadFile(
             string filePath
             )

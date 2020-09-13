@@ -573,71 +573,70 @@ namespace Pandemic_AI_Framework
         {
             Dictionary<int, int> dictionary_copy = new Dictionary<int, int>();
 
-            foreach (int key in original_dictinoary.Keys)
+            foreach (KeyValuePair<int, int> kvp in original_dictinoary)
             {
-                dictionary_copy.Add(key, original_dictinoary[key]);
+                dictionary_copy.Add(kvp.Key, kvp.Value);
             }
 
             return dictionary_copy;
         }
 
         public static Dictionary<int, Dictionary<int, int>> CustomDeepCopy(
-            this Dictionary<int, Dictionary<int, int>> originalDictionary
+            this Dictionary<int, Dictionary<int, int>> original_dictionary
             )
         {
-            Dictionary<int, Dictionary<int, int>> dictionaryCopy
+            Dictionary<int, Dictionary<int, int>> dictionary_copy
                 = new Dictionary<int, Dictionary<int, int>>();
 
-            foreach (int key in originalDictionary.Keys) {
-                dictionaryCopy.Add(
-                    key,
-                    originalDictionary[key].CustomDeepCopy()
-                    );
+            foreach (KeyValuePair<int, Dictionary<int, int>> kvp in original_dictionary)
+            {
+                dictionary_copy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
             }
 
-            return dictionaryCopy;
+            return dictionary_copy;
         }
 
         public static Dictionary<int, bool> CustomDeepCopy(
-            this Dictionary<int, bool> originalDictionary
+            this Dictionary<int, bool> original_dictinoary
             )
         {
-            Dictionary<int, bool> dictionaryCopy = new Dictionary<int, bool>();
+            Dictionary<int, bool> dictionary_copy = new Dictionary<int, bool>();
 
-            foreach (int key in originalDictionary.Keys)
+            foreach (KeyValuePair<int, bool> kvp in original_dictinoary)
             {
-                dictionaryCopy.Add(key, originalDictionary[key]);
+                dictionary_copy.Add(kvp.Key, kvp.Value);
             }
 
-            return dictionaryCopy;
+            return dictionary_copy;
         }
 
         public static Dictionary<int, List<int>> CustomDeepCopy(
-            this Dictionary<int, List<int>> originalDictionary
+            this Dictionary<int, List<int>> original_dictionary
             )
         {
-            Dictionary<int, List<int>> dictionaryCopy = new Dictionary<int, List<int>>();
+            Dictionary<int, List<int>> dictionary_copy
+                = new Dictionary<int, List<int>>();
 
-            foreach (int key in originalDictionary.Keys)
+            foreach (KeyValuePair<int, List<int>> kvp in original_dictionary)
             {
-                dictionaryCopy.Add(key, originalDictionary[key].CustomDeepCopy());
+                dictionary_copy.Add(kvp.Key, kvp.Value.CustomDeepCopy());
             }
 
-            return dictionaryCopy;
+            return dictionary_copy;
         }
 
         public static Dictionary<int, string> CustomDeepCopy(
-            this Dictionary<int, string> originalDictionary
+            this Dictionary<int, string> original_dictionary
             )
         {
-            Dictionary<int, string> dictionaryCopy = new Dictionary<int, string>();
+            Dictionary<int, string> dictionary_copy = new Dictionary<int, string>();
 
-            foreach (var kvp in originalDictionary)
+            foreach (KeyValuePair<int, string> kvp in original_dictionary)
             {
-                dictionaryCopy.Add(kvp.Key, kvp.Value);
+                dictionary_copy.Add(kvp.Key, kvp.Value);
             }
 
-            return dictionaryCopy;
+            return dictionary_copy;
         }
 
         public static Dictionary<int, PD_Point> CustomDeepCopy(
@@ -646,7 +645,7 @@ namespace Pandemic_AI_Framework
         {
             Dictionary<int, PD_Point> dictionaryCopy = new Dictionary<int, PD_Point>();
 
-            foreach (var kvp in originalDictionary)
+            foreach (KeyValuePair<int, PD_Point> kvp in originalDictionary)
             {
                 dictionaryCopy.Add(kvp.Key, kvp.Value.GetCustomDeepCopy());
             }
@@ -683,13 +682,6 @@ namespace Pandemic_AI_Framework
                 return listOfPairs;
             }
         }
-
-        //private static Random rnd;
-        //static PD_ListExtensions()
-        //{
-        //    rnd = new Random();
-        //}
-
 
         public static void SetFirstItemByIndex<T>(
             this List<T> items,

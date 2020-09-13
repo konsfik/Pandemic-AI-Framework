@@ -40,29 +40,5 @@ namespace Pandemic_AI_Framework.Tests
             Assert.IsTrue(listOfLists1[0].Count == 5);
         }
 
-        [TestMethod()]
-        public void GetNonSamePairsTest()
-        {
-            List<int> originalList = new List<int>() { 1, 2, 3 };
-            List<List<int>> pairsList = originalList.GetNonSamePairs();
-            List<List<int>> testPairsList = new List<List<int>>() {
-                new List<int>(){ 1, 2},
-                new List<int>(){ 1, 3},
-                new List<int>(){ 2, 1},
-                new List<int>(){ 2, 3},
-                new List<int>(){ 3, 1},
-                new List<int>(){ 3, 2}
-            };
-            bool allgood = true;
-
-            for (int i = 0; i < pairsList.Count; i++)
-            {
-                var pair = pairsList[i];
-                var testPair = testPairsList[i];
-                if (pair[0] != testPair[0]) allgood = false;
-                if (pair[1] != testPair[1]) allgood = false;
-            }
-            Assert.IsTrue(allgood);
-        }
     }
 }

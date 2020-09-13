@@ -2646,7 +2646,7 @@ namespace Pandemic_AI_Framework
                     }
 
                     List<PD_Action> actionSequence = new List<PD_Action>();
-                        actionSequence.Add(directFlightAction);
+                    actionSequence.Add(directFlightAction);
 
                     List<PD_Action> simpleWalkCommandSequence = Compose_SimpleWalk_CommandSequence(
                         game,
@@ -2789,7 +2789,7 @@ namespace Pandemic_AI_Framework
 
             List<int> cityCardsInCurrentPlayerHand = game.GQ_CityCardsInCurrentPlayerHand();
 
-            List<List<PD_Action>> operationsExpertFlightWalk_Sequences =
+            List<List<PD_Action>> operations_expert_walk_sequences =
                 new List<List<PD_Action>>();
 
             if (game.GQ_Is_City_ResearchStation(currentPlayerLocation))
@@ -2810,7 +2810,7 @@ namespace Pandemic_AI_Framework
                                 action
                             };
 
-                            operationsExpertFlightWalk_Sequences.Add(singleActionList);
+                            operations_expert_walk_sequences.Add(singleActionList);
                         }
                     }
                 }
@@ -2836,49 +2836,52 @@ namespace Pandemic_AI_Framework
                 {
                     foreach (var finalDestination in game.map.cities)
                     {
-                        if (finalDestination != currentPlayerLocation)
+                        if (finalDestination == currentPlayerLocation)
                         {
-                            PA_OperationsExpert_Flight finalAction = new PA_OperationsExpert_Flight(
-                                currentPlayer,
-                                finalDestination,
-                                cityCardToUse
-                                );
-
-                            List<PD_Action> totalActionSequence = new List<PD_Action>();
-                            totalActionSequence.AddRange(simpleWalkSequence);
-                            totalActionSequence.Add(finalAction);
-
-                            operationsExpertFlightWalk_Sequences.Add(totalActionSequence);
+                            continue;
                         }
+                        // create the list
+                        List<PD_Action> operations_expert_sequence = new List<PD_Action>();
+                        // add the walk to the research station
+                        operations_expert_sequence.AddRange(simpleWalkSequence);
+
+                        // add the final action...
+                        PA_OperationsExpert_Flight finalAction = new PA_OperationsExpert_Flight(
+                            currentPlayer,
+                            finalDestination,
+                            cityCardToUse
+                            );
+                        operations_expert_sequence.Add(finalAction);
+
+                        // add the complete sequence to the list...
+                        operations_expert_walk_sequences.Add(operations_expert_sequence);
                     }
                 }
             }
 
-
-            List<List<PD_Action>> operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences = new List<List<PD_Action>>();
-            foreach (var seq in operationsExpertFlightWalk_Sequences)
+            List<List<PD_Action>> operations_expert_optimal_sequences = new List<List<PD_Action>>();
+            foreach (var operations_expert_sequence in operations_expert_walk_sequences)
             {
-                int directFlightSequenceLength = seq.Count;
-                int targetLocation = ((I_Movement_Action)seq.GetLast()).ToCity;
-                List<PD_Action> simpleWalkEquivalent = simpleWalk_ActionSequences.Find(
+                I_Movement_Action operations_expert_last_action = (I_Movement_Action)operations_expert_sequence.GetLast();
+                int target_location = operations_expert_last_action.ToCity;
+                List<PD_Action> simple_walk_equivalent_sequence = simpleWalk_ActionSequences.Find(
                     x =>
-                    ((I_Movement_Action)x.GetLast()).ToCity == targetLocation
+                    ((I_Movement_Action)x.GetLast()).ToCity == target_location
                     );
-                if (simpleWalkEquivalent != null)
+                if (simple_walk_equivalent_sequence != null)
                 {
-                    int simpleWalkLength = simpleWalkEquivalent.Count;
-                    if (directFlightSequenceLength < simpleWalkLength)
+                    if (operations_expert_sequence.Count < simple_walk_equivalent_sequence.Count)
                     {
-                        operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences.Add(seq);
+                        operations_expert_optimal_sequences.Add(operations_expert_sequence);
                     }
                 }
                 else
                 {
-                    operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences.Add(seq);
+                    operations_expert_optimal_sequences.Add(operations_expert_sequence);
                 }
             }
 
-            return operationsExpertFlightWalk_ExecutableNow_Optimal_CommandSequences;
+            return operations_expert_optimal_sequences;
         }
 
         public static List<PD_Action> Compose_SimpleWalk_CommandSequence(

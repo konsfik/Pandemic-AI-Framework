@@ -181,9 +181,6 @@ namespace Performance_Tests
             PD_IO_Utilities.AppendToFile(report_file_path, report_part + "\n");
 
 
-
-
-
             // clear the games' list..
             games.Clear();
             game_copies.Clear();

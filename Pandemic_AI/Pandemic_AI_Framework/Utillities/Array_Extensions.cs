@@ -8,6 +8,7 @@ namespace Pandemic_AI_Framework
 {
     public static class Array_Extensions
     {
+
         public static bool ArrayEqual(this double[] first, double[] second)
         {
             if (first == second)
